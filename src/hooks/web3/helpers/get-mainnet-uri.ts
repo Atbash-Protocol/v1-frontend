@@ -1,3 +1,3 @@
 export const getMainnetURI = (): string => {
-    return "https://rinkeby.infura.io/v3/0b2c497ed2cc49d4b2f327e712176cbb";
+    return "https://rinkeby.infura.io/v3/254fc898c6c24be99475e8ec90ced016";
 };
