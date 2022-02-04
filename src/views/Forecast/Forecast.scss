@@ -3,7 +3,7 @@
     max-width: 833px;
     margin: auto;
 
-    .snowglobe-card {
+    .Forecast-card {
         position: relative;
         z-index: 2;
         overflow: hidden;
@@ -23,7 +23,7 @@
         padding: 20px;
         width: 100%;
 
-        .snowglobe-card-grid {
+        .Forecast-card-grid {
             margin: 0;
             width: 100%;
             @media (max-width: 600px) {
@@ -45,12 +45,12 @@
             }
         }
 
-        .snowglobe-card-falling {
+        .Forecast-card-falling {
             pointer-events: none;
         }
 
-        .snowglobe-card-header {
-            .snowglobe-card-header-title {
+        .Forecast-card-header {
+            .Forecast-card-header-title {
                 font-family: Montserrat Medium;
                 font-weight: 500;
                 font-size: 24px;
@@ -58,7 +58,7 @@
                 margin-bottom: 4px;
                 font-feature-settings: "ss01";
             }
-            .snowglobe-card-header-subtitle {
+            .Forecast-card-header-subtitle {
                 font-family: Mono;
                 font-weight: 400;
                 color: #ffffff;
@@ -68,14 +68,14 @@
                 margin-bottom: 10px;
             }
 
-            .snowglobe-card-header-disclaimer {
+            .Forecast-card-header-disclaimer {
                 font-family: Montserrat;
                 font-weight: 400;
                 font-size: 16px;
                 color: #fff;
             }
         }
-        .snowglobe-days {
+        .Forecast-days {
             text-align: center;
 
             font-family: Montserrat;
@@ -87,16 +87,16 @@
             }
         }
 
-        .snowglobe-card-metrics {
+        .Forecast-card-metrics {
             display: flex;
             width: 100%;
             padding: 0;
             text-align: center;
             margin-top: 10px;
 
-            .snowglobe-card-apy,
-            .snowglobe-card-tvl,
-            .snowglobe-card-index {
+            .Forecast-card-apy,
+            .Forecast-card-tvl,
+            .Forecast-card-index {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
@@ -105,7 +105,7 @@
                 white-space: nowrap;
                 overflow: hidden;
 
-                .snowglobe-card-metrics-title {
+                .Forecast-card-metrics-title {
                     font-family: Montserrat;
                     font-weight: 400;
                     font-size: 16px;
@@ -114,7 +114,7 @@
                     font-feature-settings: "ss01";
                 }
 
-                .snowglobe-card-metrics-value {
+                .Forecast-card-metrics-value {
                     font-family: Montserrat SemiBold;
                     font-weight: 500;
                     font-size: 24px;
@@ -124,11 +124,11 @@
             }
         }
 
-        .snowglobe-card-area {
-            .snowglobe-card-wallet-notification {
+        .Forecast-card-area {
+            .Forecast-card-wallet-notification {
                 text-align: center;
 
-                .snowglobe-card-wallet-connect-btn {
+                .Forecast-card-wallet-connect-btn {
                     background: #52142b;
                     border-radius: 4px;
                     padding: 14px 58px;
@@ -147,7 +147,7 @@
                     }
                 }
 
-                .snowglobe-card-wallet-desc-text {
+                .Forecast-card-wallet-desc-text {
                     font-family: Montserrat;
                     font-weight: 400;
                     font-size: 16px;
@@ -157,16 +157,16 @@
                 }
             }
 
-            .snowglobe-card-action-area {
+            .Forecast-card-action-area {
                 width: 100%;
                 margin-top: 25px;
 
-                .snowglobe-card-action-stage-btns-wrap {
+                .Forecast-card-action-stage-btns-wrap {
                     display: flex;
                     align-items: center;
                     justify-content: center;
 
-                    .snowglobe-card-action-stage-btn {
+                    .Forecast-card-action-stage-btn {
                         margin: 0px 30px;
                         padding: 6px;
                         cursor: pointer;
@@ -182,7 +182,7 @@
                         }
                     }
 
-                    .snowglobe-card-action-stage-btn.active {
+                    .Forecast-card-action-stage-btn.active {
                         p {
                             color: #ffffff;
                         }
@@ -191,7 +191,7 @@
                     }
                 }
 
-                .snowglobe-data {
+                .Forecast-data {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
@@ -214,13 +214,13 @@
                     }
                 }
 
-                .snowglobe-card-action-row {
+                .Forecast-card-action-row {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     margin-top: 20px;
 
-                    .snowglobe-card-action-label {
+                    .Forecast-card-action-label {
                         font-family: Mono;
                         font-weight: 400;
                         color: #ffffff;
@@ -229,7 +229,7 @@
                         margin-bottom: 6px;
                     }
 
-                    .snowglobe-card-action-input {
+                    .Forecast-card-action-input {
                         width: 100%;
 
                         background: rgba(255, 255, 255, 0.2);
@@ -251,7 +251,7 @@
                             border-color: rgba(255, 255, 255, 0.2) !important;
                         }
 
-                        .snowglobe-card-action-input-btn {
+                        .Forecast-card-action-input-btn {
                             cursor: pointer;
 
                             p {
@@ -265,11 +265,11 @@
                         }
                     }
 
-                    .snowglobe-card-tab-panel {
+                    .Forecast-card-tab-panel {
                         min-width: 215px;
                         margin-left: 10px;
 
-                        .snowglobe-card-tab-panel-btn {
+                        .Forecast-card-tab-panel-btn {
                             background: #d0c4ff;
                             border-radius: 4px;
                             padding: 14px 0px;
@@ -287,7 +287,7 @@
                     }
                 }
 
-                .snowglobe-card-action-help-text {
+                .Forecast-card-action-help-text {
                     margin-top: 10px;
 
                     p {
@@ -334,15 +334,15 @@
 
 @media screen and (max-width: 600px) {
     .stake-view {
-        .snowglobe-card {
-            .snowglobe-card-metrics {
-                .snowglobe-card-apy,
-                .snowglobe-card-tvl,
-                .snowglobe-card-index {
+        .Forecast-card {
+            .Forecast-card-metrics {
+                .Forecast-card-apy,
+                .Forecast-card-tvl,
+                .Forecast-card-index {
                     align-items: flex-start;
                 }
 
-                .snowglobe-card {
+                .Forecast-card {
                     width: 50%;
                     display: flex;
                     flex-direction: column;
@@ -350,11 +350,11 @@
                 }
             }
 
-            .snowglobe-card-area {
-                .snowglobe-card-action-area {
-                    .snowglobe-card-action-row {
+            .Forecast-card-area {
+                .Forecast-card-action-area {
+                    .Forecast-card-action-row {
                         flex-direction: column;
-                        .snowglobe-card-tab-panel {
+                        .Forecast-card-tab-panel {
                             margin-left: 0;
                             margin-top: 20px;
                             min-width: none;

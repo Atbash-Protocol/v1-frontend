@@ -1,8 +1,8 @@
 {
-  "short_name": "Snowbank DAO",
+  "short_name": "Atbash Protocol",
   "start_url": ".",
   "homepage": "./",
-  "name": "Snowbank DAO",
+  "name": "Atbash Protocol",
   "launch_path": "/public/index.html",
   "icons": [
     {

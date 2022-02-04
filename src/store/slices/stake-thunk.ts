@@ -29,7 +29,7 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
     const addresses = getAddresses(networkID);
 
     const signer = provider.getSigner();
-    const sbContract = new ethers.Contract(addresses.SB_ADDRESS, TimeTokenContract, signer);
+    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
 
     let approveTx;
     try {
@@ -80,8 +80,8 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     const addresses = getAddresses(networkID);
 
     const signer = provider.getSigner();
-    const sbContract = new ethers.Contract(addresses.SB_ADDRESS, TimeTokenContract, signer);
-    const ssbContract = new ethers.Contract(addresses.SSB_ADDRESS, MemoTokenContract, signer);
+    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
+    const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
 
     let approveTx;
     try {

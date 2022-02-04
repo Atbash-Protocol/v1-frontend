@@ -26,8 +26,8 @@ export const loadAppDetails = createAsyncThunk(
         const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
         const currentBlock = await provider.getBlockNumber();
         const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
-        const ssbContract = new ethers.Contract(addresses.SSB_ADDRESS, MemoTokenContract, provider);
-        const sbContract = new ethers.Contract(addresses.SB_ADDRESS, TimeTokenContract, provider);
+        const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
+        const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
         const mimContract = new ethers.Contract(addresses.MIM_ADDRESS, TimeTokenContract, provider);
 
         const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * mimPrice;

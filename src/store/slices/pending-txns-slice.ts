@@ -29,7 +29,7 @@ export const getStakingTypeText = (action: string) => {
 };
 
 export const getWrappingTypeText = (action: string) => {
-    return action.toLowerCase() === "wrap" ? i18n.t("stake:WrappingSB") : i18n.t("stake:UnwrappingSB");
+    return action.toLowerCase() === "wrap" ? i18n.t("stake:WrappingsBASH") : i18n.t("stake:UnwrappingBASH");
 };
 
 export const isPendingTxn = (pendingTransactions: IPendingTxn[], type: string) => {

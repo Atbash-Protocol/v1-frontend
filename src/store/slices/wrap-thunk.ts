@@ -29,14 +29,14 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     const addresses = getAddresses(networkID);
 
     const signer = provider.getSigner();
-    const ssbContract = new ethers.Contract(addresses.SSB_ADDRESS, MemoTokenContract, signer);
+    const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
 
         if (token === "ssb") {
-            approveTx = await ssbContract.approve(addresses.WSSB_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await ssbContract.approve(addresses.WSBASH_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         const text = token === "ssb" ? i18n.t("wrap:ApproveWrapping") : "";
@@ -55,7 +55,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
 
     await sleep(2);
 
-    const wrapAllowance = await ssbContract.allowance(address, addresses.WSSB_ADDRESS);
+    const wrapAllowance = await ssbContract.allowance(address, addresses.WSBASH_ADDRESS);
 
     return dispatch(
         fetchAccountSuccess({
@@ -81,7 +81,7 @@ export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, 
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const wsSB = new ethers.Contract(addresses.WSSB_ADDRESS, WrappingContract, signer);
+    const wsBASH = new ethers.Contract(addresses.WSBASH_ADDRESS, WrappingContract, signer);
 
     let wrapTx;
 
@@ -91,9 +91,9 @@ export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, 
         if (action === "wrap") {
             console.log(value);
             console.log(ethers.utils.parseEther(value));
-            wrapTx = await wsSB.wrap(ethers.utils.parseUnits(value, "gwei"), { gasPrice });
+            wrapTx = await wsBASH.wrap(ethers.utils.parseUnits(value, "gwei"), { gasPrice });
         } else {
-            wrapTx = await wsSB.unwrap(ethers.utils.parseEther(value), { gasPrice });
+            wrapTx = await wsBASH.unwrap(ethers.utils.parseEther(value), { gasPrice });
         }
         const pendingTxnType = action === "wrap" ? i18n.t("wrap:Wrapping") : i18n.t("wrap:Unwrapping");
         dispatch(fetchPendingTxns({ txnHash: wrapTx.hash, text: getStakingTypeText(action), type: pendingTxnType }));

@@ -1,14 +1,14 @@
 {
-    "SnowglobeTitle": "Snowglobe (❄️,❄️)",
-    "SnowglobeWarning": "Any financial projections or returns shown on the calculator are estimated predictions of returns only, are hypothetical, are not based on actual investment results and are not guarantees of future results. Estimated projections do not represent or guarantee the actual results of any transaction, and no representation is made that any transaction will, or is likely to, achieve results or profits similar to those shown.",
+    "ForecastTitle": "Forecast (❄️,❄️)",
+    "ForecastWarning": "Any financial projections or returns shown on the calculator are estimated predictions of returns only, are hypothetical, are not based on actual investment results and are not guarantees of future results. Estimated projections do not represent or guarantee the actual results of any transaction, and no representation is made that any transaction will, or is likely to, achieve results or profits similar to those shown.",
     "EstimateYourReturns": "Estimate Your Returns",
-    "CurrentSBPrice": "Current SB Price",
+    "CurrentBASHPrice": "Current BASH Price",
     "CurrentRewardYield": "Current Reward Yield",
-    "YourStakedSBBalance": "Your sSB Balance",
+    "YourStakedBASHBalance": "Your sBASH Balance",
     "StakedSBAmount": "sSB AMOUNT",
     "RewardYieldPercent": "REWARD YIELD (%)",
-    "SBPriceAtPurchase": "SB PRICE AT PURCHASE ($)",
-    "FutureSBMarketPrice": "FUTURE SB MARKET PRICE ($)",
+    "BASHPriceAtPurchase": "BASH Price AT PURCHASE ($)",
+    "FutureBASHMarketPrice": "Future BASH MARKET PRICE ($)",
     "YourInitialInvestment": "Your initial investment",
     "CurrentWealth": "Current wealth",
     "SBRewardsEstimation": "SB rewards estimation",
@@ -21,5 +21,5 @@
     "EnterBuyPrice": "Enter buy price",
     "EnterFuturePrice": "Enter future price",
     "Duration": "Duration",
-    "ConnectYourWalletToUseSnowglobe": "Connect your wallet to use the Snowglobe"
+    "ConnectYourWalletToUseForecast": "Connect your wallet to use the Forecast"
 }

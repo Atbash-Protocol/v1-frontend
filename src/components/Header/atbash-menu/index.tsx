@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getAddresses, TOKEN_DECIMALS, DEFAULD_NETWORK } from "../../../constants";
 import { useSelector } from "react-redux";
 import { Link, Fade, Popper } from "@material-ui/core";
-import "./snowbank-menu.scss";
+import "./atbash-menu.scss";
 import { IReduxState } from "../../../store/slices/state.interface";
 import { getTokenUrl } from "../../../helpers";
 
@@ -67,7 +67,7 @@ function SnowbankMenu() {
                                 href={`https://www.traderjoexyz.com/trade?inputCurrency=0x130966628846bfd36ff31a822705796e8cb8c18d&outputCurrency=${BASH_ADDRESS}`}
                                 target="_blank"
                             >
-                                <p>{t("BuyUniswap")}</p>
+                                <p>{t("BuyOnUniswap")}</p>
                             </Link>
 
                             {isEthereumAPIAvailable && (

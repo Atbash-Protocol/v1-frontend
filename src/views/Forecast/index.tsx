@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Box, Grid, InputAdornment, OutlinedInput, Zoom } from "@material-ui/core";
 import Slider from "@mui/material/Slider";
 import { trim } from "../../helpers";
-import "./snowglobe.scss";
+import "./Forecast.scss";
 import { useWeb3Context } from "../../hooks";
 import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "../../store/slices/state.interface";
@@ -62,7 +62,7 @@ function Stake() {
         setDuration(newValue);
     };
 
-    // Snowglobe calc
+    // Forecast calc
     const epochs_per_day = 3;
 
     const roi_day = (1 + parseFloat(rewardYield) / 100) ** (duration * epochs_per_day) - 1;
@@ -77,7 +77,7 @@ function Stake() {
     return (
         <div className="stake-view">
             <Zoom in={true}>
-                <div className="snowglobe-card">
+                <div className="Forecast-card">
                     <Snowfall
                         count={50}
                         style={{
@@ -85,7 +85,7 @@ function Stake() {
                             width: "100%",
                             height: "100%",
                         }}
-                        className="snowglobe-card-falling"
+                        className="Forecast-card-falling"
                         snowflakeFactory={(index: number) => {
                             const size = index / 50; // 50 is the number of snowflakes.
                             const w = 5 + 10 * size + "px";
@@ -107,122 +107,122 @@ function Stake() {
                         }}
                     />
                     <SnowStorm animationInterval={20} vMaxY={2} flakesMaxActive={100} excludeMobile={false} />
-                    <Grid className="snowglobe-card-grid" container direction="column" spacing={2}>
+                    <Grid className="Forecast-card-grid" container direction="column" spacing={2}>
                         <Grid item>
-                            <div className="snowglobe-card-header">
-                                <p className="snowglobe-card-header-title">{t("globe:SnowglobeTitle")}</p>
-                                <p className="snowglobe-card-header-subtitle">{t("globe:EstimateYourReturns")}</p>
-                                <p className="snowglobe-card-header-disclaimer">{t("globe:SnowglobeWarning")}</p>
+                            <div className="Forecast-card-header">
+                                <p className="Forecast-card-header-title">{t("globe:ForecastTitle")}</p>
+                                <p className="Forecast-card-header-subtitle">{t("globe:EstimateYourReturns")}</p>
+                                <p className="Forecast-card-header-disclaimer">{t("globe:ForecastWarning")}</p>
                             </div>
                         </Grid>
 
                         <Grid item>
-                            <div className="snowglobe-card-metrics">
+                            <div className="Forecast-card-metrics">
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={4} md={4} lg={4}>
-                                        <div className="snowglobe-card-apy">
-                                            <p className="snowglobe-card-metrics-title">{t("globe:CurrentSBPrice")}</p>
-                                            <p className="snowglobe-card-metrics-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice, 2)}`}</p>
+                                        <div className="Forecast-card-apy">
+                                            <p className="Forecast-card-metrics-title">{t("globe:CurrentBASHPrice")}</p>
+                                            <p className="Forecast-card-metrics-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice, 2)}`}</p>
                                         </div>
                                     </Grid>
 
                                     <Grid item xs={6} sm={4} md={4} lg={4}>
-                                        <div className="snowglobe-card-tvl">
-                                            <p className="snowglobe-card-metrics-title">{t("globe:CurrentRewardYield")}</p>
-                                            <p className="snowglobe-card-metrics-value">{isAppLoading ? <Skeleton width="80px" /> : <>{stakingRebasePercentage}%</>}</p>
+                                        <div className="Forecast-card-tvl">
+                                            <p className="Forecast-card-metrics-title">{t("globe:CurrentRewardYield")}</p>
+                                            <p className="Forecast-card-metrics-value">{isAppLoading ? <Skeleton width="80px" /> : <>{stakingRebasePercentage}%</>}</p>
                                         </div>
                                     </Grid>
 
                                     <Grid item xs={6} sm={4} md={4} lg={4}>
-                                        <div className="snowglobe-card-index">
-                                            <p className="snowglobe-card-metrics-title">{t("globe:YourStakedSBBalance")}</p>
-                                            <p className="snowglobe-card-metrics-value">{isAppLoading ? <Skeleton width="150px" /> : <>{trimmedSsbBalance} sSB</>}</p>
+                                        <div className="Forecast-card-index">
+                                            <p className="Forecast-card-metrics-title">{t("globe:YourStakedBASHBalance")}</p>
+                                            <p className="Forecast-card-metrics-value">{isAppLoading ? <Skeleton width="150px" /> : <>{trimmedSsbBalance} sSB</>}</p>
                                         </div>
                                     </Grid>
                                 </Grid>
                             </div>
                         </Grid>
 
-                        <div className="snowglobe-card-area">
+                        <div className="Forecast-card-area">
                             {!address && (
-                                <div className="snowglobe-card-wallet-notification">
-                                    <div className="snowglobe-card-wallet-connect-btn" onClick={connect}>
+                                <div className="Forecast-card-wallet-notification">
+                                    <div className="Forecast-card-wallet-connect-btn" onClick={connect}>
                                         <p>{t("ConnectWallet")}</p>
                                     </div>
-                                    <p className="snowglobe-card-wallet-desc-text">{t("globe:ConnectYourWalletToUseSnowglobe")}</p>
+                                    <p className="Forecast-card-wallet-desc-text">{t("globe:ConnectYourWalletToUseForecast")}</p>
                                 </div>
                             )}
                             {address && (
                                 <div>
-                                    <div className="snowglobe-card-action-area">
-                                        <Grid className="snowglobe-card-grid" container spacing={1}>
-                                            <Grid item sm={5} className="snowglobe-entry">
-                                                <div className="snowglobe-card-action-row">
-                                                    <p className="snowglobe-card-action-label">{t("globe:StakedSBAmount")}</p>
+                                    <div className="Forecast-card-action-area">
+                                        <Grid className="Forecast-card-grid" container spacing={1}>
+                                            <Grid item sm={5} className="Forecast-entry">
+                                                <div className="Forecast-card-action-row">
+                                                    <p className="Forecast-card-action-label">{t("globe:StakedSBAmount")}</p>
                                                     <OutlinedInput
                                                         type="number"
                                                         placeholder={t("globe:EnterStakedSBAmount")}
-                                                        className="snowglobe-card-action-input"
+                                                        className="Forecast-card-action-input"
                                                         value={ssbQuantity}
                                                         onChange={e => setSsbQuantity(e.target.value)}
                                                         labelWidth={0}
                                                         endAdornment={
                                                             <InputAdornment position="end">
-                                                                <div onClick={setSsbToMax} className="snowglobe-card-action-input-btn">
+                                                                <div onClick={setSsbToMax} className="Forecast-card-action-input-btn">
                                                                     <p>{t("Max")}</p>
                                                                 </div>
                                                             </InputAdornment>
                                                         }
                                                     />
                                                 </div>
-                                                <div className="snowglobe-card-action-row">
-                                                    <p className="snowglobe-card-action-label">{t("globe:RewardYieldPercent")}</p>
+                                                <div className="Forecast-card-action-row">
+                                                    <p className="Forecast-card-action-label">{t("globe:RewardYieldPercent")}</p>
                                                     <OutlinedInput
                                                         type="number"
                                                         placeholder={t("globe:EnterRewardYieldPercent")}
-                                                        className="snowglobe-card-action-input"
+                                                        className="Forecast-card-action-input"
                                                         value={rewardYield}
                                                         onChange={e => setRewardYield(e.target.value)}
                                                         labelWidth={0}
                                                         endAdornment={
                                                             <InputAdornment position="end">
-                                                                <div onClick={setYeildCurrent} className="snowglobe-card-action-input-btn">
+                                                                <div onClick={setYeildCurrent} className="Forecast-card-action-input-btn">
                                                                     <p>{t("globe:Current")}</p>
                                                                 </div>
                                                             </InputAdornment>
                                                         }
                                                     />
                                                 </div>
-                                                <div className="snowglobe-card-action-row">
-                                                    <p className="snowglobe-card-action-label">{t("globe:SBPriceAtPurchase")}</p>
+                                                <div className="Forecast-card-action-row">
+                                                    <p className="Forecast-card-action-label">{t("globe:BASHPriceAtPurchase")}</p>
                                                     <OutlinedInput
                                                         type="number"
                                                         placeholder={t("globe:EnterBuyPrice")}
-                                                        className="snowglobe-card-action-input"
+                                                        className="Forecast-card-action-input"
                                                         value={price}
                                                         onChange={e => setPrice(e.target.value)}
                                                         labelWidth={0}
                                                         endAdornment={
                                                             <InputAdornment position="end">
-                                                                <div onClick={setCurrentPrice} className="snowglobe-card-action-input-btn">
+                                                                <div onClick={setCurrentPrice} className="Forecast-card-action-input-btn">
                                                                     <p>{t("globe:Current")}</p>
                                                                 </div>
                                                             </InputAdornment>
                                                         }
                                                     />
                                                 </div>
-                                                <div className="snowglobe-card-action-row">
-                                                    <p className="snowglobe-card-action-label">{t("globe:FutureSBMarketPrice")}</p>
+                                                <div className="Forecast-card-action-row">
+                                                    <p className="Forecast-card-action-label">{t("globe:FutureBASHMarketPrice")}</p>
                                                     <OutlinedInput
                                                         type="number"
                                                         placeholder={t("globe:EnterFuturePrice")}
-                                                        className="snowglobe-card-action-input"
+                                                        className="Forecast-card-action-input"
                                                         value={futurePrice}
                                                         onChange={e => setFuturePrice(e.target.value)}
                                                         labelWidth={0}
                                                         endAdornment={
                                                             <InputAdornment position="end">
-                                                                <div onClick={setCurrentPriceToFuture} className="snowglobe-card-action-input-btn">
+                                                                <div onClick={setCurrentPriceToFuture} className="Forecast-card-action-input-btn">
                                                                     <p>{t("globe:Current")}</p>
                                                                 </div>
                                                             </InputAdornment>
@@ -232,7 +232,7 @@ function Stake() {
                                             </Grid>
                                             <Grid item className="slider-container">
                                                 <Box className="slider-inner">
-                                                    <Box className="snowglobe-days">
+                                                    <Box className="Forecast-days">
                                                         <p className="data-row-value">
                                                             {duration}
                                                             <br />
@@ -279,7 +279,7 @@ function Stake() {
                                                 </Box>
                                             </Grid>
 
-                                            <Grid item sm={5} className="snowglobe-data">
+                                            <Grid item sm={5} className="Forecast-data">
                                                 <div className="data-row">
                                                     <p className="data-row-name">{t("globe:YourInitialInvestment")}</p>
                                                     <p className="data-row-value">{fCurrency(investment)}</p>

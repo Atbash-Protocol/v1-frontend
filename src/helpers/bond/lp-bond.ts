@@ -55,7 +55,7 @@ export class LPBond extends Bond {
 
         let [reserve0, reserve1] = await token.getReserves();
         const token1: string = await token.token1();
-        const isSb = token1.toLowerCase() === addresses.SB_ADDRESS.toLowerCase();
+        const isSb = token1.toLowerCase() === addresses.BASH_ADDRESS.toLowerCase();
 
         return isToken ? this.toTokenDecimal(false, isSb ? reserve0 : reserve1) : this.toTokenDecimal(true, isSb ? reserve1 : reserve0);
     }
