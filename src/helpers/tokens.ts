@@ -316,7 +316,7 @@ const teddy: IToken = {
 };
 
 const sb: IToken = {
-    name: "SB",
+    name: "BASH",
     address: "0xb54f16fB19478766A268F172C9480f8da1a7c9C3",
     img: SbIcon,
     decimals: 9,

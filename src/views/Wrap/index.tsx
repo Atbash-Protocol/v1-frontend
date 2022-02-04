@@ -75,7 +75,7 @@ function Stake() {
 
     const hasAllowance = useCallback(
         token => {
-            if (token === "ssb") return wrapAllowance > 0;
+            if (token === "sBASH") return wrapAllowance > 0;
             if (token === "wsBASH") return true;
             return 0;
         },
@@ -183,7 +183,7 @@ function Stake() {
 
                                             {view === 0 && (
                                                 <div className="wrap-card-tab-panel">
-                                                    {address && hasAllowance("ssb") ? (
+                                                    {address && hasAllowance("sBASH") ? (
                                                         <div
                                                             className="wrap-card-tab-panel-btn"
                                                             onClick={() => {
@@ -198,7 +198,7 @@ function Stake() {
                                                             className="wrap-card-tab-panel-btn"
                                                             onClick={() => {
                                                                 if (isPendingTxn(pendingTransactions, "approve_wrapping")) return;
-                                                                onSeekApproval("ssb");
+                                                                onSeekApproval("sBASH");
                                                             }}
                                                         >
                                                             <p>{txnButtonText(pendingTransactions, "approve_wrapping", t("Approve"))}</p>
@@ -224,7 +224,7 @@ function Stake() {
                                                             className="wrap-card-tab-panel-btn"
                                                             onClick={() => {
                                                                 if (isPendingTxn(pendingTransactions, "approve_unwrapping")) return;
-                                                                onSeekApproval("ssb");
+                                                                onSeekApproval("sBASH");
                                                             }}
                                                         ></div>
                                                     )}
@@ -233,7 +233,7 @@ function Stake() {
                                         </div>
 
                                         <div className="wrap-card-action-help-text">
-                                            {address && ((!hasAllowance("ssb") && view === 0) || (!hasAllowance("ssb") && view === 1)) && <p>{t("wrap:ApproveNote")}</p>}
+                                            {address && ((!hasAllowance("sBASH") && view === 0) || (!hasAllowance("sBASH") && view === 1)) && <p>{t("wrap:ApproveNote")}</p>}
                                         </div>
                                     </div>
 
