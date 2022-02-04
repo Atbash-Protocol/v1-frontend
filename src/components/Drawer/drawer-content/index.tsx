@@ -5,11 +5,11 @@ import RedeemIcon from "../../../assets/icons/swap.svg";
 import BondIcon from "../../../assets/icons/bond.svg";
 import BuyIcon from "../../../assets/icons/buy.svg";
 import BorrowIcon from "../../../assets/icons/borrow.svg";
-import Snowglobe from "../../../assets/icons/snowglobe.svg";
+import Forecast from "../../../assets/icons/Forecast.svg";
 import GovIcon from "../../../assets/icons/governance.svg";
 
 import ProIcon from "../../../assets/icons/pro.svg";
-import SnowbankIcon from "../../../assets/icons/snowbank-nav-header.svg";
+import AtbashICON from "../../../assets/icons/atbash.svg";
 import DashboardIcon from "../../../assets/icons/dashboard.svg";
 import { trim, shorten } from "../../../helpers";
 import { useAddress } from "../../../hooks";
@@ -33,7 +33,7 @@ function NavContent() {
         <div className="dapp-sidebar">
             <div className="branding-header">
                 <Link href="https://snowbank.finance" target="_blank">
-                    <img alt="" src={SnowbankIcon} />
+                    <img alt="" src={AtbashICON} />
                 </Link>
 
                 {address && (
@@ -114,11 +114,11 @@ function NavContent() {
                         </div>
                     </Link>
 
-                    <Link component={NavLink} to="/snowglobe" className="button-dapp-menu">
+                    <Link component={NavLink} to="/Forecast" className="button-dapp-menu">
                         <div className="button-dapp-menu">
                             <div className="dapp-menu-item">
-                                <img alt="" src={Snowglobe} />
-                                <p>{t("Snowglobe")}</p>
+                                <img alt="" src={Forecast} />
+                                <p>{t("Forecast")}</p>
                             </div>
                         </div>
                     </Link>
@@ -134,7 +134,7 @@ function NavContent() {
                     {/* <Link component={NavLink} id="bond-nav" to="#" className="button-dapp-menu">
                         <div className="dapp-menu-item">
                             <img alt="" src={ProIcon} />
-                            <p>{t("SBPro")}</p>
+                            <p>{t("BASHPro")}</p>
                             <span>{t("ComingSoon")}</span>
                         </div>
                     </Link> */}

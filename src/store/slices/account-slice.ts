@@ -19,7 +19,7 @@ interface IGetBalances {
 
 interface IAccountBalances {
     balances: {
-        wssb: string;
+        wsBASH: string;
         ssb: string;
         sb: string;
     };
@@ -28,16 +28,16 @@ interface IAccountBalances {
 export const getBalances = createAsyncThunk("account/getBalances", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
     const addresses = getAddresses(networkID);
 
-    const ssbContract = new ethers.Contract(addresses.SSB_ADDRESS, MemoTokenContract, provider);
-    const wssbContract = new ethers.Contract(addresses.WSSB_ADDRESS, MemoTokenContract, provider);
+    const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
+    const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, provider);
     const ssbBalance = await ssbContract.balanceOf(address);
-    const wssbBalance = await wssbContract.balanceOf(address);
-    const sbContract = new ethers.Contract(addresses.SB_ADDRESS, TimeTokenContract, provider);
+    const wsBASHBalance = await wsBASHContract.balanceOf(address);
+    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
     const sbBalance = await sbContract.balanceOf(address);
 
     return {
         balances: {
-            wssb: ethers.utils.formatEther(wssbBalance),
+            wsBASH: ethers.utils.formatEther(wsBASHBalance),
             ssb: ethers.utils.formatUnits(ssbBalance, "gwei"),
             sb: ethers.utils.formatUnits(sbBalance, "gwei"),
         },
@@ -54,7 +54,7 @@ interface IUserAccountDetails {
     balances: {
         sb: string;
         ssb: string;
-        wssb: string;
+        wsBASH: string;
     };
     redeeming: {
         sb: number;
@@ -71,7 +71,7 @@ interface IUserAccountDetails {
 export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address }: ILoadAccountDetails): Promise<IUserAccountDetails> => {
     let sbBalance = 0;
     let ssbBalance = 0;
-    let wssbBalance = 0;
+    let wsBASHBalance = 0;
     let stakeAllowance = 0;
     let unstakeAllowance = 0;
     let wrapAllowance = 0;
@@ -79,28 +79,28 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
 
     const addresses = getAddresses(networkID);
 
-    if (addresses.SB_ADDRESS) {
-        const sbContract = new ethers.Contract(addresses.SB_ADDRESS, TimeTokenContract, provider);
+    if (addresses.BASH_ADDRESS) {
+        const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
         sbBalance = await sbContract.balanceOf(address);
         stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
         redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
     }
 
-    if (addresses.SSB_ADDRESS) {
-        const ssbContract = new ethers.Contract(addresses.SSB_ADDRESS, MemoTokenContract, provider);
+    if (addresses.SBASH_ADDRESS) {
+        const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
         ssbBalance = await ssbContract.balanceOf(address);
-        wrapAllowance = await ssbContract.allowance(address, addresses.WSSB_ADDRESS);
+        wrapAllowance = await ssbContract.allowance(address, addresses.WSBASH_ADDRESS);
         unstakeAllowance = await ssbContract.allowance(address, addresses.STAKING_ADDRESS);
     }
 
-    if (addresses.WSSB_ADDRESS) {
-        const wssbContract = new ethers.Contract(addresses.WSSB_ADDRESS, MemoTokenContract, provider);
-        wssbBalance = await wssbContract.balanceOf(address);
+    if (addresses.WSBASH_ADDRESS) {
+        const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, provider);
+        wsBASHBalance = await wsBASHContract.balanceOf(address);
     }
 
     return {
         balances: {
-            wssb: ethers.utils.formatEther(wssbBalance),
+            wsBASH: ethers.utils.formatEther(wsBASHBalance),
             ssb: ethers.utils.formatUnits(ssbBalance, "gwei"),
             sb: ethers.utils.formatUnits(sbBalance, "gwei"),
         },
@@ -249,7 +249,7 @@ export const calculateUserTokenDetails = createAsyncThunk("account/calculateUser
 export interface IAccountSlice {
     bonds: { [key: string]: IUserBondDetails };
     balances: {
-        wssb: string;
+        wsBASH: string;
         ssb: string;
         sb: string;
     };
@@ -270,7 +270,7 @@ export interface IAccountSlice {
 const initialState: IAccountSlice = {
     loading: true,
     bonds: {},
-    balances: { wssb: "", ssb: "", sb: "" },
+    balances: { wsBASH: "", ssb: "", sb: "" },
     staking: { sb: 0, ssb: 0 },
     wrapping: { ssbAllowance: 0 },
     redeeming: { sb: 0 },

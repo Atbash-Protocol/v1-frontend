@@ -41,8 +41,8 @@ function Stake() {
     const ssbBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.ssb;
     });
-    const wssbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.wssb;
+    const wsBASHBalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.wsBASH;
     });
 
     const pendingTransactions = useSelector<IReduxState, IPendingTxn[]>(state => {
@@ -53,7 +53,7 @@ function Stake() {
         if (view === 0) {
             setQuantity(ssbBalance);
         } else {
-            setQuantity(wssbBalance);
+            setQuantity(wsBASHBalance);
         }
     };
 
@@ -76,7 +76,7 @@ function Stake() {
     const hasAllowance = useCallback(
         token => {
             if (token === "ssb") return wrapAllowance > 0;
-            if (token === "wssb") return true;
+            if (token === "wsBASH") return true;
             return 0;
         },
         [wrapAllowance],
@@ -88,7 +88,7 @@ function Stake() {
     };
 
     const trimmedSSBBalance = trim(Number(ssbBalance), 6);
-    const trimmedWrappedStakedSBBalance = trim(Number(wssbBalance), 6);
+    const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
 
     const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
     const valueOfSB = new Intl.NumberFormat("en-US", {
@@ -126,7 +126,7 @@ function Stake() {
                         <Grid item>
                             <div className="wrap-card-header">
                                 <p className="wrap-card-header-title">{t("wrap:WrapTitle")}</p>
-                                <p className="wrap-card-header-subtitle">{t("wrap:WrapYourSnowbank")}</p>
+                                <p className="wrap-card-header-subtitle">{t("wrap:WrapYourBASH")}</p>
                             </div>
                         </Grid>
 
@@ -217,7 +217,7 @@ function Stake() {
                                                                 onChangeWrap("unwrap");
                                                             }}
                                                         >
-                                                            <p>{txnButtonText(pendingTransactions, "unwrapping", t("Unwrap wsSB"))}</p>
+                                                            <p>{txnButtonText(pendingTransactions, "unwrapping", t("Unwrap wsBASH"))}</p>
                                                         </div>
                                                     ) : (
                                                         <div
@@ -251,7 +251,7 @@ function Stake() {
                                         {Number(trimmedWrappedStakedSBBalance) > 0 && (
                                             <div className="data-row">
                                                 <p className="data-row-name">{t("wrap:YourWrappedStakedBalance")}</p>
-                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedWrappedStakedSBBalance} wsSB</>}</p>
+                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedWrappedStakedSBBalance} wsBASH</>}</p>
                                             </div>
                                         )}
 
@@ -284,12 +284,12 @@ function Stake() {
                                     <div>
                                         <div className="">
                                             <div className="data-row">
-                                                <p className="data-row-name">{t("wrap:ValueOfYourSB")}</p>
+                                                <p className="data-row-name">{t("wrap:ValueOfYourBASH")}</p>
                                                 <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
                                             </div>
 
                                             <div className="data-row">
-                                                <p className="data-row-name">{t("wrap:ValueOfYourStakedSB")}</p>
+                                                <p className="data-row-name">{t("wrap:ValueOfYourStakedBASH")}</p>
                                                 <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
                                             </div>
 

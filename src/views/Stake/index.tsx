@@ -39,8 +39,8 @@ function Stake() {
     const ssbBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.ssb;
     });
-    const wssbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.wssb;
+    const wsBASHBalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.wsBASH;
     });
     const stakeAllowance = useSelector<IReduxState, number>(state => {
         return state.account.staking && state.account.staking.sb;
@@ -101,7 +101,7 @@ function Stake() {
     };
 
     const trimmedSSBBalance = trim(Number(ssbBalance), 6);
-    const trimmedWrappedStakedSBBalance = trim(Number(wssbBalance), 6);
+    const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedSSBBalance), 6);
@@ -197,7 +197,7 @@ function Stake() {
 
                                     <Grid item xs={6} sm={3} md={3} lg={3}>
                                         <div className="stake-card-index">
-                                            <p className="stake-card-metrics-title">{t("SBPrice")}</p>
+                                            <p className="stake-card-metrics-title">{t("BASHPrice")}</p>
                                             <p className="stake-card-metrics-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice, 2)}`}</p>
                                         </div>
                                     </Grid>
@@ -253,7 +253,7 @@ function Stake() {
                                                                 onChangeStake("stake");
                                                             }}
                                                         >
-                                                            <p>{txnButtonText(pendingTransactions, "staking", t("Stake SB"))}</p>
+                                                            <p>{txnButtonText(pendingTransactions, "staking", t("Stake BASH"))}</p>
                                                         </div>
                                                     ) : (
                                                         <div
@@ -279,7 +279,7 @@ function Stake() {
                                                                 onChangeStake("unstake");
                                                             }}
                                                         >
-                                                            <p>{txnButtonText(pendingTransactions, "unstaking", t("Unstake SB"))}</p>
+                                                            <p>{txnButtonText(pendingTransactions, "unstaking", t("Unstake BASH"))}</p>
                                                         </div>
                                                     ) : (
                                                         <div
@@ -315,7 +315,7 @@ function Stake() {
                                         {Number(trimmedWrappedStakedSBBalance) > 0 && (
                                             <div className="data-row">
                                                 <p className="data-row-name">{t("stake:YourWrappedStakedBalance")}</p>
-                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedWrappedStakedSBBalance} wsSB</>}</p>
+                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedWrappedStakedSBBalance} wsBASH</>}</p>
                                             </div>
                                         )}
 
@@ -369,12 +369,12 @@ function Stake() {
                                     <div>
                                         <div className="">
                                             <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourSB")}</p>
+                                                <p className="data-row-name">{t("stake:ValueOfYourBASH")}</p>
                                                 <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
                                             </div>
 
                                             <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourStakedSB")}</p>
+                                                <p className="data-row-name">{t("stake:ValueOfYourStakedBASH")}</p>
                                                 <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
                                             </div>
 

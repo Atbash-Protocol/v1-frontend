@@ -45,7 +45,7 @@ export const wavax = new CustomBond({
 });
 
 export const mimSb = new LPBond({
-    name: "mim_sb_lp",
+    name: "mim_BASH_lp",
     displayName: "SB-MIM LP",
     bondToken: "MIM",
     bondIconSvg: mimSbIcon,
@@ -112,7 +112,7 @@ export const mimAvax = new LPBond({
 // });
 
 export const avaxSb = new CustomLPBond({
-    name: "avax_sb_lp",
+    name: "avax_BASH_lp",
     displayName: "SB-AVAX LP",
     bondToken: "AVAX",
     bondIconSvg: AvaxSbIcon,

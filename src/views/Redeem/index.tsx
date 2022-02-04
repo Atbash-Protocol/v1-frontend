@@ -38,8 +38,8 @@ function Redeem() {
     const ssbBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.ssb;
     });
-    const wssbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.wssb;
+    const wsBASHBalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.wsBASH;
     });
     const redeemAllowance = useSelector<IReduxState, number>(state => {
         return state.account.redeeming && state.account.redeeming.sb;
@@ -95,7 +95,7 @@ function Redeem() {
     );
 
     const trimmedSSBBalance = trim(Number(ssbBalance), 6);
-    const trimmedWrappedStakedSBBalance = trim(Number(wssbBalance), 6);
+    const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedSSBBalance), 6);
