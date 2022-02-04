@@ -24,7 +24,7 @@ export default function Social() {
                 <SvgIcon color="primary" component={Discord} />
             </Link>
 
-            <Link href="https://docs.atbas.finance/" target="_blank">
+            <Link href="https://docs.atbash.finance/" target="_blank">
                 <img alt="" src={DocsIcon} />
             </Link>
         </div>
