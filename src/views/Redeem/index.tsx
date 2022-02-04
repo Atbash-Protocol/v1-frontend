@@ -171,9 +171,9 @@ function Redeem() {
                                 <b>The redistribution page and redeem feature will only be available until January 3rd</b>. In order to maintain the risk-free value fixed for the
                                 duration of the rebirth event, staking rewards and minting will be paused on December 23rd.
                             </p>
-                            <Link href="https://docs.snowbank.finance/events/rebirth-redistribution" target="_blank" className="stake-card-link-text">
+                            {/* <Link href="https://docs.snowbank.finance/events/rebirth-redistribution" target="_blank" className="stake-card-link-text">
                                 Learn more about Snowbank's Redistribution - Rebirth event and details here.
-                            </Link>
+                            </Link> */}
                         </Grid>
                     </Grid>
                 </div>
@@ -287,7 +287,7 @@ function Redeem() {
                                             <p className="data-row-name">Your Staked BASH Balance</p>
                                             <p className="data-row-value">
                                                 {isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sBASHBalance), 4)} sBASH</>}{" "}
-                                                <a href="https://dapp.snowbank.finance/#/stake">Unstake</a>
+                                                <a href="https://dapp.atbash.finance/#/stake">Unstake</a>
                                             </p>
                                         </div>
                                         <div className="data-row">
