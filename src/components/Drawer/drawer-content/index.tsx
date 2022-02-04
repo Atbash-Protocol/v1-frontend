@@ -32,7 +32,7 @@ function NavContent() {
     return (
         <div className="dapp-sidebar">
             <div className="branding-header">
-                <Link href="https://snowbank.finance" target="_blank">
+                <Link href="https://atbash.finance" target="_blank">
                     <img alt="" src={AtbashICON} />
                 </Link>
 
