@@ -81,7 +81,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
 
     const signer = provider.getSigner();
     const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
-    const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
 
     let approveTx;
     try {
@@ -92,7 +92,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
         }
 
         if (token === "sBASH") {
-            approveTx = await ssbContract.approve(addresses.STAKING_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await sBASHContract.approve(addresses.STAKING_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         const text = token === "BASH" ? i18n.t("stake:ApproveStaking") : i18n.t("stake:ApproveUnstaking");
@@ -112,13 +112,13 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     await sleep(2);
 
     const stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
-    const unstakeAllowance = await ssbContract.allowance(address, addresses.STAKING_ADDRESS);
+    const unstakeAllowance = await sBASHContract.allowance(address, addresses.STAKING_ADDRESS);
 
     return dispatch(
         fetchAccountSuccess({
             staking: {
                 sbStake: Number(stakeAllowance),
-                ssbUnstake: Number(unstakeAllowance),
+                sBASHUnstake: Number(unstakeAllowance),
             },
         }),
     );

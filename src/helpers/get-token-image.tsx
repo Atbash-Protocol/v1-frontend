@@ -1,5 +1,5 @@
-import SbImg from "../assets/tokens/SB.png";
-import SsbImg from "../assets/tokens/SSB.png";
+import SbImg from "../assets/tokens/bash.png";
+import sBASHImg from "../assets/tokens/sBASH.png";
 
 function toUrl(tokenPath: string): string {
     const host = window.location.origin;
@@ -12,7 +12,7 @@ export function getTokenUrl(name: string) {
     }
 
     if (name === "sBASH") {
-        return toUrl(SsbImg);
+        return toUrl(sBASHImg);
     }
 
     throw Error(`Token url doesn't support: ${name}`);

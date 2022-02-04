@@ -55,13 +55,13 @@ export class LPBond extends Bond {
 
         let [reserve0, reserve1] = await token.getReserves();
         const token1: string = await token.token1();
-        const isSb = token1.toLowerCase() === addresses.BASH_ADDRESS.toLowerCase();
+        const isBASH = token1.toLowerCase() === addresses.BASH_ADDRESS.toLowerCase();
 
-        return isToken ? this.toTokenDecimal(false, isSb ? reserve0 : reserve1) : this.toTokenDecimal(true, isSb ? reserve1 : reserve0);
+        return isToken ? this.toTokenDecimal(false, isBASH ? reserve0 : reserve1) : this.toTokenDecimal(true, isBASH ? reserve1 : reserve0);
     }
 
-    private toTokenDecimal(isSb: boolean, reserve: number) {
-        return isSb ? reserve / Math.pow(10, 9) : reserve / Math.pow(10, 18);
+    private toTokenDecimal(isBASH: boolean, reserve: number) {
+        return isBASH ? reserve / Math.pow(10, 9) : reserve / Math.pow(10, 18);
     }
 }
 

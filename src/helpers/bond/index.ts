@@ -4,7 +4,7 @@ import { StableBond, CustomBond } from "./stable-bond";
 
 import MimIcon from "../../assets/tokens/MIM.svg";
 import AvaxIcon from "../../assets/tokens/AVAX.svg";
-import mimSbIcon from "../../assets/tokens/SB-MIM.png";
+import BASHUSDCison from "../../assets/tokens/BASH-USDC.png";
 import AvaxSbIcon from "../../assets/tokens/SB-AVAX.png";
 import MimSdogIcon from "../../assets/tokens/SDOG-MIM.svg";
 import avaxUsdceIcon from "../../assets/tokens/AVAX-USDCe.png";
@@ -44,11 +44,11 @@ export const wavax = new CustomBond({
     isActive: false,
 });
 
-export const mimSb = new LPBond({
+export const BASHUSDC = new LPBond({
     name: "mim_BASH_lp",
-    displayName: "SB-MIM LP",
+    displayName: "BASH-USDC LP",
     bondToken: "MIM",
-    bondIconSvg: mimSbIcon,
+    bondIconSvg: BASHUSDCison,
     bondContractABI: LpBondContract,
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
@@ -128,4 +128,4 @@ export const avaxSb = new CustomLPBond({
     isActive: true,
 });
 
-export default [mim, wavax, mimSb, avaxSb, mimAvax];
+export default [mim, wavax, BASHUSDC, avaxSb, mimAvax];

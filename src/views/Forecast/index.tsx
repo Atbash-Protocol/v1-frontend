@@ -18,15 +18,15 @@ function Stake() {
 
     const { address, connect } = useWeb3Context();
 
-    const [ssbQuantity, setSsbQuantity] = useState<string>("1");
+    const [sBASHQuantity, setsBASHQuantity] = useState<string>("1");
     const [rewardYield, setRewardYield] = useState<string>("1.5");
     const [price, setPrice] = useState<string>("1200");
     const [futurePrice, setFuturePrice] = useState<string>("10000");
     const [duration, setDuration] = useState<number>(30);
 
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
-    const ssbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.ssb;
+    const sBASHBalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.sBASH;
     });
     const stakingRebase = useSelector<IReduxState, number>(state => {
         return state.app.stakingRebase;
@@ -34,11 +34,11 @@ function Stake() {
 
     const app = useSelector<IReduxState, IAppSlice>(state => state.app);
 
-    const setSsbToMax = () => {
-        setSsbQuantity(ssbBalance);
+    const setsBASHToMax = () => {
+        setsBASHQuantity(sBASHBalance);
     };
 
-    const trimmedSsbBalance = trim(Number(ssbBalance), 6);
+    const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
 
     const setYeildCurrent = () => {
@@ -64,13 +64,13 @@ function Stake() {
     const epochs_per_day = 3;
 
     const roi_day = (1 + parseFloat(rewardYield) / 100) ** (duration * epochs_per_day) - 1;
-    const gains = parseFloat(ssbQuantity) * roi_day;
+    const gains = parseFloat(sBASHQuantity) * roi_day;
     const lamboPrice = 222004;
 
-    const currentWealth = parseFloat(ssbQuantity) * app?.marketPrice;
-    const futureWealth = (parseFloat(ssbQuantity) + gains) * parseFloat(futurePrice);
+    const currentWealth = parseFloat(sBASHQuantity) * app?.marketPrice;
+    const futureWealth = (parseFloat(sBASHQuantity) + gains) * parseFloat(futurePrice);
     const nbLambo = Math.round(futureWealth / lamboPrice);
-    const investment = parseFloat(price) * parseFloat(ssbQuantity);
+    const investment = parseFloat(price) * parseFloat(sBASHQuantity);
 
     return (
         <div className="stake-view">
@@ -105,7 +105,7 @@ function Stake() {
                                     <Grid item xs={6} sm={4} md={4} lg={4}>
                                         <div className="Forecast-card-index">
                                             <p className="Forecast-card-metrics-title">{t("globe:YourStakedBASHBalance")}</p>
-                                            <p className="Forecast-card-metrics-value">{isAppLoading ? <Skeleton width="150px" /> : <>{trimmedSsbBalance} sSB</>}</p>
+                                            <p className="Forecast-card-metrics-value">{isAppLoading ? <Skeleton width="150px" /> : <>{trimmedsBASHBalance} sBASH</>}</p>
                                         </div>
                                     </Grid>
                                 </Grid>
@@ -132,12 +132,12 @@ function Stake() {
                                                         type="number"
                                                         placeholder={t("globe:EnterStakedSBAmount")}
                                                         className="Forecast-card-action-input"
-                                                        value={ssbQuantity}
-                                                        onChange={e => setSsbQuantity(e.target.value)}
+                                                        value={sBASHQuantity}
+                                                        onChange={e => setsBASHQuantity(e.target.value)}
                                                         labelWidth={0}
                                                         endAdornment={
                                                             <InputAdornment position="end">
-                                                                <div onClick={setSsbToMax} className="Forecast-card-action-input-btn">
+                                                                <div onClick={setsBASHToMax} className="Forecast-card-action-input-btn">
                                                                     <p>{t("Max")}</p>
                                                                 </div>
                                                             </InputAdornment>
