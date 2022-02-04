@@ -35,8 +35,8 @@ function Redeem() {
     const sbBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.sb;
     });
-    const ssbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.ssb;
+    const sBASHBalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.sBASH;
     });
     const wsBASHBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.wsBASH;
@@ -94,11 +94,11 @@ function Redeem() {
         [redeemAllowance],
     );
 
-    const trimmedSSBBalance = trim(Number(ssbBalance), 6);
+    const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
-    const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedSSBBalance), 6);
+    const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
     const valueOfSB = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -110,7 +110,7 @@ function Redeem() {
         currency: "USD",
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
-    }).format(Number(trimmedSSBBalance) * app.marketPrice);
+    }).format(Number(trimmedsBASHBalance) * app.marketPrice);
     const valueOfWrappedStakedBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -118,7 +118,7 @@ function Redeem() {
         minimumFractionDigits: 2,
     }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
-    const sumOfAllBalance = Number(sbBalance) + Number(trimmedSSBBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
+    const sumOfAllBalance = Number(sbBalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
     const valueOfAllBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -136,7 +136,7 @@ function Redeem() {
         currency: "USD",
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
-    }).format(Number(sbBalance) * redeemRfv + Number(ssbBalance) * redeemRfv);
+    }).format(Number(sbBalance) * redeemRfv + Number(sBASHBalance) * redeemRfv);
     const valueOfMIMRedeemable = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -286,7 +286,7 @@ function Redeem() {
                                         <div className="data-row">
                                             <p className="data-row-name">Your Staked SB Balance</p>
                                             <p className="data-row-value">
-                                                {isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(ssbBalance), 4)} sSB</>}{" "}
+                                                {isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sBASHBalance), 4)} sBASH</>}{" "}
                                                 <a href="https://dapp.snowbank.finance/#/stake">Unstake</a>
                                             </p>
                                         </div>

@@ -26,14 +26,14 @@ export const loadAppDetails = createAsyncThunk(
         const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
         const currentBlock = await provider.getBlockNumber();
         const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
-        const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
+        const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
         const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
         const mimContract = new ethers.Contract(addresses.MIM_ADDRESS, TimeTokenContract, provider);
 
         const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * mimPrice;
 
         const totalSupply = (await sbContract.totalSupply()) / Math.pow(10, 9);
-        const circSupply = (await ssbContract.circulatingSupply()) / Math.pow(10, 9);
+        const circSupply = (await sBASHContract.circulatingSupply()) / Math.pow(10, 9);
 
         const stakingTVL = circSupply * marketPrice;
         const marketCap = totalSupply * marketPrice;
@@ -65,7 +65,7 @@ export const loadAppDetails = createAsyncThunk(
 
         const epoch = await stakingContract.epoch();
         const stakingReward = epoch.distribute;
-        const circ = await ssbContract.circulatingSupply();
+        const circ = await sBASHContract.circulatingSupply();
         const stakingRebase = stakingReward / circ;
         const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
         const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;

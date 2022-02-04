@@ -1,6 +1,6 @@
 {
     "abi": [
-        { "inputs": [{ "internalType": "address", "name": "_sSB", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" },
+        { "inputs": [{ "internalType": "address", "name": "_sBASH", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" },
         {
             "anonymous": false,
             "inputs": [
@@ -73,7 +73,7 @@
         { "inputs": [], "name": "sBASH", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
         {
             "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
-            "name": "sSBTowsBASH",
+            "name": "sBASHTowsBASH",
             "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
             "stateMutability": "view",
             "type": "function"
@@ -117,7 +117,7 @@
         },
         {
             "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
-            "name": "wsBASHTosSB",
+            "name": "wsBASHTosBASH",
             "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
             "stateMutability": "view",
             "type": "function"

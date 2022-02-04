@@ -36,8 +36,8 @@ function Stake() {
     const sbBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.sb;
     });
-    const ssbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.ssb;
+    const sBASHBalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.sBASH;
     });
     const wsBASHBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.wsBASH;
@@ -46,7 +46,7 @@ function Stake() {
         return state.account.staking && state.account.staking.sb;
     });
     const unstakeAllowance = useSelector<IReduxState, number>(state => {
-        return state.account.staking && state.account.staking.ssb;
+        return state.account.staking && state.account.staking.sBASH;
     });
     const stakingRebase = useSelector<IReduxState, number>(state => {
         return state.app.stakingRebase;
@@ -66,7 +66,7 @@ function Stake() {
         if (view === 0) {
             setQuantity(sbBalance);
         } else {
-            setQuantity(ssbBalance);
+            setQuantity(sBASHBalance);
         }
     };
 
@@ -100,11 +100,11 @@ function Stake() {
         setQuantity("");
     };
 
-    const trimmedSSBBalance = trim(Number(ssbBalance), 6);
+    const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
-    const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedSSBBalance), 6);
+    const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
     const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
     const effectiveNextRewardValue = trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
     const valueOfSB = new Intl.NumberFormat("en-US", {
@@ -118,7 +118,7 @@ function Stake() {
         currency: "USD",
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
-    }).format(Number(trimmedSSBBalance) * app.marketPrice);
+    }).format(Number(trimmedsBASHBalance) * app.marketPrice);
     const valueOfWrappedStakedBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -126,7 +126,7 @@ function Stake() {
         minimumFractionDigits: 2,
     }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
-    const sumOfAllBalance = Number(sbBalance) + Number(trimmedSSBBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
+    const sumOfAllBalance = Number(sbBalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
     const valueOfAllBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -309,7 +309,7 @@ function Stake() {
 
                                         <div className="data-row">
                                             <p className="data-row-name">{t("stake:YourStakedBalance")}</p>
-                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedSSBBalance} sSB</>}</p>
+                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedsBASHBalance} sBASH</>}</p>
                                         </div>
 
                                         {Number(trimmedWrappedStakedSBBalance) > 0 && (
@@ -322,7 +322,7 @@ function Stake() {
                                         {Number(trimmedWrappedStakedSBBalance) > 0 && (
                                             <div className="data-row">
                                                 <p className="data-row-name">{t("stake:WrappedTokenEquivalent")}</p>
-                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>({wrappedTokenEquivalent} sSB)</>}</p>
+                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>({wrappedTokenEquivalent} sBASH)</>}</p>
                                             </div>
                                         )}
                                         <div className="data-row">

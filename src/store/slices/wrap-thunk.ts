@@ -29,14 +29,14 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     const addresses = getAddresses(networkID);
 
     const signer = provider.getSigner();
-    const ssbContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
 
         if (token === "sBASH") {
-            approveTx = await ssbContract.approve(addresses.WSBASH_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await sBASHContract.approve(addresses.WSBASH_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         const text = token === "sBASH" ? i18n.t("wrap:ApproveWrapping") : "";
@@ -55,7 +55,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
 
     await sleep(2);
 
-    const wrapAllowance = await ssbContract.allowance(address, addresses.WSBASH_ADDRESS);
+    const wrapAllowance = await sBASHContract.allowance(address, addresses.WSBASH_ADDRESS);
 
     return dispatch(
         fetchAccountSuccess({
