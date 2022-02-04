@@ -80,12 +80,12 @@ function NavContent() {
                     <Link component={NavLink} id="bond-nav" to="/mints" className="button-dapp-menu">
                         <div className="dapp-menu-item">
                             <img alt="" src={BondIcon} />
-                            <p>{t("Turbines")}</p>
+                            <p>{t("Minting")}</p>
                         </div>
                     </Link>
 
                     <div className="bond-discounts">
-                        <p className="bond-discounts-title">{t("TurbinesDiscounts")}</p>
+                        <p className="bond-discounts-title">{t("MintingDiscounts")}</p>
                         {bonds
                             .filter(bond => bond.isActive)
                             .map((bond, i) => (

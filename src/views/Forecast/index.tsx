@@ -10,8 +10,6 @@ import { IReduxState } from "../../store/slices/state.interface";
 import { fCurrency, fShortenNumber } from "../../helpers/formatNumers";
 
 import { IAppSlice } from "../../store/slices/app-slice";
-import SnowStorm from "react-snowstorm";
-import { Snowfall, Snowflake } from "react-snowflakes";
 
 import { useTranslation } from "react-i18next";
 
@@ -78,35 +76,6 @@ function Stake() {
         <div className="stake-view">
             <Zoom in={true}>
                 <div className="Forecast-card">
-                    <Snowfall
-                        count={50}
-                        style={{
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                        }}
-                        className="Forecast-card-falling"
-                        snowflakeFactory={(index: number) => {
-                            const size = index / 50; // 50 is the number of snowflakes.
-                            const w = 5 + 10 * size + "px";
-                            return (
-                                <Snowflake
-                                    speed={0.05 + size * 6}
-                                    xSpeedPrc={0.3 * size}
-                                    ySpeedPrc={0.1 * size}
-                                    style={{
-                                        width: w,
-                                        height: w,
-                                        borderRadius: "50%",
-                                        backgroundColor: "white",
-                                        opacity: 0.2 + 0.8 * size,
-                                        filter: `blur(${Math.round(Math.max(size - 0.5, 0) * 15)}px)`,
-                                    }}
-                                />
-                            );
-                        }}
-                    />
-                    <SnowStorm animationInterval={20} vMaxY={2} flakesMaxActive={100} excludeMobile={false} />
                     <Grid className="Forecast-card-grid" container direction="column" spacing={2}>
                         <Grid item>
                             <div className="Forecast-card-header">
@@ -289,7 +258,7 @@ function Stake() {
                                                     <p className="data-row-value">{fCurrency(currentWealth)}</p>
                                                 </div>
                                                 <div className="data-row">
-                                                    <p className="data-row-name">{t("globe:SBRewardsEstimation")}</p>
+                                                    <p className="data-row-name">{t("globe:BASHRewardsEstimation")}</p>
                                                     <p className="data-row-value">{fShortenNumber(gains)} SB</p>
                                                 </div>
                                                 <div className="data-row">
