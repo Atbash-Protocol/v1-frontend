@@ -32,8 +32,8 @@ function Redeem() {
     const fiveDayRate = useSelector<IReduxState, number>(state => {
         return state.app.fiveDayRate;
     });
-    const sbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.sb;
+    const BASHbalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.BASH;
     });
     const sBASHBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.sBASH;
@@ -42,7 +42,7 @@ function Redeem() {
         return state.account.balances && state.account.balances.wsBASH;
     });
     const redeemAllowance = useSelector<IReduxState, number>(state => {
-        return state.account.redeeming && state.account.redeeming.sb;
+        return state.account.redeeming && state.account.redeeming.BASH;
     });
     const stakingRebase = useSelector<IReduxState, number>(state => {
         return state.app.stakingRebase;
@@ -68,7 +68,7 @@ function Redeem() {
     });
 
     const setMax = () => {
-        setQuantity(sbBalance);
+        setQuantity(BASHbalance);
     };
 
     const onSeekApproval = async (token: string) => {
@@ -104,7 +104,7 @@ function Redeem() {
         currency: "USD",
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
-    }).format(Number(sbBalance) * app.marketPrice);
+    }).format(Number(BASHbalance) * app.marketPrice);
     const valueOfStakedBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -118,7 +118,7 @@ function Redeem() {
         minimumFractionDigits: 2,
     }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
-    const sumOfAllBalance = Number(sbBalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
+    const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
     const valueOfAllBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -136,7 +136,7 @@ function Redeem() {
         currency: "USD",
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
-    }).format(Number(sbBalance) * redeemRfv + Number(sBASHBalance) * redeemRfv);
+    }).format(Number(BASHbalance) * redeemRfv + Number(sBASHBalance) * redeemRfv);
     const valueOfMIMRedeemable = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -149,7 +149,7 @@ function Redeem() {
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
     }).format(Number(redeemSbSent * redeemRfv));
-    const totalSBRedeemed = new Intl.NumberFormat("en-US", {
+    const totalBASHRedeemed = new Intl.NumberFormat("en-US", {
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(redeemSbSent));
@@ -164,8 +164,8 @@ function Redeem() {
                                 <p className="stake-card-header-title-redistribution">Redistribution</p>
                             </div>
                             <p className="stake-card-redeem-text">
-                                <b>Swap your SB for a fixed MIM value equal to the SB risk-free value (RFV)</b>. Redistribution event is available from December 23rd to January
-                                3rd. SB swapped for MIM are renounced and will be burnt at the end of the event.
+                                <b>Swap your BASH for a fixed MIM value equal to the BASH risk-free value (RFV)</b>. Redistribution event is available from December 23rd to January
+                                3rd. BASH swapped for MIM are renounced and will be burnt at the end of the event.
                             </p>
                             <p className="stake-card-redeem-text">
                                 <b>The redistribution page and redeem feature will only be available until January 3rd</b>. In order to maintain the risk-free value fixed for the
@@ -200,8 +200,8 @@ function Redeem() {
 
                                     <Grid item xs={4} sm={4} md={4} lg={4}>
                                         <div className="stake-card-index">
-                                            <p className="stake-card-metrics-title">Total SB Renounced</p>
-                                            <p className="stake-card-metrics-value">{redeemSbSent !== undefined ? <>{totalSBRedeemed} SB</> : <Skeleton width="150px" />}</p>
+                                            <p className="stake-card-metrics-title">Total BASH Renounced</p>
+                                            <p className="stake-card-metrics-value">{redeemSbSent !== undefined ? <>{totalBASHRedeemed}BASH</> : <Skeleton width="150px" />}</p>
                                         </div>
                                     </Grid>
 
@@ -280,11 +280,11 @@ function Redeem() {
                                             <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfMIMRedeemable}</>}</p>
                                         </div>
                                         <div className="data-row">
-                                            <p className="data-row-name">Your SB Balance</p>
-                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sbBalance), 4)} SB</>}</p>
+                                            <p className="data-row-name">Your BASH Balance</p>
+                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(BASHbalance), 4)} BASH</>}</p>
                                         </div>
                                         <div className="data-row">
-                                            <p className="data-row-name">Your Staked SB Balance</p>
+                                            <p className="data-row-name">Your Staked BASH Balance</p>
                                             <p className="data-row-value">
                                                 {isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sBASHBalance), 4)} sBASH</>}{" "}
                                                 <a href="https://dapp.snowbank.finance/#/stake">Unstake</a>

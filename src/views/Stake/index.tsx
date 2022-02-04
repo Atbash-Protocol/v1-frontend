@@ -33,8 +33,8 @@ function Stake() {
     const fiveDayRate = useSelector<IReduxState, number>(state => {
         return state.app.fiveDayRate;
     });
-    const sbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.sb;
+    const BASHbalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.BASH;
     });
     const sBASHBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.sBASH;
@@ -43,7 +43,7 @@ function Stake() {
         return state.account.balances && state.account.balances.wsBASH;
     });
     const stakeAllowance = useSelector<IReduxState, number>(state => {
-        return state.account.staking && state.account.staking.sb;
+        return state.account.staking && state.account.staking.BASH;
     });
     const unstakeAllowance = useSelector<IReduxState, number>(state => {
         return state.account.staking && state.account.staking.sBASH;
@@ -64,7 +64,7 @@ function Stake() {
 
     const setMax = () => {
         if (view === 0) {
-            setQuantity(sbBalance);
+            setQuantity(BASHbalance);
         } else {
             setQuantity(sBASHBalance);
         }
@@ -112,7 +112,7 @@ function Stake() {
         currency: "USD",
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
-    }).format(Number(sbBalance) * app.marketPrice);
+    }).format(Number(BASHbalance) * app.marketPrice);
     const valueOfStakedBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -126,7 +126,7 @@ function Stake() {
         minimumFractionDigits: 2,
     }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
-    const sumOfAllBalance = Number(sbBalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
+    const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
     const valueOfAllBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -191,7 +191,7 @@ function Stake() {
                                     <Grid item xs={6} sm={3} md={3} lg={3}>
                                         <div className="stake-card-index">
                                             <p className="stake-card-metrics-title">{t("CurrentIndex")}</p>
-                                            <p className="stake-card-metrics-value">{currentIndex ? <>{trim(Number(currentIndex), 2)} SB</> : <Skeleton width="150px" />}</p>
+                                            <p className="stake-card-metrics-value">{currentIndex ? <>{trim(Number(currentIndex), 2)} BASH</> : <Skeleton width="150px" />}</p>
                                         </div>
                                     </Grid>
 
@@ -304,7 +304,7 @@ function Stake() {
                                     <div className="stake-user-data">
                                         <div className="data-row">
                                             <p className="data-row-name">{t("YourBalance")}</p>
-                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sbBalance), 4)} SB</>}</p>
+                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(BASHbalance), 4)} BASH</>}</p>
                                         </div>
 
                                         <div className="data-row">
@@ -327,13 +327,13 @@ function Stake() {
                                         )}
                                         <div className="data-row">
                                             <p className="data-row-name">{t("stake:NextRewardAmount")}</p>
-                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{nextRewardValue} SB</>}</p>
+                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{nextRewardValue} BASH</>}</p>
                                         </div>
 
                                         {Number(trimmedWrappedStakedSBBalance) > 0 && (
                                             <div className="data-row">
                                                 <p className="data-row-name">{t("stake:EffectiveNextRewardAmount")}</p>
-                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{effectiveNextRewardValue} SB</>}</p>
+                                                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{effectiveNextRewardValue} BASH</>}</p>
                                             </div>
                                         )}
 
