@@ -70,7 +70,7 @@
             "type": "function"
         },
         { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" },
-        { "inputs": [], "name": "sSB", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [], "name": "sBASH", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
         {
             "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
             "name": "sSBTowsBASH",

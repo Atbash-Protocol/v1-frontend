@@ -247,7 +247,7 @@ function Redeem() {
                                             />
 
                                             <div className="stake-card-tab-panel">
-                                                {address && hasAllowance("sb") ? (
+                                                {address && hasAllowance("BASH") ? (
                                                     <div
                                                         className="stake-card-tab-panel-btn"
                                                         onClick={() => {
@@ -262,7 +262,7 @@ function Redeem() {
                                                         className="stake-card-tab-panel-btn"
                                                         onClick={() => {
                                                             if (isPendingTxn(pendingTransactions, "approve_staking")) return;
-                                                            onSeekApproval("sb");
+                                                            onSeekApproval("BASH");
                                                         }}
                                                     >
                                                         <p>{txnButtonText(pendingTransactions, "approve_staking", t("Approve"))}</p>
@@ -271,7 +271,7 @@ function Redeem() {
                                             </div>
                                         </div>
 
-                                        <div className="stake-card-action-help-text">{address && !hasAllowance("sb") && <p>{t("redeem:ApproveNote")}</p>}</div>
+                                        <div className="stake-card-action-help-text">{address && !hasAllowance("BASH") && <p>{t("redeem:ApproveNote")}</p>}</div>
                                     </div>
 
                                     <div className="stake-user-data">

@@ -35,7 +35,7 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
     try {
         const gasPrice = await getGasPrice(provider);
 
-        if (token === "sb") {
+        if (token === "BASH") {
             approveTx = await sbContract.approve(addresses.REDEEM_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
@@ -87,16 +87,16 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     try {
         const gasPrice = await getGasPrice(provider);
 
-        if (token === "sb") {
+        if (token === "BASH") {
             approveTx = await sbContract.approve(addresses.STAKING_HELPER_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
-        if (token === "ssb") {
+        if (token === "sBASH") {
             approveTx = await ssbContract.approve(addresses.STAKING_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
-        const text = token === "sb" ? i18n.t("stake:ApproveStaking") : i18n.t("stake:ApproveUnstaking");
-        const pendingTxnType = token === "sb" ? "approve_staking" : "approve_unstaking";
+        const text = token === "BASH" ? i18n.t("stake:ApproveStaking") : i18n.t("stake:ApproveUnstaking");
+        const pendingTxnType = token === "BASH" ? "approve_staking" : "approve_unstaking";
 
         dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
         await approveTx.wait();

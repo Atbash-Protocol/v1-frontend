@@ -75,11 +75,11 @@ function SnowbankMenu() {
                                     <div className="divider" />
                                     <p className="add-tokens-title">{t("AddTokenToWallet")}</p>
                                     <div className="divider" />
-                                    <div className="tooltip-item" onClick={addTokenToWallet("SB", BASH_ADDRESS)}>
-                                        <p>↑ SB</p>
+                                    <div className="tooltip-item" onClick={addTokenToWallet("BASH", BASH_ADDRESS)}>
+                                        <p>↑ BASH</p>
                                     </div>
-                                    <div className="tooltip-item" onClick={addTokenToWallet("sSB", SBASH_ADDRESS)}>
-                                        <p>↑ sSB</p>
+                                    <div className="tooltip-item" onClick={addTokenToWallet("sBASH", SBASH_ADDRESS)}>
+                                        <p>↑ sBASH</p>
                                     </div>
                                 </div>
                             )}

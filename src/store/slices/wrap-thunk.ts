@@ -35,12 +35,12 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     try {
         const gasPrice = await getGasPrice(provider);
 
-        if (token === "ssb") {
+        if (token === "sBASH") {
             approveTx = await ssbContract.approve(addresses.WSBASH_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
-        const text = token === "ssb" ? i18n.t("wrap:ApproveWrapping") : "";
-        const pendingTxnType = token === "ssb" ? "approve_wrapping" : "";
+        const text = token === "sBASH" ? i18n.t("wrap:ApproveWrapping") : "";
+        const pendingTxnType = token === "sBASH" ? "approve_wrapping" : "";
 
         dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
         await approveTx.wait();

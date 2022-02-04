@@ -88,8 +88,8 @@ function Stake() {
 
     const hasAllowance = useCallback(
         token => {
-            if (token === "sb") return stakeAllowance > 0;
-            if (token === "ssb") return unstakeAllowance > 0;
+            if (token === "BASH") return stakeAllowance > 0;
+            if (token === "sBASH") return unstakeAllowance > 0;
             return 0;
         },
         [stakeAllowance],
@@ -245,7 +245,7 @@ function Stake() {
 
                                             {view === 0 && (
                                                 <div className="stake-card-tab-panel">
-                                                    {address && hasAllowance("sb") ? (
+                                                    {address && hasAllowance("BASH") ? (
                                                         <div
                                                             className="stake-card-tab-panel-btn"
                                                             onClick={() => {
@@ -260,7 +260,7 @@ function Stake() {
                                                             className="stake-card-tab-panel-btn"
                                                             onClick={() => {
                                                                 if (isPendingTxn(pendingTransactions, "approve_staking")) return;
-                                                                onSeekApproval("sb");
+                                                                onSeekApproval("BASH");
                                                             }}
                                                         >
                                                             <p>{txnButtonText(pendingTransactions, "approve_staking", t("Approve"))}</p>
@@ -271,7 +271,7 @@ function Stake() {
 
                                             {view === 1 && (
                                                 <div className="stake-card-tab-panel">
-                                                    {address && hasAllowance("ssb") ? (
+                                                    {address && hasAllowance("sBASH") ? (
                                                         <div
                                                             className="stake-card-tab-panel-btn"
                                                             onClick={() => {
@@ -286,7 +286,7 @@ function Stake() {
                                                             className="stake-card-tab-panel-btn"
                                                             onClick={() => {
                                                                 if (isPendingTxn(pendingTransactions, "approve_unstaking")) return;
-                                                                onSeekApproval("ssb");
+                                                                onSeekApproval("sBASH");
                                                             }}
                                                         >
                                                             <p>{txnButtonText(pendingTransactions, "approve_unstaking", t("Approve"))}</p>
@@ -297,7 +297,7 @@ function Stake() {
                                         </div>
 
                                         <div className="stake-card-action-help-text">
-                                            {address && ((!hasAllowance("sb") && view === 0) || (!hasAllowance("ssb") && view === 1)) && <p>{t("stake:ApproveNote")}</p>}
+                                            {address && ((!hasAllowance("BASH") && view === 0) || (!hasAllowance("sBASH") && view === 1)) && <p>{t("stake:ApproveNote")}</p>}
                                         </div>
                                     </div>
 
