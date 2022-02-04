@@ -281,11 +281,11 @@ function Zapin({ open, handleClose, bond }: IZapinProps) {
                             </div>
                             <div className="data-row">
                                 <p className="data-row-name">{t("bond:ApproximatelyYouWillGet")}</p>
-                                <p className="data-row-value">{isLoading ? <Skeleton width="100px" /> : `~ ${trim(bond.bondQuote, 4)} SB`}</p>
+                                <p className="data-row-value">{isLoading ? <Skeleton width="100px" /> : `~ ${trim(bond.bondQuote, 4)} BASH`}</p>
                             </div>
                             <div className="data-row">
                                 <p className="data-row-name">{t("bond:MaxYouCanBuy")}</p>
-                                <p className="data-row-value">{isLoading ? <Skeleton width="100px" /> : `${trim(bond.maxBondPrice, 4)} SB`}</p>
+                                <p className="data-row-value">{isLoading ? <Skeleton width="100px" /> : `${trim(bond.maxBondPrice, 4)} BASH`}</p>
                             </div>
                             <div className="data-row">
                                 <p className="data-row-name">{t("ROI")}</p>
@@ -293,7 +293,7 @@ function Zapin({ open, handleClose, bond }: IZapinProps) {
                             </div>
                             <div className="data-row">
                                 <p className="data-row-name">{t("bond:MinimumPurchase")}</p>
-                                <p className="data-row-value">0.01 SB</p>
+                                <p className="data-row-value">0.01 BASH</p>
                             </div>
                             {recipientAddress !== address && (
                                 <div className="data-row">

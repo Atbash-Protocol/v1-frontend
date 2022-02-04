@@ -1,7 +1,7 @@
 {
     "WrapTitle": "Wrap",
     "WrapYourBASH": "Wrap Your Staked BASH",
-    "ConnectYourWalletToWrap": "Connect your wallet to wrap SB tokens!",
+    "ConnectYourWalletToWrap": "Connect your wallet to wrap BASH tokens!",
     "Wrap": "Wrap",
     "WrappingsBASH": "Wrapping sBASH",
     "UnwrappingBASH": "Unwrapping wsBASH",
@@ -9,7 +9,7 @@
     "WrappedTokenEquivalent": "Your Wrapped sBASH is equivalent to",
     "ValueOfYourBASH": "Value of Your BASH",
     "ValueOfYourStakedBASH": "Value of Your Staked BASH",
-    "ValueOfYourWrappedStakedSB": "Value of Your Wrapped SB",
+    "ValueOfYourWrappedStakedBASH": "Value of Your Wrapped BASH",
     "YourStakedBalance": "Your Staked Balance",
     "Wrapping": "wrapping",
     "Unwrapping": "unwrapping",

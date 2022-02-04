@@ -259,7 +259,7 @@ function Stake() {
                                                 </div>
                                                 <div className="data-row">
                                                     <p className="data-row-name">{t("globe:BASHRewardsEstimation")}</p>
-                                                    <p className="data-row-value">{fShortenNumber(gains)} SB</p>
+                                                    <p className="data-row-value">{fShortenNumber(gains)} BASH</p>
                                                 </div>
                                                 <div className="data-row">
                                                     <p className="data-row-name">{t("globe:PotentialReturn")}</p>

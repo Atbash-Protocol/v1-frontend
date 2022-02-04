@@ -21,7 +21,7 @@ interface IAccountBalances {
     balances: {
         wsBASH: string;
         sBASH: string;
-        sb: string;
+        BASH: string;
     };
 }
 
@@ -33,13 +33,13 @@ export const getBalances = createAsyncThunk("account/getBalances", async ({ addr
     const sBASHBalance = await sBASHContract.balanceOf(address);
     const wsBASHBalance = await wsBASHContract.balanceOf(address);
     const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
-    const sbBalance = await sbContract.balanceOf(address);
+    const BASHbalance = await sbContract.balanceOf(address);
 
     return {
         balances: {
             wsBASH: ethers.utils.formatEther(wsBASHBalance),
             sBASH: ethers.utils.formatUnits(sBASHBalance, "gwei"),
-            sb: ethers.utils.formatUnits(sbBalance, "gwei"),
+            BASH: ethers.utils.formatUnits(BASHbalance, "gwei"),
         },
     };
 });
@@ -52,15 +52,15 @@ interface ILoadAccountDetails {
 
 interface IUserAccountDetails {
     balances: {
-        sb: string;
+        BASH: string;
         sBASH: string;
         wsBASH: string;
     };
     redeeming: {
-        sb: number;
+        BASH: number;
     };
     staking: {
-        sb: number;
+        BASH: number;
         sBASH: number;
     };
     wrapping: {
@@ -69,7 +69,7 @@ interface IUserAccountDetails {
 }
 
 export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address }: ILoadAccountDetails): Promise<IUserAccountDetails> => {
-    let sbBalance = 0;
+    let BASHbalance = 0;
     let sBASHBalance = 0;
     let wsBASHBalance = 0;
     let stakeAllowance = 0;
@@ -81,7 +81,7 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
 
     if (addresses.BASH_ADDRESS) {
         const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
-        sbBalance = await sbContract.balanceOf(address);
+        BASHbalance = await sbContract.balanceOf(address);
         stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
         redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
     }
@@ -102,13 +102,13 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
         balances: {
             wsBASH: ethers.utils.formatEther(wsBASHBalance),
             sBASH: ethers.utils.formatUnits(sBASHBalance, "gwei"),
-            sb: ethers.utils.formatUnits(sbBalance, "gwei"),
+            BASH: ethers.utils.formatUnits(BASHbalance, "gwei"),
         },
         redeeming: {
-            sb: Number(redeemAllowance),
+            BASH: Number(redeemAllowance),
         },
         staking: {
-            sb: Number(stakeAllowance),
+            BASH: Number(stakeAllowance),
             sBASH: Number(unstakeAllowance),
         },
         wrapping: {
@@ -251,14 +251,14 @@ export interface IAccountSlice {
     balances: {
         wsBASH: string;
         sBASH: string;
-        sb: string;
+        BASH: string;
     };
     loading: boolean;
     redeeming: {
-        sb: number;
+        BASH: number;
     };
     staking: {
-        sb: number;
+        BASH: number;
         sBASH: number;
     };
     wrapping: {
@@ -270,10 +270,10 @@ export interface IAccountSlice {
 const initialState: IAccountSlice = {
     loading: true,
     bonds: {},
-    balances: { wsBASH: "", sBASH: "", sb: "" },
-    staking: { sb: 0, sBASH: 0 },
+    balances: { wsBASH: "", sBASH: "", BASH: "" },
+    staking: { BASH: 0, sBASH: 0 },
     wrapping: { sBASHAllowance: 0 },
-    redeeming: { sb: 0 },
+    redeeming: { BASH: 0 },
     tokens: {},
 };
 

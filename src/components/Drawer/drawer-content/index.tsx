@@ -139,7 +139,7 @@ function NavContent() {
                         </div>
                     </Link> */}
 
-                    <Link href="https://snapshot.org/#/snowbankgovernance.eth" target="_blank" className="button-dapp-menu">
+                    <Link href="https://snapshot.org/" target="_blank" className="button-dapp-menu">
                         <div className="dapp-menu-item">
                             <img alt="" src={GovIcon} />
                             <p>{t("Governance")}</p>

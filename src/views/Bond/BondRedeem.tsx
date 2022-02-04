@@ -90,11 +90,11 @@ function BondRedeem({ bond }: IBondRedeem) {
                 <Box className="bond-data">
                     <div className="data-row">
                         <p className="bond-balance-title">{t("bond:PendingRewards")}</p>
-                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.interestDue, 4)} SB`}</p>
+                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.interestDue, 4)} BASH`}</p>
                     </div>
                     <div className="data-row">
                         <p className="bond-balance-title">{t("bond:ClaimableRewards")}</p>
-                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.pendingPayout, 4)} SB`}</p>
+                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.pendingPayout, 4)} BASH`}</p>
                     </div>
                     <div className="data-row">
                         <p className="bond-balance-title">{t("bond:TimeFullyVested")}</p>

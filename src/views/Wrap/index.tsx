@@ -35,8 +35,8 @@ function Stake() {
         console.log(state.account.wrapping.sBASHAllowance);
         return state.account.wrapping.sBASHAllowance;
     });
-    const sbBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.sb;
+    const BASHbalance = useSelector<IReduxState, string>(state => {
+        return state.account.balances && state.account.balances.BASH;
     });
     const sBASHBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.sBASH;
@@ -96,7 +96,7 @@ function Stake() {
         currency: "USD",
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
-    }).format(Number(sbBalance) * app.marketPrice);
+    }).format(Number(BASHbalance) * app.marketPrice);
     const valueOfStakedBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -110,7 +110,7 @@ function Stake() {
         minimumFractionDigits: 2,
     }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
-    const sumOfAllBalance = Number(sbBalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
+    const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
     const valueOfAllBalance = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -136,7 +136,7 @@ function Stake() {
                                     <Grid item xs={12} sm={4} md={4} lg={4}>
                                         <div className="wrap-card-index">
                                             <p className="wrap-card-metrics-title">{t("CurrentIndex")}</p>
-                                            <p className="wrap-card-metrics-value">{currentIndex ? <>{trim(Number(currentIndex), 2)} SB</> : <Skeleton width="150px" />}</p>
+                                            <p className="wrap-card-metrics-value">{currentIndex ? <>{trim(Number(currentIndex), 2)} BASH</> : <Skeleton width="150px" />}</p>
                                         </div>
                                     </Grid>
                                 </Grid>
@@ -240,7 +240,7 @@ function Stake() {
                                     <div className="wrap-user-data">
                                         <div className="data-row">
                                             <p className="data-row-name">{t("YourBalance")}</p>
-                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sbBalance), 4)} SB</>}</p>
+                                            <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(BASHbalance), 4)} BASH</>}</p>
                                         </div>
 
                                         <div className="data-row">

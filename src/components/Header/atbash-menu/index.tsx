@@ -31,7 +31,7 @@ const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async ()
     }
 };
 
-function SnowbankMenu() {
+function AtbashMenu() {
     const { t } = useTranslation();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -91,4 +91,4 @@ function SnowbankMenu() {
     );
 }
 
-export default SnowbankMenu;
+export default AtbashMenu;

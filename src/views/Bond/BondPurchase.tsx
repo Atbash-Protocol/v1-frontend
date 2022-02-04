@@ -207,12 +207,12 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
 
                     <div className="data-row">
                         <p className="bond-balance-title">{t("bond:YouWillGet")}</p>
-                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.bondQuote, 4)} SB`}</p>
+                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.bondQuote, 4)} BASH`}</p>
                     </div>
 
                     <div className={`data-row`}>
                         <p className="bond-balance-title">{t("bond:MaxYouCanBuy")}</p>
-                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.maxBondPrice, 4)} SB`}</p>
+                        <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.maxBondPrice, 4)} BASH`}</p>
                     </div>
 
                     <div className="data-row">
@@ -227,7 +227,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
 
                     <div className="data-row">
                         <p className="bond-balance-title">{t("bond:MinimumPurchase")}</p>
-                        <p className="bond-balance-title">0.01 SB</p>
+                        <p className="bond-balance-title">0.01 BASH</p>
                     </div>
 
                     {recipientAddress !== address && (
