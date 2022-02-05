@@ -430,7 +430,7 @@ export default [
     sushi,
     syn,
     teddy,
-    sb,
+    bash,
     tsd,
     usdc,
     usdt,
