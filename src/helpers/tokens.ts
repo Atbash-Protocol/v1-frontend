@@ -315,9 +315,9 @@ const teddy: IToken = {
     decimals: 18,
 };
 
-const sb: IToken = {
+const bash: IToken = {
     name: "BASH",
-    address: "0xb54f16fB19478766A268F172C9480f8da1a7c9C3",
+    address: "0x182b988416Cde1B5D302c8D8162014CAd700FCA7",
     img: BASHicon,
     decimals: 9,
 };
