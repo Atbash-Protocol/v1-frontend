@@ -9,7 +9,7 @@ import Forecast from "../../../assets/icons/Forecast.svg";
 import GovIcon from "../../../assets/icons/governance.svg";
 
 import ProIcon from "../../../assets/icons/pro.svg";
-import AtbashICON from "../../../assets/icons/atbash.svg";
+import AtbashICON from "../../../assets/icons/bash.svg";
 import DashboardIcon from "../../../assets/icons/dashboard.svg";
 import { trim, shorten } from "../../../helpers";
 import { useAddress } from "../../../hooks";
