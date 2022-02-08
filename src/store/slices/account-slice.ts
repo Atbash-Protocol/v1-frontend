@@ -213,6 +213,8 @@ export const calculateUserTokenDetails = createAsyncThunk("account/calculateUser
         });
     }
 
+    console.debug("Calling address: " + address);
+
     if (token.isAvax) {
         const avaxBalance = await provider.getSigner().getBalance();
         const avaxVal = ethers.utils.formatEther(avaxBalance);
@@ -333,7 +335,9 @@ const accountSlice = createSlice({
             })
             .addCase(calculateUserTokenDetails.rejected, (state, { error }) => {
                 state.loading = false;
-                console.log(error);
+                // console.log(error);
+                // console.log();
+                // console.log("-====-");
             });
     },
 });

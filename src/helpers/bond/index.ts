@@ -13,33 +13,33 @@ import BASHFLOOFIcon from "../../assets/tokens/BASH-FLOOF.png";
 
 import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract } from "../../abi";
 
-export const mim = new StableBond({
-    name: "mim",
-    displayName: "MIM",
-    bondToken: "MIM",
+export const DAIBond = new StableBond({
+    name: "DAI",
+    displayName: "DAI",
+    bondToken: "DAI",
     bondIconSvg: MimIcon,
     bondContractABI: StableBondContract,
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.RINKEBY]: {
             bondAddress: "0x9eF18088D738A4D3eA8e7C7F539f86AE290ca8a8",
-            reserveAddress: "0x130966628846BFd36ff31a822705796e8cb8C18D",
+            reserveAddress: "0x6E1cd84718C0Bb113eE69a99dfEe9D7846bB3724",
         },
     },
     isActive: false,
 });
 
-export const wavax = new CustomBond({
-    name: "wavax",
-    displayName: "wAVAX",
-    bondToken: "AVAX",
-    bondIconSvg: AvaxIcon,
-    bondContractABI: WavaxBondContract,
+export const FraxBond = new StableBond({
+    name: "FRAX",
+    displayName: "FRAXBOND",
+    bondToken: "FRAX",
+    bondIconSvg: MimIcon,
+    bondContractABI: StableBondContract,
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
-        [Networks.AVAX]: {
-            bondAddress: "0x472c18c4079eCb68629F4FbA1141172404BFEE9C",
-            reserveAddress: "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
+        [Networks.RINKEBY]: {
+            bondAddress: "0xf2b7E63757f69a01fdc25541A3102751EF2180F3",
+            reserveAddress: "0xb4e6426AE18E7348e54Dd425eC5853cd391d442d",
         },
     },
     isActive: false,
@@ -54,96 +54,12 @@ export const BASHUSDC = new LPBond({
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
         [Networks.AVAX]: {
-            bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
-            reserveAddress: "0x425c45adfb53861e5db8f17d9b072ab60d4404d8",
+            bondAddress: "0x9eF18088D738A4D3eA8e7C7F539f86AE290ca8a8", // dai bond hardcoded here
+            reserveAddress: "0x90B48A4451Cb1f7Feb85C59B0c8E04d736F2b60f", //bash usdc
         },
     },
     lpUrl: "https://www.traderjoexyz.com/#/pool/0x130966628846BFd36ff31a822705796e8cb8C18D/0x7d1232b90d3f809a54eeaeebc639c62df8a8942f",
     isActive: true,
 });
 
-// export const avaxUsdce = new CustomLPBond({
-//     name: "usdce_avax_lp",
-//     displayName: "USDC.e-AVAX LP",
-//     bondToken: "AVAX",
-//     bondIconSvg: avaxUsdceIcon,
-//     bondContractABI: LpBondContract,
-//     reserveContractAbi: LpReserveContract,
-//     networkAddrs: {
-//         [Networks.AVAX]: {
-//             bondAddress: "0x5E831EF7B5B2824B6F327055d0193Ecf8dCAA480",
-//             reserveAddress: "0xa389f9430876455c36478deea9769b7ca4e3ddb1",
-//         },
-//     },
-//     lpUrl: "https://www.traderjoexyz.com/#/pool/0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
-//     isActive: true,
-// });
-
-export const bashDai = new LPBond({
-    name: "bash_dai_minting",
-    displayName: "BASH-DAI LP",
-    bondToken: "DAI",
-    bondIconSvg: bashDAIIcon,
-    bondContractABI: LpBondContract,
-    reserveContractAbi: LpReserveContract,
-    networkAddrs: {
-        [Networks.AVAX]: {
-            bondAddress: "0x555d0112B1Ca9e468C04dAb37195b2A48c83F43E",
-            reserveAddress: "0x781655d802670bba3c89aebaaea59d3182fd755d",
-        },
-    },
-    lpUrl: "https://traderjoexyz.com/#/pool/AVAX/0x130966628846bfd36ff31a822705796e8cb8c18d",
-    isActive: true,
-});
-
-export const bashFloof = new LPBond({
-    name: "bash_floof_minting",
-    displayName: "BASH-FLOOF LP",
-    bondToken: "FLOOF",
-    bondIconSvg: BASHFLOOFIcon,
-    bondContractABI: LpBondContract,
-    reserveContractAbi: LpReserveContract,
-    networkAddrs: {
-        [Networks.AVAX]: {
-            bondAddress: "0x555d0112B1Ca9e468C04dAb37195b2A48c83F43E",
-            reserveAddress: "0x781655d802670bba3c89aebaaea59d3182fd755d",
-        },
-    },
-    lpUrl: "https://traderjoexyz.com/#/pool/AVAX/0x130966628846bfd36ff31a822705796e8cb8c18d",
-    isActive: true,
-});
-
-// export const mimSdog = new LPBond({
-//     name: "mim_sdog_lp",
-//     displayName: "SDOG-MIM LP",
-//     bondToken: "MIM",
-//     bondIconSvg: MimSdogIcon,
-//     bondContractABI: LpBondContract,
-//     reserveContractAbi: LpReserveContract,
-//     networkAddrs: {
-//         [Networks.AVAX]: {
-//             bondAddress: "0x0d71d9616f6844f12f1ce1516aa67817754517ff",
-//             reserveAddress: "0xa3f1f5076499ec37d5bb095551f85ab5a344bb58",
-//         },
-//     },
-//     lpUrl: "https://traderjoexyz.com/#/pool/0x130966628846BFd36ff31a822705796e8cb8C18D/0xdE9E52F1838951e4d2bb6C59723B003c353979b6",
-// });
-
-export const bashUSDT = new CustomLPBond({
-    name: "bash_USDT_lp",
-    displayName: "BASH-USDT LP",
-    bondToken: "USDT",
-    bondIconSvg: bashUSDTIcon,
-    bondContractABI: LpBondContract,
-    reserveContractAbi: LpReserveContract,
-    networkAddrs: {
-        [Networks.AVAX]: {
-            bondAddress: "0x288e6d7f4935c1f4d2862715306d4bdf8dea6592",
-            reserveAddress: "0xa3d2cfe49df9d1ea0dc589b69252e1eddc417d6d",
-        },
-    },
-    lpUrl: "https://traderjoexyz.com/#/pool/AVAX/0x7d1232b90d3f809a54eeaeebc639c62df8a8942f",
-    isActive: true,
-});
-
-export default [mim, wavax, BASHUSDC, bashUSDT, bashDai];
+export default [DAIBond, FraxBond, BASHUSDC];
