@@ -2,8 +2,8 @@ import { Networks } from "../../constants/blockchain";
 import { LPBond, CustomLPBond } from "./lp-bond";
 import { StableBond, CustomBond } from "./stable-bond";
 
-import MimIcon from "../../assets/tokens/MIM.svg";
-import AvaxIcon from "../../assets/tokens/AVAX.svg";
+import ETHIcon from "../../assets/tokens/ETH.svg";
+import AvaxIcon from "../../assets/tokens/floof.png";
 import BASHUSDCison from "../../assets/tokens/BASH-USDC.png";
 import bashUSDTIcon from "../../assets/tokens/BASH-USDT.png";
 import MimSdogIcon from "../../assets/tokens/SDOG-MIM.svg";
@@ -14,10 +14,10 @@ import BASHFLOOFIcon from "../../assets/tokens/BASH-FLOOF.png";
 import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract } from "../../abi";
 
 export const mim = new StableBond({
-    name: "mim",
-    displayName: "MIM",
-    bondToken: "MIM",
-    bondIconSvg: MimIcon,
+    name: "ETH",
+    displayName: "ETH",
+    bondToken: "ETH",
+    bondIconSvg: ETHIcon,
     bondContractABI: StableBondContract,
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
@@ -30,8 +30,8 @@ export const mim = new StableBond({
 });
 
 export const wavax = new CustomBond({
-    name: "wavax",
-    displayName: "wAVAX",
+    name: "FLOOF",
+    displayName: "FLOOF",
     bondToken: "AVAX",
     bondIconSvg: AvaxIcon,
     bondContractABI: WavaxBondContract,
