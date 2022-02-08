@@ -1,4 +1,4 @@
-import AvaxIcon from "../assets/tokens/AVAX.svg";
+import AvaxIcon from "../assets/tokens/floof.png";
 import AaveIcon from "../assets/tokens/AAVE.e.png";
 import ApeXIcon from "../assets/tokens/Ape-X.png";
 import ApeinIcon from "../assets/tokens/APEIN.png";
@@ -20,7 +20,7 @@ import JoeIcon from "../assets/tokens/JOE.png";
 import KloIcon from "../assets/tokens/KLO.png";
 import LinkEIcon from "../assets/tokens/LINK.e.png";
 import MainIcon from "../assets/tokens/MAI.png";
-import MimIcon from "../assets/tokens/MIM.svg";
+import ETHIcon from "../assets/tokens/ETH.svg";
 import MYakIcon from "../assets/tokens/mYAK.png";
 import OliveIcon from "../assets/tokens/OLIVE.png";
 import PefiIcon from "../assets/tokens/PEFI.png";
@@ -40,7 +40,7 @@ import TsdIcon from "../assets/tokens/TSD.png";
 import UsdcEIcon from "../assets/tokens/USDC.e.png";
 import UsdtEIcon from "../assets/tokens/USDT.e.png";
 import VsoIcon from "../assets/tokens/VSO.png";
-import WavaxIcon from "../assets/tokens/WAVAX.png";
+import WavaxIcon from "../assets/tokens/floof.png";
 import WBtcIcon from "../assets/tokens/WBTC.e.png";
 import WetIcon from "../assets/tokens/WET.png";
 import WethEIcon from "../assets/tokens/WETH.e.png";
@@ -213,7 +213,7 @@ const mai: IToken = {
 export const mim: IToken = {
     name: "MIM",
     address: "0x130966628846BFd36ff31a822705796e8cb8C18D",
-    img: MimIcon,
+    img: ETHIcon,
     decimals: 18,
 };
 
