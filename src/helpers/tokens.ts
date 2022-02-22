@@ -203,9 +203,9 @@ const mai: IToken = {
     decimals: 18,
 };
 
-export const mim: IToken = {
-    name: "MIM",
-    address: "0x130966628846BFd36ff31a822705796e8cb8C18D",
+export const DAI: IToken = {
+    name: "DAI",
+    address: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
     img: ETHIcon,
     decimals: 18,
 };
@@ -407,7 +407,7 @@ export default [
     klo,
     link,
     mai,
-    mim,
+    dai,
     myak,
     olive,
     pefi,

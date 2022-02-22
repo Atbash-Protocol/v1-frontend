@@ -1,6 +1,6 @@
 import { Networks } from "./blockchain";
 
-const AVAX_MAINNET = {
+const MAINNET = {
     DAO_ADDRESS: "0x31940eE01803476a970ec6DF1094a53F80e6827b",
     SBASH_ADDRESS: "0xB062c51d940bA086e998a113f2975D54f35fFf52",
     WSBASH_ADDRESS: "0x31C4c046EFAD4B04b823a919CC0bDd0f663c87d4",
@@ -29,7 +29,7 @@ const RINKEBY = {
 };
 
 export const getAddresses = (networkID: number) => {
-    if (networkID === Networks.AVAX) return RINKEBY;
+    if (networkID === Networks.MAINNET) return RINKEBY;
 
     if (networkID === Networks.RINKEBY) return RINKEBY;
 

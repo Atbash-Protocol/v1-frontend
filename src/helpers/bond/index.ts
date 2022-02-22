@@ -13,7 +13,7 @@ import BASHFLOOFIcon from "../../assets/tokens/BASH-FLOOF.png";
 
 import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract } from "../../abi";
 
-export const mim = new StableBond({
+export const dai = new StableBond({
     name: "ETH",
     displayName: "ETH",
     bondToken: "ETH",
@@ -37,7 +37,7 @@ export const wavax = new CustomBond({
     bondContractABI: WavaxBondContract,
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
-        [Networks.AVAX]: {
+        [Networks.MAINNET]: {
             bondAddress: "0x472c18c4079eCb68629F4FbA1141172404BFEE9C",
             reserveAddress: "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
         },
@@ -53,7 +53,7 @@ export const BASHUSDC = new LPBond({
     bondContractABI: LpBondContract,
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
-        [Networks.AVAX]: {
+        [Networks.MAINNET]: {
             bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0x425c45adfb53861e5db8f17d9b072ab60d4404d8",
         },
@@ -103,7 +103,7 @@ export const bashFloof = new LPBond({
     bondContractABI: LpBondContract,
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
-        [Networks.AVAX]: {
+        [Networks.MAINNET]: {
             bondAddress: "0x555d0112B1Ca9e468C04dAb37195b2A48c83F43E",
             reserveAddress: "0x781655d802670bba3c89aebaaea59d3182fd755d",
         },
@@ -136,7 +136,7 @@ export const bashUSDT = new CustomLPBond({
     bondContractABI: LpBondContract,
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
-        [Networks.AVAX]: {
+        [Networks.MAINNET]: {
             bondAddress: "0x288e6d7f4935c1f4d2862715306d4bdf8dea6592",
             reserveAddress: "0xa3d2cfe49df9d1ea0dc589b69252e1eddc417d6d",
         },
@@ -145,4 +145,4 @@ export const bashUSDT = new CustomLPBond({
     isActive: false,
 });
 
-export default [mim, wavax, BASHUSDC, bashUSDT, bashDai];
+export default [dai, wavax, BASHUSDC, bashUSDT, bashDai];
