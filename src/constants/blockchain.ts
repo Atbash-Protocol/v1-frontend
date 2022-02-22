@@ -1,7 +1,7 @@
 export const TOKEN_DECIMALS = 9;
 
 export enum Networks {
-    AVAX = 4, // just for now for rinkeby
+    MAINNET = 4, // just for now for rinkeby
     RINKEBY = 4,
 }
 

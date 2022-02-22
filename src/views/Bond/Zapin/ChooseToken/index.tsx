@@ -9,8 +9,8 @@ import { Skeleton } from "@material-ui/lab";
 import useTokens, { IAllTokenData } from "../../../../hooks/tokens";
 import { trim } from "../../../../helpers";
 import { IAllBondData } from "../../../../hooks/bonds";
-import { mim, wavax } from "../../../../helpers/bond";
-import { mim as mimToken, wavax as wavaxToken } from "../../../../helpers/tokens";
+import { dai, wavax } from "../../../../helpers/bond";
+import { dai as mimToken, wavax as wavaxToken } from "../../../../helpers/tokens";
 
 import { useTranslation } from "react-i18next";
 
@@ -43,7 +43,7 @@ function ChooseToken({ open, handleClose, handleSelect, bond }: IChooseTokenProp
 
         let lpFilter = true;
 
-        if (bond.name === mim.name) {
+        if (bond.name === dai.name) {
             lpFilter = mimToken.address !== address;
         }
 

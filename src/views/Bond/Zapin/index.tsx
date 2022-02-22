@@ -7,7 +7,7 @@ import { Skeleton } from "@material-ui/lab";
 import ChooseToken from "./ChooseToken";
 import { IAllBondData } from "../../../hooks/bonds";
 import useTokens, { IAllTokenData } from "../../../hooks/tokens";
-import { avax, mim } from "../../../helpers/tokens";
+import { avax, dai } from "../../../helpers/tokens";
 import { shorten, trim } from "../../../helpers";
 import BondLogo from "../../../components/BondLogo";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,7 +46,7 @@ function Zapin({ open, handleClose, bond }: IZapinProps) {
     let defaultToken = tokens.find(token => token.name === avax.name);
 
     if (bond.name === wavax.name) {
-        defaultToken = tokens.find(token => token.name === mim.name);
+        defaultToken = tokens.find(token => token.name === dai.name);
     }
 
     const [quantity, setQuantity] = useState<string>("");
