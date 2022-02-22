@@ -175,13 +175,6 @@ const husky: IToken = {
     decimals: 18,
 };
 
-const ice: IToken = {
-    name: "ICE",
-    address: "0xe0Ce60AF0850bF54072635e66E79Df17082A1109",
-    img: IceIcon,
-    decimals: 18,
-};
-
 const joe: IToken = {
     name: "JOE",
     address: "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
@@ -410,7 +403,6 @@ export default [
     gb,
     hat,
     husky,
-    ice,
     joe,
     klo,
     link,

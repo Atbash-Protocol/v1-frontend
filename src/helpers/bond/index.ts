@@ -88,8 +88,8 @@ export const bashDai = new StableBond({
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.RINKEBY]: {
-            bondAddress: "0xaC02d31dAC35f9425bd53aABF4Ad2691077dcf12",
-            reserveAddress: "0xb394F1f9CC3f8Dd76c5364f87E6363991a2f6Bf2",
+            bondAddress: "0x45A82188bB3ccC8E9504d02D88143F70EBB6DEa2",
+            reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
         },
     },
     isActive: true,
