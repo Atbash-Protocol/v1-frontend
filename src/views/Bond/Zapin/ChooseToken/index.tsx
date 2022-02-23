@@ -10,7 +10,7 @@ import useTokens, { IAllTokenData } from "../../../../hooks/tokens";
 import { trim } from "../../../../helpers";
 import { IAllBondData } from "../../../../hooks/bonds";
 import { dai, wavax } from "../../../../helpers/bond";
-import { dai as mimToken, wavax as wavaxToken } from "../../../../helpers/tokens";
+import { DAI, DAI as mimToken, wavax as wavaxToken } from "../../../../helpers/tokens";
 
 import { useTranslation } from "react-i18next";
 
@@ -43,7 +43,7 @@ function ChooseToken({ open, handleClose, handleSelect, bond }: IChooseTokenProp
 
         let lpFilter = true;
 
-        if (bond.name === dai.name) {
+        if (bond.name === DAI.name) {
             lpFilter = mimToken.address !== address;
         }
 

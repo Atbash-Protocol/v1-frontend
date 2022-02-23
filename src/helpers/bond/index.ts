@@ -32,7 +32,7 @@ export const dai = new StableBond({
 export const wavax = new CustomBond({
     name: "FLOOF",
     displayName: "FLOOF",
-    bondToken: "AVAX",
+    bondToken: "ETH",
     bondIconSvg: AvaxIcon,
     bondContractABI: WavaxBondContract,
     reserveContractAbi: StableReserveContract,
