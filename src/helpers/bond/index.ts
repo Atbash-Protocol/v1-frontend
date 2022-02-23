@@ -22,8 +22,8 @@ export const dai = new StableBond({
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.RINKEBY]: {
-            bondAddress: "0x9eF18088D738A4D3eA8e7C7F539f86AE290ca8a8",
-            reserveAddress: "0x130966628846BFd36ff31a822705796e8cb8C18D",
+            bondAddress: "0x45A82188bB3ccC8E9504d02D88143F70EBB6DEa2",
+            reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
         },
     },
     isActive: false,
@@ -88,7 +88,7 @@ export const bashDai = new StableBond({
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.RINKEBY]: {
-            bondAddress: "0x45A82188bB3ccC8E9504d02D88143F70EBB6DEa2",
+            bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
         },
     },
@@ -104,7 +104,7 @@ export const bashFloof = new LPBond({
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
         [Networks.MAINNET]: {
-            bondAddress: "0x555d0112B1Ca9e468C04dAb37195b2A48c83F43E",
+            bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0x781655d802670bba3c89aebaaea59d3182fd755d",
         },
     },
@@ -137,7 +137,7 @@ export const bashUSDT = new CustomLPBond({
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
         [Networks.MAINNET]: {
-            bondAddress: "0x288e6d7f4935c1f4d2862715306d4bdf8dea6592",
+            bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0xa3d2cfe49df9d1ea0dc589b69252e1eddc417d6d",
         },
     },
