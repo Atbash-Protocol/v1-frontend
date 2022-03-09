@@ -4,28 +4,19 @@ import { TimeTokenContract, MemoTokenContract, MimTokenContract } from "../../ab
 import { setAll } from "../../helpers";
 
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
-import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Bond } from "../../helpers/bond/bond";
-import { Networks } from "../../constants/blockchain";
-import React from "react";
 import { RootState } from "../store";
-import { IToken } from "../../helpers/tokens";
+import {
+    IGetBalances,
+    IAccountBalances,
+    ILoadAccountDetails,
+    IUserAccountDetails,
+    ICalcUserBondDetails,
+    ICalcUserTokenDetails,
+    IUserTokenDetails,
+    IUserBondDetails,
+} from "../account/account.types";
 
-interface IGetBalances {
-    address: string;
-    networkID: Networks;
-    provider: StaticJsonRpcProvider | JsonRpcProvider;
-}
-
-interface IAccountBalances {
-    balances: {
-        wsBASH: string;
-        sBASH: string;
-        BASH: string;
-    };
-}
-
-export const getBalances = createAsyncThunk("account/getBalances", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
+export const getBalances = createAsyncThunk("account/getBalances22", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
     const addresses = getAddresses(networkID);
 
     const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
@@ -43,30 +34,6 @@ export const getBalances = createAsyncThunk("account/getBalances", async ({ addr
         },
     };
 });
-
-interface ILoadAccountDetails {
-    address: string;
-    networkID: Networks;
-    provider: StaticJsonRpcProvider | JsonRpcProvider;
-}
-
-interface IUserAccountDetails {
-    balances: {
-        BASH: string;
-        sBASH: string;
-        wsBASH: string;
-    };
-    redeeming: {
-        BASH: number;
-    };
-    staking: {
-        BASH: number;
-        sBASH: number;
-    };
-    wrapping: {
-        sBASHAllowance: number;
-    };
-}
 
 export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address }: ILoadAccountDetails): Promise<IUserAccountDetails> => {
     let BASHbalance = 0;
@@ -116,22 +83,6 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
         },
     };
 });
-
-interface ICalcUserBondDetails {
-    address: string;
-    bond: Bond;
-    provider: StaticJsonRpcProvider | JsonRpcProvider;
-    networkID: Networks;
-}
-
-export interface IUserBondDetails {
-    allowance: number;
-    balance: number;
-    avaxBalance: number;
-    interestDue: number;
-    bondMaturationBlock: number;
-    pendingPayout: number; //Payout formatted in gwei.
-}
 
 export const calculateUserBondDetails = createAsyncThunk("account/calculateUserBondDetails", async ({ address, bond, networkID, provider }: ICalcUserBondDetails) => {
     if (!address) {
@@ -186,19 +137,6 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
         pendingPayout: Number(pendingPayoutVal),
     };
 });
-
-interface ICalcUserTokenDetails {
-    address: string;
-    token: IToken;
-    provider: StaticJsonRpcProvider | JsonRpcProvider;
-    networkID: Networks;
-}
-
-export interface IUserTokenDetails {
-    allowance: number;
-    balance: number;
-    isAvax?: boolean;
-}
 
 export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
     if (!address) {
@@ -286,55 +224,54 @@ const accountSlice = createSlice({
         },
     },
     extraReducers: builder => {
-        builder
-            .addCase(loadAccountDetails.pending, state => {
-                state.loading = true;
-            })
-            .addCase(loadAccountDetails.fulfilled, (state, action) => {
-                setAll(state, action.payload);
-                state.loading = false;
-            })
-            .addCase(loadAccountDetails.rejected, (state, { error }) => {
-                state.loading = false;
-                console.log(error);
-            })
-            .addCase(getBalances.pending, state => {
-                state.loading = true;
-            })
-            .addCase(getBalances.fulfilled, (state, action) => {
-                setAll(state, action.payload);
-                state.loading = false;
-            })
-            .addCase(getBalances.rejected, (state, { error }) => {
-                state.loading = false;
-                console.log(error);
-            })
-            .addCase(calculateUserBondDetails.pending, (state, action) => {
-                state.loading = true;
-            })
-            .addCase(calculateUserBondDetails.fulfilled, (state, action) => {
-                if (!action.payload) return;
-                const bond = action.payload.bond;
-                state.bonds[bond] = action.payload;
-                state.loading = false;
-            })
-            .addCase(calculateUserBondDetails.rejected, (state, { error }) => {
-                state.loading = false;
-                console.log(error);
-            })
-            .addCase(calculateUserTokenDetails.pending, (state, action) => {
-                state.loading = true;
-            })
-            .addCase(calculateUserTokenDetails.fulfilled, (state, action) => {
-                if (!action.payload) return;
-                const token = action.payload.token;
-                state.tokens[token] = action.payload;
-                state.loading = false;
-            })
-            .addCase(calculateUserTokenDetails.rejected, (state, { error }) => {
-                state.loading = false;
-                console.log(error);
-            });
+        builder.addCase(loadAccountDetails.pending, state => {
+            state.loading = true;
+        });
+        // .addCase(loadAccountDetails.fulfilled, (state, action) => {
+        //     setAll(state, action.payload);
+        //     state.loading = false;
+        // })
+        // .addCase(loadAccountDetails.rejected, (state, { error }) => {
+        //     state.loading = false;
+        //     console.log(error);
+        // })
+        // .addCase(getBalances.pending, state => {
+        //     state.loading = true;
+        // })
+        // .addCase(getBalances.fulfilled, (state, action) => {
+        //     setAll(state, action.payload);
+        //     state.loading = false;
+        // })
+        // .addCase(getBalances.rejected, (state, { error }) => {
+        //     state.loading = false;
+        //     console.log(error);
+        // })
+        // .addCase(calculateUserBondDetails.pending, (state, action) => {
+        //     state.loading = true;
+        // })
+        // .addCase(calculateUserBondDetails.fulfilled, (state, action) => {
+        //     if (!action.payload) return;
+        //     const bond = action.payload.bond;
+        //     state.bonds[bond] = action.payload;
+        //     state.loading = false;
+        // })
+        // .addCase(calculateUserBondDetails.rejected, (state, { error }) => {
+        //     state.loading = false;
+        //     console.log(error);
+        // })
+        // .addCase(calculateUserTokenDetails.pending, (state, action) => {
+        //     state.loading = true;
+        // })
+        // .addCase(calculateUserTokenDetails.fulfilled, (state, action) => {
+        //     if (!action.payload) return;
+        //     const token = action.payload.token;
+        //     state.tokens[token] = action.payload;
+        //     state.loading = false;
+        // })
+        // .addCase(calculateUserTokenDetails.rejected, (state, { error }) => {
+        //     state.loading = false;
+        //     console.log(error);
+        // });
     },
 });
 

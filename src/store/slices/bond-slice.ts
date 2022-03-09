@@ -106,10 +106,16 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
 
     const addresses = getAddresses(networkID);
 
-    const bondContract = bond.getContractForBond(networkID, provider);
-    const bondCalcContract = getBondCalculator(networkID, provider);
+    let bondContract = bond.getContractForBond(networkID, provider);
+    console.log("bounc", bondContract);
+    let bondCalcContract = getBondCalculator(networkID, provider);
 
-    const terms = await bondContract.terms();
+    let terms;
+    try {
+        terms = await bondContract.terms();
+    } catch (e) {
+        console.error(e);
+    }
     const maxBondPrice = (await bondContract.maxPayout()) / Math.pow(10, 9);
 
     let marketPrice = await getMarketPrice(networkID, provider);

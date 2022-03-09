@@ -122,159 +122,157 @@ function Stake() {
                                 </div>
                             )}
                             {address && (
-                                <div>
-                                    <div className="Forecast-card-action-area">
-                                        <Grid className="Forecast-card-grid" container spacing={1}>
-                                            <Grid item sm={5} className="Forecast-entry">
-                                                <div className="Forecast-card-action-row">
-                                                    <p className="Forecast-card-action-label">{t("globe:StakedSBAmount")}</p>
-                                                    <OutlinedInput
-                                                        type="number"
-                                                        placeholder={t("globe:EnterStakedSBAmount")}
-                                                        className="Forecast-card-action-input"
-                                                        value={sBASHQuantity}
-                                                        onChange={e => setsBASHQuantity(e.target.value)}
-                                                        labelWidth={0}
-                                                        endAdornment={
-                                                            <InputAdornment position="end">
-                                                                <div onClick={setsBASHToMax} className="Forecast-card-action-input-btn">
-                                                                    <p>{t("Max")}</p>
-                                                                </div>
-                                                            </InputAdornment>
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="Forecast-card-action-row">
-                                                    <p className="Forecast-card-action-label">{t("globe:RewardYieldPercent")}</p>
-                                                    <OutlinedInput
-                                                        type="number"
-                                                        placeholder={t("globe:EnterRewardYieldPercent")}
-                                                        className="Forecast-card-action-input"
-                                                        value={rewardYield}
-                                                        onChange={e => setRewardYield(e.target.value)}
-                                                        labelWidth={0}
-                                                        endAdornment={
-                                                            <InputAdornment position="end">
-                                                                <div onClick={setYeildCurrent} className="Forecast-card-action-input-btn">
-                                                                    <p>{t("globe:Current")}</p>
-                                                                </div>
-                                                            </InputAdornment>
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="Forecast-card-action-row">
-                                                    <p className="Forecast-card-action-label">{t("globe:BASHPriceAtPurchase")}</p>
-                                                    <OutlinedInput
-                                                        type="number"
-                                                        placeholder={t("globe:EnterBuyPrice")}
-                                                        className="Forecast-card-action-input"
-                                                        value={price}
-                                                        onChange={e => setPrice(e.target.value)}
-                                                        labelWidth={0}
-                                                        endAdornment={
-                                                            <InputAdornment position="end">
-                                                                <div onClick={setCurrentPrice} className="Forecast-card-action-input-btn">
-                                                                    <p>{t("globe:Current")}</p>
-                                                                </div>
-                                                            </InputAdornment>
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="Forecast-card-action-row">
-                                                    <p className="Forecast-card-action-label">{t("globe:FutureBASHMarketPrice")}</p>
-                                                    <OutlinedInput
-                                                        type="number"
-                                                        placeholder={t("globe:EnterFuturePrice")}
-                                                        className="Forecast-card-action-input"
-                                                        value={futurePrice}
-                                                        onChange={e => setFuturePrice(e.target.value)}
-                                                        labelWidth={0}
-                                                        endAdornment={
-                                                            <InputAdornment position="end">
-                                                                <div onClick={setCurrentPriceToFuture} className="Forecast-card-action-input-btn">
-                                                                    <p>{t("globe:Current")}</p>
-                                                                </div>
-                                                            </InputAdornment>
-                                                        }
-                                                    />
-                                                </div>
-                                            </Grid>
-                                            <Grid item className="slider-container">
-                                                <Box className="slider-inner">
-                                                    <Box className="Forecast-days">
-                                                        <p className="data-row-value">
-                                                            {duration}
-                                                            <br />
-                                                            {t("day", { count: duration })}
-                                                        </p>
-                                                    </Box>
-                                                    <Slider
-                                                        sx={{
-                                                            '& input[type="range"]': {
-                                                                WebkitAppearance: "slider-vertical",
-                                                            },
-                                                            display: { xs: "none", sm: "block" },
-                                                        }}
-                                                        step={1}
-                                                        marks
-                                                        min={1}
-                                                        max={365}
-                                                        orientation="vertical"
-                                                        value={duration}
-                                                        //@ts-ignore
-                                                        onChange={handleSliderChange}
-                                                        aria-label={t("globe:Duration")}
-                                                        onKeyDown={preventHorizontalKeyboardNavigation}
-                                                    />
-                                                    <Slider
-                                                        sx={{
-                                                            '& input[type="range"]': {
-                                                                WebkitAppearance: "slider-horizontal",
-                                                            },
-                                                            display: { xs: "block", sm: "none" },
-                                                            width: 1,
-                                                        }}
-                                                        step={1}
-                                                        marks
-                                                        min={1}
-                                                        max={365}
-                                                        orientation="horizontal"
-                                                        value={duration}
-                                                        //@ts-ignore
-                                                        onChange={handleSliderChange}
-                                                        aria-label={t("globe:Duration")}
-                                                        onKeyDown={preventHorizontalKeyboardNavigation}
-                                                    />
-                                                </Box>
-                                            </Grid>
-
-                                            <Grid item sm={5} className="Forecast-data">
-                                                <div className="data-row">
-                                                    <p className="data-row-name">{t("globe:YourInitialInvestment")}</p>
-                                                    <p className="data-row-value">{fCurrency(investment)}</p>
-                                                </div>
-                                                <div className="data-row">
-                                                    <p className="data-row-name">{t("globe:CurrentWealth")}</p>
-                                                    <p className="data-row-value">{fCurrency(currentWealth)}</p>
-                                                </div>
-                                                <div className="data-row">
-                                                    <p className="data-row-name">{t("globe:BASHRewardsEstimation")}</p>
-                                                    <p className="data-row-value">{fShortenNumber(gains)} BASH</p>
-                                                </div>
-                                                <div className="data-row">
-                                                    <p className="data-row-name">{t("globe:PotentialReturn")}</p>
-                                                    <p className="data-row-value">{fCurrency(futureWealth)}</p>
-                                                </div>
-                                                <div className="data-row">
-                                                    <p className="data-row-name">
-                                                        {t("globe:PotentialNumberLambo")}
-                                                        <span>{t("globe:LamboHelpText")}</span>
-                                                    </p>
-                                                    <p className="data-row-value">{nbLambo}</p>
-                                                </div>
-                                            </Grid>
+                                <div className="Forecast-card-action-area">
+                                    <Grid className="Forecast-card-grid" container spacing={1}>
+                                        <Grid item sm={5} className="Forecast-entry">
+                                            <div className="Forecast-card-action-row">
+                                                <p className="Forecast-card-action-label">{t("globe:StakedSBAmount")}</p>
+                                                <OutlinedInput
+                                                    type="number"
+                                                    placeholder={t("globe:EnterStakedSBAmount")}
+                                                    className="Forecast-card-action-input"
+                                                    value={sBASHQuantity}
+                                                    onChange={e => setsBASHQuantity(e.target.value)}
+                                                    labelWidth={0}
+                                                    endAdornment={
+                                                        <InputAdornment position="end">
+                                                            <div onClick={setsBASHToMax} className="Forecast-card-action-input-btn">
+                                                                <p>{t("Max")}</p>
+                                                            </div>
+                                                        </InputAdornment>
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="Forecast-card-action-row">
+                                                <p className="Forecast-card-action-label">{t("globe:RewardYieldPercent")}</p>
+                                                <OutlinedInput
+                                                    type="number"
+                                                    placeholder={t("globe:EnterRewardYieldPercent")}
+                                                    className="Forecast-card-action-input"
+                                                    value={rewardYield}
+                                                    onChange={e => setRewardYield(e.target.value)}
+                                                    labelWidth={0}
+                                                    endAdornment={
+                                                        <InputAdornment position="end">
+                                                            <div onClick={setYeildCurrent} className="Forecast-card-action-input-btn">
+                                                                <p>{t("globe:Current")}</p>
+                                                            </div>
+                                                        </InputAdornment>
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="Forecast-card-action-row">
+                                                <p className="Forecast-card-action-label">{t("globe:BASHPriceAtPurchase")}</p>
+                                                <OutlinedInput
+                                                    type="number"
+                                                    placeholder={t("globe:EnterBuyPrice")}
+                                                    className="Forecast-card-action-input"
+                                                    value={price}
+                                                    onChange={e => setPrice(e.target.value)}
+                                                    labelWidth={0}
+                                                    endAdornment={
+                                                        <InputAdornment position="end">
+                                                            <div onClick={setCurrentPrice} className="Forecast-card-action-input-btn">
+                                                                <p>{t("globe:Current")}</p>
+                                                            </div>
+                                                        </InputAdornment>
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="Forecast-card-action-row">
+                                                <p className="Forecast-card-action-label">{t("globe:FutureBASHMarketPrice")}</p>
+                                                <OutlinedInput
+                                                    type="number"
+                                                    placeholder={t("globe:EnterFuturePrice")}
+                                                    className="Forecast-card-action-input"
+                                                    value={futurePrice}
+                                                    onChange={e => setFuturePrice(e.target.value)}
+                                                    labelWidth={0}
+                                                    endAdornment={
+                                                        <InputAdornment position="end">
+                                                            <div onClick={setCurrentPriceToFuture} className="Forecast-card-action-input-btn">
+                                                                <p>{t("globe:Current")}</p>
+                                                            </div>
+                                                        </InputAdornment>
+                                                    }
+                                                />
+                                            </div>
                                         </Grid>
-                                    </div>
+                                        <Grid item className="slider-container">
+                                            <Box className="slider-inner">
+                                                <Box className="Forecast-days">
+                                                    <p className="data-row-value">
+                                                        {duration}
+                                                        <br />
+                                                        {t("day", { count: duration })}
+                                                    </p>
+                                                </Box>
+                                                <Slider
+                                                    sx={{
+                                                        '& input[type="range"]': {
+                                                            WebkitAppearance: "slider-vertical",
+                                                        },
+                                                        display: { xs: "none", sm: "block" },
+                                                    }}
+                                                    step={1}
+                                                    marks
+                                                    min={1}
+                                                    max={365}
+                                                    orientation="vertical"
+                                                    value={duration}
+                                                    //@ts-ignore
+                                                    onChange={handleSliderChange}
+                                                    aria-label={t("globe:Duration")}
+                                                    onKeyDown={preventHorizontalKeyboardNavigation}
+                                                />
+                                                <Slider
+                                                    sx={{
+                                                        '& input[type="range"]': {
+                                                            WebkitAppearance: "slider-horizontal",
+                                                        },
+                                                        display: { xs: "block", sm: "none" },
+                                                        width: 1,
+                                                    }}
+                                                    step={1}
+                                                    marks
+                                                    min={1}
+                                                    max={365}
+                                                    orientation="horizontal"
+                                                    value={duration}
+                                                    //@ts-ignore
+                                                    onChange={handleSliderChange}
+                                                    aria-label={t("globe:Duration")}
+                                                    onKeyDown={preventHorizontalKeyboardNavigation}
+                                                />
+                                            </Box>
+                                        </Grid>
+
+                                        <Grid item sm={5} className="Forecast-data">
+                                            <div className="data-row">
+                                                <p className="data-row-name">{t("globe:YourInitialInvestment")}</p>
+                                                <p className="data-row-value">{fCurrency(investment)}</p>
+                                            </div>
+                                            <div className="data-row">
+                                                <p className="data-row-name">{t("globe:CurrentWealth")}</p>
+                                                <p className="data-row-value">{fCurrency(currentWealth)}</p>
+                                            </div>
+                                            <div className="data-row">
+                                                <p className="data-row-name">{t("globe:BASHRewardsEstimation")}</p>
+                                                <p className="data-row-value">{fShortenNumber(gains)} BASH</p>
+                                            </div>
+                                            <div className="data-row">
+                                                <p className="data-row-name">{t("globe:PotentialReturn")}</p>
+                                                <p className="data-row-value">{fCurrency(futureWealth)}</p>
+                                            </div>
+                                            <div className="data-row">
+                                                <p className="data-row-name">
+                                                    {t("globe:PotentialNumberLambo")}
+                                                    <span>{t("globe:LamboHelpText")}</span>
+                                                </p>
+                                                <p className="data-row-value">{nbLambo}</p>
+                                            </div>
+                                        </Grid>
+                                    </Grid>
                                 </div>
                             )}
                         </div>

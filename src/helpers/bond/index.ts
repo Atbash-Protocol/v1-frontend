@@ -57,6 +57,10 @@ export const BASHUSDC = new LPBond({
             bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0x425c45adfb53861e5db8f17d9b072ab60d4404d8",
         },
+        [Networks.RINKEBY]: {
+            bondAddress: "0x45A82188bB3ccC8E9504d02D88143F70EBB6DEa2",
+            reserveAddress: "",
+        },
     },
     lpUrl: "https://www.traderjoexyz.com/#/pool/0x130966628846BFd36ff31a822705796e8cb8C18D/0x7d1232b90d3f809a54eeaeebc639c62df8a8942f",
     isActive: false,
@@ -145,4 +149,5 @@ export const bashUSDT = new CustomLPBond({
     isActive: false,
 });
 
-export default [dai, wavax, BASHUSDC, bashUSDT, bashDai];
+export default [dai];
+// export default [dai, wavax, BASHUSDC, bashUSDT, bashDai];

@@ -7,11 +7,11 @@ import { IPendingTxn, isPendingTxn, txnButtonText } from "../../store/slices/pen
 import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "../../store/slices/state.interface";
 import { IAllBondData } from "../../hooks/bonds";
-import { IUserBondDetails } from "../../store/slices/account-slice";
 import { messages } from "../../constants/messages";
 import { warning } from "../../store/slices/messages-slice";
 
 import { useTranslation } from "react-i18next";
+import { IUserBondDetails } from "src/store/account/account.types";
 
 interface IBondRedeem {
     bond: IAllBondData;

@@ -215,7 +215,7 @@ function Stake() {
                                 </div>
                             )}
                             {address && (
-                                <div>
+                                <>
                                     <div className="stake-card-action-area">
                                         <div className="stake-card-action-stage-btns-wrap">
                                             <div onClick={changeView(0)} className={classnames("stake-card-action-stage-btn", { active: !view })}>
@@ -347,61 +347,57 @@ function Stake() {
                                             <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(fiveDayRate) * 100, 4)}%</>}</p>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
                     </Grid>
                 </div>
             </Zoom>
-            <Zoom in={true}>
-                <div>
-                    {address && (
-                        <div className="stake-card">
-                            <Grid className="stake-card-grid" container direction="column">
-                                <Grid item>
-                                    <div className="stake-card-header data-row">
-                                        <p className="stake-card-header-title">{t("YourBalance")}</p>
-                                        <p className="stake-card-header-title">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfAllBalance}</>}</p>
-                                    </div>
-                                </Grid>
-
-                                <div className="stake-card-area">
-                                    <div>
-                                        <div className="">
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourBASH")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
-                                            </div>
-
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourStakedBASH")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
-                                            </div>
-
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourNextRewardAmount")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourNextRewardAmount}</>}</p>
-                                            </div>
-
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourEffectiveNextRewardAmount")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourEffectiveNextRewardAmount}</>}</p>
-                                            </div>
-
-                                            {Number(trimmedWrappedStakedSBBalance) > 0 && (
-                                                <div className="data-row">
-                                                    <p className="data-row-name">{t("stake:ValueOfYourWrappedStakedSB")}</p>
-                                                    <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
+            {address && (
+                <Zoom in={true}>
+                    <div className="stake-card">
+                        <Grid className="stake-card-grid" container direction="column">
+                            <Grid item>
+                                <div className="stake-card-header data-row">
+                                    <p className="stake-card-header-title">{t("YourBalance")}</p>
+                                    <p className="stake-card-header-title">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfAllBalance}</>}</p>
                                 </div>
                             </Grid>
-                        </div>
-                    )}
-                </div>
-            </Zoom>
+
+                            <div className="stake-card-area">
+                                <>
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourBASH")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
+                                    </div>
+
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourStakedBASH")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
+                                    </div>
+
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourNextRewardAmount")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourNextRewardAmount}</>}</p>
+                                    </div>
+
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourEffectiveNextRewardAmount")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourEffectiveNextRewardAmount}</>}</p>
+                                    </div>
+
+                                    {Number(trimmedWrappedStakedSBBalance) > 0 && (
+                                        <div className="data-row">
+                                            <p className="data-row-name">{t("stake:ValueOfYourWrappedStakedSB")}</p>
+                                            <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
+                                        </div>
+                                    )}
+                                </>
+                            </div>
+                        </Grid>
+                    </div>
+                </Zoom>
+            )}
         </div>
     );
 }

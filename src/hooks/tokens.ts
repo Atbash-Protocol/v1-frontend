@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import allTokens from "../helpers/tokens";
-import { IUserTokenDetails } from "../store/slices/account-slice";
 import { IReduxState } from "../store/slices/state.interface";
 import { IToken } from "../helpers/tokens";
+import { IUserTokenDetails } from "src/store/account/account.types";
 
 // Smash all the interfaces together to get the BondData Type
 export interface IAllTokenData extends IToken, IUserTokenDetails {}
