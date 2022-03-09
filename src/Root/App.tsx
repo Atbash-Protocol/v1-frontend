@@ -13,6 +13,7 @@ import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } 
 
 import "./style.scss";
 import useTokens from "../hooks/tokens";
+import { Home } from "@material-ui/icons";
 
 function App() {
     const dispatch = useDispatch();
@@ -22,7 +23,10 @@ function App() {
 
     const [walletChecked, setWalletChecked] = useState(false);
 
-    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
+    const isAppLoading = useSelector<IReduxState, boolean>(state => {
+        console.log(state);
+        return state.app.loading;
+    });
     const isAppLoaded = useSelector<IReduxState, boolean>(state => !Boolean(state.app.marketPrice));
 
     const { bonds } = useBonds();
@@ -86,32 +90,30 @@ function App() {
     }, []);
 
     useEffect(() => {
-        if (walletChecked) {
-            loadDetails("app");
-            loadDetails("account");
-            loadDetails("userBonds");
-            loadDetails("userTokens");
+        if (walletChecked || connected) {
+            loadDetails("account").then(() => {
+                loadDetails("app");
+                // loadDetails("userBonds");
+                // loadDetails("userTokens");
+            });
         }
-    }, [walletChecked]);
-
-    useEffect(() => {
-        if (connected) {
-            loadDetails("app");
-            loadDetails("account");
-            loadDetails("userBonds");
-            loadDetails("userTokens");
-        }
-    }, [connected]);
+    }, [walletChecked, connected]);
 
     if (isAppLoading) return <Loading />;
 
     return (
         <ViewBase>
+            {!connected && <Home />}
+            {walletChecked && <> WALLET CHECKED </>}
+
             <Switch>
+                <Route path="/">
+                    <Home />
+                </Route>
                 <Route exact path="/dashboard">
                     <Dashboard />
                 </Route>
-
+                {/* 
                 <Route exact path="/">
                     <Redirect to="/stake" />
                 </Route>
@@ -130,7 +132,7 @@ function App() {
 
                 <Route path="/Forecast">
                     <Forecast />
-                </Route>
+                </Route> */}
 
                 <Route path="/mints">
                     {bonds.map(bond => {

@@ -81,6 +81,7 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
+    "debug": "BROWSER='google chrome' BROWSER_ARGS='--remote-debugging-port=9222' react-scripts start",
     "test": "react-scripts test",
     "lint": "npx eslint src/ --ext .ts,.js,.tsx,.jsx",
     "lint-fix": "npx eslint src/ --ext .ts,.js,.tsx,.jsx --fix"
