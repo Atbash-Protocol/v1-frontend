@@ -1,5 +1,19 @@
 import { Networks } from "./blockchain";
 
+const LOCAL = {
+    MIM_ADDRESS: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9", // DAI ERC20 fuckit.js:43
+    BASH_ADDRESS: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    SBASH_ADDRESS: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+    BASH_BONDING_CALC_ADDRESS: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853", // todo: bondingCalculator? fuckit.js:60
+    TREASURY_ADDRESS: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+    STAKING_ADDRESS: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788", // fuckit.js:74
+    STAKING_HELPER_ADDRESS: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+    WSBASH_ADDRESS: "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
+    DAO_ADDRESS: "0x000000000000000000000000000000000000dead", // todo: ?
+    ZAPIN_ADDRESS: "",
+    REDEEM_ADDRESS: "", // SnowbankFinalRedistribution - https://docs.snowbank.finance/events/final-redistribution -
+};
+
 const MAINNET = {
     DAO_ADDRESS: "0x31940eE01803476a970ec6DF1094a53F80e6827b",
     SBASH_ADDRESS: "0xB062c51d940bA086e998a113f2975D54f35fFf52",
@@ -29,7 +43,9 @@ const RINKEBY = {
 };
 
 export const getAddresses = (networkID: number) => {
-    if (networkID === Networks.MAINNET) return RINKEBY;
+    if (networkID === Networks.LOCAL) return LOCAL;
+
+    if (networkID === Networks.MAINNET) return MAINNET;
 
     if (networkID === Networks.RINKEBY) return RINKEBY;
 

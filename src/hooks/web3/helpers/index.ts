@@ -1,1 +1,1 @@
-export * from "./get-mainnet-uri";
+export * from "./get-network-uri";

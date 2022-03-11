@@ -83,7 +83,7 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
         const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
         BASHbalance = await sbContract.balanceOf(address);
         stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
-        redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
+        // disable: redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
     }
 
     if (addresses.SBASH_ADDRESS) {
@@ -134,6 +134,22 @@ export interface IUserBondDetails {
 }
 
 export const calculateUserBondDetails = createAsyncThunk("account/calculateUserBondDetails", async ({ address, bond, networkID, provider }: ICalcUserBondDetails) => {
+    console.warn("disabled: calculateUserBondDetails");
+    return new Promise<any>(resevle => {
+        resevle({
+            bond: "",
+            displayName: "",
+            bondIconSvg: "",
+            isLP: false,
+            allowance: 0,
+            balance: 0,
+            interestDue: 0,
+            bondMaturationBlock: 0,
+            pendingPayout: "",
+            avaxBalance: 0,
+        });
+    });
+
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({
@@ -201,6 +217,16 @@ export interface IUserTokenDetails {
 }
 
 export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
+    console.warn("disabled: calculateUserTokenDetails");
+    return new Promise<any>(resevle => {
+        resevle({
+            token: "",
+            address: "",
+            img: "",
+            allowance: 0,
+            balance: 0,
+        });
+    });
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({

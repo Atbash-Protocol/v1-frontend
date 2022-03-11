@@ -28,7 +28,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     }
     const addresses = getAddresses(networkID);
 
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address); // todo: needed for address?
     const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
 
     let approveTx;
@@ -80,7 +80,7 @@ export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, 
         return;
     }
     const addresses = getAddresses(networkID);
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address); // needed for address?
     const wsBASH = new ethers.Contract(addresses.WSBASH_ADDRESS, WrappingContract, signer);
 
     let wrapTx;
