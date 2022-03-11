@@ -6,5 +6,6 @@ export enum Networks {
     LOCAL = 1337,
 }
 
-export const DEFAULT_NETWORK = Networks.RINKEBY;
+export const DEFAULT_NETWORK = Networks.LOCAL;
 // export const DEFAULT_NETWORK = Networks.LOCAL;
+console.log("DEFAULT_NETWORK: ", DEFAULT_NETWORK);
