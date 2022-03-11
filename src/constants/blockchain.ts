@@ -1,8 +1,10 @@
 export const TOKEN_DECIMALS = 9;
 
 export enum Networks {
-    MAINNET = 4, // just for now for rinkeby
+    MAINNET = 1,
     RINKEBY = 4,
+    LOCAL = 1337,
 }
 
 export const DEFAULD_NETWORK = Networks.RINKEBY;
+// export const DEFAULD_NETWORK = Networks.LOCAL;

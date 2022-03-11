@@ -16,19 +16,19 @@ export const loadAppDetails = createAsyncThunk(
     "app/loadAppDetails",
     //@ts-ignore
     async ({ networkID, provider }: ILoadAppDetails) => {
-        const mimPrice = getTokenPrice("MIM");
+        const mimPrice = getTokenPrice("MIM"); // todo: DAI rename
         const addresses = getAddresses(networkID);
 
-        const ohmPrice = getTokenPrice("OHM");
-        const ohmAmount = 1512.12854088 * ohmPrice;
+        // const ohmPrice = getTokenPrice("OHM");
+        // const ohmAmount = 1512.12854088 * ohmPrice;
 
         const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
-        const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
+        // const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
         const currentBlock = await provider.getBlockNumber();
         const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
         const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
         const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
-        const mimContract = new ethers.Contract(addresses.MIM_ADDRESS, TimeTokenContract, provider);
+        const mimContract = new ethers.Contract(addresses.MIM_ADDRESS, TimeTokenContract, provider); // todo: DAI
 
         const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * mimPrice;
 
@@ -38,18 +38,18 @@ export const loadAppDetails = createAsyncThunk(
         const stakingTVL = circSupply * marketPrice;
         const marketCap = totalSupply * marketPrice;
 
-        const redeemRfv = (await redeemContract.RFV()) / Math.pow(10, 9);
-        const redeemSbSent = (await sbContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 9);
-        const redeemMimAvailable = (await mimContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 18);
+        const redeemRfv = 0; // (await redeemContract.RFV()) / Math.pow(10, 9);
+        const redeemSbSent = 0; // (await sbContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 9);
+        const redeemMimAvailable = 0; // (await mimContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 18);
 
-        const tokenBalPromises = allBonds.map(bond => bond.getTreasuryBalance(networkID, provider));
-        const tokenBalances = await Promise.all(tokenBalPromises);
-        const treasuryBalance = tokenBalances.reduce((tokenBalance0, tokenBalance1) => tokenBalance0 + tokenBalance1) + redeemMimAvailable + 16176498;
+        // const tokenBalPromises = allBonds.map(bond => bond.getTreasuryBalance(networkID, provider));
+        // const tokenBalances = await Promise.all(tokenBalPromises);
+        const treasuryBalance = 0; // tokenBalances.reduce((tokenBalance0, tokenBalance1) => tokenBalance0 + tokenBalance1) + redeemMimAvailable + 16176498;
 
-        const tokenAmountsPromises = allBonds.map(bond => bond.getTokenAmount(networkID, provider));
-        const tokenAmounts = await Promise.all(tokenAmountsPromises);
+        // const tokenAmountsPromises = allBonds.map(bond => bond.getTokenAmount(networkID, provider));
+        // const tokenAmounts = await Promise.all(tokenAmountsPromises);
 
-        const rfvTreasury = tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
+        const rfvTreasury = 0; // tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
 
         const daoSb = await sbContract.balanceOf(addresses.DAO_ADDRESS);
         const daoSbAmount = Number(ethers.utils.formatUnits(daoSb, "gwei"));
@@ -60,7 +60,7 @@ export const loadAppDetails = createAsyncThunk(
         const LpSbAmount = sbBondsAmounts.reduce((sbAmount0, sbAmount1) => sbAmount0 + sbAmount1, 0);
         const sbSupply = totalSupply - LpSbAmount - daoSbAmount;
 
-        const rfv = rfvTreasury / (sbSupply - redeemSbSent);
+        const rfv = 0; // rfvTreasury / (sbSupply - redeemSbSent);
         const deltaMarketPriceRfv = ((rfv - marketPrice) / rfv) * 100;
 
         const epoch = await stakingContract.epoch();
