@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getAddresses, TOKEN_DECIMALS, DEFAULD_NETWORK } from "../../../constants";
+import { getAddresses, TOKEN_DECIMALS, DEFAULT_NETWORK } from "../../../constants";
 import { useSelector } from "react-redux";
 import { Link, Fade, Popper } from "@material-ui/core";
 import "./atbash-menu.scss";
@@ -38,7 +38,7 @@ function AtbashMenu() {
     const isEthereumAPIAvailable = window.ethereum;
 
     const networkID = useSelector<IReduxState, number>(state => {
-        return (state.app && state.app.networkID) || DEFAULD_NETWORK;
+        return (state.app && state.app.networkID) || DEFAULT_NETWORK;
     });
 
     const addresses = getAddresses(networkID);
