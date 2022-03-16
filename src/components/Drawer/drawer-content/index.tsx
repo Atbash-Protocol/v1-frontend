@@ -15,7 +15,7 @@ import useBonds from "../../../hooks/bonds";
 import { Link } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import "./drawer-content.scss";
-import useENS from "src/hooks/useENS";
+import useENS from "../../../hooks/useENS";
 import Davatar from "@davatar/react";
 
 import { useTranslation } from "react-i18next";

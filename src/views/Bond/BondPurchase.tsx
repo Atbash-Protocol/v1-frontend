@@ -11,7 +11,6 @@ import { IAllBondData } from "../../hooks/bonds";
 import useDebounce from "../../hooks/debounce";
 import { messages } from "../../constants/messages";
 import { warning } from "../../store/slices/messages-slice";
-import Zapin from "./Zapin";
 
 import { useTranslation } from "react-i18next";
 

@@ -1,17 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Slide } from "@material-ui/core";
-import { IBondDetails, redeemBond } from "../../store/slices/bond-slice";
-import { useWeb3Context } from "../../hooks";
-import { trim, prettifySeconds, prettyVestingPeriod } from "../../helpers";
-import { IPendingTxn, isPendingTxn, txnButtonText } from "../../store/slices/pending-txns-slice";
+import { IBondDetails, redeemBond } from "store/slices/bond-slice";
+import { useWeb3Context } from "hooks";
+import { trim, prettifySeconds, prettyVestingPeriod } from "helpers";
+import { IPendingTxn, isPendingTxn, txnButtonText } from "store/slices/pending-txns-slice";
 import { Skeleton } from "@material-ui/lab";
-import { IReduxState } from "../../store/slices/state.interface";
-import { IAllBondData } from "../../hooks/bonds";
-import { messages } from "../../constants/messages";
-import { warning } from "../../store/slices/messages-slice";
+import { IReduxState } from "store/slices/state.interface";
+import { IAllBondData } from "hooks/bonds";
+import { messages } from "constants/messages";
+import { warning } from "store/slices/messages-slice";
 
 import { useTranslation } from "react-i18next";
-import { IUserBondDetails } from "src/store/account/account.types";
+import { IUserBondDetails } from "store/account/account.types";
 
 interface IBondRedeem {
     bond: IAllBondData;

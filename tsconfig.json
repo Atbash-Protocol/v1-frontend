@@ -1,17 +1,21 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "dom"],
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": true,
     "target": "es5",
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "skipLibCheck": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -21,7 +25,13 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["./index.d.ts", "src", "babel.config.js", "netlify"],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "node_modules", "vendor", "public"],
+  "include": [
+    "./*.d.ts",
+    "src/**/*",
+    "babel.config.js",
+    "src/types/react-app-env.d.ts",
+    "src/react-i18next.d.ts",
+    "./src/types"
+  ],
   "compileOnSave": false
 }

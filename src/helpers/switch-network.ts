@@ -1,4 +1,4 @@
-import { Networks } from "../constants/blockchain";
+import { ethereumMainetInfos } from "helpers/networks/ethereum-mainnet";
 
 const switchRequest = () => {
     return window.ethereum.request({
@@ -10,19 +10,7 @@ const switchRequest = () => {
 const addChainRequest = () => {
     return window.ethereum.request({
         method: "wallet_addEthereumChain",
-        params: [
-            {
-                chainId: "0xa86a",
-                chainName: "Avalanche Mainnet",
-                rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
-                blockExplorerUrls: ["https://cchain.explorer.avax.network/"],
-                nativeCurrency: {
-                    name: "AVAX",
-                    symbol: "AVAX",
-                    decimals: 18,
-                },
-            },
-        ],
+        params: [ethereumMainetInfos],
     });
 };
 

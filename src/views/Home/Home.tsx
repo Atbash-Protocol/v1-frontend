@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useWeb3Context, useAddress } from "src/hooks";
+import { useWeb3Context, useAddress } from "hooks/web3";
 
 export default function Home() {
     const { t } = useTranslation();

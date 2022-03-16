@@ -48,7 +48,7 @@ export abstract class Bond {
     }
 
     public getAddressForBond(networkID: Networks) {
-        return this.networkAddrs[networkID].bondAddress;
+        return this.networkAddrs[networkID]!.bondAddress;
     }
 
     public getContractForBond(networkID: Networks, provider: StaticJsonRpcProvider | JsonRpcSigner) {
@@ -57,7 +57,8 @@ export abstract class Bond {
     }
 
     public getAddressForReserve(networkID: Networks) {
-        return this.networkAddrs[networkID].reserveAddress;
+        console.log("here");
+        return this.networkAddrs[networkID]!.reserveAddress;
     }
 
     public getContractForReserve(networkID: Networks, provider: StaticJsonRpcProvider | JsonRpcSigner) {
