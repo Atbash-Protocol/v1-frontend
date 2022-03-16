@@ -13,7 +13,8 @@ import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } 
 
 import "./style.scss";
 import useTokens from "../hooks/tokens";
-import { Home } from "@material-ui/icons";
+import { Typography } from "@material-ui/core";
+import { WalletNotConnected } from "components/WalletNotConnected";
 
 function App() {
     const dispatch = useDispatch();
@@ -24,13 +25,12 @@ function App() {
     const [walletChecked, setWalletChecked] = useState(false);
 
     const isAppLoading = useSelector<IReduxState, boolean>(state => {
-        console.log(state);
         return state.app.loading;
     });
     const isAppLoaded = useSelector<IReduxState, boolean>(state => !Boolean(state.app.marketPrice));
 
-    const { bonds } = useBonds();
-    const { tokens } = useTokens();
+    // const { bonds } = useBonds();
+    // const { tokens } = useTokens();
 
     async function loadDetails(whichDetails: string) {
         let loadProvider = provider;
@@ -39,35 +39,35 @@ function App() {
             loadApp(loadProvider);
         }
 
-        if (whichDetails === "account" && address && connected) {
-            loadAccount(loadProvider);
-            if (isAppLoaded) return;
+        // if (whichDetails === "account" && address && connected) {
+        //     loadAccount(loadProvider);
+        //     if (isAppLoaded) return;
 
-            loadApp(loadProvider);
-        }
+        //     // loadApp(loadProvider);
+        // }
 
-        if (whichDetails === "userBonds" && address && connected) {
-            bonds.map(bond => {
-                dispatch(calculateUserBondDetails({ address, bond, provider, networkID: chainID }));
-            });
-        }
+        // if (whichDetails === "userBonds" && address && connected) {
+        //     bonds.map(bond => {
+        //         dispatch(calculateUserBondDetails({ address, bond, provider, networkID: chainID }));
+        //     });
+        // }
 
-        if (whichDetails === "userTokens" && address && connected) {
-            tokens.map(token => {
-                dispatch(calculateUserTokenDetails({ address, token, provider, networkID: chainID }));
-            });
-        }
+        // if (whichDetails === "userTokens" && address && connected) {
+        //     tokens.map(token => {
+        //         dispatch(calculateUserTokenDetails({ address, token, provider, networkID: chainID }));
+        //     });
+        // }
     }
 
     const loadApp = useCallback(
         loadProvider => {
             dispatch(loadAppDetails({ networkID: chainID, provider: loadProvider }));
-            bonds.map(bond => {
-                dispatch(calcBondDetails({ bond, value: null, provider: loadProvider, networkID: chainID }));
-            });
-            tokens.map(token => {
-                dispatch(calculateUserTokenDetails({ address: "", token, provider, networkID: chainID }));
-            });
+            // bonds.map(bond => {
+            //     dispatch(calcBondDetails({ bond, value: null, provider: loadProvider, networkID: chainID }));
+            // });
+            // tokens.map(token => {
+            //     dispatch(calculateUserTokenDetails({ address: "", token, provider, networkID: chainID }));
+            // });
         },
         [connected],
     );
@@ -91,11 +91,10 @@ function App() {
 
     useEffect(() => {
         if (walletChecked || connected) {
-            loadDetails("account").then(() => {
-                loadDetails("app");
-                // loadDetails("userBonds");
-                // loadDetails("userTokens");
-            });
+            loadDetails("app");
+            // loadDetails("account");
+            // loadDetails("userBonds");
+            // loadDetails("userTokens");
         }
     }, [walletChecked, connected]);
 
@@ -103,14 +102,8 @@ function App() {
 
     return (
         <ViewBase>
-            {!connected && <Home />}
-            {walletChecked && <> WALLET CHECKED </>}
-
             <Switch>
                 <Route path="/">
-                    <Home />
-                </Route>
-                <Route exact path="/dashboard">
                     <Dashboard />
                 </Route>
                 {/* 
@@ -134,7 +127,7 @@ function App() {
                     <Forecast />
                 </Route> */}
 
-                <Route path="/mints">
+                {/* <Route path="/mints">
                     {bonds.map(bond => {
                         return (
                             <Route exact key={bond.name} path={`/mints/${bond.name}`}>
@@ -143,7 +136,7 @@ function App() {
                         );
                     })}
                     <ChooseBond />
-                </Route>
+                </Route> */}
 
                 <Route component={NotFound} />
             </Switch>

@@ -29,10 +29,24 @@ const RINKEBY = {
     REDEEM_ADDRESS: "0xEefefC641cB549d2a43fe0F1cC385fE2c5e75d9d",
 };
 
+const LOCAL = {
+    MIM_ADDRESS: "0x5302E909d1e93e30F05B5D6Eea766363D14F9892",
+    BASH_ADDRESS: "0x0ed64d01D0B4B655E410EF1441dD677B695639E7",
+    SBASH_ADDRESS: "0x4bf010f1b9beDA5450a8dD702ED602A104ff65EE",
+    BASH_BONDING_CALC_ADDRESS: "0x40a42Baf86Fc821f972Ad2aC878729063CeEF403",
+    TREASURY_ADDRESS: "0x96F3Ce39Ad2BfDCf92C0F6E2C2CAbF83874660Fc",
+    STAKING_ADDRESS: "0xde2Bd2ffEA002b8E84ADeA96e5976aF664115E2c",
+    STAKING_HELPER_ADDRESS: "",
+    WSBASH_ADDRESS: "",
+    REDEEM_ADDRESS: "",
+    ZAPIN_ADDRESS: "",
+    DAO_ADDRESS: "",
+};
+
 export const getAddresses = (networkID: number) => {
     if (networkID === Networks.MAINNET) return RINKEBY;
-
     if (networkID === Networks.RINKEBY) return RINKEBY;
+    if (networkID === Networks.LOCAL) return LOCAL;
 
     throw Error("Network don't support");
 };

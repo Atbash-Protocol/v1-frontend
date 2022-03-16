@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import allBonds from "../helpers/bond";
 import { Bond } from "../helpers/bond/bond";
 import { IBondDetails, IBondSlice } from "../store/slices/bond-slice";
-import { IReduxState } from "../store/slices/state.interface";
-import { IUserBondDetails } from "src/store/account/account.types";
+import { IReduxState } from "store/slices/state.interface";
+import { IUserBondDetails } from "store/account/account.types";
 
 // Smash all the interfaces together to get the BondData Type
 export interface IAllBondData extends Bond, IBondDetails, IUserBondDetails {}
