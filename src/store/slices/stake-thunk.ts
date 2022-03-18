@@ -28,7 +28,7 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
     }
     const addresses = getAddresses(networkID);
 
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address);
     const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
 
     let approveTx;
@@ -79,8 +79,8 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     }
     const addresses = getAddresses(networkID);
 
-    const signer = provider.getSigner();
-    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
+    const signer = provider.getSigner(address);
+    const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
     const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
 
     let approveTx;
@@ -88,7 +88,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
         const gasPrice = await getGasPrice(provider);
 
         if (token === "BASH") {
-            approveTx = await sbContract.approve(addresses.STAKING_HELPER_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await bashContract.approve(addresses.STAKING_HELPER_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         if (token === "sBASH") {
@@ -111,9 +111,9 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
 
     await sleep(2);
 
-    const stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
+    const stakeAllowance = await bashContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
     const unstakeAllowance = await sBASHContract.allowance(address, addresses.STAKING_ADDRESS);
-
+    console.log("Stacking allowance: ", stakeAllowance);
     return dispatch(
         fetchAccountSuccess({
             staking: {
@@ -138,7 +138,7 @@ export const changeRedeem = createAsyncThunk("stake/changeRedeem", async ({ acti
         return;
     }
     const addresses = getAddresses(networkID);
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address);
     const redeem = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, signer);
 
     let stakeTx;
@@ -179,7 +179,7 @@ export const changeStake = createAsyncThunk("stake/changeStake", async ({ action
         return;
     }
     const addresses = getAddresses(networkID);
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address);
     const staking = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, signer);
     const stakingHelper = new ethers.Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, signer);
 
