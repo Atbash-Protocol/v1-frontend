@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { getAddresses } from "../../constants";
-import { TimeTokenContract, MemoTokenContract, MimTokenContract } from "../../abi";
+import { TimeTokenContract as BashTokenContract, MemoTokenContract as SBashTokenContract, MimTokenContract } from "../../abi";
 import { setAll } from "../../helpers";
 
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
@@ -28,12 +28,12 @@ interface IAccountBalances {
 export const getBalances = createAsyncThunk("account/getBalances", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
     const addresses = getAddresses(networkID);
 
-    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
-    const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, provider);
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, provider);
+    const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, SBashTokenContract, provider);
     const sBASHBalance = await sBASHContract.balanceOf(address);
     const wsBASHBalance = await wsBASHContract.balanceOf(address);
-    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
-    const BASHbalance = await sbContract.balanceOf(address);
+    const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, provider);
+    const BASHbalance = await bashContract.balanceOf(address);
 
     return {
         balances: {
@@ -80,21 +80,21 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     const addresses = getAddresses(networkID);
 
     if (addresses.BASH_ADDRESS) {
-        const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
+        const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, provider);
         BASHbalance = await sbContract.balanceOf(address);
         stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
-        redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
+        // disable: redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
     }
 
     if (addresses.SBASH_ADDRESS) {
-        const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
+        const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, provider);
         sBASHBalance = await sBASHContract.balanceOf(address);
         wrapAllowance = await sBASHContract.allowance(address, addresses.WSBASH_ADDRESS);
         unstakeAllowance = await sBASHContract.allowance(address, addresses.STAKING_ADDRESS);
     }
 
     if (addresses.WSBASH_ADDRESS) {
-        const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, provider);
+        const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, SBashTokenContract, provider);
         wsBASHBalance = await wsBASHContract.balanceOf(address);
     }
 
@@ -134,6 +134,22 @@ export interface IUserBondDetails {
 }
 
 export const calculateUserBondDetails = createAsyncThunk("account/calculateUserBondDetails", async ({ address, bond, networkID, provider }: ICalcUserBondDetails) => {
+    console.warn("disabled: calculateUserBondDetails");
+    return new Promise<any>(resevle => {
+        resevle({
+            bond: "",
+            displayName: "",
+            bondIconSvg: "",
+            isLP: false,
+            allowance: 0,
+            balance: 0,
+            interestDue: 0,
+            bondMaturationBlock: 0,
+            pendingPayout: "",
+            avaxBalance: 0,
+        });
+    });
+
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({
@@ -201,6 +217,16 @@ export interface IUserTokenDetails {
 }
 
 export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
+    console.warn("disabled: calculateUserTokenDetails");
+    return new Promise<any>(resevle => {
+        resevle({
+            token: "",
+            address: "",
+            img: "",
+            allowance: 0,
+            balance: 0,
+        });
+    });
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({
