@@ -7,11 +7,11 @@ function toUrl(tokenPath: string): string {
 }
 
 export function getTokenUrl(name: string) {
-    if (name === "BASH") {
+    if (name === "bash") {
         return toUrl(SbImg);
     }
 
-    if (name === "sBASH") {
+    if (name === "sbash") {
         return toUrl(sBASHImg);
     }
 
