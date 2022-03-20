@@ -1,6 +1,17 @@
 # [Atbash Frontend](https://atbash.finance/)
 This is the front-end repo for Atbash Protocol. 
 
+## Changelog
+- Fix testnet connection
+
+
+
+
+## TODO  
+- Real computations
+- Mobile rendering
+- Tests
+
 ##  🔧 Setting up Local Development
 
 Required: 
