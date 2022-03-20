@@ -16,6 +16,7 @@ export const getRinkebyURI = (): string => {
 };
 
 export const getNetworkUrl = (networkID: number) => {
+    console.log("here", networkID);
     switch (networkID) {
         case Networks.LOCAL:
             return getLocalnetURI();

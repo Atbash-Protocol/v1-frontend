@@ -7,9 +7,13 @@ const useENS = (address: string) => {
     useEffect(() => {
         const resolveENS = async () => {
             if (ethers.utils.isAddress(address)) {
-                const provider = new ethers.providers.JsonRpcProvider("https://rinkeby.infura.io/v3/254fc898c6c24be99475e8ec90ced016");
-                const ensName = await provider.lookupAddress(address);
-                setENSName(ensName);
+                const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT_URL);
+                try {
+                    const ensName = await provider.lookupAddress(address);
+                    setENSName(ensName);
+                } catch (e) {
+                    console.info("ENS not found");
+                }
             }
         };
         resolveENS();

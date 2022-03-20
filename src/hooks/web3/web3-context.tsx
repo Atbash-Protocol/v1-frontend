@@ -2,7 +2,7 @@ import React, { useState, ReactElement, useContext, useMemo, useCallback } from 
 import Web3Modal from "web3modal";
 import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { getNetworkUrl } from "./helpers";
+import { getMainnetURI, getNetworkUrl } from "./helpers";
 import { DEFAULT_NETWORK } from "../../constants";
 import { Networks } from "../../constants";
 import { messages } from "../../constants/messages";
@@ -53,6 +53,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const [providerChainID, setProviderChainID] = useState(DEFAULT_NETWORK);
     const [address, setAddress] = useState("");
 
+    // const [uri, setUri] = useState(getMainnetURI(chainID));
     const [uri, setUri] = useState(getNetworkUrl(DEFAULT_NETWORK));
     const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(uri));
 
@@ -120,7 +121,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         setProviderChainID(chainId);
 
-        if (chainId === Networks.RINKEBY) {
+        if (chainId === Networks.RINKEBY || chainId === Networks.MAINNET) {
             setProvider(connectedProvider);
         }
 

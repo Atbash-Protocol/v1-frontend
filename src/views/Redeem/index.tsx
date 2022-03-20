@@ -227,7 +227,7 @@ function Redeem() {
                                 </div>
                             )}
                             {address && (
-                                <div>
+                                <>
                                     <div className="stake-card-action-area">
                                         <div className="stake-card-action-row">
                                             <OutlinedInput
@@ -295,7 +295,7 @@ function Redeem() {
                                             <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfRedeemableBalance}</>}</p>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
                     </Grid>

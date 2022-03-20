@@ -153,7 +153,7 @@ function Stake() {
                                 </div>
                             )}
                             {address && (
-                                <div>
+                                <>
                                     <div className="wrap-card-action-area">
                                         <div className="wrap-card-action-stage-btns-wrap">
                                             <div onClick={changeView(0)} className={classnames("wrap-card-action-stage-btn", { active: !view })}>
@@ -262,14 +262,14 @@ function Stake() {
                                             </div>
                                         )}
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
                     </Grid>
                 </div>
             </Zoom>
             <Zoom in={true}>
-                <div>
+                <>
                     {address && (
                         <div className="wrap-card">
                             <Grid className="wrap-card-grid" container direction="column">
@@ -281,31 +281,27 @@ function Stake() {
                                 </Grid>
 
                                 <div className="wrap-card-area">
-                                    <div>
-                                        <div className="">
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("wrap:ValueOfYourBASH")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
-                                            </div>
-
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("wrap:ValueOfYourStakedBASH")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
-                                            </div>
-
-                                            {Number(trimmedWrappedStakedSBBalance) > 0 && (
-                                                <div className="data-row">
-                                                    <p className="data-row-name">{t("wrap:ValueOfYourWrappedStakedSB")}</p>
-                                                    <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
-                                                </div>
-                                            )}
-                                        </div>
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("wrap:ValueOfYourBASH")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
                                     </div>
+
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("wrap:ValueOfYourStakedBASH")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
+                                    </div>
+
+                                    {Number(trimmedWrappedStakedSBBalance) > 0 && (
+                                        <div className="data-row">
+                                            <p className="data-row-name">{t("wrap:ValueOfYourWrappedStakedSB")}</p>
+                                            <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
+                                        </div>
+                                    )}
                                 </div>
                             </Grid>
                         </div>
                     )}
-                </div>
+                </>
             </Zoom>
         </div>
     );
