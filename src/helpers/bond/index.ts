@@ -25,13 +25,13 @@ export const dai = new StableBond({
             bondAddress: "0x45A82188bB3ccC8E9504d02D88143F70EBB6DEa2",
             reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
         },
-        [Networks.MAINNET]: {
+        [Networks.LOCAL]: {
             bondAddress: "",
             reserveAddress: "",
         },
-        [Networks.LOCAL]: {
-            bondAddress: "0xaca81583840B1bf2dDF6CDe824ada250C1936B4D", // daiBond
-            reserveAddress: "0x96F3Ce39Ad2BfDCf92C0F6E2C2CAbF83874660Fc", // dai
+        [Networks.MAINNET]: {
+            bondAddress: "",
+            reserveAddress: "",
         },
     },
     isActive: false,
@@ -49,14 +49,11 @@ export const wavax = new CustomBond({
             bondAddress: "0x472c18c4079eCb68629F4FbA1141172404BFEE9C",
             reserveAddress: "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
         },
-        [Networks.RINKEBY]: {
+        [Networks.LOCAL]: {
             bondAddress: "",
             reserveAddress: "",
         },
-        [Networks.LOCAL]: {
-            bondAddress: "0xaca81583840B1bf2dDF6CDe824ada250C1936B4D", // daiBond
-            reserveAddress: "0x0ed64d01D0B4B655E410EF1441dD677B695639E7", // dai
-        },
+        [Networks.RINKEBY]: { bondAddress: "", reserveAddress: "" },
     },
     isActive: false,
 });
@@ -73,10 +70,11 @@ export const BASHUSDC = new LPBond({
             bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0x425c45adfb53861e5db8f17d9b072ab60d4404d8",
         },
-        [Networks.RINKEBY]: {
-            bondAddress: "0x45A82188bB3ccC8E9504d02D88143F70EBB6DEa2",
+        [Networks.LOCAL]: {
+            bondAddress: "",
             reserveAddress: "",
         },
+        [Networks.RINKEBY]: { bondAddress: "", reserveAddress: "" },
     },
     lpUrl: "https://www.traderjoexyz.com/#/pool/0x130966628846BFd36ff31a822705796e8cb8C18D/0x7d1232b90d3f809a54eeaeebc639c62df8a8942f",
     isActive: false,
@@ -111,14 +109,11 @@ export const bashDai = new StableBond({
             bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
         },
-        [Networks.MAINNET]: {
+        [Networks.LOCAL]: {
             bondAddress: "",
             reserveAddress: "",
         },
-        [Networks.LOCAL]: {
-            bondAddress: "0xaca81583840B1bf2dDF6CDe824ada250C1936B4D", // daiBond
-            reserveAddress: "0x0ed64d01D0B4B655E410EF1441dD677B695639E7", // dai
-        },
+        [Networks.MAINNET]: { bondAddress: "", reserveAddress: "" },
     },
     isActive: true,
 });
@@ -135,10 +130,11 @@ export const bashFloof = new LPBond({
             bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0x781655d802670bba3c89aebaaea59d3182fd755d",
         },
-        [Networks.RINKEBY]: {
+        [Networks.LOCAL]: {
             bondAddress: "",
             reserveAddress: "",
         },
+        [Networks.RINKEBY]: { bondAddress: "", reserveAddress: "" },
     },
     lpUrl: "https://traderjoexyz.com/#/pool/AVAX/0x130966628846bfd36ff31a822705796e8cb8c18d",
     isActive: false,
@@ -172,13 +168,15 @@ export const bashUSDT = new CustomLPBond({
             bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
             reserveAddress: "0xa3d2cfe49df9d1ea0dc589b69252e1eddc417d6d",
         },
-        [Networks.RINKEBY]: {
+        [Networks.LOCAL]: {
             bondAddress: "",
             reserveAddress: "",
         },
+        [Networks.RINKEBY]: { bondAddress: "", reserveAddress: "" },
     },
     lpUrl: "https://traderjoexyz.com/#/pool/AVAX/0x7d1232b90d3f809a54eeaeebc639c62df8a8942f",
     isActive: false,
 });
 
-export default [dai];
+// export default [dai, wavax, BASHUSDC, bashUSDT, bashDai];
+export default [dai, bashDai];

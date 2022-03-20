@@ -13,5 +13,5 @@ export interface BondAddresses {
 export interface NetworkAddresses {
     [Networks.MAINNET]: BondAddresses;
     [Networks.RINKEBY]: BondAddresses;
-    [Networks.LOCAL]?: BondAddresses;
+    [Networks.LOCAL]: BondAddresses;
 }
