@@ -16,7 +16,7 @@ import {
     IUserBondDetails,
 } from "../account/account.types";
 
-export const getBalances = createAsyncThunk("account/getBalances22", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
+export const getBalances = createAsyncThunk("account/getBalances", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
     const addresses = getAddresses(networkID);
 
     const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
@@ -224,13 +224,15 @@ const accountSlice = createSlice({
         },
     },
     extraReducers: builder => {
-        builder.addCase(loadAccountDetails.pending, state => {
-            state.loading = true;
-        });
-        // .addCase(loadAccountDetails.fulfilled, (state, action) => {
-        //     setAll(state, action.payload);
-        //     state.loading = false;
-        // })
+        builder
+            .addCase(loadAccountDetails.pending, state => {
+                state.loading = true;
+            })
+            .addCase(loadAccountDetails.fulfilled, (state, action) => {
+                setAll(state, action.payload);
+                state.loading = false;
+            });
+
         // .addCase(loadAccountDetails.rejected, (state, { error }) => {
         //     state.loading = false;
         //     console.log(error);

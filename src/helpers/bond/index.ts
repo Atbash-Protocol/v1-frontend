@@ -29,6 +29,10 @@ export const dai = new StableBond({
             bondAddress: "",
             reserveAddress: "",
         },
+        [Networks.LOCAL]: {
+            bondAddress: "0xaca81583840B1bf2dDF6CDe824ada250C1936B4D", // daiBond
+            reserveAddress: "0x96F3Ce39Ad2BfDCf92C0F6E2C2CAbF83874660Fc", // dai
+        },
     },
     isActive: false,
 });
@@ -48,6 +52,10 @@ export const wavax = new CustomBond({
         [Networks.RINKEBY]: {
             bondAddress: "",
             reserveAddress: "",
+        },
+        [Networks.LOCAL]: {
+            bondAddress: "0xaca81583840B1bf2dDF6CDe824ada250C1936B4D", // daiBond
+            reserveAddress: "0x0ed64d01D0B4B655E410EF1441dD677B695639E7", // dai
         },
     },
     isActive: false,
@@ -106,6 +114,10 @@ export const bashDai = new StableBond({
         [Networks.MAINNET]: {
             bondAddress: "",
             reserveAddress: "",
+        },
+        [Networks.LOCAL]: {
+            bondAddress: "0xaca81583840B1bf2dDF6CDe824ada250C1936B4D", // daiBond
+            reserveAddress: "0x0ed64d01D0B4B655E410EF1441dD677B695639E7", // dai
         },
     },
     isActive: true,
@@ -170,4 +182,3 @@ export const bashUSDT = new CustomLPBond({
 });
 
 export default [dai];
-// export default [dai, wavax, BASHUSDC, bashUSDT, bashDai];
