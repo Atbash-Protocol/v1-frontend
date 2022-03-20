@@ -12,7 +12,7 @@ const useENS = (address: string) => {
                     const ensName = await provider.lookupAddress(address);
                     setENSName(ensName);
                 } catch (e) {
-                    console.error(e);
+                    console.info("ENS not found");
                 }
             }
         };

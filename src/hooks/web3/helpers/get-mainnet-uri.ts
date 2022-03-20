@@ -1,11 +1,7 @@
 import { Networks } from "constants/blockchain";
 
 export const getMainnetURI = (networkId: number): string => {
-    if (networkId === Networks.MAINNET) {
-        return process.env.INFURA_ENDPOINT_URL;
-    }
-
-    if (networkId === Networks.RINKEBY) {
+    if (networkId === Networks.MAINNET || networkId === Networks.RINKEBY) {
         return process.env.INFURA_ENDPOINT_URL;
     }
 
