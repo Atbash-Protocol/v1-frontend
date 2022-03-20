@@ -19,6 +19,8 @@ import useENS from "../../../hooks/useENS";
 import Davatar from "@davatar/react";
 
 import { useTranslation } from "react-i18next";
+import { getAddresses } from "../../../constants/addresses";
+import { DEFAULT_NETWORK } from "../../../constants";
 
 function NavContent() {
     const { t } = useTranslation();
@@ -26,6 +28,10 @@ function NavContent() {
     const address = useAddress();
     const { bonds } = useBonds();
     const { ensName } = useENS(address);
+
+    const addresses = getAddresses(DEFAULT_NETWORK);
+    const BASH_ADDRESS = addresses.BASH_ADDRESS;
+    const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
     return (
         <div className="dapp-sidebar">
@@ -100,10 +106,8 @@ function NavContent() {
                             ))}
                     </div>
 
-                    <Link
-                        href="https://traderjoexyz.com/trade?inputCurrency=0x130966628846bfd36ff31a822705796e8cb8c18d&outputCurrency=0x7d1232b90d3f809a54eeaeebc639c62df8a8942f#/"
-                        target="_blank"
-                    >
+                    {/* TODO: Update for MAINNET */}
+                    <Link href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}`} target="_blank">
                         <div className="button-dapp-menu">
                             <div className="dapp-menu-item">
                                 <img alt="" src={BuyIcon} />
