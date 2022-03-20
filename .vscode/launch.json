@@ -5,17 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Edge",
-            "type": "pwa-msedge",
+            "type": "pwa-chrome",
             "request": "launch",
-            "url": "http://localhost:3000",     // create-react-app's default port 3000
-            "webRoot": "${workspaceRoot}/src"
-        },
-        {
-            "type": "msedge",
-            "request": "attach",
-            "name": "Attach to Edge",
-            "port": 9222,
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/src"
         }
     ]
