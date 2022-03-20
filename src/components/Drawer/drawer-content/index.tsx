@@ -1,14 +1,12 @@
 import { NavLink } from "react-router-dom";
 import Social from "./social";
 import StakeIcon from "../../../assets/icons/stake.svg";
-import RedeemIcon from "../../../assets/icons/swap.svg";
 import BondIcon from "../../../assets/icons/bond.svg";
 import BuyIcon from "../../../assets/icons/buy.svg";
 import BorrowIcon from "../../../assets/icons/borrow.svg";
 import Forecast from "../../../assets/icons/Forecast.svg";
 import GovIcon from "../../../assets/icons/governance.svg";
 
-import ProIcon from "../../../assets/icons/pro.svg";
 import AtbashICON from "../../../assets/icons/bash.svg";
 import DashboardIcon from "../../../assets/icons/dashboard.svg";
 import { trim, shorten } from "../../../helpers";
@@ -17,7 +15,7 @@ import useBonds from "../../../hooks/bonds";
 import { Link } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import "./drawer-content.scss";
-import useENS from "src/hooks/useENS";
+import useENS from "../../../hooks/useENS";
 import Davatar from "@davatar/react";
 
 import { useTranslation } from "react-i18next";

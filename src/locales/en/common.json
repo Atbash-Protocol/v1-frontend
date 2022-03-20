@@ -1,5 +1,5 @@
 {
-    "hello": "hello world!",
+    "walletNotConnected": "Please connect your wallet to continue",
     "PageNotFound": "Page not found",
     "day_one": "day",
     "day_other": "days",
