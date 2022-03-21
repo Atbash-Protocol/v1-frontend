@@ -3,8 +3,14 @@ import hre, { ethers } from "hardhat";
 import { TimeTokenContract, MemoTokenContract } from "../src/abi";
 import { getAddresses  } from "../src/constants";
 
+import { LpReserveContract } from "../src/abi";
+import { BASHDAI } from "../src/helpers/bond";
+
 async function main() {
     console.log("testing");
+    await getMarketPrice();
+
+        return;
 
     var provider = hre.ethers.provider;
     var chainId = (await provider.getNetwork()).chainId;
@@ -23,6 +29,24 @@ async function main() {
     console.log("sBASH in staking: ", sBASHBalance);
 
     console.log("sBASH in me: ", (await sBASHContract.balanceOf(me)));
+
+
+
+    
+}
+
+async function getMarketPrice() {
+    const ohdami = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"; // ohmdai pair rinkeby
+    var provider = hre.ethers.provider;
+    var chainId = (await provider.getNetwork()).chainId;
+    // const addresses = getAddresses(chainId);
+
+    console.log("Provider ID: ", await provider.getNetwork());
+    // const BASHUSDCAddress = BASHUSDC.getAddressForReserve(networkID);
+    const pairContract = new ethers.Contract(ohdami, LpReserveContract, provider);
+    const reserves = await pairContract.getReserves();
+    const marketPrice = reserves[0] / reserves[1];
+    console.log(`r[0]: ${reserves[0]}, r[1]: ${reserves[1]}, market price: ${marketPrice}`);
 }
 
 
