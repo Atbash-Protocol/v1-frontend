@@ -2,12 +2,12 @@ import React, { useState, ReactElement, useContext, useMemo, useCallback } from 
 import Web3Modal from "web3modal";
 import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { getMainnetURI, getNetworkUrl } from "./helpers";
 import { DEFAULT_NETWORK } from "../../constants";
 import { Networks } from "../../constants";
 import { messages } from "../../constants/messages";
 import { useDispatch } from "react-redux";
 import { swithNetwork } from "../../helpers/switch-network";
+import { getNetworkURI } from "./helpers/get-network-uri";
 
 type onChainProvider = {
     connect: () => Promise<Web3Provider>;
@@ -54,7 +54,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const [address, setAddress] = useState("");
 
     // const [uri, setUri] = useState(getMainnetURI(chainID));
-    const [uri, setUri] = useState(getNetworkUrl(DEFAULT_NETWORK));
+    const [uri, setUri] = useState(getNetworkURI(DEFAULT_NETWORK));
     const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(uri));
 
     const [web3Modal] = useState<Web3Modal>(
@@ -65,9 +65,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                     package: WalletConnectProvider,
                     options: {
                         rpc: {
-                            [Networks.LOCAL]: getNetworkUrl(Networks.LOCAL),
-                            [Networks.RINKEBY]: getNetworkUrl(Networks.RINKEBY),
-                            [Networks.MAINNET]: getNetworkUrl(Networks.MAINNET),
+                            [Networks.LOCAL]: getNetworkURI(Networks.LOCAL),
+                            [Networks.RINKEBY]: getNetworkURI(Networks.RINKEBY),
+                            [Networks.MAINNET]: getNetworkURI(Networks.MAINNET),
                         },
                     },
                 },
