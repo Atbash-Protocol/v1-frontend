@@ -1,26 +1,26 @@
 import { NavLink } from "react-router-dom";
-import Social from "./social";
-import StakeIcon from "../../../assets/icons/stake.svg";
-import BondIcon from "../../../assets/icons/bond.svg";
-import BuyIcon from "../../../assets/icons/buy.svg";
-import BorrowIcon from "../../../assets/icons/borrow.svg";
-import Forecast from "../../../assets/icons/Forecast.svg";
-import GovIcon from "../../../assets/icons/governance.svg";
+import Social from "../Social";
+import StakeIcon from "assets/icons/stake.svg";
+import BondIcon from "assets/icons/bond.svg";
+import BuyIcon from "assets/icons/buy.svg";
+import BorrowIcon from "assets/icons/borrow.svg";
+import Forecast from "assets/icons/Forecast.svg";
+import GovIcon from "assets/icons/governance.svg";
 
-import AtbashICON from "../../../assets/icons/bash.svg";
-import DashboardIcon from "../../../assets/icons/dashboard.svg";
-import { trim, shorten } from "../../../helpers";
-import { useAddress } from "../../../hooks";
-import useBonds from "../../../hooks/bonds";
+import AtbashICON from "assets/icons/bash.svg";
+import DashboardIcon from "assets/icons/dashboard.svg";
+import { trim, shorten } from "helpers";
+import { useAddress } from "hooks";
+import useBonds from "hooks/bonds";
 import { Link } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
-import "./drawer-content.scss";
-import useENS from "../../../hooks/useENS";
+import "./styles.scss";
+import useENS from "hooks/useENS";
 import Davatar from "@davatar/react";
 
 import { useTranslation } from "react-i18next";
-import { getAddresses } from "../../../constants/addresses";
-import { DEFAULT_NETWORK } from "../../../constants";
+import { getAddresses } from "constants/addresses";
+import { DEFAULT_NETWORK } from "constants/blockchain";
 
 function NavContent() {
     const { t } = useTranslation();
@@ -52,19 +52,12 @@ function NavContent() {
 
             <div className="dapp-menu-links">
                 <div className="dapp-nav">
-                    <Link component={NavLink} to="/dashboard" className="button-dapp-menu">
+                    <Link component={NavLink} to="/" className="button-dapp-menu">
                         <div className="dapp-menu-item">
                             <img alt="" src={DashboardIcon} />
                             <p>{t("Dashboard")}</p>
                         </div>
                     </Link>
-
-                    {/* <Link component={NavLink} to="/redeem" className="button-dapp-menu">
-                        <div className="dapp-menu-item">
-                            <img alt="" src={RedeemIcon} />
-                            <p>Redistribution</p>
-                        </div>
-                    </Link> */}
 
                     <Link component={NavLink} to="/stake" className="button-dapp-menu">
                         <div className="dapp-menu-item">

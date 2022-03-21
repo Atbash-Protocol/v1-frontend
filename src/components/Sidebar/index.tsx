@@ -1,7 +1,6 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { Drawer } from "@material-ui/core";
-import DrawerContent from "./drawer-content";
-import { DRAWER_WIDTH } from "../../constants/style";
+import { Drawer, makeStyles } from "@material-ui/core";
+import { DRAWER_WIDTH } from "constants/styles";
+import Content from "./Content";
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -21,7 +20,15 @@ interface INavDrawer {
     handleDrawerToggle: () => void;
 }
 
-function NavDrawer({ mobileOpen, handleDrawerToggle }: INavDrawer) {
+function Sidebar() {
+    return (
+        <Drawer variant="permanent" anchor="left">
+            <Content />
+        </Drawer>
+    );
+}
+
+function SidebarMobile({ mobileOpen, handleDrawerToggle }: INavDrawer) {
     const classes = useStyles();
 
     return (
@@ -38,9 +45,9 @@ function NavDrawer({ mobileOpen, handleDrawerToggle }: INavDrawer) {
                 keepMounted: true,
             }}
         >
-            <DrawerContent />
+            <Content />
         </Drawer>
     );
 }
 
-export default NavDrawer;
+export { Sidebar, SidebarMobile };
