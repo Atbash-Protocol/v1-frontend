@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./view-base.scss";
-import Header from "../Header";
-import { Hidden, makeStyles, useMediaQuery } from "@material-ui/core";
-import { DRAWER_WIDTH, TRANSITION_DURATION } from "../../constants/style";
-import MobileDrawer from "../Drawer/mobile-drawer";
-import Drawer from "../Drawer";
-import Messages from "../Messages";
+import Header from "components/Header";
+import { Box, Hidden, makeStyles, useMediaQuery, Drawer, IconButton } from "@material-ui/core";
+import { DRAWER_WIDTH, TRANSITION_DURATION } from "constants/styles";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+
+import { Sidebar, SidebarMobile } from "components/Sidebar";
+import Messages from "components/Messages";
 
 interface IViewBaseProps {
     children: React.ReactNode;
@@ -41,6 +42,9 @@ function ViewBase({ children }: IViewBaseProps) {
     const classes = useStyles();
 
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+
+    const handleDrawerClose = (e: React.SyntheticEvent) => setOpen(false);
 
     const isSmallerScreen = useMediaQuery("(max-width: 960px)");
     const isSmallScreen = useMediaQuery("(max-width: 600px)");
@@ -49,16 +53,18 @@ function ViewBase({ children }: IViewBaseProps) {
         setMobileOpen(!mobileOpen);
     };
 
+    const drawerWidth = "5rem";
+
     return (
         <div className="view-base-root">
             <Messages />
             <Header drawe={!isSmallerScreen} handleDrawerToggle={handleDrawerToggle} />
             <div className={classes.drawer}>
                 <Hidden mdUp>
-                    <MobileDrawer mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
+                    <SidebarMobile mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
                 </Hidden>
                 <Hidden smDown>
-                    <Drawer />
+                    <Sidebar />
                 </Hidden>
             </div>
             <div className={`${classes.content} ${isSmallerScreen && classes.contentShift}`}>{children}</div>

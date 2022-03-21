@@ -103,6 +103,7 @@ function Stake() {
     const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
+    console.log(`Trimmed StakingAPY: ${trimmedStakingAPY}`);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
     const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);

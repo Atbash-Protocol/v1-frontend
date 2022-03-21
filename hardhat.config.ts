@@ -59,6 +59,8 @@ module.exports = {
     rinkeby: {
       url: `https://eth-rinkeby.alchemyapi.io/v2/uykTntpbG5i8zh6hNeqTBu2kB-HuAuYe`,
       accounts:['0x8a547cf41826cf02af2266c11e463a4bda640fd74bcb7c80172d6477509d2da9'], 
+      gas: 2100000,
+      gasPrice: 8000000000,
     },
     hardhat: {
       forking: {

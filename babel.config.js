@@ -110,6 +110,7 @@ module.exports = api => {
                     "constants": "./src/constants",
                     "helpers": "./src/helpers",
                     "hooks": "./src/hooks",
+                    "layouts": "./src/layouts",
                     "store": "./src/store",
                 },
             }],
