@@ -5,7 +5,7 @@ import MenuIcon from "../../assets/icons/hamburger.svg";
 import AtbashMenu from "./atbash-menu";
 import ConnectButton from "./connect-button";
 import "./header.scss";
-import { DRAWER_WIDTH, TRANSITION_DURATION } from "../../constants/style";
+import { DRAWER_WIDTH, TRANSITION_DURATION } from "constants/styles";
 
 interface IHeader {
     handleDrawerToggle: () => void;
@@ -47,16 +47,7 @@ function Header({ handleDrawerToggle, drawe }: IHeader) {
     return (
         <div className={`${classes.topBar} ${!drawe && classes.topBarShift}`}>
             <AppBar position="sticky" className={classes.appBar} elevation={0}>
-                {/* <Box className="dapp-information-box">
-                    <p className="dapp-information-text">
-                        Staking rewards & Minting will restart Tuesday 4th at 4:00 am EST. The redistribution event will end at the same time.{" "}
-                        <a href="https://docs.snowbank.finance/events/rebirth-redistribution" target="_blank">
-                            Learn more about the event here
-                        </a>
-                        .
-                    </p>
-                </Box> */}
-                <Toolbar disableGutters className="dapp-topbar">
+                <Toolbar className="dapp-topbar">
                     <div onClick={handleDrawerToggle} className="dapp-topbar-slider-btn">
                         <img src={MenuIcon} alt="" />
                     </div>
