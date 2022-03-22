@@ -45,6 +45,7 @@ function AtbashMenu() {
 
     const SBASH_ADDRESS = addresses.SBASH_ADDRESS;
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
+    const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
     const handleClick = (event: any) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -62,9 +63,10 @@ function AtbashMenu() {
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={200}>
                         <div className="tooltip">
+                            {/* TODO: Update for MAINNET */}
                             <Link
                                 className="tooltip-item"
-                                href={`https://www.traderjoexyz.com/trade?inputCurrency=0x130966628846bfd36ff31a822705796e8cb8c18d&outputCurrency=${BASH_ADDRESS}`}
+                                href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}`}
                                 target="_blank"
                             >
                                 <p>{t("BuyOnUniswap")}</p>
