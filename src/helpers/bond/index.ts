@@ -6,6 +6,7 @@ import ETHIcon from "../../assets/tokens/ETH.svg";
 import AvaxIcon from "../../assets/tokens/floof.png";
 import BASHUSDCison from "../../assets/tokens/BASH-USDC.png";
 import bashUSDTIcon from "../../assets/tokens/BASH-USDT.png";
+import DAIIcon from "../../assets/tokens/DAI.e.png";
 import MimSdogIcon from "../../assets/tokens/SDOG-MIM.svg";
 import avaxUsdceIcon from "../../assets/tokens/AVAX-USDCe.png";
 import bashDAIIcon from "../../assets/tokens/BASH-DAI.png";
@@ -14,20 +15,20 @@ import BASHFLOOFIcon from "../../assets/tokens/BASH-FLOOF.png";
 import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract } from "../../abi";
 
 export const dai = new StableBond({
-    name: "ETH",
-    displayName: "ETH",
-    bondToken: "ETH",
-    bondIconSvg: ETHIcon,
+    name: "DAI",
+    displayName: "DAI",
+    bondToken: "DAI",
+    bondIconSvg: DAIIcon,
     bondContractABI: StableBondContract,
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.RINKEBY]: {
-            bondAddress: "0x45A82188bB3ccC8E9504d02D88143F70EBB6DEa2",
-            reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
+            bondAddress: "",
+            reserveAddress: "",
         },
         [Networks.LOCAL]: {
             bondAddress: "",
-            reserveAddress: "",
+            reserveAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9", // DAI
         },
         [Networks.MAINNET]: {
             bondAddress: "",
@@ -77,6 +78,31 @@ export const BASHUSDC = new LPBond({
         [Networks.RINKEBY]: { bondAddress: "", reserveAddress: "" },
     },
     lpUrl: "https://www.traderjoexyz.com/#/pool/0x130966628846BFd36ff31a822705796e8cb8C18D/0x7d1232b90d3f809a54eeaeebc639c62df8a8942f",
+    isActive: false,
+});
+
+export const BASHDAI = new LPBond({
+    name: "bash_dai_lp",
+    displayName: "BASH-DAI LP",
+    bondToken: "DAI",
+    bondIconSvg: bashDAIIcon,
+    bondContractABI: LpBondContract,
+    reserveContractAbi: LpReserveContract,
+    networkAddrs: {
+        [Networks.MAINNET]: {
+            bondAddress: "",
+            reserveAddress: "",
+        },
+        [Networks.LOCAL]: {
+            bondAddress: "",
+            reserveAddress: "0xEb958D07b440384c559824cA4aF6338CEb19A970",
+        },
+        [Networks.RINKEBY]: {
+            bondAddress: "",
+            reserveAddress: "0xEb958D07b440384c559824cA4aF6338CEb19A970", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
+        },
+    },
+    lpUrl: "https://app.uniswap.org/#/add/v2/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB?chain=rinkeby", // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
     isActive: false,
 });
 
@@ -179,4 +205,4 @@ export const bashUSDT = new CustomLPBond({
 });
 
 // export default [dai, wavax, BASHUSDC, bashUSDT, bashDai];
-export default [dai, bashDai];
+export default [dai];
