@@ -1,10 +1,14 @@
 # [Atbash Frontend](https://atbash.finance/)
 This is the front-end repo for Atbash Protocol. 
 
+## Config 
+Fill the required variables from env file
+
+```bash 
+cp .env.template .env 
+```
 ## Changelog
 - Fix testnet connection
-
-
 
 
 ## TODO  
