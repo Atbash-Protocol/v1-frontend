@@ -7,4 +7,3 @@ export enum Networks {
 }
 
 export const DEFAULT_NETWORK = Networks.RINKEBY;
-console.log("DEFAULT_NETWORK: ", DEFAULT_NETWORK);
