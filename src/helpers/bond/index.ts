@@ -95,14 +95,14 @@ export const BASHDAI = new LPBond({
         },
         [Networks.LOCAL]: {
             bondAddress: "",
-            reserveAddress: "0xEb958D07b440384c559824cA4aF6338CEb19A970",
+            reserveAddress: "0x26DF06b47412dA76061ddA1fD9fe688A497FB88b",
         },
         [Networks.RINKEBY]: {
             bondAddress: "",
-            reserveAddress: "0xEb958D07b440384c559824cA4aF6338CEb19A970", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
+            reserveAddress: "0x26DF06b47412dA76061ddA1fD9fe688A497FB88b", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
         },
     },
-    lpUrl: "https://app.uniswap.org/#/add/v2/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB?chain=rinkeby", // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
+    lpUrl: "https://app.uniswap.org/#/add/v2/0x95627E5C843bc050491132a5E34a64a19471a4CE/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB?chain=rinkeby", // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
     isActive: false,
 });
 
