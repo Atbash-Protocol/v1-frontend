@@ -99,7 +99,6 @@ function NavContent() {
                             ))}
                     </div>
 
-                    {/* TODO: Update for MAINNET */}
                     <Link href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}`} target="_blank">
                         <div className="button-dapp-menu">
                             <div className="dapp-menu-item">
