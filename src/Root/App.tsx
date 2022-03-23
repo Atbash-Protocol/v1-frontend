@@ -13,8 +13,6 @@ import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } 
 
 import "./style.scss";
 import useTokens from "../hooks/tokens";
-import { BaseLayout } from "layout/Base";
-import { Typography } from "@material-ui/core";
 
 function App() {
     const dispatch = useDispatch();
@@ -92,9 +90,9 @@ function App() {
     useEffect(() => {
         if (walletChecked || connected) {
             loadDetails("app");
-            // loadDetails("account");
-            // loadDetails("userBonds");
-            // loadDetails("userTokens");
+            loadDetails("account");
+            loadDetails("userBonds");
+            loadDetails("userTokens");
         }
     }, [walletChecked, connected]);
 

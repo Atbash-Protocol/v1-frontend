@@ -23,7 +23,8 @@ export const loadAppDetails = createAsyncThunk(
         // const ohmAmount = 1512.12854088 * ohmPrice;
 
         const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
-        // const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
+        const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
+        console.log(redeemContract);
         const currentBlock = await provider.getBlockNumber();
         const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
         const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
@@ -40,6 +41,11 @@ export const loadAppDetails = createAsyncThunk(
         const marketCap = totalSupply * marketPrice;
 
         const redeemRfv = 0; // (await redeemContract.RFV()) / Math.pow(10, 9);
+        // try {
+        //     await redeemContract.RFV();
+        // } catch (e) {
+        //     console.error(e);
+        // }
         const redeemSbSent = 0; // (await sbContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 9);
         const redeemMimAvailable = 0; // (await DAIContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 18);
 
