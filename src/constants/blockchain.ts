@@ -6,4 +6,9 @@ export enum Networks {
     LOCAL = 1337,
 }
 
-export const DEFAULT_NETWORK = Networks.RINKEBY;
+function getDefaultNetwork(): Networks {
+    console.log(`Network ID: ${process.env.REACT_APP_DEFAULT_NETWORK_ID}`);
+    return parseInt(process.env.REACT_APP_DEFAULT_NETWORK_ID);
+}
+
+export const DEFAULT_NETWORK = getDefaultNetwork();
