@@ -10,6 +10,13 @@
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/src"
-        }
+        },
+        {
+            "name": "Edge",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "http://localhost:3000",     // create-react-app's default port 3000
+            "webRoot": "${workspaceRoot}/src"
+        },
     ]
 }
