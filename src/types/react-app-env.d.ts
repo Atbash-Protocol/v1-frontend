@@ -7,7 +7,7 @@ declare namespace NodeJS {
         readonly NODE_ENV: "development" | "production" | "test";
         readonly PUBLIC_URL: string;
         readonly REACT_APP_NETWORK_RPC_URL: string;
-        readonly REACT_APP_DEFAULT_NETWORK_ID: int;
+        readonly REACT_APP_DEFAULT_NETWORK_ID: string;
     }
 }
 
