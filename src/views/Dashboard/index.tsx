@@ -15,11 +15,7 @@ import "./dashboard.scss";
 function Dashboard() {
     const { t } = useTranslation();
 
-    const app = useSelector<IReduxState, IAppSlice>(state => {
-        console.log(state);
-        return state.app;
-    });
-    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
+    const { loading: isAppLoading, ...app } = useSelector<IReduxState, IAppSlice>(state => state.app);
 
     const trimmedStakingAPY = formatNumber(app.stakingAPY * 100, 1);
 
@@ -39,9 +35,9 @@ function Dashboard() {
     return (
         <Box>
             <Zoom in={true}>
-                <Grid container spacing={6} sx={{ p: 4 }} justifyContent="space-around">
+                <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
                     {DashboardItems.map(metric => (
-                        <Grid key={`dashboard-item-${metric.name}`} item lg={4} md={6} sm={6} xs={12}>
+                        <Grid key={`dashboard-item-${metric.name}`} item lg={6} md={6} sm={6} xs={12}>
                             <Box
                                 className="Dashboard__box__item"
                                 sx={{
