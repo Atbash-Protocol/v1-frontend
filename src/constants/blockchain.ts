@@ -7,8 +7,10 @@ export enum Networks {
 }
 
 function getDefaultNetwork(): Networks {
-    console.log(`Network ID: ${process.env.REACT_APP_DEFAULT_NETWORK_ID}`);
-    return parseInt(process.env.REACT_APP_DEFAULT_NETWORK_ID);
+    const networkId: string | undefined = process.env.REACT_APP_DEFAULT_NETWORK_ID;
+    console.log(`Network: ${networkId}`);
+    if (!networkId) throw new Error("Network ID not defined");
+    return parseInt(networkId);
 }
 
 export const DEFAULT_NETWORK = getDefaultNetwork();
