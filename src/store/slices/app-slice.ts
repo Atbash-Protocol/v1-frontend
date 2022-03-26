@@ -24,7 +24,6 @@ export const loadAppDetails = createAsyncThunk(
 
         const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
         const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
-        console.log(redeemContract);
         const currentBlock = await provider.getBlockNumber();
         const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
         const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
@@ -35,6 +34,8 @@ export const loadAppDetails = createAsyncThunk(
 
         const totalSupply = (await BASHContract.totalSupply()) / Math.pow(10, 9);
         const circSupply = (await sBASHContract.circulatingSupply()) / Math.pow(10, 9);
+
+        console.log(totalSupply, circSupply, marketPrice);
 
         // Total value locked - dollar amount of all staked Bash
         const stakingTVL = circSupply * marketPrice;
@@ -51,6 +52,8 @@ export const loadAppDetails = createAsyncThunk(
 
         // const tokenBalPromises = allBonds.map(bond => bond.getTreasuryBalance(networkID, provider)); // get the balances of reserves in treasury
         // const tokenBalances = await Promise.all(tokenBalPromises);
+
+        console.log(allBonds);
         const treasuryBalance = 0; // tokenBalances.reduce((tokenBalance0, tokenBalance1) => tokenBalance0 + tokenBalance1) + redeemMimAvailable + 16176498; // add all balances + redeemable DAI + ?
 
         // const tokenAmountsPromises = allBonds.map(bond => bond.getTokenAmount(networkID, provider));

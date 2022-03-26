@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Grid, InputAdornment, OutlinedInput, Zoom } from "@material-ui/core";
 import RebaseTimer from "../../components/RebaseTimer";
-import { trim } from "../../helpers";
+import { formatUSD, trim } from "../../helpers";
 import { changeStake, changeApproval } from "../../store/slices/stake-thunk";
 import "./stake.scss";
 import { useWeb3Context } from "../../hooks";
@@ -108,44 +108,14 @@ function Stake() {
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
     const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
     const effectiveNextRewardValue = trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
-    const valueOfSB = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(BASHbalance) * app.marketPrice);
-    const valueOfStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(trimmedsBASHBalance) * app.marketPrice);
-    const valueOfWrappedStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
+    const valueOfSB = formatUSD(Number(BASHbalance) * app.marketPrice);
+    const valueOfStakedBalance = formatUSD(Number(trimmedsBASHBalance) * app.marketPrice);
+    const valueOfWrappedStakedBalance = formatUSD(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
     const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
-    const valueOfAllBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(sumOfAllBalance * app.marketPrice);
-    const valueOfYourNextRewardAmount = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(nextRewardValue) * app.marketPrice);
-    const valueOfYourEffectiveNextRewardAmount = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(effectiveNextRewardValue) * app.marketPrice);
+    const valueOfAllBalance = formatUSD(sumOfAllBalance * app.marketPrice);
+    const valueOfYourNextRewardAmount = formatUSD(Number(nextRewardValue) * app.marketPrice);
+    const valueOfYourEffectiveNextRewardAmount = formatUSD(Number(effectiveNextRewardValue) * app.marketPrice);
 
     return (
         <div className="stake-view">
