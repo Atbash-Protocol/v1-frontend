@@ -1,153 +1,62 @@
 import { useSelector } from "react-redux";
-import { Grid, Zoom } from "@material-ui/core";
-import { trim } from "helpers";
-import "./dashboard.scss";
-import { Skeleton } from "@material-ui/lab";
+import { Zoom } from "@material-ui/core";
+import { formatUSD, formatNumber } from "helpers/price-units";
 import { IReduxState } from "store/slices/state.interface";
 import { IAppSlice } from "store/slices/app-slice";
 
 import { useTranslation } from "react-i18next";
+import Grid from "@mui/material/Grid";
+import { Box } from "@mui/material";
+import { theme } from "constants/theme";
+import { Metric } from "./components/Metric";
+
+import "./dashboard.scss";
 
 function Dashboard() {
     const { t } = useTranslation();
 
-    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
-    const app = useSelector<IReduxState, IAppSlice>(state => state.app);
+    const { loading: isAppLoading, ...app } = useSelector<IReduxState, IAppSlice>(state => state.app);
 
-    const trimmedStakingAPY = trim(app.stakingAPY * 100, 1);
+    const trimmedStakingAPY = formatNumber(app.stakingAPY * 100, 1);
+
+    const DashboardItems = [
+        { name: "RiskFreeValue", value: formatUSD(app.rfv) },
+        { name: "RiskFreeValuewsBASH", value: formatUSD(app.rfv * Number(app.currentIndex)) },
+        { name: "BashPrice", value: formatNumber(app.marketPrice, 2) },
+        { name: "wsBASHPrice", value: formatNumber(app.marketPrice * Number(app.currentIndex), 2) },
+        { name: "MarketCap", value: app.marketCap },
+        { name: "TVL", value: app.stakingTVL },
+        { name: "APY", value: `${trimmedStakingAPY} %` },
+        { name: "CurrentIndex", value: `${formatNumber(Number(app.currentIndex), 2)} BASH` },
+        { name: "treasuryBalance", value: formatUSD(app.treasuryBalance, 0) },
+        { name: "Runway", value: `${formatNumber(Number(app.runway), 1)} Days` },
+    ];
 
     return (
-        <div className="dashboard-view">
-            <div className="dashboard-infos-wrap">
-                <Zoom in={true}>
-                    <Grid container spacing={4}>
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("RiskFreeValue")}</p>
-                                <p className="card-value">
-                                    {isAppLoading ? (
-                                        <Skeleton width="250px" />
-                                    ) : (
-                                        new Intl.NumberFormat("en-US", {
-                                            style: "currency",
-                                            currency: "USD",
-                                            maximumFractionDigits: 2,
-                                            minimumFractionDigits: 2,
-                                        }).format(app.rfv)
-                                    )}
-                                </p>
-                            </div>
+        <Box>
+            <Zoom in={true}>
+                <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
+                    {DashboardItems.map(metric => (
+                        <Grid key={`dashboard-item-${metric.name}`} item lg={6} md={6} sm={6} xs={12}>
+                            <Box
+                                className="Dashboard__box__item"
+                                sx={{
+                                    backgroundColor: theme.palette.cardBackground.main,
+                                    backdropFilter: "blur(100px)",
+                                    borderRadius: ".5rem",
+                                    color: theme.palette.secondary.main,
+                                    px: theme.spacing(2),
+                                    py: theme.spacing(4),
+                                    textAlign: "center",
+                                }}
+                            >
+                                <Metric name={t(metric.name)} value={metric.value} loading={isAppLoading} />
+                            </Box>
                         </Grid>
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("RiskFreeValuewsBASH")}</p>
-                                <p className="card-value">
-                                    {isAppLoading ? (
-                                        <Skeleton width="250px" />
-                                    ) : (
-                                        new Intl.NumberFormat("en-US", {
-                                            style: "currency",
-                                            currency: "USD",
-                                            maximumFractionDigits: 2,
-                                            minimumFractionDigits: 2,
-                                        }).format(app.rfv * Number(app.currentIndex))
-                                    )}
-                                </p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("BASHPrice")}</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice, 2)}`}</p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("wsBASHPrice")}</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice * Number(app.currentIndex), 2)}`}</p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("MarketCap")}</p>
-                                <p className="card-value">
-                                    {isAppLoading ? (
-                                        <Skeleton width="160px" />
-                                    ) : (
-                                        new Intl.NumberFormat("en-US", {
-                                            style: "currency",
-                                            currency: "USD",
-                                            maximumFractionDigits: 0,
-                                            minimumFractionDigits: 0,
-                                        }).format(app.marketCap)
-                                    )}
-                                </p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("TVL")}</p>
-                                <p className="card-value">
-                                    {isAppLoading ? (
-                                        <Skeleton width="250px" />
-                                    ) : (
-                                        new Intl.NumberFormat("en-US", {
-                                            style: "currency",
-                                            currency: "USD",
-                                            maximumFractionDigits: 0,
-                                            minimumFractionDigits: 0,
-                                        }).format(app.stakingTVL)
-                                    )}
-                                </p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("APY")}</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(Number(trimmedStakingAPY))}%`}</p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("CurrentIndex")}</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="250px" /> : `${trim(Number(app.currentIndex), 2)} BASH`}</p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("TreasuryBalance")}</p>
-                                <p className="card-value">
-                                    {isAppLoading ? (
-                                        <Skeleton width="250px" />
-                                    ) : (
-                                        new Intl.NumberFormat("en-US", {
-                                            style: "currency",
-                                            currency: "USD",
-                                            maximumFractionDigits: 0,
-                                            minimumFractionDigits: 0,
-                                        }).format(app.treasuryBalance)
-                                    )}
-                                </p>
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
-                                <p className="card-title">{t("Runway")}</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="250px" /> : `${trim(Number(app.runway), 1)} Days`}</p>
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Zoom>
-            </div>
-        </div>
+                    ))}
+                </Grid>
+            </Zoom>
+        </Box>
     );
 }
 
