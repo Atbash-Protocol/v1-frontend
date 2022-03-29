@@ -3,7 +3,7 @@ import { secondsUntilBlock, prettifySeconds } from "../../helpers";
 import { Box } from "@material-ui/core";
 import "./rebasetimer.scss";
 import { Skeleton } from "@material-ui/lab";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { IReduxState } from "../../store/slices/state.interface";
 
 import { useTranslation } from "react-i18next";
@@ -11,20 +11,22 @@ import { useTranslation } from "react-i18next";
 function RebaseTimer() {
     const { t } = useTranslation();
 
-    const currentBlockTime = useSelector<IReduxState, number>(state => {
-        return state.app.currentBlockTime;
-    });
-
-    const nextRebase = useSelector<IReduxState, number>(state => {
-        return state.app.nextRebase;
-    });
+    const currentBlockTime = useSelector<IReduxState, number>(state => state.app.currentBlockTime);
+    const nextRebase = useSelector<IReduxState, number>(state => state.app.nextRebase);
 
     const timeUntilRebase = useMemo(() => {
+        console.log("here", currentBlockTime, nextRebase);
         if (currentBlockTime && nextRebase) {
             const seconds = secondsUntilBlock(currentBlockTime, nextRebase);
             return prettifySeconds(seconds);
         }
     }, [currentBlockTime, nextRebase]);
+
+    useEffect(() => {
+        console.log("loaded", currentBlockTime, nextRebase);
+    }, []);
+
+    console.log("rebase", currentBlockTime, nextRebase, timeUntilRebase);
 
     return (
         <Box className="rebase-timer">
