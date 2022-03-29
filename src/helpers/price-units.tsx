@@ -27,3 +27,7 @@ export const formatNumber = (number: number = 0, precision?: number) => {
 
     return [exp, decimals.substring(0, precision)].join(".");
 };
+
+export const formatAPY = (formatted: string) => {
+    return formatted.length > 16 ? "> 1 000 000" : formatted;
+};

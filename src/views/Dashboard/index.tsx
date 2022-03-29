@@ -6,9 +6,8 @@ import { IAppSlice } from "store/slices/app-slice";
 
 import { useTranslation } from "react-i18next";
 import Grid from "@mui/material/Grid";
-import { Box } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import { theme } from "constants/theme";
-import { Metric } from "./components/Metric";
 
 import "./dashboard.scss";
 
@@ -54,7 +53,10 @@ function Dashboard() {
                                     textAlign: "center",
                                 }}
                             >
-                                <Metric name={t(metric.name)} value={metric.value} loading={isAppLoading} />
+                                <Typography variant="h5">{t(metric.name)}</Typography>
+                                <Typography sx={{ overflowX: "hidden" }} variant="h6">
+                                    {isAppLoading ? <Skeleton /> : <>{metric.value}</>}
+                                </Typography>
                             </Box>
                         </Grid>
                     ))}
