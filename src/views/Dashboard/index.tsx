@@ -51,6 +51,13 @@ function Dashboard() {
                                     px: theme.spacing(2),
                                     py: theme.spacing(4),
                                     textAlign: "center",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    display: "flex",
+                                    flex: "1 1 auto",
+                                    overflow: "auto",
+                                    flexDirection: "column",
+                                    height: "100%",
                                 }}
                             >
                                 <Typography variant="h5">{t(metric.name)}</Typography>
