@@ -6,7 +6,7 @@ declare namespace NodeJS {
     interface ProcessEnv {
         readonly NODE_ENV: "development" | "production" | "test";
         readonly PUBLIC_URL: string;
-        readonly INFURA_ENDPOINT_URL: string;
+        readonly REACT_APP_INFURA_ENDPOINT_URL: string;
     }
 }
 

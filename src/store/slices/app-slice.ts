@@ -1,11 +1,12 @@
 import { ethers } from "ethers";
 import { getAddresses } from "../../constants";
-import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract } from "../../abi";
+import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract, LpReserveContract } from "../../abi";
 import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
-import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createSelector, createAsyncThunk, createReducer, createAction } from "@reduxjs/toolkit";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { RootState } from "../store";
 import allBonds from "../../helpers/bond";
+import { LPBond } from "helpers/bond/lp-bond";
 
 interface ILoadAppDetails {
     networkID: number;
@@ -15,7 +16,8 @@ interface ILoadAppDetails {
 export const loadAppDetails = createAsyncThunk(
     "app/loadAppDetails",
     //@ts-ignore
-    async ({ networkID, provider }: ILoadAppDetails) => {
+    async ({ networkID, provider }: ILoadAppDetails, thunkAPI) => {
+        console.log("Thunk api", thunkAPI);
         const daiPrice = getTokenPrice("DAI");
         const addresses = getAddresses(networkID);
 
@@ -23,19 +25,22 @@ export const loadAppDetails = createAsyncThunk(
         // const ohmAmount = 1512.12854088 * ohmPrice;
 
         const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
+        const poolContract = new ethers.Contract(addresses.INITIAL_PAIR_ADDRESS, LpReserveContract, provider);
         const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
-        const currentBlock = await provider.getBlockNumber();
-        const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
         const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
         const BASHContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
         const DAIContract = new ethers.Contract(addresses.DAI_ADDRESS, TimeTokenContract, provider); // todo: DAI
 
-        const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * daiPrice;
+        thunkAPI.dispatch(contractFetched(thunkAPI.getState()));
+        //blockchain
+        const currentBlock = await provider.getBlockNumber();
+        const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
 
+        // global metrics ?
+        // const marketPrice = ((await getMarketPrice(poolContract)) / poolContract.decimals()) * daiPrice;
+        const marketPrice = 10;
         const totalSupply = (await BASHContract.totalSupply()) / Math.pow(10, 9);
         const circSupply = (await sBASHContract.circulatingSupply()) / Math.pow(10, 9);
-
-        console.log(totalSupply, circSupply, marketPrice);
 
         // Total value locked - dollar amount of all staked Bash
         const stakingTVL = circSupply * marketPrice;
@@ -95,6 +100,18 @@ export const loadAppDetails = createAsyncThunk(
         const treasuryRunway = rfvTreasury / circSupply;
         const runway = Math.log(treasuryRunway) / Math.log(1 + stakingRebase) / 3;
 
+        /***
+         * APP - 
+         * contracts: {
+         *      stakingContract, redeemContract, sBASHContract, BASHContract, DAIContract
+         * }
+         * blockchain {
+         * blockNumber
+         * }
+         * 
+
+         */
+
         return {
             currentIndex: Number(ethers.utils.formatUnits(currentIndex, "gwei")), // in sBASH.decimals 9
             totalSupply,
@@ -152,15 +169,23 @@ const appSlice = createSlice({
     initialState,
     reducers: {
         fetchAppSuccess(state, action) {
-            setAll(state, action.payload);
+            console.log("fetch", state, action);
+            state = { ...state, ...action.payload };
+        },
+        contractFetched(state, action) {
+            console.log("state", action, state);
         },
     },
     extraReducers: builder => {
+        console.log(builder);
         builder
+
             .addCase(loadAppDetails.pending, (state, action) => {
+                console.log("before", state, action);
                 state.loading = true;
             })
             .addCase(loadAppDetails.fulfilled, (state, action) => {
+                console.log("done", state, action);
                 setAll(state, action.payload);
                 state.loading = false;
             })
@@ -175,6 +200,6 @@ const baseInfo = (state: RootState) => state.app;
 
 export default appSlice.reducer;
 
-export const { fetchAppSuccess } = appSlice.actions;
+export const { fetchAppSuccess, contractFetched } = appSlice.actions;
 
 export const getAppState = createSelector(baseInfo, app => app);

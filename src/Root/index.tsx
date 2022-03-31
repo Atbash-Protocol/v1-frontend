@@ -8,6 +8,7 @@ function Root() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.warn("TODO: remove prices");
         loadTokenPrices().then(() => setLoading(false));
     }, []);
 

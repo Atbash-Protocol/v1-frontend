@@ -7,7 +7,7 @@ import { Networks } from "../../constants";
 import { messages } from "../../constants/messages";
 import { useDispatch } from "react-redux";
 import { swithNetwork } from "../../helpers/switch-network";
-import { getNetworkURI } from "./helpers/get-network-uri";
+import { getProviderURL } from "lib/contracts/networks";
 
 type onChainProvider = {
     connect: () => Promise<Web3Provider>;
@@ -49,13 +49,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const dispatch = useDispatch();
 
     const [connected, setConnected] = useState(false);
-    const [chainID, setChainID] = useState(DEFAULT_NETWORK);
     const [providerChainID, setProviderChainID] = useState(DEFAULT_NETWORK);
     const [address, setAddress] = useState("");
-
-    // const [uri, setUri] = useState(getMainnetURI(chainID));
-    const [uri, setUri] = useState(getNetworkURI(DEFAULT_NETWORK));
-    const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(uri));
+    const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(getProviderURL(DEFAULT_NETWORK)));
 
     const [web3Modal] = useState<Web3Modal>(
         new Web3Modal({
@@ -65,9 +61,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                     package: WalletConnectProvider,
                     options: {
                         rpc: {
-                            [Networks.LOCAL]: getNetworkURI(Networks.LOCAL),
-                            [Networks.RINKEBY]: getNetworkURI(Networks.RINKEBY),
-                            [Networks.MAINNET]: getNetworkURI(Networks.MAINNET),
+                            [Networks.LOCAL]: getProviderURL(Networks.LOCAL),
+                            [Networks.RINKEBY]: getProviderURL(Networks.RINKEBY),
+                            [Networks.MAINNET]: getProviderURL(Networks.MAINNET),
                         },
                     },
                 },
@@ -90,7 +86,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
             rawProvider.on("accountsChanged", () => setTimeout(() => window.location.reload(), 1));
 
             rawProvider.on("chainChanged", async (chain: number) => {
-                changeNetwork(chain);
+                setProviderChainID(chain);
             });
 
             rawProvider.on("network", (_newNetwork, oldNetwork) => {
@@ -100,12 +96,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         },
         [provider],
     );
-
-    const changeNetwork = async (otherChainID: number) => {
-        const network = Number(otherChainID);
-
-        setProviderChainID(network);
-    };
 
     const connect = useCallback(async () => {
         const rawProvider = await web3Modal.connect();
@@ -160,13 +150,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
             provider,
             connected,
             address,
-            chainID,
+            chainID: DEFAULT_NETWORK,
             web3Modal,
             providerChainID,
             checkWrongNetwork,
         }),
-        [connect, disconnect, hasCachedProvider, provider, connected, address, chainID, web3Modal, providerChainID],
+        [connect, disconnect, hasCachedProvider, provider, connected, address, DEFAULT_NETWORK, web3Modal, providerChainID],
     );
-    //@ts-ignore
+
     return <Web3Context.Provider value={{ onChainProvider }}>{children}</Web3Context.Provider>;
 };

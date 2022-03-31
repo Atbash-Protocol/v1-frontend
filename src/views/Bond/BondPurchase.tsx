@@ -8,11 +8,11 @@ import { IPendingTxn, isPendingTxn, txnButtonText } from "../../store/slices/pen
 import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "../../store/slices/state.interface";
 import { IAllBondData } from "../../hooks/bonds";
-import useDebounce from "../../hooks/debounce";
 import { messages } from "../../constants/messages";
 import { warning } from "../../store/slices/messages-slice";
 
 import { useTranslation } from "react-i18next";
+import { debounce } from "lodash";
 
 interface IBondPurchaseProps {
     bond: IAllBondData;
@@ -102,7 +102,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
         setQuantity((amount || "").toString());
     };
 
-    const bondDetailsDebounce = useDebounce(quantity, 1000);
+    const bondDetailsDebounce = debounce(() => quantity, 1000);
 
     useEffect(() => {
         dispatch(calcBondDetails({ bond, value: quantity, provider, networkID: chainID }));
