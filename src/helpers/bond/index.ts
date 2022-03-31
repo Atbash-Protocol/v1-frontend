@@ -23,11 +23,11 @@ export const dai = new StableBond({
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.RINKEBY]: {
-            bondAddress: "",
-            reserveAddress: "",
+            bondAddress: "0xd0D5024c723c4F047C7626FBA18E7797A4E50a12",
+            reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB", // DAI
         },
         [Networks.LOCAL]: {
-            bondAddress: "",
+            bondAddress: "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
             reserveAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9", // DAI
         },
         [Networks.MAINNET]: {

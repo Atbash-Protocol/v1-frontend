@@ -28,7 +28,7 @@ function Dashboard() {
         { name: "TVL", value: app.stakingTVL },
         { name: "APY", value: `${trimmedStakingAPY} %` },
         { name: "CurrentIndex", value: `${formatNumber(Number(app.currentIndex), 2)} BASH` },
-        { name: "treasuryBalance", value: formatUSD(app.treasuryBalance, 0) },
+        { name: "TreasuryBalance", value: formatUSD(app.treasuryBalance, 0) },
         { name: "Runway", value: `${formatNumber(Number(app.runway), 1)} Days` },
     ];
 
