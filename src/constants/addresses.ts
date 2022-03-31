@@ -12,6 +12,7 @@ const LOCAL = {
     DAO_ADDRESS: "0x000000000000000000000000000000000000dead",
     ZAPIN_ADDRESS: "",
     REDEEM_ADDRESS: "", // SnowbankFinalRedistribution - https://docs.snowbank.finance/events/final-redistribution -
+    INITIAL_PAIR_ADDRESS: "", //Pool
 };
 
 const MAINNET = {
@@ -26,6 +27,7 @@ const MAINNET = {
     TREASURY_ADDRESS: "0xF89c4cA8CC3fb50aDdbE6f77E680fCFA87458A88",
     ZAPIN_ADDRESS: "0xb4e6426AE18E7348e54Dd425eC5853cd391d442d",
     REDEEM_ADDRESS: "0xFc3625cD7a5C9D40BfE6EE075A73867B32073f5E",
+    INITIAL_PAIR_ADDRESS: "", //Pool
 };
 
 const RINKEBY = {
@@ -40,6 +42,7 @@ const RINKEBY = {
     TREASURY_ADDRESS: "0xe3CD62D6A9c5dA97347C8E543e3a0a25be04C8cb",
     ZAPIN_ADDRESS: "",
     REDEEM_ADDRESS: "",
+    INITIAL_PAIR_ADDRESS: "0x6C538aDf35d1927497090e6971Fc46D8ed813dF6", //Pool
 };
 
 export const getAddresses = (networkID: number) => {

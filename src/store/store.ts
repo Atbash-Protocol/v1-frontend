@@ -6,6 +6,8 @@ import appReducer from "./slices/app-slice";
 import pendingTransactionsReducer from "./slices/pending-txns-slice";
 import messagesReducer from "./slices/messages-slice";
 
+import mainReducer from "./modules/app/app.slice";
+
 const store = configureStore({
     reducer: {
         account: accountReducer,
@@ -13,6 +15,7 @@ const store = configureStore({
         app: appReducer,
         pendingTransactions: pendingTransactionsReducer,
         messages: messagesReducer,
+        main: mainReducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });

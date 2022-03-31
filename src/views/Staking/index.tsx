@@ -92,11 +92,11 @@ function Staking() {
                             <StakeMetrics />
                         </Grid>
 
-                        {/* <Stake /> */}
+                        <Stake />
                     </Grid>
                 </div>
             </Zoom>
-            {/* {address && (
+            {address && (
                 <Zoom in={true}>
                     <div className="stake-card">
                         <Grid className="stake-card-grid" container direction="column">
@@ -141,7 +141,6 @@ function Staking() {
                     </div>
                 </Zoom>
             )}
-            {address && <UserBalance />} */}
         </div>
     );
 }

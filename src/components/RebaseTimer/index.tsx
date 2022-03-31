@@ -1,38 +1,36 @@
-import { useSelector } from "react-redux";
-import { secondsUntilBlock, prettifySeconds } from "../../helpers";
-import { Box } from "@material-ui/core";
-import "./rebasetimer.scss";
-import { Skeleton } from "@material-ui/lab";
-import { useEffect, useMemo } from "react";
-import { IReduxState } from "../../store/slices/state.interface";
+import { shallowEqual, useSelector } from "react-redux";
+import { formatTimer } from "helpers/prettify-seconds";
+import { IReduxState } from "store/slices/state.interface";
 
 import { useTranslation } from "react-i18next";
+import { IAppSlice } from "store/slices/app-slice";
+import { Box, Skeleton, Typography } from "@mui/material";
+import { theme } from "constants/theme";
+import { useState, useEffect } from "react";
 
-function RebaseTimer() {
+const RebaseTimer = () => {
     const { t } = useTranslation();
 
-    const currentBlockTime = useSelector<IReduxState, number>(state => state.app.currentBlockTime);
-    const nextRebase = useSelector<IReduxState, number>(state => state.app.nextRebase);
+    const { currentBlockTime, nextRebase } = useSelector<IReduxState, Pick<IAppSlice, "currentBlockTime" | "nextRebase">>(state => state.app, shallowEqual);
 
-    const timeUntilRebase = useMemo(() => {
-        console.log("here", currentBlockTime, nextRebase);
+    const [timeUntilRebase, setTimeUntilRebase] = useState<string | null>(null);
+
+    useEffect(() => {
         if (currentBlockTime && nextRebase) {
-            const seconds = secondsUntilBlock(currentBlockTime, nextRebase);
-            return prettifySeconds(seconds);
+            if (currentBlockTime > nextRebase) {
+                const timeUntilRebase = formatTimer(currentBlockTime, nextRebase, t);
+                setTimeUntilRebase(timeUntilRebase);
+            }
         }
     }, [currentBlockTime, nextRebase]);
 
-    useEffect(() => {
-        console.log("loaded", currentBlockTime, nextRebase);
-    }, []);
-
-    console.log("rebase", currentBlockTime, nextRebase, timeUntilRebase);
+    if (!currentBlockTime || !nextRebase) return <Skeleton />;
 
     return (
-        <Box className="rebase-timer">
-            <p>{currentBlockTime ? timeUntilRebase ? <>{t("TimeToNextRebase", { time: timeUntilRebase })}</> : <span>{t("Rebasing")}</span> : <Skeleton width="200px" />}</p>
+        <Box sx={{ color: theme.palette.secondary.main, textTransform: "uppercase", letterSpacing: 2 }}>
+            {timeUntilRebase ? <Typography>{t("TimeToNextRebase", { time: timeUntilRebase })}</Typography> : <Typography>{t("Rebasing")}</Typography>}
         </Box>
     );
-}
+};
 
 export default RebaseTimer;

@@ -57,7 +57,6 @@ export abstract class Bond {
     }
 
     public getAddressForReserve(networkID: Networks) {
-        console.log("here");
         return this.networkAddrs[networkID]!.reserveAddress;
     }
 

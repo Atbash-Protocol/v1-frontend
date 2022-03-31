@@ -15,6 +15,9 @@ cp .env.template .env
 - Real computations
 - Mobile rendering
 - Tests
+- Create comparaison between user tokens and active bonds 
+- Sidebar needs to remove the items not available if not connected
+
 
 ##  🔧 Setting up Local Development
 
