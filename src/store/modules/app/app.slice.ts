@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { isActionRejected } from "store/utils/action";
 
 import { initializeProviderContracts } from "./app.helpers";
-import { getBlockchainData, getCoreMetrics } from "./app.thunks";
+import { getBlockchainData, getCoreMetrics, getStakingMetrics } from "./app.thunks";
 import { ContractEnum, MainSliceState } from "./app.types";
 
 // Define the initial state using that type
@@ -19,20 +19,26 @@ const initialState: MainSliceState = {
     metrics: {
         circSupply: null,
         totalSupply: null,
+        reserves: null,
+    },
+    staking: {
+        epoch: null,
+        secondsToNextEpoch: null,
+        index: null,
     },
     blockchain: {
         timestamp: null,
         currentBlock: null,
     },
     errorEncountered: false,
-    loading: false,
+    loading: true,
 };
 
 export const MainSlice = createSlice({
     name: "app-main",
     initialState,
     reducers: {
-        initiaContracts: {
+        initializeContracts: {
             prepare: ({ networkID, provider }: { networkID: number; provider: JsonRpcProvider }) => {
                 return {
                     payload: initializeProviderContracts({ networkID, provider }),
@@ -42,15 +48,20 @@ export const MainSlice = createSlice({
                 state.contracts = { ...state.contracts, ...payload };
             },
         },
+        after: (state, action) => {
+            console.log("after the slice", state, action);
+        },
     },
     extraReducers: builder => {
         builder
             .addCase(getBlockchainData.fulfilled, (state, action) => {
                 state.blockchain = action.payload;
-                state.loading = false;
             })
             .addCase(getCoreMetrics.fulfilled, (state, action) => {
                 state.metrics = action.payload;
+            })
+            .addCase(getStakingMetrics.fulfilled, (state, action) => {
+                state.staking = action.payload;
                 state.loading = false;
             })
             .addMatcher(isActionRejected, (state, action) => {
@@ -61,7 +72,7 @@ export const MainSlice = createSlice({
     },
 });
 
-export const { initiaContracts } = MainSlice.actions;
+export const { initializeContracts } = MainSlice.actions;
 
 export const selectContracts = (state: MainSliceState) => state.contracts;
 

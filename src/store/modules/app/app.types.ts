@@ -15,6 +15,12 @@ export interface MainSliceState {
     metrics: {
         totalSupply: number | null;
         circSupply: number | null;
+        reserves: number | null;
+    };
+    staking: {
+        epoch: number | null;
+        secondsToNextEpoch: number | null;
+        index: number | null;
     };
     blockchain: {
         currentBlock: number | null;
