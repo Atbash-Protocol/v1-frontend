@@ -112,6 +112,7 @@ function NavContent() {
                 sx={{
                     flexDirection: "column",
                     padding: "1rem",
+                    width: "100%",
                 }}
             >
                 <Link href="https://atbash.finance" target="_blank">
@@ -119,16 +120,16 @@ function NavContent() {
                 </Link>
 
                 {address && (
-                    <div className="wallet-link">
+                    <Box sx={{ display: "inline-flex", justifyContent: "space-around", marginTop: theme.spacing(2), width: "100%" }}>
                         <Davatar size={20} address={address} generatedAvatarType="jazzicon" />
                         <Link href={`https://etherscan.io/address/${address}`} target="_blank">
                             <p>{ensName || shorten(address)}</p>
                         </Link>
-                    </div>
+                    </Box>
                 )}
             </Box>
 
-            <Box sx={{ marginTop: theme.spacing(4), marginBottom: theme.spacing(4) }}>
+            <Box sx={{ marginTop: theme.spacing(1), marginBottom: theme.spacing(4) }}>
                 <div>
                     <List
                         sx={{
