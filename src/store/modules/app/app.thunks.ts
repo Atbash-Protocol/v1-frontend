@@ -1,6 +1,7 @@
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ERC20_DECIMALS } from "lib/contracts/contracts";
+import { IReduxState } from "store/slices/state.interface";
 import { RootState } from "store/store";
 
 export const getBlockchainData = createAsyncThunk("app/blockchain", async (provider: JsonRpcProvider) => {
@@ -22,8 +23,9 @@ export const getCoreMetrics = createAsyncThunk("app/coreMetrics", async (_, { ge
 
     const totalSupply = (await BASH!.totalSupply()) / 10 ** ERC20_DECIMALS;
     const circSupply = (await SBASH_ADDRESS!.circulatingSupply()) / Math.pow(10, ERC20_DECIMALS);
-    // const reserves = await INITIAL_PAIR_ADDRESS!.getReserves();
-    const reserves = 100;
+    const reserves = await INITIAL_PAIR_ADDRESS!.getReserves();
+
+    console.log("reserves", reserves);
 
     const state = getState();
 
@@ -31,5 +33,25 @@ export const getCoreMetrics = createAsyncThunk("app/coreMetrics", async (_, { ge
         totalSupply,
         circSupply,
         reserves,
+    };
+});
+
+export const getStakingMetrics = createAsyncThunk("app/stakingMetrics", async (_, { getState }) => {
+    const {
+        main: {
+            contracts: { STAKING_ADDRESS },
+        },
+    } = getState() as IReduxState;
+
+    const epoch = await STAKING_ADDRESS!.epoch();
+    const secondsToNextEpoch = 0; // Number(await STAKING_ADDRESS.secondsToNextEpoch());
+    // const secondsToNextEpoch = Number(await stakingContract.secondsToNextEpoch());
+
+    const index = await STAKING_ADDRESS!.index();
+
+    return {
+        epoch,
+        index,
+        secondsToNextEpoch,
     };
 });

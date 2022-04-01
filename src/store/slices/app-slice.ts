@@ -79,18 +79,14 @@ export const loadAppDetails = createAsyncThunk(
         const deltaMarketPriceRfv = ((rfv - marketPrice) / rfv) * 100;
 
         // Calculating staking
-        // const epoch = await stakingContract.epoch();
         // const secondsToEpoch = Number(await stakingContract.secondsToNextEpoch());
-        // const stakingReward = epoch.distribute;
-        // const circ = await sohmMainContract.circulatingSupply();
         // const stakingRebase = Number(stakingReward.toString()) / Number(circ.toString());
         // const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
         // const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
 
         const epoch = await stakingContract.epoch();
         const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
-        const circ = await sBASHContract.circulatingSupply(); // available sBASH not held by staking contract
-        const stakingRebase = stakingReward / circ; // rewardYield rate for this epoch
+        const stakingRebase = stakingReward / circSupply; // rewardYield rate for this epoch
         const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1; // 3 epoch/day
         const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
 
