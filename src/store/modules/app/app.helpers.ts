@@ -2,7 +2,7 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 import { StakingContract, LpReserveContract, RedeemContract, MemoTokenContract, TimeTokenContract } from "abi";
 import { getAddresses } from "constants/addresses";
 import { Contract } from "ethers";
-import { ContractEnum } from "./app.types";
+import { ContractEnum, Epoch } from "./app.types";
 
 export const initializeProviderContracts = ({ networkID, provider }: { networkID: number; provider: JsonRpcProvider }): { [key in ContractEnum]?: Contract } => {
     const addresses = getAddresses(networkID);
@@ -17,8 +17,14 @@ export const initializeProviderContracts = ({ networkID, provider }: { networkID
     };
 };
 
-export const getCoreMetrics = async (BASHContract: Contract) => {
+export const calculateStakingRewards = (epoch: Epoch, circSupply: number) => {
+    const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
+    const stakingRebase = stakingReward / circSupply; // rewardYield rate for this epoch
+    const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1; // 3 epoch/day
+    const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1 * 100;
+
     return {
-        totalSupply: await BASHContract.getTotalSupply(),
+        fiveDayRate,
+        stakingAPY,
     };
 };

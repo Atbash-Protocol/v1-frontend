@@ -1,5 +1,6 @@
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { ethers } from "ethers";
 import { ERC20_DECIMALS } from "lib/contracts/contracts";
 import { IReduxState } from "store/slices/state.interface";
 import { RootState } from "store/store";
@@ -23,16 +24,12 @@ export const getCoreMetrics = createAsyncThunk("app/coreMetrics", async (_, { ge
 
     const totalSupply = (await BASH!.totalSupply()) / 10 ** ERC20_DECIMALS;
     const circSupply = (await SBASH_ADDRESS!.circulatingSupply()) / Math.pow(10, ERC20_DECIMALS);
-    const reserves = await INITIAL_PAIR_ADDRESS!.getReserves();
-
-    console.log("reserves", reserves);
-
-    const state = getState();
+    const [reserve1, reserve2]: ethers.BigNumber[] = await INITIAL_PAIR_ADDRESS!.getReserves();
 
     return {
         totalSupply,
         circSupply,
-        reserves: 0,
+        reserves: reserve2.div(reserve1).div(10 ** 9),
     };
 });
 

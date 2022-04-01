@@ -1,4 +1,4 @@
-import { Contract } from "ethers";
+import { Contract, ethers } from "ethers";
 
 export enum ContractEnum {
     BASH = "BASH",
@@ -9,16 +9,20 @@ export enum ContractEnum {
     REDEEM_ADDRESS = "REDEEM_ADDRESS",
 }
 
-// Define a type for the slice state
+export interface Epoch {
+    distribute: number;
+    endTime: number;
+}
+
 export interface MainSliceState {
     contracts: { [key in ContractEnum]?: Contract | null };
     metrics: {
         totalSupply: number | null;
         circSupply: number | null;
-        reserves: number | null;
+        reserves: ethers.BigNumber | null;
     };
     staking: {
-        epoch: number | null;
+        epoch: Epoch | null;
         secondsToNextEpoch: number | null;
         index: number | null;
     };
