@@ -1,14 +1,6 @@
-import { NavLink, Link as RouterLink, LinkProps as RouterLinkProps } from "react-router-dom";
-import { Button, Link, List, ListItemButton, ListItemText } from "@mui/material";
+import { Avatar, Box, Link, List } from "@mui/material";
 
-import Social from "../Social";
-import StakeIcon from "assets/icons/stake.svg";
-import BondIcon from "assets/icons/bond.svg";
-import BuyIcon from "assets/icons/buy.svg";
-import BorrowIcon from "assets/icons/borrow.svg";
-import Forecast from "assets/icons/Forecast.svg";
-import GovIcon from "assets/icons/governance.svg";
-
+import Social from "./components/Social";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import AccountBalanceSharpIcon from "@mui/icons-material/AccountBalanceSharp"; // GOV
@@ -17,23 +9,22 @@ import HandymanSharpIcon from "@mui/icons-material/HandymanSharp"; // Mint
 import CurrencyExchangeSharpIcon from "@mui/icons-material/CurrencyExchangeSharp";
 import SelfImprovementSharpIcon from "@mui/icons-material/SelfImprovementSharp"; // Pro
 import PriceCheckSharpIcon from "@mui/icons-material/PriceCheckSharp";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import Divider from "@mui/material/Divider";
 
 import AtbashICON from "assets/icons/bash.svg";
-import { trim, shorten } from "helpers";
+import { shorten } from "helpers";
 import { useAddress, useWeb3Context } from "hooks";
 import useBonds from "hooks/bonds";
-import { Skeleton } from "@material-ui/lab";
-import "./styles.scss";
 import useENS from "hooks/useENS";
 import Davatar from "@davatar/react";
 
 import { useTranslation } from "react-i18next";
 import { getAddresses } from "constants/addresses";
 import { DEFAULT_NETWORK } from "constants/blockchain";
-import { ListItemIcon } from "@material-ui/core";
-import { useMemo, forwardRef, ReactElement } from "react";
 import { ListItemLink } from "./components/ListItemLink";
+import { getBuyLink } from "lib/uniswap/link";
+import { theme } from "constants/theme";
 
 const getMenuItems = (connected: Boolean) => [
     {
@@ -102,13 +93,29 @@ function NavContent() {
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
     const menuItems = getMenuItems(connected).map(({ path, key, ...props }) => <ListItemLink to={path} primary={t(key)} {...props} />);
+    const bondItems = bonds.filter(bond => bond.isActive).map(bond => <ListItemLink key={`mint-bond-${bond.name}`} to={`/mints/${bond.name}`} primary={bond.displayName} />);
 
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink to={path} primary={t(key)} {...props} />);
     return (
-        <div className="dapp-sidebar">
-            <div className="branding-header">
+        <Box
+            sx={{
+                padding: "1rem",
+                flexDirection: "column",
+                alignItems: "center",
+                minWidth: "10rem",
+                overflowY: "scroll",
+                backgroundColor: theme.palette.cardBackground.main,
+                height: "100%",
+            }}
+        >
+            <Box
+                sx={{
+                    flexDirection: "column",
+                    padding: "1rem",
+                }}
+            >
                 <Link href="https://atbash.finance" target="_blank">
-                    <img alt="" src={AtbashICON} />
+                    <Avatar alt="Remy Sharp" src={AtbashICON} sx={{ width: 128, height: 128, textAlign: "center" }} />
                 </Link>
 
                 {address && (
@@ -119,79 +126,30 @@ function NavContent() {
                         </Link>
                     </div>
                 )}
-            </div>
+            </Box>
 
-            <div className="dapp-menu-links">
-                <div className="dapp-nav">
-                    <List>
+            <Box sx={{ marginTop: theme.spacing(4), marginBottom: theme.spacing(4) }}>
+                <div>
+                    <List
+                        sx={{
+                            color: theme.palette.secondary.main,
+                            "& .MuiListItemButton-root:hover": {
+                                textDecoration: "underline",
+                            },
+                        }}
+                    >
                         {menuItems}
                         <Divider />
+                        {bondItems}
+                        <Divider />
+                        <ListItemLink to={getBuyLink(BASH_ADDRESS, DAI_ADDRESS)} primary={t("Buy")} renderComponent={Link} icon={<StorefrontIcon />} />
                         {comingSoonItems}
                     </List>
-
-                    <div className="bond-discounts">
-                        <p className="bond-discounts-title">{t("MintingDiscounts")}</p>
-                        {bonds
-                            .filter(bond => bond.isActive)
-                            .map((bond, i) => (
-                                <Link component={NavLink} to={`/mints/${bond.name}`} key={i} className={"bond"}>
-                                    {!bond.bondDiscount ? (
-                                        <Skeleton variant="text" width={"150px"} />
-                                    ) : (
-                                        <p>
-                                            {bond.displayName}
-                                            <span className="bond-pair-roi">{bond.bondDiscount && trim(bond.bondDiscount * 100, 2)}%</span>
-                                        </p>
-                                    )}
-                                </Link>
-                            ))}
-                    </div>
-
-                    <Link href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}`} target="_blank">
-                        <div className="button-dapp-menu">
-                            <div className="dapp-menu-item">
-                                <img alt="" src={BuyIcon} />
-                                <p>{t("Buy")}</p>
-                            </div>
-                        </div>
-                    </Link>
-
-                    <Link component={NavLink} to="/Forecast" className="button-dapp-menu">
-                        <div className="button-dapp-menu">
-                            <div className="dapp-menu-item">
-                                <img alt="" src={Forecast} />
-                                <p>{t("Forecast")}</p>
-                            </div>
-                        </div>
-                    </Link>
-
-                    <Link component={NavLink} id="bond-nav" to="#" className="button-dapp-menu">
-                        <div className="dapp-menu-item">
-                            <img alt="" src={BorrowIcon} />
-                            <p>{t("Borrow")}</p>
-                            <span>{t("ComingSoon")}</span>
-                        </div>
-                    </Link>
-
-                    {/* <Link component={NavLink} id="bond-nav" to="#" className="button-dapp-menu">
-                        <div className="dapp-menu-item">
-                            <img alt="" src={ProIcon} />
-                            <p>{t("BASHPro")}</p>
-                            <span>{t("ComingSoon")}</span>
-                        </div>
-                    </Link> */}
-
-                    <Link href="https://snapshot.org/" target="_blank" className="button-dapp-menu">
-                        <div className="dapp-menu-item">
-                            <img alt="" src={GovIcon} />
-                            <p>{t("Governance")}</p>
-                        </div>
-                    </Link>
                 </div>
-            </div>
+            </Box>
 
             <Social />
-        </div>
+        </Box>
     );
 }
 

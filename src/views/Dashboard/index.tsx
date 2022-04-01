@@ -34,11 +34,13 @@ function Dashboard() {
     //   const marketCap = totalSupply * marketPrice;
 
     useEffect(() => {
-        console.log("getMarketPrices", marketPrice);
         dispatch(getMarketPrices());
+        console.log("getMarketPrices", marketPrice);
     }, []);
 
-    if (!marketPrice || loading) return <Loading />;
+    console.log("Dashboard", loading, marketPrice);
+
+    if (!marketPrice || loading) return <> Loading </>;
 
     const DashboardItems = [
         { name: "BashPrice", value: formatUSD(marketPrice, 2) },

@@ -37,12 +37,13 @@ function App() {
     //         </ViewBase>
     //     );
 
-    // if (loading)
-    //     return (
-    //         <ViewBase>
-    //             <Loading />
-    //         </ViewBase>
-    //     );
+    console.log("APP", loading);
+    if (loading)
+        return (
+            <ViewBase>
+                <Loading />
+            </ViewBase>
+        );
 
     return (
         <ViewBase>
