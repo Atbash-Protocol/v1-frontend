@@ -13,7 +13,7 @@ import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } 
 
 import "./style.scss";
 import useTokens from "../hooks/tokens";
-import { initiaContracts, selectContracts } from "store/modules/app/app.slice";
+import { initializeContracts, selectContracts } from "store/modules/app/app.slice";
 
 function App() {
     const dispatch = useDispatch();
@@ -36,7 +36,7 @@ function App() {
     async function loadDetails(whichDetails: string) {
         let loadProvider = provider;
 
-        dispatch(initiaContracts({ networkID: chainID, provider }));
+        dispatch(initializeContracts({ networkID: chainID, provider }));
         // if (whichDetails === "app") {
         //     loadApp(loadProvider);
         // }
@@ -59,7 +59,7 @@ function App() {
 
     const loadApp = useCallback(
         loadProvider => {
-            // dispatch(initiaContracts({ networkID: chainID, provider }));
+            // dispatch(initializeContracts({ networkID: chainID, provider }));
             // dispatch(loadAppDetails({ networkID: chainID, provider: loadProvider }));
             // bonds.map(bond => {
             //     dispatch(calcBondDetails({ bond, value: null, provider: loadProvider, networkID: chainID }));

@@ -33,6 +33,6 @@
     "src/types/react-i18next.d.ts",
     "src/types/theme.d.ts",
     "./src/types"
-  ],
+ ],
   "compileOnSave": false
 }
