@@ -55,14 +55,25 @@ export const MainSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(getBlockchainData.fulfilled, (state, action) => {
-                state.blockchain = action.payload;
+                return {
+                    ...state,
+                    blockchain: action.payload,
+                    loading: false,
+                };
             })
             .addCase(getCoreMetrics.fulfilled, (state, action) => {
-                state.metrics = action.payload;
+                return {
+                    ...state,
+                    metrics: action.payload,
+                    loading: false,
+                };
             })
             .addCase(getStakingMetrics.fulfilled, (state, action) => {
-                state.staking = action.payload;
-                state.loading = false;
+                return {
+                    ...state,
+                    staking: action.payload,
+                    loading: false,
+                };
             })
             .addMatcher(isActionRejected, (state, action) => {
                 console.error(action.error); //critial error

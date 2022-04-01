@@ -8,6 +8,5 @@ export async function getMarketPrice(pairContract: ethers.Contract): Promise<num
 
     const reserves = await pairContract.getReserves();
 
-    console.log(reserves);
     return Number(reserves[1].toString()) / Number(reserves[0].toString());
 }
