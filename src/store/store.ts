@@ -7,6 +7,7 @@ import pendingTransactionsReducer from "./slices/pending-txns-slice";
 import messagesReducer from "./slices/messages-slice";
 
 import mainReducer from "./modules/app/app.slice";
+import marketReducer from "./modules/markets/markets.slice";
 
 const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
         pendingTransactions: pendingTransactionsReducer,
         messages: messagesReducer,
         main: mainReducer,
+        markets: marketReducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });
