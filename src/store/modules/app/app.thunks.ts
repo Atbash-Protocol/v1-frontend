@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { ERC20_DECIMALS } from "lib/contracts/contracts";
 import { IReduxState } from "store/slices/state.interface";
 import { RootState } from "store/store";
@@ -41,14 +41,17 @@ export const getStakingMetrics = createAsyncThunk("app/stakingMetrics", async (_
     } = getState() as IReduxState;
 
     const epoch = await STAKING_ADDRESS!.epoch();
-    const secondsToNextEpoch = 0; // Number(await STAKING_ADDRESS.secondsToNextEpoch());
-    // const secondsToNextEpoch = Number(await stakingContract.secondsToNextEpoch());
+    const secondsToNextEpoch = 0; // TODO : Number(await STAKING_ADDRESS!.secondsToNextEpoch()); not working on staking contract
 
     const index = await STAKING_ADDRESS!.index();
 
+    console.log("idx", index, BigNumber.from(index).toNumber());
     return {
-        epoch,
-        index,
+        epoch: {
+            distribute: epoch.distrubute,
+            endTime: epoch.endTime,
+        },
+        index: BigNumber.from(index).toNumber(),
         secondsToNextEpoch,
     };
 });

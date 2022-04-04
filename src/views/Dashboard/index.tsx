@@ -26,39 +26,28 @@ function Dashboard() {
     const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
 
     const { circSupply, totalSupply, reserves } = useSelector<IReduxState, MainSliceState["metrics"]>(state => state.main.metrics, shallowEqual);
-    const { epoch } = useSelector<IReduxState, MainSliceState["staking"]>(state => state.main.staking, shallowEqual);
+    const { epoch, index: stakingIndex } = useSelector<IReduxState, MainSliceState["staking"]>(state => state.main.staking, shallowEqual);
 
-    // const trimmedStakingAPY = formatNumber(app.stakingAPY * 100, 1);
-    //   const stakingTVL = circSupply * marketPrice;
-    //   const marketCap = totalSupply * marketPrice;
-
-    //   const stakingTVL = circSupply * marketPrice;
-    //   const marketCap = totalSupply * marketPrice;
-
-    useEffect(() => {
-        dispatch(getMarketPrices());
-        console.log("getMarketPrices", marketPrice);
-    }, []);
-
-    console.log("Dashboard", reserves?.toString(), marketPrice);
-
-    if (!marketPrice || !reserves || !epoch || loading) return <> Loading </>;
+    if (!marketPrice || !reserves || !epoch || loading) return <Loading />;
 
     const APY = calculateStakingRewards(epoch, circSupply!);
-    const APYMetrics = epoch ? [{ name: "APY", value: formatNumber(APY.stakingAPY) }] : [];
+    const APYMetrics = epoch
+        ? [
+              { name: "APY", value: formatNumber(APY.stakingAPY || 0) },
+              { name: "CurrentIndex", value: `${formatNumber(Number(stakingIndex), 2)} BASH` },
+              { name: "wsBASHPrice", value: formatNumber(marketPrice * Number(stakingIndex), 2) },
+          ]
+        : [];
 
     const DashboardItems = [
         { name: "BashPrice", value: formatUSD(marketPrice, 2) },
         { name: "MarketCap", value: formatUSD(totalSupply! * marketPrice, 2) },
         { name: "TVL", value: formatUSD(circSupply! * marketPrice) },
-        { name: "BashPrice", value: formatNumber(Number(reserves.toString()) * marketPrice, 2) },
+        { name: "SBashPrice", value: formatNumber(Number(reserves.toString()) * marketPrice, 2) },
 
         ...APYMetrics,
         // { name: "RiskFreeValue", value: formatUSD(app.rfv) },
         // { name: "RiskFreeValuewsBASH", value: formatUSD(app.rfv * Number(app.currentIndex)) },
-        // { name: "wsBASHPrice", value: formatNumber(app.marketPrice * Number(app.currentIndex), 2) },
-        // { name: "APY", value: `${trimmedStakingAPY} %` },
-        // { name: "CurrentIndex", value: `${formatNumber(Number(app.currentIndex), 2)} BASH` },
         // { name: "treasuryBalance", value: formatUSD(app.treasuryBalance, 0) },
         // { name: "Runway", value: `${formatNumber(Number(app.runway), 1)} Days` },
     ];

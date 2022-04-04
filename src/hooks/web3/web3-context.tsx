@@ -86,6 +86,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
             rawProvider.on("accountsChanged", () => setTimeout(() => window.location.reload(), 1));
 
             rawProvider.on("chainChanged", async (chain: number) => {
+                console.log("chanin changed", chain);
                 setProviderChainID(chain);
             });
 

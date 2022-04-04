@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { Grid, InputAdornment, OutlinedInput, Zoom } from "@material-ui/core";
 import RebaseTimer from "../../components/RebaseTimer";
 import { formatUSD, trim } from "../../helpers";
@@ -19,6 +19,8 @@ import { IAccountSlice } from "store/account/account.types";
 import { UserBalance } from "./components/UserBalance";
 import Stake from "./components/Stake";
 import StakeMetrics from "./components/Metrics";
+import { MainSliceState } from "store/modules/app/app.types";
+import { calculateStakingRewards } from "store/modules/app/app.helpers";
 
 function Staking() {
     const { t } = useTranslation();
@@ -31,9 +33,9 @@ function Staking() {
     const [quantity, setQuantity] = useState<string>("");
 
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
-    const currentIndex = useSelector<IReduxState, string>(state => {
-        return state.app.currentIndex;
-    });
+    // const currentIndex = useSelector<IReduxState, string>(state => {
+    //     return state.app.currentIndex;
+    // });
     const fiveDayRate = useSelector<IReduxState, number>(state => {
         return state.app.fiveDayRate;
     });
@@ -53,29 +55,29 @@ function Staking() {
     const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-    console.log(`Trimmed StakingAPY: ${trimmedStakingAPY}`);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
-    const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
-    const effectiveNextRewardValue = trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
+    // const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
+    const effectiveNextRewardValue = 0;
+    // trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
 
     const valueOfSB = formatUSD(Number(BASHbalance) * app.marketPrice);
     const valueOfStakedBalance = formatUSD(Number(trimmedsBASHBalance) * app.marketPrice);
-    const valueOfWrappedStakedBalance = formatUSD(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
-    const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
-    const valueOfAllBalance = formatUSD(sumOfAllBalance * app.marketPrice);
-    const valueOfYourNextRewardAmount = formatUSD(Number(nextRewardValue) * app.marketPrice);
-    const valueOfYourEffectiveNextRewardAmount = formatUSD(Number(effectiveNextRewardValue) * app.marketPrice);
+    const valueOfWrappedStakedBalance = 0; // formatUSD(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
+    const sumOfAllBalance = 0; // Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
+    const valueOfAllBalance = 0; // formatUSD(sumOfAllBalance * app.marketPrice);
+    const valueOfYourNextRewardAmount = 0; // formatUSD(Number(nextRewardValue) * app.marketPrice);
+    const valueOfYourEffectiveNextRewardAmount = 0; //  formatUSD(Number(effectiveNextRewardValue) * app.marketPrice);
 
-    /**
-     * StakingAPY && trimmedStakingAPY
-     * StakingAPY && stakingTVL
-     * currentIndex
-     * marketPrice
-     *
-     *
-     *
-     */
+    // NEW
+    const marketPrice = useSelector<IReduxState, number | null>(state => state.markets.markets.dai, shallowEqual);
+    const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
+    const { circSupply, totalSupply, reserves } = useSelector<IReduxState, MainSliceState["metrics"]>(state => state.main.metrics, shallowEqual);
+    const { epoch, index: stakingIndex } = useSelector<IReduxState, MainSliceState["staking"]>(state => state.main.staking, shallowEqual);
+
+    const TVL = circSupply! * marketPrice!;
+    const APY = calculateStakingRewards(epoch!, circSupply!);
+
     return (
         <div className="stake-view">
             <Zoom in={true}>
@@ -89,7 +91,7 @@ function Staking() {
                         </Grid>
 
                         <Grid item>
-                            <StakeMetrics />
+                            <StakeMetrics TVL={TVL} APY={APY.stakingAPY || 0} currentIndex={stakingIndex!} BASHPrice={marketPrice!} />
                         </Grid>
 
                         <Stake />
