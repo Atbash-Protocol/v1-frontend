@@ -24,10 +24,10 @@ export const swithNetwork = async () => {
                     await addChainRequest();
                     await switchRequest();
                 } catch (addError) {
-                    console.log(error);
+                    console.error(error);
                 }
             }
-            console.log(error);
+            console.error(error);
         }
     }
 };

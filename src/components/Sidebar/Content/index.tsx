@@ -92,10 +92,10 @@ function NavContent() {
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
-    const menuItems = getMenuItems(connected).map(({ path, key, ...props }) => <ListItemLink to={path} primary={t(key)} {...props} />);
+    const menuItems = getMenuItems(connected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
     const bondItems = bonds.filter(bond => bond.isActive).map(bond => <ListItemLink key={`mint-bond-${bond.name}`} to={`/mints/${bond.name}`} primary={bond.displayName} />);
 
-    const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink to={path} primary={t(key)} {...props} />);
+    const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
     return (
         <Box
             sx={{

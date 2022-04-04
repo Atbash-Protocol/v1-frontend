@@ -22,7 +22,6 @@ function Stake() {
     const dispatch = useDispatch();
     const { provider, address, connect, chainID, checkWrongNetwork } = useWeb3Context();
 
-    const [view, setView] = useState(0);
     const [quantity, setQuantity] = useState<string>("");
 
     const currentIndex = useSelector<IReduxState, string>(state => {
@@ -38,7 +37,7 @@ function Stake() {
     });
 
     const setMax = () => {
-        if (view === 0) {
+        if (viewId === 0) {
             setQuantity(BASHbalance);
         } else {
             setQuantity(sBASHBalance);
@@ -51,50 +50,43 @@ function Stake() {
         await dispatch(changeApproval({ address, token, provider, networkID: chainID }));
     };
 
-    const onChangeStake = async (action: string) => {
-        if (await checkWrongNetwork()) return;
-        if (quantity === "" || parseFloat(quantity) === 0) {
-            dispatch(warning({ text: action === "stake" ? messages.before_stake : messages.before_unstake }));
-        } else {
-            await dispatch(changeStake({ address, action, value: String(quantity), provider, networkID: chainID }));
-            setQuantity("");
-        }
-    };
+    // const onChangeStake = async (action: string) => {
+    //     if (await checkWrongNetwork()) return;
+    //     if (quantity === "" || parseFloat(quantity) === 0) {
+    //         dispatch(warning({ text: action === "stake" ? messages.before_stake : messages.before_unstake }));
+    //     } else {
+    //         await dispatch(changeStake({ address, action, value: String(quantity), provider, networkID: chainID }));
+    //         setQuantity("");
+    //     }
+    // };
 
-    const hasAllowance = useCallback(
-        token => {
-            if (token === "BASH") return stakeAllowance > 0;
-            if (token === "sBASH") return unstakeAllowance > 0;
-            return 0;
-        },
-        [stakeAllowance],
-    );
+    // const hasAllowance = useCallback(
+    //     token => {
+    //         if (token === "BASH") return stakeAllowance > 0;
+    //         if (token === "sBASH") return unstakeAllowance > 0;
+    //         return 0;
+    //     },
+    //     [stakeAllowance],
+    // );
 
-    const changeView = (newView: number) => () => {
-        setView(newView);
-        setQuantity("");
-    };
+    // const changeView = (newView: number) => () => {
+    //     setViewId(newView);
+    //     setQuantity("");
+    // };
 
     // first card values
     const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
-    const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-    console.log(`Trimmed StakingAPY: ${trimmedStakingAPY}`);
+    // const trimmedStakingAPY = trim(stakingAPY * 100, 1);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
-    const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
-    const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
+    // const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
+    // const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
 
-    const [value, setValue] = useState(2);
+    const [viewId, setViewId] = useState(0);
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
+    const handleTabChange = (event: React.SyntheticEvent, view: number) => {
+        setViewId(view);
     };
-
-    <Tabs value={value} onChange={handleChange} aria-label="disabled tabs example">
-        <Tab label="Active" />
-        <Tab label="Disabled" disabled />
-        <Tab label="Active" />
-    </Tabs>;
 
     return (
         <div className="stake-card-area">
@@ -106,17 +98,22 @@ function Stake() {
                     <p className="stake-card-wallet-desc-text">{t("stake:ConnectYourWalletToStake")}</p>
                 </div>
             )}
-            {/* {address && (
+            <Tabs value={viewId} onChange={handleTabChange} aria-label="disabled tabs example">
+                <Tab label={t("stake:Stake")} />
+                <Tab label={t("stake:Unstake")} />
+            </Tabs>
+            ;
+            {address && (
                 <>
                     <div className="stake-card-action-area">
-                        <div className="stake-card-action-stage-btns-wrap">
-                            <div onClick={changeView(0)} className={classnames("stake-card-action-stage-btn", { active: !view })}>
+                        {/* <div className="stake-card-action-stage-btns-wrap">
+                            <div onClick={set(0)} className={classnames("stake-card-action-stage-btn", { active: !view })}>
                                 <p>{t("stake:Stake")}</p>
                             </div>
                             <div onClick={changeView(1)} className={classnames("stake-card-action-stage-btn", { active: view })}>
                                 <p>{t("stake:Unstake")}</p>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="stake-card-action-row">
                             <OutlinedInput
@@ -135,7 +132,7 @@ function Stake() {
                                 }
                             />
 
-                            {view === 0 && (
+                            {/* {view === 0 && (
                                 <div className="stake-card-tab-panel">
                                     {address && hasAllowance("BASH") ? (
                                         <div
@@ -159,9 +156,9 @@ function Stake() {
                                         </div>
                                     )}
                                 </div>
-                            )}
+                            )} */}
 
-                            {view === 1 && (
+                            {/* {view === 1 && (
                                 <div className="stake-card-tab-panel">
                                     {address && hasAllowance("sBASH") ? (
                                         <div
@@ -185,16 +182,16 @@ function Stake() {
                                         </div>
                                     )}
                                 </div>
-                            )}
+                            )} */}
                         </div>
-
+                        {/* 
                         <div className="stake-card-action-help-text">
                             {address && ((!hasAllowance("BASH") && view === 0) || (!hasAllowance("sBASH") && view === 1)) && <p>{t("stake:ApproveNote")}</p>}
-                        </div>
+                        </div> */}
                     </div>
                     <UserStakeMetrics />
                 </>
-            )} */}
+            )}
         </div>
     );
 }

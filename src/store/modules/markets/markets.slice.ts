@@ -18,6 +18,7 @@ export const marketSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(getMarketPrices.fulfilled, (state, action) => {
+                console.log("here", action.payload);
                 return {
                     markets: action.payload,
                     loading: false,

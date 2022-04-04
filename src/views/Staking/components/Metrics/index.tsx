@@ -3,21 +3,33 @@ import { theme } from "constants/theme";
 import { formatAPY, formatNumber, formatUSD } from "helpers/price-units";
 import { trim } from "helpers/trim";
 import { t } from "i18next";
-import { memo, useMemo } from "react";
+import { memo, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
+import { calculateStakingRewards } from "store/modules/app/app.helpers";
+import { MainSliceState } from "store/modules/app/app.types";
 import { IAppSlice } from "store/slices/app-slice";
 import { IReduxState } from "store/slices/state.interface";
 
-function StakeMetrics() {
-    const { loading: isAppLoading, currentIndex, stakingAPY, stakingTVL, marketPrice } = useSelector<IReduxState, Partial<IAppSlice>>(state => state.app, shallowEqual);
+interface StakeMetricsProps {
+    APY: number;
+    TVL: number;
+    currentIndex: number;
+    BASHPrice: number;
+}
 
-    const trimmedStakingAPY = formatAPY(trim(stakingAPY ?? 0 * 100, 1));
+function StakeMetrics(props: StakeMetricsProps) {
+    const { APY, TVL, currentIndex, BASHPrice } = props;
 
+    const prices = useSelector<IReduxState, number | null>(state => {
+        return state.markets.markets.dai;
+    });
+
+    console.log("Metrics", props);
     const metrics = [
-        { key: "APY", value: ` ${trimmedStakingAPY} %` },
-        { key: "TVL", value: formatUSD(Number(stakingTVL)) },
+        { key: "APY", value: formatNumber(APY) },
+        { key: "TVL", value: formatUSD(TVL) },
         { key: "CurrentIndex", value: `${formatNumber(Number(currentIndex), 2)} BASH` },
-        { key: "BASHPrice", value: formatNumber(marketPrice) },
+        { key: "BASHPrice", value: formatUSD(BASHPrice, 2) },
     ].map(({ key, value }) => (
         <Grid xs={6} sm={4} md={4} lg={3} mt={2}>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -25,7 +37,7 @@ function StakeMetrics() {
                     {t(key)}
                 </Typography>
                 <Typography variant="body1" sx={{ overflow: "hidden", wordBreak: "break-all", overflowX: "hidden", color: theme.palette.secondary.main }}>
-                    {isAppLoading ? <Skeleton /> : <>{value}</>}
+                    {!value ? <Skeleton /> : <>{value}</>}
                 </Typography>
             </Box>
         </Grid>
@@ -38,4 +50,6 @@ function StakeMetrics() {
     );
 }
 
-export default StakeMetrics;
+const memoStakeMetrics = memo(StakeMetrics);
+
+export default memoStakeMetrics;

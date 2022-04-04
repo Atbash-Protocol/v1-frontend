@@ -17,7 +17,6 @@ export const loadAppDetails = createAsyncThunk(
     "app/loadAppDetails",
     //@ts-ignore
     async ({ networkID, provider }: ILoadAppDetails, thunkAPI) => {
-        console.log("Thunk api", thunkAPI);
         const daiPrice = getTokenPrice("DAI");
         const addresses = getAddresses(networkID);
 

@@ -6,7 +6,7 @@ type MarketPrices<T> = {
     [key in ActiveTokensEnum]: T;
 };
 
-export const getMarketPrices = createAsyncThunk("app/blockchain", async () => {
+export const getMarketPrices = createAsyncThunk("app/markets", async () => {
     const prices = await getTokensPrice(ACTIVE_TOKENS);
 
     return prices as MarketPrices<number>;
