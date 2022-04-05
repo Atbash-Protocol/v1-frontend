@@ -9,6 +9,7 @@ import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { IAccountSlice } from "store/account/account.types";
+import { approveContract } from "store/modules/stake/stake.thunks";
 import { IAppSlice } from "store/slices/app-slice";
 import { warning } from "store/slices/messages-slice";
 import { IPendingTxn, isPendingTxn, txnButtonText } from "store/slices/pending-txns-slice";
@@ -37,6 +38,7 @@ function Stake() {
     });
 
     const setMax = () => {
+        dispatch(approveContract({ provider, target: "BASH" }));
         if (viewId === 0) {
             setQuantity(BASHbalance);
         } else {
@@ -106,15 +108,6 @@ function Stake() {
             {address && (
                 <>
                     <div className="stake-card-action-area">
-                        {/* <div className="stake-card-action-stage-btns-wrap">
-                            <div onClick={set(0)} className={classnames("stake-card-action-stage-btn", { active: !view })}>
-                                <p>{t("stake:Stake")}</p>
-                            </div>
-                            <div onClick={changeView(1)} className={classnames("stake-card-action-stage-btn", { active: view })}>
-                                <p>{t("stake:Unstake")}</p>
-                            </div>
-                        </div> */}
-
                         <div className="stake-card-action-row">
                             <OutlinedInput
                                 type="number"

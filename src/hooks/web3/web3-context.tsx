@@ -1,6 +1,6 @@
 import React, { useState, ReactElement, useContext, useMemo, useCallback } from "react";
 import Web3Modal from "web3modal";
-import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
+import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider, JsonRpcSigner } from "@ethersproject/providers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { DEFAULT_NETWORK } from "../../constants";
 import { Networks } from "../../constants";
@@ -8,6 +8,7 @@ import { messages } from "../../constants/messages";
 import { useDispatch } from "react-redux";
 import { swithNetwork } from "../../helpers/switch-network";
 import { getProviderURL } from "lib/contracts/networks";
+import { hexlify } from "ethers/lib/utils";
 
 type onChainProvider = {
     connect: () => Promise<Web3Provider>;
@@ -86,7 +87,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
             rawProvider.on("accountsChanged", () => setTimeout(() => window.location.reload(), 1));
 
             rawProvider.on("chainChanged", async (chain: number) => {
-                console.log("chanin changed", chain);
+                console.log("chain Changed", chain);
+
                 setProviderChainID(chain);
             });
 
@@ -114,6 +116,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         if (chainId === Networks.RINKEBY || chainId === Networks.MAINNET) {
             setProvider(connectedProvider);
+            console.log("here", connectedProvider);
         }
 
         setConnected(true);
@@ -122,6 +125,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }, [provider, web3Modal, connected]);
 
     const checkWrongNetwork = async (): Promise<boolean> => {
+        console.log(providerChainID, DEFAULT_NETWORK, providerChainID === DEFAULT_NETWORK);
         if (providerChainID !== DEFAULT_NETWORK) {
             const shouldSwitch = window.confirm(messages.switch_to_avalanche);
             if (shouldSwitch) {

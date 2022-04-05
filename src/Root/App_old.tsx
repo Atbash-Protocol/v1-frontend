@@ -13,7 +13,7 @@ import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } 
 
 import "./style.scss";
 import useTokens from "../hooks/tokens";
-import { initializeContracts, selectContracts } from "store/modules/app/app.slice";
+// import { initializeContracts, selectContracts } from "store/modules/app/app.slice";
 
 function App() {
     const dispatch = useDispatch();
@@ -36,7 +36,7 @@ function App() {
     async function loadDetails(whichDetails: string) {
         let loadProvider = provider;
 
-        dispatch(initializeContracts({ networkID: chainID, provider }));
+        // dispatch(initializeContracts({ networkID: chainID, provider }));
         // if (whichDetails === "app") {
         //     loadApp(loadProvider);
         // }
@@ -145,14 +145,4 @@ function App() {
     // );
 }
 
-const MemoizedApp = memo(App, (prevProps, nextProps) => {
-    console.log("Here render ?", prevProps, nextProps);
-
-    /*
-      When using this function you always need to return
-      a Boolean. For now we'll say the props are NOT equal 
-      which means the component should rerender.
-    */
-    return false;
-});
-export default MemoizedApp;
+export default App;

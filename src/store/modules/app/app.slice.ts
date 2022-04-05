@@ -2,8 +2,7 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 import { createSlice } from "@reduxjs/toolkit";
 import { isActionRejected } from "store/utils/action";
 
-import { initializeProviderContracts } from "./app.helpers";
-import { getBlockchainData, getCoreMetrics, getStakingMetrics } from "./app.thunks";
+import { initializeProviderContracts, getBlockchainData, getCoreMetrics, getStakingMetrics } from "./app.thunks";
 import { ContractEnum, MainSliceState } from "./app.types";
 
 // Define the initial state using that type
@@ -37,23 +36,12 @@ const initialState: MainSliceState = {
 export const MainSlice = createSlice({
     name: "app-main",
     initialState,
-    reducers: {
-        initializeContracts: {
-            prepare: ({ networkID, provider }: { networkID: number; provider: JsonRpcProvider }) => {
-                return {
-                    payload: initializeProviderContracts({ networkID, provider }),
-                };
-            },
-            reducer: (state, { payload }) => {
-                state.contracts = { ...state.contracts, ...payload };
-            },
-        },
-        after: (state, action) => {
-            console.log("after the slice", state, action);
-        },
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
+            .addCase(initializeProviderContracts.fulfilled, (state, action) => {
+                return { ...state, contracts: action.payload };
+            })
             .addCase(getBlockchainData.fulfilled, (state, action) => {
                 return {
                     ...state,
@@ -82,8 +70,6 @@ export const MainSlice = createSlice({
             });
     },
 });
-
-export const { initializeContracts } = MainSlice.actions;
 
 export const selectContracts = (state: MainSliceState) => state.contracts;
 
