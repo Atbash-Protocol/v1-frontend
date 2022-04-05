@@ -1,9 +1,33 @@
-import { JsonRpcProvider } from "@ethersproject/providers";
+import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { BigNumber, ethers } from "ethers";
+import { StakingContract, LpReserveContract, RedeemContract, MemoTokenContract, TimeTokenContract } from "abi";
+import { getAddresses } from "constants/addresses";
+import { BigNumber, Contract, ethers } from "ethers";
 import { ERC20_DECIMALS } from "lib/contracts/contracts";
+import { getSigner } from "lib/contracts/networks";
 import { IReduxState } from "store/slices/state.interface";
 import { RootState } from "store/store";
+import { ContractEnum } from "./app.types";
+
+export const initializeProviderContracts = createAsyncThunk(
+    "app/contracts",
+    async ({ networkID, provider }: { networkID: number; provider: JsonRpcProvider | Web3Provider }): Promise<{ [key in ContractEnum]: Contract }> => {
+        const addresses = getAddresses(networkID);
+
+        console.log("init", provider);
+
+        const signer = await getSigner(provider);
+
+        return {
+            [ContractEnum.STAKING_ADDRESS]: new Contract(addresses.STAKING_ADDRESS, StakingContract, signer),
+            [ContractEnum.INITIAL_PAIR_ADDRESS]: new Contract(addresses.INITIAL_PAIR_ADDRESS, LpReserveContract, signer),
+            [ContractEnum.REDEEM_ADDRESS]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, signer),
+            [ContractEnum.SBASH_ADDRESS]: new Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer),
+            [ContractEnum.BASH]: new Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer),
+            [ContractEnum.DAI_ADDRESS]: new Contract(addresses.DAI_ADDRESS, TimeTokenContract, signer),
+        };
+    },
+);
 
 export const getBlockchainData = createAsyncThunk("app/blockchain", async (provider: JsonRpcProvider) => {
     const currentBlock = await provider.getBlockNumber();
@@ -42,10 +66,8 @@ export const getStakingMetrics = createAsyncThunk("app/stakingMetrics", async (_
 
     const epoch = await STAKING_ADDRESS!.epoch();
     const secondsToNextEpoch = 0; // TODO : Number(await STAKING_ADDRESS!.secondsToNextEpoch()); not working on staking contract
-
     const index = await STAKING_ADDRESS!.index();
 
-    console.log("idx", index, BigNumber.from(index).toNumber());
     return {
         epoch: {
             distribute: epoch.distrubute,

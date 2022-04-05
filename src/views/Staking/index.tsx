@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { Grid, InputAdornment, OutlinedInput, Zoom } from "@material-ui/core";
 import RebaseTimer from "../../components/RebaseTimer";
@@ -21,55 +21,53 @@ import Stake from "./components/Stake";
 import StakeMetrics from "./components/Metrics";
 import { MainSliceState } from "store/modules/app/app.types";
 import { calculateStakingRewards } from "store/modules/app/app.helpers";
+import { loadBalancesAndAllowances } from "store/modules/account/account.thunks";
 
 function Staking() {
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
     const { provider, address, connect, chainID, checkWrongNetwork } = useWeb3Context();
-    const app = useSelector<IReduxState, IAppSlice>(state => state.app);
 
-    const [view, setView] = useState(0);
-    const [quantity, setQuantity] = useState<string>("");
-
-    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
-    // const currentIndex = useSelector<IReduxState, string>(state => {
-    //     return state.app.currentIndex;
+    // const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
+    // // const currentIndex = useSelector<IReduxState, string>(state => {
+    // //     return state.app.currentIndex;
+    // // });
+    // const fiveDayRate = useSelector<IReduxState, number>(state => {
+    //     return state.app.fiveDayRate;
     // });
-    const fiveDayRate = useSelector<IReduxState, number>(state => {
-        return state.app.fiveDayRate;
-    });
 
-    const { BASH, sBASH, wsBASH } = useSelector<IReduxState, IAccountSlice["balances"]>(state => state.account.balances);
+    // const { BASH, sBASH, wsBASH } = useSelector<IReduxState, IAccountSlice["balances"]>(state => state.account.balances);
 
-    const { BASH: BASHbalance, sBASH: sBASHBalance, wsBASH: wsBASHBalance } = useSelector<IReduxState, IAccountSlice["balances"]>(state => state.account.balances);
-    const { BASH: stakeAllowance, sBASH: unstakeAllowance } = useSelector<IReduxState, IAccountSlice["staking"]>(state => state.account.staking);
-    const { stakingRebase, stakingAPY, stakingTVL } = useSelector<IReduxState, IAppSlice>(state => state.app);
+    // const { BASH: BASHbalance, sBASH: sBASHBalance, wsBASH: wsBASHBalance } = useSelector<IReduxState, IAccountSlice["balances"]>(state => state.account.balances);
+    // const { BASH: stakeAllowance, sBASH: unstakeAllowance } = useSelector<IReduxState, IAccountSlice["staking"]>(state => state.account.staking);
+    // const { stakingRebase, stakingAPY, stakingTVL } = useSelector<IReduxState, IAppSlice>(state => state.app);
 
-    const changeView = (newView: number) => () => {
-        setView(newView);
-        setQuantity("");
-    };
+    // const changeView = (newView: number) => () => {
+    //     setView(newView);
+    //     setQuantity("");
+    // };
 
-    // first card values
-    const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
-    const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
-    const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-    const stakingRebasePercentage = trim(stakingRebase * 100, 4);
-    const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
-    // const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
-    const effectiveNextRewardValue = 0;
-    // trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
+    // // first card values
+    // const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
+    // const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
+    // const trimmedStakingAPY = trim(stakingAPY * 100, 1);
+    // const stakingRebasePercentage = trim(stakingRebase * 100, 4);
+    // const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
+    // // const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
+    // const effectiveNextRewardValue = 0;
+    // // trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
 
-    const valueOfSB = formatUSD(Number(BASHbalance) * app.marketPrice);
-    const valueOfStakedBalance = formatUSD(Number(trimmedsBASHBalance) * app.marketPrice);
-    const valueOfWrappedStakedBalance = 0; // formatUSD(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
-    const sumOfAllBalance = 0; // Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
-    const valueOfAllBalance = 0; // formatUSD(sumOfAllBalance * app.marketPrice);
-    const valueOfYourNextRewardAmount = 0; // formatUSD(Number(nextRewardValue) * app.marketPrice);
-    const valueOfYourEffectiveNextRewardAmount = 0; //  formatUSD(Number(effectiveNextRewardValue) * app.marketPrice);
+    // const valueOfSB = formatUSD(Number(BASHbalance) * app.marketPrice);
+    // const valueOfStakedBalance = formatUSD(Number(trimmedsBASHBalance) * app.marketPrice);
+    // const valueOfWrappedStakedBalance = 0; // formatUSD(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
+    // const sumOfAllBalance = 0; // Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
+    // const valueOfAllBalance = 0; // formatUSD(sumOfAllBalance * app.marketPrice);
+    // const valueOfYourNextRewardAmount = 0; // formatUSD(Number(nextRewardValue) * app.marketPrice);
+    // const valueOfYourEffectiveNextRewardAmount = 0; //  formatUSD(Number(effectiveNextRewardValue) * app.marketPrice);
 
     // NEW
+
     const marketPrice = useSelector<IReduxState, number | null>(state => state.markets.markets.dai, shallowEqual);
     const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
     const { circSupply, totalSupply, reserves } = useSelector<IReduxState, MainSliceState["metrics"]>(state => state.main.metrics, shallowEqual);
@@ -77,6 +75,10 @@ function Staking() {
 
     const TVL = circSupply! * marketPrice!;
     const APY = calculateStakingRewards(epoch!, circSupply!);
+
+    useEffect(() => {
+        dispatch(loadBalancesAndAllowances({ address }));
+    }, []);
 
     return (
         <div className="stake-view">
@@ -98,7 +100,7 @@ function Staking() {
                     </Grid>
                 </div>
             </Zoom>
-            {address && (
+            {/* {address && (
                 <Zoom in={true}>
                     <div className="stake-card">
                         <Grid className="stake-card-grid" container direction="column">
@@ -142,7 +144,7 @@ function Staking() {
                         </Grid>
                     </div>
                 </Zoom>
-            )}
+            )} */}
         </div>
     );
 }

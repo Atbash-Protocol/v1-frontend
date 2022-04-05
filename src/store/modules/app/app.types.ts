@@ -15,7 +15,7 @@ export interface Epoch {
 }
 
 export interface MainSliceState {
-    contracts: { [key in ContractEnum]?: Contract | null };
+    contracts: { [key in ContractEnum]: Contract | null };
     metrics: {
         totalSupply: number | null;
         circSupply: number | null;
