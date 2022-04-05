@@ -8,11 +8,14 @@ import { ContractEnum, MainSliceState } from "./app.types";
 // Define the initial state using that type
 const initialState: MainSliceState = {
     contracts: {
-        [ContractEnum.BASH]: null,
-        [ContractEnum.SBASH_ADDRESS]: null,
+        [ContractEnum.BASH_CONTRACT]: null,
+        [ContractEnum.SBASH_CONTRACT]: null,
         [ContractEnum.DAI_ADDRESS]: null,
         [ContractEnum.INITIAL_PAIR_ADDRESS]: null,
         [ContractEnum.STAKING_ADDRESS]: null,
+        [ContractEnum.STAKING_HELPER_ADDRESS]: null,
+        [ContractEnum.WSBASH_ADDRESS]: null,
+        [ContractEnum.ZAPIN_ADDRESS]: null,
         [ContractEnum.REDEEM_ADDRESS]: null,
     },
     metrics: {

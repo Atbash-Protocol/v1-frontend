@@ -6,6 +6,7 @@ const initialState: AccountSlice = {
     balances: {
         BASH: 0,
         SBASH: 0,
+        WSBASH: 0,
     },
     stakingAllowance: {
         BASH: 0,
@@ -15,11 +16,12 @@ const initialState: AccountSlice = {
 };
 
 export const marketSlice = createSlice({
-    name: "account-slice",
+    name: "app-account-slice",
     initialState,
     reducers: {},
     extraReducers: builder => {
         builder.addCase(loadBalancesAndAllowances.fulfilled, (state, action) => {
+            console.log("here", action);
             return {
                 ...state,
                 ...action.payload,

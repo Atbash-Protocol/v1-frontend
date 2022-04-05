@@ -13,6 +13,7 @@ import { messages } from "../../constants/messages";
 import classnames from "classnames";
 import { warning } from "../../store/slices/messages-slice";
 import { IAppSlice } from "../../store/slices/app-slice";
+import Loading from "components/Loader";
 
 import { useTranslation } from "react-i18next";
 import { IAccountSlice } from "store/account/account.types";
@@ -22,6 +23,7 @@ import StakeMetrics from "./components/Metrics";
 import { MainSliceState } from "store/modules/app/app.types";
 import { calculateStakingRewards } from "store/modules/app/app.helpers";
 import { loadBalancesAndAllowances } from "store/modules/account/account.thunks";
+import { AccountSlice } from "store/modules/account/account.types";
 
 function Staking() {
     const { t } = useTranslation();
@@ -68,8 +70,10 @@ function Staking() {
 
     // NEW
 
-    const marketPrice = useSelector<IReduxState, number | null>(state => state.markets.markets.dai, shallowEqual);
-    const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
+    const marketPrice = useSelector<IReduxState, number | null>(state => state.markets.markets.dai);
+    const marketsLoading = useSelector<IReduxState, boolean>(state => state.markets.loading);
+    const { loading: stakingLoading, balances, stakingAllowance } = useSelector<IReduxState, AccountSlice>(state => state.accountNew, shallowEqual);
+
     const { circSupply, totalSupply, reserves } = useSelector<IReduxState, MainSliceState["metrics"]>(state => state.main.metrics, shallowEqual);
     const { epoch, index: stakingIndex } = useSelector<IReduxState, MainSliceState["staking"]>(state => state.main.staking, shallowEqual);
 
@@ -77,8 +81,12 @@ function Staking() {
     const APY = calculateStakingRewards(epoch!, circSupply!);
 
     useEffect(() => {
-        dispatch(loadBalancesAndAllowances({ address }));
+        dispatch(loadBalancesAndAllowances({ address, chainID, provider }));
     }, []);
+
+    if (stakingLoading || marketsLoading) return <Loading />;
+
+    console.log(balances, stakingAllowance);
 
     return (
         <div className="stake-view">

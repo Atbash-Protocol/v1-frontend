@@ -5,6 +5,7 @@ import { IBondSlice } from "./bond-slice";
 import { MessagesState } from "./messages-slice";
 import { MainSliceState } from "store/modules/app/app.types";
 import { MarketSlice } from "store/modules/markets/markets.type";
+import { AccountSlice } from "store/modules/account/account.types";
 
 export interface IReduxState {
     pendingTransactions: IPendingTxn[];
@@ -14,4 +15,5 @@ export interface IReduxState {
     messages: MessagesState;
     main: MainSliceState;
     markets: MarketSlice;
+    accountNew: AccountSlice;
 }
