@@ -7,8 +7,10 @@ import { trim } from "helpers/trim";
 import { useWeb3Context } from "hooks/web3";
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { IAccountSlice } from "store/account/account.types";
+import { AccountSlice } from "store/modules/account/account.types";
+import { MainSliceState } from "store/modules/app/app.types";
 import { approveContract } from "store/modules/stake/stake.thunks";
 import { IAppSlice } from "store/slices/app-slice";
 import { warning } from "store/slices/messages-slice";
@@ -52,37 +54,24 @@ function Stake() {
         await dispatch(changeApproval({ address, token, provider, networkID: chainID }));
     };
 
-    // const onChangeStake = async (action: string) => {
-    //     if (await checkWrongNetwork()) return;
-    //     if (quantity === "" || parseFloat(quantity) === 0) {
-    //         dispatch(warning({ text: action === "stake" ? messages.before_stake : messages.before_unstake }));
-    //     } else {
-    //         await dispatch(changeStake({ address, action, value: String(quantity), provider, networkID: chainID }));
-    //         setQuantity("");
-    //     }
-    // };
+    const onChangeStake = async (action: string) => {
+        if (await checkWrongNetwork()) return;
+        if (quantity === "" || parseFloat(quantity) === 0) {
+            dispatch(warning({ text: action === "stake" ? messages.before_stake : messages.before_unstake }));
+        } else {
+            await dispatch(changeStake({ address, action, value: String(quantity), provider, networkID: chainID }));
+            setQuantity("");
+        }
+    };
 
-    // const hasAllowance = useCallback(
-    //     token => {
-    //         if (token === "BASH") return stakeAllowance > 0;
-    //         if (token === "sBASH") return unstakeAllowance > 0;
-    //         return 0;
-    //     },
-    //     [stakeAllowance],
-    // );
-
-    // const changeView = (newView: number) => () => {
-    //     setViewId(newView);
-    //     setQuantity("");
-    // };
-
-    // first card values
-    const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
-    const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
-    // const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-    const stakingRebasePercentage = trim(stakingRebase * 100, 4);
-    // const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
-    // const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
+    const hasAllowance = useCallback(
+        token => {
+            if (token === "BASH") return stakeAllowance > 0;
+            if (token === "sBASH") return unstakeAllowance > 0;
+            return 0;
+        },
+        [stakeAllowance],
+    );
 
     const [viewId, setViewId] = useState(0);
 
@@ -90,6 +79,9 @@ function Stake() {
         setViewId(view);
     };
 
+    const { BASH: BashAllowance, SBASH: SBashAllowance } = useSelector<IReduxState, AccountSlice["stakingAllowance"]>(state => state.accountNew.stakingAllowance);
+
+    console.log("allows", BashAllowance);
     return (
         <div className="stake-card-area">
             {!address && (
@@ -104,87 +96,83 @@ function Stake() {
                 <Tab label={t("stake:Stake")} />
                 <Tab label={t("stake:Unstake")} />
             </Tabs>
-            ;
-            {address && (
-                <>
-                    <div className="stake-card-action-area">
-                        <div className="stake-card-action-row">
-                            <OutlinedInput
-                                type="number"
-                                placeholder={t("Amount")}
-                                className="stake-card-action-input"
-                                value={quantity}
-                                onChange={e => setQuantity(e.target.value)}
-                                labelWidth={0}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <div onClick={setMax} className="stake-card-action-input-btn">
-                                            <p>{t("Max")}</p>
-                                        </div>
-                                    </InputAdornment>
-                                }
-                            />
 
-                            {/* {view === 0 && (
-                                <div className="stake-card-tab-panel">
-                                    {address && hasAllowance("BASH") ? (
-                                        <div
-                                            className="stake-card-tab-panel-btn"
-                                            onClick={() => {
-                                                if (isPendingTxn(pendingTransactions, "staking")) return;
-                                                onChangeStake("stake");
-                                            }}
-                                        >
-                                            <p>{txnButtonText(pendingTransactions, "staking", t("Stake BASH"))}</p>
-                                        </div>
-                                    ) : (
-                                        <div
-                                            className="stake-card-tab-panel-btn"
-                                            onClick={() => {
-                                                if (isPendingTxn(pendingTransactions, "approve_staking")) return;
-                                                onSeekApproval("BASH");
-                                            }}
-                                        >
-                                            <p>{txnButtonText(pendingTransactions, "approve_staking", t("Approve"))}</p>
-                                        </div>
-                                    )}
+            <div className="stake-card-action-area">
+                <div className="stake-card-action-row">
+                    <OutlinedInput
+                        type="number"
+                        placeholder={t("Amount")}
+                        className="stake-card-action-input"
+                        value={quantity}
+                        onChange={e => setQuantity(e.target.value)}
+                        labelWidth={0}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <div onClick={setMax} className="stake-card-action-input-btn">
+                                    <p>{t("Max")}</p>
                                 </div>
-                            )} */}
+                            </InputAdornment>
+                        }
+                    />
 
-                            {/* {view === 1 && (
-                                <div className="stake-card-tab-panel">
-                                    {address && hasAllowance("sBASH") ? (
-                                        <div
-                                            className="stake-card-tab-panel-btn"
-                                            onClick={() => {
-                                                if (isPendingTxn(pendingTransactions, "unstaking")) return;
-                                                onChangeStake("unstake");
-                                            }}
-                                        >
-                                            <p>{txnButtonText(pendingTransactions, "unstaking", t("Unstake BASH"))}</p>
-                                        </div>
-                                    ) : (
-                                        <div
-                                            className="stake-card-tab-panel-btn"
-                                            onClick={() => {
-                                                if (isPendingTxn(pendingTransactions, "approve_unstaking")) return;
-                                                onSeekApproval("sBASH");
-                                            }}
-                                        >
-                                            <p>{txnButtonText(pendingTransactions, "approve_unstaking", t("Approve"))}</p>
-                                        </div>
-                                    )}
+                    {viewId === 0 && (
+                        <div className="stake-card-tab-panel">
+                            {BashAllowance > 0 ? (
+                                <div
+                                    className="stake-card-tab-panel-btn"
+                                    onClick={() => {
+                                        if (isPendingTxn(pendingTransactions, "staking")) return;
+                                        onChangeStake("stake");
+                                    }}
+                                >
+                                    <p>{txnButtonText(pendingTransactions, "staking", t("Stake BASH"))}</p>
                                 </div>
-                            )} */}
+                            ) : (
+                                <div
+                                    className="stake-card-tab-panel-btn"
+                                    onClick={() => {
+                                        if (isPendingTxn(pendingTransactions, "approve_staking")) return;
+                                        onSeekApproval("BASH");
+                                    }}
+                                >
+                                    <p>{txnButtonText(pendingTransactions, "approve_staking", t("Approve"))}</p>
+                                </div>
+                            )}
                         </div>
-                        {/* 
+                    )}
+
+                    {viewId === 1 && (
+                        <div className="stake-card-tab-panel">
+                            {address && SBashAllowance > 0 ? (
+                                <div
+                                    className="stake-card-tab-panel-btn"
+                                    onClick={() => {
+                                        if (isPendingTxn(pendingTransactions, "unstaking")) return;
+                                        onChangeStake("unstake");
+                                    }}
+                                >
+                                    <p>{txnButtonText(pendingTransactions, "unstaking", t("Unstake BASH"))}</p>
+                                </div>
+                            ) : (
+                                <div
+                                    className="stake-card-tab-panel-btn"
+                                    onClick={() => {
+                                        if (isPendingTxn(pendingTransactions, "approve_unstaking")) return;
+                                        onSeekApproval("sBASH");
+                                    }}
+                                >
+                                    <p>{txnButtonText(pendingTransactions, "approve_unstaking", t("Approve"))}</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+                {/* 
                         <div className="stake-card-action-help-text">
                             {address && ((!hasAllowance("BASH") && view === 0) || (!hasAllowance("sBASH") && view === 1)) && <p>{t("stake:ApproveNote")}</p>}
                         </div> */}
-                    </div>
-                    <UserStakeMetrics />
-                </>
-            )}
+            </div>
+            <UserStakeMetrics />
         </div>
     );
 }

@@ -11,5 +11,7 @@ export const calculateStakingRewards = (epoch: Epoch | null, circSupply: number)
     return {
         fiveDayRate: stakingRebase ? Math.pow(1 + stakingRebase, 5 * 3) - 1 : null, // 3 epoch/day
         stakingAPY: stakingRebase ? Math.pow(1 + stakingRebase, 365 * 3) - 1 * 100 : null,
+        stakingReward,
+        stakingRebase,
     };
 };

@@ -1,81 +1,52 @@
 import { Skeleton, Typography } from "@mui/material";
 import { trim } from "helpers/trim";
 import { t } from "i18next";
-import { useSelector } from "react-redux";
-import { IAccountSlice } from "store/account/account.types";
-import { IAppSlice } from "store/slices/app-slice";
-import { IPendingTxn } from "store/slices/pending-txns-slice";
+import { shallowEqual, useSelector } from "react-redux";
+import { AccountSlice } from "store/modules/account/account.types";
+import { calculateStakingRewards } from "store/modules/app/app.helpers";
+import { MainSliceState } from "store/modules/app/app.types";
 import { IReduxState } from "store/slices/state.interface";
 
 const UserStakeMetrics = () => {
-    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
-    const currentIndex = useSelector<IReduxState, string>(state => {
-        return state.app.currentIndex;
-    });
-    const fiveDayRate = useSelector<IReduxState, number>(state => {
-        return state.app.fiveDayRate;
-    });
+    const { loading: accountLoading, balances, stakingAllowance } = useSelector<IReduxState, AccountSlice>(state => state.accountNew, shallowEqual);
+    const circSupply = useSelector<IReduxState, number>(state => state.main.metrics.circSupply ?? 0);
+    const { index: stakingIndex, epoch } = useSelector<IReduxState, MainSliceState["staking"]>(state => state.main.staking, shallowEqual);
 
-    const { BASH: BASHbalance, sBASH: sBASHBalance, wsBASH: wsBASHBalance } = useSelector<IReduxState, IAccountSlice["balances"]>(state => state.account.balances);
-    const { stakingRebase, stakingAPY } = useSelector<IReduxState, IAppSlice>(state => state.app);
+    const { fiveDayRate } = calculateStakingRewards(epoch, circSupply);
 
-    // first card values
-    const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
-    const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
-    const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-    const stakingRebasePercentage = trim(stakingRebase * 100, 4);
-    const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
-    const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
-    const effectiveNextRewardValue = trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
+    const stakingRebase = (epoch?.distribute ?? 0) / circSupply;
+    const stakingRebasePercentage = stakingRebase * 100;
+    const nextRewardValue = (Number(stakingRebasePercentage) / 100) * balances.SBASH;
+    const effectiveNextRewardValue = trim(nextRewardValue + (stakingRebasePercentage / 100) * balances.WSBASH * (stakingIndex || 0), 6);
+
+    const keyMetrics = [
+        { key: "YourBalance", value: `${trim(Number(balances.BASH), 4)} BASH` },
+        { key: "stake:YourStakedBalance", value: `${trim(Number(balances.SBASH), 4)} sBASH` },
+        { key: "stake:YourWrappedStakedBalance", value: `${balances.WSBASH} wsBASH` },
+        { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH * (stakingIndex ?? 0), 6)} sBASH` },
+        { key: "stake:NextRewardAmount", value: `${trim(nextRewardValue, 6)} BASH` },
+        { key: "stake:NextRewardYield", value: `${stakingRebasePercentage} %` },
+        { key: "stake:ROIFiveDayRate", value: `${trim(Number(fiveDayRate) * 100, 4)} %` },
+    ];
+
+    const optionalMetrics = [
+        { key: "stake:YourWrappedStakedBalance", value: `${balances.WSBASH} wsBASH` },
+        { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH * (stakingIndex ?? 0), 6)} sBASH` },
+        { key: "stake:EffectiveNextRewardAmount", value: `${effectiveNextRewardValue} wsBASH` },
+    ];
+
+    const metrics = [...keyMetrics, ...(balances.WSBASH > 0 ? optionalMetrics : [])].map(({ key, value }) => (
+        <div className="data-row">
+            <p className="data-row-name">{t(key)}</p>
+            <p className="data-row-value">{accountLoading ? <Skeleton /> : <>{value}</>}</p>
+        </div>
+    ));
 
     return (
         <div className="stake-user-data">
-            <Typography> Staking metrics</Typography>
+            <Typography variant="h5"> Staking metrics</Typography>
 
-            <div className="data-row">
-                <p className="data-row-name">{t("YourBalance")}</p>
-                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(BASHbalance), 4)} BASH</>}</p>
-            </div>
-
-            <div className="data-row">
-                <p className="data-row-name">{t("stake:YourStakedBalance")}</p>
-                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedsBASHBalance} sBASH</>}</p>
-            </div>
-
-            {Number(trimmedWrappedStakedSBBalance) > 0 && (
-                <div className="data-row">
-                    <p className="data-row-name">{t("stake:YourWrappedStakedBalance")}</p>
-                    <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedWrappedStakedSBBalance} wsBASH</>}</p>
-                </div>
-            )}
-
-            {Number(trimmedWrappedStakedSBBalance) > 0 && (
-                <div className="data-row">
-                    <p className="data-row-name">{t("stake:WrappedTokenEquivalent")}</p>
-                    <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>({wrappedTokenEquivalent} sBASH)</>}</p>
-                </div>
-            )}
-            <div className="data-row">
-                <p className="data-row-name">{t("stake:NextRewardAmount")}</p>
-                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{nextRewardValue} BASH</>}</p>
-            </div>
-
-            {Number(trimmedWrappedStakedSBBalance) > 0 && (
-                <div className="data-row">
-                    <p className="data-row-name">{t("stake:EffectiveNextRewardAmount")}</p>
-                    <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{effectiveNextRewardValue} BASH</>}</p>
-                </div>
-            )}
-
-            <div className="data-row">
-                <p className="data-row-name">{t("stake:NextRewardYield")}</p>
-                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{stakingRebasePercentage}%</>}</p>
-            </div>
-
-            <div className="data-row">
-                <p className="data-row-name">{t("stake:ROIFiveDayRate")}</p>
-                <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(fiveDayRate) * 100, 4)}%</>}</p>
-            </div>
+            {metrics}
         </div>
     );
 };

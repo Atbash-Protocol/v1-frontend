@@ -28,7 +28,7 @@ function App() {
     }, [connected]);
 
     useEffect(() => {
-        if (contracts.BASH && contracts.SBASH_ADDRESS && contracts.INITIAL_PAIR_ADDRESS) dispatch(getCoreMetrics());
+        if (contracts.BASH_CONTRACT && contracts.SBASH_CONTRACT && contracts.INITIAL_PAIR_ADDRESS) dispatch(getCoreMetrics());
 
         if (contracts.STAKING_ADDRESS) {
             dispatch(getStakingMetrics());

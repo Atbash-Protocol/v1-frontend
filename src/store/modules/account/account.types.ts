@@ -6,6 +6,7 @@ export interface AccountSlice {
     balances: {
         BASH: number;
         SBASH: number;
+        WSBASH: number;
     };
     loading: boolean;
 }

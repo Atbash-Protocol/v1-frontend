@@ -1,6 +1,6 @@
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { StakingContract, LpReserveContract, RedeemContract, MemoTokenContract, TimeTokenContract } from "abi";
+import { StakingContract, LpReserveContract, RedeemContract, MemoTokenContract, TimeTokenContract, StakingHelperContract, ZapinContract } from "abi";
 import { getAddresses } from "constants/addresses";
 import { BigNumber, Contract, ethers } from "ethers";
 import { ERC20_DECIMALS } from "lib/contracts/contracts";
@@ -14,17 +14,18 @@ export const initializeProviderContracts = createAsyncThunk(
     async ({ networkID, provider }: { networkID: number; provider: JsonRpcProvider | Web3Provider }): Promise<{ [key in ContractEnum]: Contract }> => {
         const addresses = getAddresses(networkID);
 
-        console.log("init", provider);
-
         const signer = await getSigner(provider);
 
         return {
             [ContractEnum.STAKING_ADDRESS]: new Contract(addresses.STAKING_ADDRESS, StakingContract, signer),
+            [ContractEnum.STAKING_HELPER_ADDRESS]: new Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, signer),
             [ContractEnum.INITIAL_PAIR_ADDRESS]: new Contract(addresses.INITIAL_PAIR_ADDRESS, LpReserveContract, signer),
             [ContractEnum.REDEEM_ADDRESS]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, signer),
-            [ContractEnum.SBASH_ADDRESS]: new Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer),
-            [ContractEnum.BASH]: new Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer),
+            [ContractEnum.SBASH_CONTRACT]: new Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer),
+            [ContractEnum.BASH_CONTRACT]: new Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer),
             [ContractEnum.DAI_ADDRESS]: new Contract(addresses.DAI_ADDRESS, TimeTokenContract, signer),
+            [ContractEnum.WSBASH_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, signer),
+            [ContractEnum.ZAPIN_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, ZapinContract, signer),
         };
     },
 );
@@ -42,12 +43,12 @@ export const getBlockchainData = createAsyncThunk("app/blockchain", async (provi
 export const getCoreMetrics = createAsyncThunk("app/coreMetrics", async (_, { getState }) => {
     const {
         main: {
-            contracts: { BASH, SBASH_ADDRESS, INITIAL_PAIR_ADDRESS },
+            contracts: { BASH_CONTRACT, SBASH_CONTRACT, INITIAL_PAIR_ADDRESS },
         },
     } = getState() as RootState;
 
-    const totalSupply = (await BASH!.totalSupply()) / 10 ** ERC20_DECIMALS;
-    const circSupply = (await SBASH_ADDRESS!.circulatingSupply()) / Math.pow(10, ERC20_DECIMALS);
+    const totalSupply = (await BASH_CONTRACT!.totalSupply()) / 10 ** ERC20_DECIMALS;
+    const circSupply = (await SBASH_CONTRACT!.circulatingSupply()) / Math.pow(10, ERC20_DECIMALS);
     const [reserve1, reserve2]: ethers.BigNumber[] = await INITIAL_PAIR_ADDRESS!.getReserves();
 
     return {
