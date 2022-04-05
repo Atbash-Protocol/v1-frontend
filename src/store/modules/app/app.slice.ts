@@ -67,9 +67,10 @@ export const MainSlice = createSlice({
                 };
             })
             .addMatcher(isActionRejected, (state, action) => {
+                console.log(action);
                 console.error(action.error); //critial error
 
-                state.errorEncountered = true;
+                if (action.type.startsWith("app/")) state.errorEncountered = true;
             });
     },
 });
