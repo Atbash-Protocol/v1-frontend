@@ -17,17 +17,13 @@ export const approveContract = createAsyncThunk("stake/approve", async ({ provid
         },
     } = getState() as IReduxState;
 
-    switch (target) {
-        case "BASH_CONTRACT":
-    }
-
     if (!BASH_CONTRACT) {
         throw new Error("Contract not set");
     }
     const gasPrice = await getGasPrice(provider);
     const connectedAddress = await provider.getSigner().getAddress();
 
-    console.log(BASH_CONTRACT);
+    console.log(BASH_CONTRACT, connectedAddress);
 
     if (target === StakeTargetEnum.BASH && BASH_CONTRACT) {
         const approveTx = await BASH_CONTRACT.approve(connectedAddress, ethers.constants.MaxUint256, { gasPrice });

@@ -5,7 +5,7 @@ import { getAddresses } from "constants/addresses";
 import { ethers } from "ethers";
 import { IReduxState } from "store/slices/state.interface";
 
-export const loadBalancesAndAllowances = createAsyncThunk("account/loadBalancesAndAllowances", async ({ chainID, provider, address }: any, { getState }): Promise<any> => {
+export const loadBalancesAndAllowances = createAsyncThunk("account/loadBalancesAndAllowances", async ({ address }: any, { getState }): Promise<any> => {
     let BASHbalance = 0;
     let sBASHBalance = 0;
     let wsBASHBalance = 0;
@@ -29,6 +29,7 @@ export const loadBalancesAndAllowances = createAsyncThunk("account/loadBalancesA
     if (SBASH_CONTRACT) {
         try {
             wrapAllowance = await SBASH_CONTRACT.allowance(address, WSBASH_ADDRESS?.address);
+            unstakeAllowance = await SBASH_CONTRACT.allowance(address, STAKING_ADDRESS?.address);
             unstakeAllowance = await SBASH_CONTRACT.allowance(address, STAKING_ADDRESS?.address);
         } catch (err) {
             console.log(err);
