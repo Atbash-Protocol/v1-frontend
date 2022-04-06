@@ -71,7 +71,7 @@ export const getStakingMetrics = createAsyncThunk("app/stakingMetrics", async (_
 
     return {
         epoch: {
-            distribute: epoch.distrubute,
+            distribute: epoch.distribute.toNumber(),
             endTime: epoch.endTime,
         },
         index: BigNumber.from(index).toNumber(),
