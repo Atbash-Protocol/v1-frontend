@@ -1,14 +1,8 @@
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import { theme } from "constants/theme";
 import { formatAPY, formatNumber, formatUSD } from "helpers/price-units";
-import { trim } from "helpers/trim";
 import { t } from "i18next";
-import { memo, useState } from "react";
-import { shallowEqual, useSelector } from "react-redux";
-import { calculateStakingRewards } from "store/modules/app/app.helpers";
-import { MainSliceState } from "store/modules/app/app.types";
-import { IAppSlice } from "store/slices/app-slice";
-import { IReduxState } from "store/slices/state.interface";
+import { memo } from "react";
 
 interface StakeMetricsProps {
     APY: number;
@@ -20,13 +14,8 @@ interface StakeMetricsProps {
 function StakeMetrics(props: StakeMetricsProps) {
     const { APY, TVL, currentIndex, BASHPrice } = props;
 
-    const prices = useSelector<IReduxState, number | null>(state => {
-        return state.markets.markets.dai;
-    });
-
-    console.log("Metrics", props);
     const metrics = [
-        { key: "APY", value: formatNumber(APY) },
+        { key: "APY", value: `${formatAPY(APY.toString())} %` },
         { key: "TVL", value: formatUSD(TVL) },
         { key: "CurrentIndex", value: `${formatNumber(Number(currentIndex), 2)} BASH` },
         { key: "BASHPrice", value: formatUSD(BASHPrice, 2) },

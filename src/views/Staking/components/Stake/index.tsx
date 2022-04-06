@@ -1,5 +1,5 @@
 import { OutlinedInput, InputAdornment } from "@material-ui/core";
-import { Skeleton, Tab, Tabs } from "@mui/material";
+import { Box, Skeleton, Tab, Tabs, Typography } from "@mui/material";
 import classnames from "classnames";
 import { messages } from "constants/messages";
 import { formatUSD } from "helpers/price-units";
@@ -20,6 +20,26 @@ import { IPendingTxn, isPendingTxn, txnButtonText } from "store/slices/pending-t
 import { changeApproval, changeStake } from "store/slices/stake-thunk";
 import { IReduxState } from "store/slices/state.interface";
 import UserStakeMetrics from "./StakeMetrics";
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
 
 function Stake() {
     const { t } = useTranslation();
@@ -82,8 +102,48 @@ function Stake() {
                 <Tab label={t("stake:Stake")} />
                 <Tab label={t("stake:Unstake")} />
             </Tabs>
+            <TabPanel value={viewId} index={0}>
+                <OutlinedInput
+                    type="number"
+                    placeholder={t("Amount")}
+                    className="stake-card-action-input"
+                    value={quantity}
+                    onChange={e => setQuantity(Number(e.target.value))}
+                    labelWidth={0}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <div onClick={setMax} className="stake-card-action-input-btn">
+                                <p>{t("Max")}</p>
+                            </div>
+                        </InputAdornment>
+                    }
+                />
 
-            <div className="stake-card-action-area">
+                <Box className="stake-card-tab-panel">
+                    {stakingAllowance.BASH > 0 ? (
+                        <Box
+                            className="stake-card-tab-panel-btn"
+                            onClick={() => {
+                                if (isPendingTxn(pendingTransactions, "staking")) return;
+                                onChangeStake("stake");
+                            }}
+                        >
+                            <p>{txnButtonText(pendingTransactions, "staking", t("Stake BASH"))}</p>
+                        </Box>
+                    ) : (
+                        <Box
+                            className="stake-card-tab-panel-btn"
+                            onClick={() => {
+                                if (isPendingTxn(pendingTransactions, "approve_staking")) return;
+                                onSeekApproval("BASH");
+                            }}
+                        >
+                            <p>{txnButtonText(pendingTransactions, "approve_staking", t("Approve"))}</p>
+                        </Box>
+                    )}
+                </Box>
+            </TabPanel>
+            <TabPanel value={viewId} index={1}>
                 <div className="stake-card-action-row">
                     <OutlinedInput
                         type="number"
@@ -101,64 +161,31 @@ function Stake() {
                         }
                     />
 
-                    {viewId === 0 && (
-                        <div className="stake-card-tab-panel">
-                            {stakingAllowance.BASH > 0 ? (
-                                <div
-                                    className="stake-card-tab-panel-btn"
-                                    onClick={() => {
-                                        if (isPendingTxn(pendingTransactions, "staking")) return;
-                                        onChangeStake("stake");
-                                    }}
-                                >
-                                    <p>{txnButtonText(pendingTransactions, "staking", t("Stake BASH"))}</p>
-                                </div>
-                            ) : (
-                                <div
-                                    className="stake-card-tab-panel-btn"
-                                    onClick={() => {
-                                        if (isPendingTxn(pendingTransactions, "approve_staking")) return;
-                                        onSeekApproval("BASH");
-                                    }}
-                                >
-                                    <p>{txnButtonText(pendingTransactions, "approve_staking", t("Approve"))}</p>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {viewId === 1 && (
-                        <div className="stake-card-tab-panel">
-                            {address && stakingAllowance.SBASH > 0 ? (
-                                <div
-                                    className="stake-card-tab-panel-btn"
-                                    onClick={() => {
-                                        if (isPendingTxn(pendingTransactions, "unstaking")) return;
-                                        onChangeStake("unstake");
-                                    }}
-                                >
-                                    <p>{txnButtonText(pendingTransactions, "unstaking", t("Unstake BASH"))}</p>
-                                </div>
-                            ) : (
-                                <div
-                                    className="stake-card-tab-panel-btn"
-                                    onClick={() => {
-                                        if (isPendingTxn(pendingTransactions, "approve_unstaking")) return;
-                                        onSeekApproval("sBASH");
-                                    }}
-                                >
-                                    <p>{txnButtonText(pendingTransactions, "approve_unstaking", t("Approve"))}</p>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <div className="stake-card-tab-panel">
+                        {address && stakingAllowance.SBASH > 0 ? (
+                            <div
+                                className="stake-card-tab-panel-btn"
+                                onClick={() => {
+                                    if (isPendingTxn(pendingTransactions, "unstaking")) return;
+                                    onChangeStake("unstake");
+                                }}
+                            >
+                                <p>{txnButtonText(pendingTransactions, "unstaking", t("Unstake BASH"))}</p>
+                            </div>
+                        ) : (
+                            <div
+                                className="stake-card-tab-panel-btn"
+                                onClick={() => {
+                                    if (isPendingTxn(pendingTransactions, "approve_unstaking")) return;
+                                    onSeekApproval("sBASH");
+                                }}
+                            >
+                                <p>{txnButtonText(pendingTransactions, "approve_unstaking", t("Approve"))}</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
-                {/* 
-                        <div className="stake-card-action-help-text">
-                            {address && ((!hasAllowance("BASH") && view === 0) || (!hasAllowance("sBASH") && view === 1)) && <p>{t("stake:ApproveNote")}</p>}
-                        </div> */}
-            </div>
-            <UserStakeMetrics />
+            </TabPanel>
         </div>
     );
 }

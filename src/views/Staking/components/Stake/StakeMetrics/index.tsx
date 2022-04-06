@@ -1,4 +1,6 @@
 import { Skeleton, Typography } from "@mui/material";
+import { theme } from "constants/theme";
+import { formatNumber } from "helpers/price-units";
 import { trim } from "helpers/trim";
 import { t } from "i18next";
 import { shallowEqual, useSelector } from "react-redux";
@@ -14,7 +16,7 @@ const UserStakeMetrics = () => {
 
     const { fiveDayRate } = calculateStakingRewards(epoch, circSupply);
 
-    const stakingRebase = (epoch?.distribute ?? 0) / circSupply;
+    const stakingRebase = (epoch?.distribute ?? 0) / (circSupply * Math.pow(10, 9));
     const stakingRebasePercentage = stakingRebase * 100;
     const nextRewardValue = (Number(stakingRebasePercentage) / 100) * balances.SBASH;
     const effectiveNextRewardValue = trim(nextRewardValue + (stakingRebasePercentage / 100) * balances.WSBASH * (stakingIndex || 0), 6);
@@ -25,7 +27,7 @@ const UserStakeMetrics = () => {
         { key: "stake:YourWrappedStakedBalance", value: `${balances.WSBASH} wsBASH` },
         { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH * (stakingIndex ?? 0), 6)} sBASH` },
         { key: "stake:NextRewardAmount", value: `${trim(nextRewardValue, 6)} BASH` },
-        { key: "stake:NextRewardYield", value: `${stakingRebasePercentage} %` },
+        { key: "stake:NextRewardYield", value: `${formatNumber(stakingRebasePercentage, 2)} %` },
         { key: "stake:ROIFiveDayRate", value: `${trim(Number(fiveDayRate) * 100, 4)} %` },
     ];
 
@@ -44,7 +46,9 @@ const UserStakeMetrics = () => {
 
     return (
         <div className="stake-user-data">
-            <Typography variant="h5"> Staking metrics</Typography>
+            <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>
+                Staking metrics
+            </Typography>
 
             {metrics}
         </div>
