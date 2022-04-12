@@ -93,14 +93,14 @@ export interface IBondDetails {
 }
 
 export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async ({ bond, value, provider, networkID }: ICalcBondDetails, { dispatch }) => {
-    console.warn("disabled: calcBondDetails");
+    // console.warn("disabled: calcBondDetails");
 
     if (!value) {
         value = "0";
     }
 
     const amountInWei = ethers.utils.parseEther(value);
-    return {};
+    // return {};
 
     let bondPrice = 0,
         bondDiscount = 0,
@@ -110,7 +110,6 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
     const addresses = getAddresses(networkID);
 
     let bondContract = bond.getContractForBond(networkID, provider);
-    console.log("bounc", bondContract);
     let bondCalcContract = getBondCalculator(networkID, provider);
 
     let terms;
