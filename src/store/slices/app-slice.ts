@@ -49,7 +49,7 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
     // dead-code: const tokenAmountsPromises = allBonds.map(bond => bond.getTokenAmount(networkID, provider));
     // dead-code: const tokenAmounts = await Promise.all(tokenAmountsPromises);
 
-    const rfvTreasury = tokenBalances[0]; // tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
+    const rfvTreasury = tokenBalances[0] + tokenBalances[1]; // tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
 
     const daoBash = await BASHContract.balanceOf(addresses.DAO_ADDRESS);
     const daoBashAmount = Number(ethers.utils.formatUnits(daoBash, "gwei"));
