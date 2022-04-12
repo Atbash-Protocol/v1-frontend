@@ -125,7 +125,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }, [provider, web3Modal, connected]);
 
     const checkWrongNetwork = async (): Promise<boolean> => {
-        console.log(providerChainID, DEFAULT_NETWORK, providerChainID === DEFAULT_NETWORK);
+        console.log("checking wrong network", providerChainID, DEFAULT_NETWORK, providerChainID === DEFAULT_NETWORK);
         if (providerChainID !== DEFAULT_NETWORK) {
             const shouldSwitch = window.confirm(messages.switch_to_avalanche);
             if (shouldSwitch) {

@@ -12,10 +12,11 @@ import { MainSliceState } from "store/modules/app/app.types";
 import { Route, Switch } from "react-router-dom";
 import { getMarketPrices } from "store/modules/markets/markets.thunks";
 import { Contract } from "ethers";
+import { DEFAULT_NETWORK } from "constants/blockchain";
 
 function App() {
     const dispatch = useDispatch();
-    const { provider, chainID, connected } = useWeb3Context();
+    const { provider, chainID, connected, checkWrongNetwork, providerChainID } = useWeb3Context();
 
     const { errorEncountered, loading, contracts } = useSelector<IReduxState, MainSliceState>(state => state.main, shallowEqual);
     const stakingAddressReady = useSelector<IReduxState, Contract | null>(state => state.main.contracts.STAKING_ADDRESS);
@@ -34,6 +35,8 @@ function App() {
             dispatch(getStakingMetrics());
         }
     }, [contracts]);
+
+    console.log("here", chainID, DEFAULT_NETWORK, providerChainID);
 
     if (errorEncountered)
         return (

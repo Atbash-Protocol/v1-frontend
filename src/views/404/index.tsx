@@ -2,7 +2,7 @@ import "./notfound.scss";
 
 import { useTranslation } from "react-i18next";
 
-function NotFound() {
+const NotFound = () => {
     const { t } = useTranslation();
 
     return (
@@ -10,6 +10,6 @@ function NotFound() {
             <p>{t("PageNotFound")}</p>
         </div>
     );
-}
+};
 
 export default NotFound;

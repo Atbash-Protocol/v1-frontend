@@ -1,12 +1,14 @@
+import { ethers } from "ethers";
+
 export interface AccountSlice {
     stakingAllowance: {
-        BASH: number;
-        SBASH: number;
+        BASH: ethers.BigNumber;
+        SBASH: ethers.BigNumber;
     };
     balances: {
-        BASH: number;
-        SBASH: number;
-        WSBASH: number;
+        BASH: ethers.BigNumber;
+        SBASH: ethers.BigNumber;
+        WSBASH: ethers.BigNumber;
     };
     loading: boolean;
 }
