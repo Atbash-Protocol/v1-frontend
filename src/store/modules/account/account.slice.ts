@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { BigNumber } from "ethers";
 import { loadBalancesAndAllowances } from "./account.thunks";
 import { AccountSlice } from "./account.types";
 
 const initialState: AccountSlice = {
     balances: {
-        BASH: 0,
-        SBASH: 0,
-        WSBASH: 0,
+        BASH: BigNumber.from(0),
+        SBASH: BigNumber.from(0),
+        WSBASH: BigNumber.from(0),
     },
     stakingAllowance: {
-        BASH: 0,
-        SBASH: 0,
+        BASH: BigNumber.from(0),
+        SBASH: BigNumber.from(0),
     },
     loading: true,
 };
@@ -21,7 +22,6 @@ export const marketSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder.addCase(loadBalancesAndAllowances.fulfilled, (state, action) => {
-            console.log("here", action);
             return {
                 ...state,
                 ...action.payload,
@@ -29,7 +29,6 @@ export const marketSlice = createSlice({
             };
         });
         builder.addCase(loadBalancesAndAllowances.rejected, (state, action) => {
-            console.error("ERR", action);
             return {
                 ...state,
                 loading: false,

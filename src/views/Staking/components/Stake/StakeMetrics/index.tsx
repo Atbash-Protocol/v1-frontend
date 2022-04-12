@@ -18,14 +18,14 @@ const UserStakeMetrics = () => {
 
     const stakingRebase = (epoch?.distribute ?? 0) / (circSupply * Math.pow(10, 9));
     const stakingRebasePercentage = stakingRebase * 100;
-    const nextRewardValue = (Number(stakingRebasePercentage) / 100) * balances.SBASH;
-    const effectiveNextRewardValue = trim(nextRewardValue + (stakingRebasePercentage / 100) * balances.WSBASH * (stakingIndex || 0), 6);
+    const nextRewardValue = (Number(stakingRebasePercentage) / 100) * balances.SBASH.toNumber();
+    const effectiveNextRewardValue = trim(nextRewardValue + (stakingRebasePercentage / 100) * balances.WSBASH.toNumber() * (stakingIndex || 0), 6);
 
     const keyMetrics = [
         { key: "YourBalance", value: `${trim(Number(balances.BASH), 4)} BASH` },
         { key: "stake:YourStakedBalance", value: `${trim(Number(balances.SBASH), 4)} sBASH` },
         { key: "stake:YourWrappedStakedBalance", value: `${balances.WSBASH} wsBASH` },
-        { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH * (stakingIndex ?? 0), 6)} sBASH` },
+        { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH.toNumber() * (stakingIndex ?? 0), 6)} sBASH` },
         { key: "stake:NextRewardAmount", value: `${trim(nextRewardValue, 6)} BASH` },
         { key: "stake:NextRewardYield", value: `${formatNumber(stakingRebasePercentage, 2)} %` },
         { key: "stake:ROIFiveDayRate", value: `${trim(Number(fiveDayRate) * 100, 4)} %` },
@@ -33,11 +33,11 @@ const UserStakeMetrics = () => {
 
     const optionalMetrics = [
         { key: "stake:YourWrappedStakedBalance", value: `${balances.WSBASH} wsBASH` },
-        { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH * (stakingIndex ?? 0), 6)} sBASH` },
+        { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH.toNumber() * (stakingIndex ?? 0), 6)} sBASH` },
         { key: "stake:EffectiveNextRewardAmount", value: `${effectiveNextRewardValue} wsBASH` },
     ];
 
-    const metrics = [...keyMetrics, ...(balances.WSBASH > 0 ? optionalMetrics : [])].map(({ key, value }) => (
+    const metrics = [...keyMetrics, ...(balances.WSBASH.toNumber() > 0 ? optionalMetrics : [])].map(({ key, value }) => (
         <div className="data-row">
             <p className="data-row-name">{t(key)}</p>
             <p className="data-row-value">{accountLoading ? <Skeleton /> : <>{value}</>}</p>

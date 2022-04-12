@@ -1,64 +1,59 @@
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
+import { GlobalStyles } from "@mui/styled-engine";
 import { theme } from "constants/theme";
 import { formatNumber, formatUSD } from "helpers/price-units";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import { shallowEqual, useSelector } from "react-redux";
-import { IAccountSlice } from "store/account/account.types";
+import { AccountSlice } from "store/modules/account/account.types";
 import { IAppSlice } from "store/slices/app-slice";
 import { IReduxState } from "store/slices/state.interface";
 
-type UserBlalanceProps = Pick<IAccountSlice, "balances" | "loading"> & Pick<IAppSlice, "marketPrice" | "currentIndex">;
+interface UserBalanceProps {
+    stakingAPY: number;
+    stakingRebase: number;
+    daiPrice: number;
+    balances: AccountSlice["balances"];
+    currentIndex: number;
+}
 
-const Item = ({ name, value }: { name: string; value: unknown }) => (
-    <Box component="div" sx={{ display: "inline" }}>
-        <Typography> {name} </Typography>
-        <Typography>
-            <>{value}</>
-        </Typography>
-    </Box>
-);
-
-export const UserBalance = () => {
+const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: UserBalanceProps) => {
     const { t } = useTranslation();
 
-    const {
-        balances: { BASH, sBASH, wsBASH },
-        loading: accountLoading,
-    } = useSelector<IReduxState, IAccountSlice>(state => state.account);
-    const { currentIndex, marketPrice, loading: appLoading } = useSelector<IReduxState, IAppSlice>(state => state.app, shallowEqual);
+    const daiPrice = useSelector<IReduxState, number>(state => state.markets.markets.dai || 0);
 
-    const totalBalance = _.sum([BASH, sBASH, wsBASH].map(Number));
-    const trimmedsBASHBalance = formatNumber(Number(sBASH), 6);
-    const trimmedWrappedStakedSBBalance = formatNumber(Number(wsBASH), 6);
-    const valueOfSB = formatUSD(Number(BASH) * marketPrice);
+    const totalBalance = _.sum([balances.BASH, balances.SBASH, balances.WSBASH].map(balance => balance.toNumber())) * daiPrice;
+
+    const nextRewardValue = stakingRebase * balances.SBASH.toNumber();
+    const wrappedTokenEquivalent = balances.SBASH.toNumber() * Number(currentIndex);
+    const effectiveNextRewardValue = (nextRewardValue + stakingRebase) * wrappedTokenEquivalent * daiPrice;
 
     const userBalances = [
         {
             key: "stake:ValueOfYourBASH",
-            value: formatUSD(Number(trimmedsBASHBalance) * marketPrice),
+            value: formatUSD(balances.BASH.toNumber() * daiPrice),
         },
         {
             key: "stake:ValueOfYourStakedBASH",
-            value: formatUSD(_.reduce([Number(trimmedWrappedStakedSBBalance), Number(currentIndex), marketPrice], _.multiply, 1)),
+            value: formatUSD(balances.WSBASH.toNumber() * daiPrice),
         },
         {
             key: "stake:ValueOfYourNextRewardAmount",
-            value: "",
+            value: formatUSD(balances.SBASH.toNumber() * stakingAPY),
         },
         {
             key: "stake:ValueOfYourEffectiveNextRewardAmount",
-            value: "",
+            value: formatNumber(effectiveNextRewardValue, 2),
         },
-        trimmedWrappedStakedSBBalance && {
-            key: "stake:ValueOfYourBASH",
-            value: "",
+        {
+            key: "stake:ValueOfYourWrappedStakedSB",
+            value: formatNumber(balances.SBASH.toNumber() * daiPrice * Number(currentIndex)),
         },
     ];
 
-    const balanceItems = Object.entries(userBalances).map(([balanceKey, value]) => (
-        <Box key={balanceKey} sx={{ display: "inline-flex", width: "100%", justifyContent: "space-between" }}>
-            <Typography> {balanceKey} </Typography>
+    const balanceItems = userBalances.map(({ key, value }) => (
+        <Box key={key} sx={{ display: "inline-flex", width: "100%", justifyContent: "space-between" }}>
+            <Typography> {t(key)} </Typography>
             <Typography>
                 <>{value}</>
             </Typography>
@@ -66,53 +61,17 @@ export const UserBalance = () => {
     ));
 
     return (
-        <Grid
-            direction="column"
-            sx={{
-                backgroundColor: theme.palette.cardBackground.main,
-                backdropFilter: "blur(100px)",
-                borderRadius: ".5rem",
-                color: theme.palette.secondary.main,
-                p: 4,
-            }}
-        >
+        <>
             <Box sx={{ display: "inline-flex", width: "100%", justifyContent: "space-between", alignItems: "center" }}>
-                <Typography variant="h2"> {t("YourBalance")} </Typography>
-                <Typography> {accountLoading ? <Skeleton /> : <>{formatUSD(totalBalance, 2)}</>}</Typography>
+                <Typography variant="h4"> {t("YourBalance")} </Typography>
+                <Typography>
+                    <>{formatUSD(totalBalance, 2)}</>
+                </Typography>
             </Box>
 
-            {/* {balanceItems} */}
-
-            {/* <div className="stake-card-area">
-                <>
-                    <div className="data-row">
-                        <p className="data-row-name">{t("stake:ValueOfYourBASH")}</p>
-                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
-                    </div>
-
-                    <div className="data-row">
-                        <p className="data-row-name">{t("stake:ValueOfYourStakedBASH")}</p>
-                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
-                    </div>
-
-                    <div className="data-row">
-                        <p className="data-row-name">{t("stake:ValueOfYourNextRewardAmount")}</p>
-                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourNextRewardAmount}</>}</p>
-                    </div>
-
-                    <div className="data-row">
-                        <p className="data-row-name">{t("stake:ValueOfYourEffectiveNextRewardAmount")}</p>
-                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourEffectiveNextRewardAmount}</>}</p>
-                    </div>
-
-                    {Number(trimmedWrappedStakedSBBalance) > 0 && (
-                        <div className="data-row">
-                            <p className="data-row-name">{t("stake:ValueOfYourWrappedStakedSB")}</p>
-                            <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
-                        </div>
-                    )}
-                </>
-            </div> */}
-        </Grid>
+            {balanceItems}
+        </>
     );
 };
+
+export default UserBalance;
