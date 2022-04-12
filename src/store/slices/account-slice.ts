@@ -85,21 +85,21 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
 });
 
 export const calculateUserBondDetails = createAsyncThunk("account/calculateUserBondDetails", async ({ address, bond, networkID, provider }: ICalcUserBondDetails) => {
-    console.warn("disabled: calculateUserBondDetails");
-    return new Promise<any>(resevle => {
-        resevle({
-            bond: "",
-            displayName: "",
-            bondIconSvg: "",
-            isLP: false,
-            allowance: 0,
-            balance: 0,
-            interestDue: 0,
-            bondMaturationBlock: 0,
-            pendingPayout: "",
-            avaxBalance: 0,
-        });
-    });
+    // console.warn("disabled: calculateUserBondDetails");
+    // return new Promise<any>(resevle => {
+    //     resevle({
+    //         bond: "",
+    //         displayName: "",
+    //         bondIconSvg: "",
+    //         isLP: false,
+    //         allowance: 0,
+    //         balance: 0,
+    //         interestDue: 0,
+    //         bondMaturationBlock: 0,
+    //         pendingPayout: "",
+    //         avaxBalance: 0,
+    //     });
+    // });
 
     if (!address) {
         return new Promise<any>(resevle => {
@@ -155,16 +155,16 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
 });
 
 export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
-    console.warn("disabled: calculateUserTokenDetails");
-    return new Promise<any>(resevle => {
-        resevle({
-            token: "",
-            address: "",
-            img: "",
-            allowance: 0,
-            balance: 0,
-        });
-    });
+    // console.warn("disabled: calculateUserTokenDetails");
+    // return new Promise<any>(resevle => {
+    //     resevle({
+    //         token: "",
+    //         address: "",
+    //         img: "",
+    //         allowance: 0,
+    //         balance: 0,
+    //     });
+    // });
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({
