@@ -52,9 +52,9 @@ function Dashboard() {
     return (
         <Box>
             <Zoom in={true}>
-                <Grid container spacing={6} sx={{ p: 4 }} justifyContent="space-around">
+                <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
                     {DashboardItems.map(metric => (
-                        <Grid key={`dashboard-item-${metric.name}`} item lg={4} md={6} sm={6} xs={12}>
+                        <Grid key={`dashboard-item-${metric.name}`} item lg={6} md={6} sm={6} xs={12}>
                             <Box
                                 className="Dashboard__box__item"
                                 sx={{
