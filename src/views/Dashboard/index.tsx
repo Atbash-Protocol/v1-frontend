@@ -1,8 +1,7 @@
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { Zoom } from "@material-ui/core";
-import { formatUSD, formatNumber, formatAPY } from "helpers/price-units";
+import { formatUSD, formatAPY } from "helpers/price-units";
 import { IReduxState } from "store/slices/state.interface";
-import { IAppSlice } from "store/slices/app-slice";
 import Loading from "components/Loader";
 
 import { useTranslation } from "react-i18next";
@@ -11,8 +10,9 @@ import { Box, Skeleton, Typography } from "@mui/material";
 import { theme } from "constants/theme";
 
 import "./dashboard.scss";
-import { MainSliceState } from "store/modules/app/app.types";
-import { calculateStakingRewards } from "store/modules/app/app.helpers";
+import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from "store/modules/metrics/metrics.selectors";
+import { selectFormattedIndex } from "store/modules/stake/stake.selectors";
+import { selectFormattedReservePrice } from "store/modules/app/app.selectors";
 
 function Dashboard() {
     const { t } = useTranslation();
@@ -22,25 +22,27 @@ function Dashboard() {
     }, shallowEqual);
     const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
 
-    const { circSupply, totalSupply, reserves } = useSelector<IReduxState, MainSliceState["metrics"]>(state => state.main.metrics, shallowEqual);
-    const { epoch, index: stakingIndex } = useSelector<IReduxState, MainSliceState["staking"]>(state => state.main.staking, shallowEqual);
+    const bashPrice = useSelector(selectFormattedReservePrice);
+    const wsPrice = useSelector(selectWSBASHPrice);
+    const marketCap = useSelector(selectFormattedMarketCap);
+    const stakingRewards = useSelector(selectStakingRewards);
+    const TVL = useSelector(selectTVL);
+    const currentIndex = useSelector(selectFormattedIndex);
 
-    if (!marketPrice || !reserves || !epoch || loading) return <Loading />;
+    if (!marketPrice || loading) return <Loading />;
 
-    const APY = calculateStakingRewards(epoch, circSupply!);
-    const APYMetrics = epoch
+    const APYMetrics = stakingRewards
         ? [
-              { name: "APY", value: formatAPY(APY.stakingAPY?.toString() || "") },
-              { name: "CurrentIndex", value: `${formatNumber(Number(stakingIndex), 2)} BASH` },
-              { name: "wsBASHPrice", value: formatUSD(marketPrice * Number(stakingIndex), 2) },
+              { name: "APY", value: stakingRewards ? formatAPY(stakingRewards.stakingAPY.toString()) : null },
+              { name: "CurrentIndex", value: currentIndex },
+              { name: "wsBASHPrice", value: wsPrice },
           ]
         : [];
 
     const DashboardItems = [
-        { name: "BashPrice", value: formatUSD(marketPrice, 2) },
-        { name: "MarketCap", value: formatUSD(totalSupply! * marketPrice, 2) },
-        { name: "TVL", value: formatUSD(circSupply! * marketPrice) },
-        { name: "SBashPrice", value: formatUSD(Number(reserves.toString()) * marketPrice, 2) },
+        { name: "BashPrice", value: bashPrice },
+        { name: "MarketCap", value: marketCap },
+        { name: "TVL", value: formatUSD(TVL || 0, 2) },
 
         ...APYMetrics,
         // { name: "RiskFreeValue", value: formatUSD(app.rfv) },

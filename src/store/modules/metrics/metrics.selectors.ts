@@ -1,3 +1,4 @@
+import { formatUSD } from "helpers/price-units";
 import { sum } from "lodash";
 import { RootState } from "store/store";
 import { StakingRewards } from "./metrics.types";
@@ -34,7 +35,23 @@ export const selectTotalBalance = (state: RootState): number | null => {
 
     if (!dai) return null;
 
-    // return sum(Object.values(balances).map(balance => balance.toNumber())) * dai;
+    return sum(Object.values(balances).map(balance => balance.div(10 ** 9).toNumber())) * dai;
+};
 
-    return 0;
+export const selectFormattedMarketCap = (state: RootState): string | null => {
+    const { totalSupply } = state.main.metrics;
+    const { dai } = state.markets.markets;
+
+    if (!totalSupply || !dai) return null;
+
+    return formatUSD(totalSupply! * dai, 2);
+};
+
+export const selectWSBASHPrice = (state: RootState): string | null => {
+    const { dai } = state.markets.markets;
+    const { index } = state.main.staking;
+
+    if (!dai || !index) return null;
+
+    return formatUSD((index / 10 ** 9) * dai, 2);
 };

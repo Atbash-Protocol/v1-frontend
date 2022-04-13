@@ -29,6 +29,4 @@ export const marketSlice = createSlice({
     },
 });
 
-export const selectMarkets = (state: MarketSlice) => state.markets;
-
 export default marketSlice.reducer;
