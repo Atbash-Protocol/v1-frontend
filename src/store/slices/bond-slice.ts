@@ -92,108 +92,107 @@ export interface IBondDetails {
     maxBondPriceToken: number;
 }
 
-export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async ({ bond, value, provider, networkID }: ICalcBondDetails, { dispatch }) => {
-    // console.warn("disabled: calcBondDetails");
+export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async ({ bond, value, provider, networkID }: ICalcBondDetails, { getState, dispatch }) => {
+    console.warn("disabled: calcBondDetails");
 
-    if (!value) {
-        value = "0";
-    }
+    const state = getState();
 
-    const amountInWei = ethers.utils.parseEther(value);
+    const amountInWei = ethers.utils.parseEther(value!);
     // return {};
 
-    let bondPrice = 0,
-        bondDiscount = 0,
-        valuation = 0,
-        bondQuote = 0;
+    // const amountInWei = ethers.utils.parseEther(value);
 
-    const addresses = getAddresses(networkID);
+    // let bondPrice = 0,
+    //     bondDiscount = 0,
+    //     valuation = 0,
+    //     bondQuote = 0;
 
     let bondContract = bond.getContractForBond(networkID, provider);
     let bondCalcContract = getBondCalculator(networkID, provider);
 
-    let terms;
-    try {
-        terms = await bondContract.terms();
-    } catch (e) {
-        console.error(e);
-    }
-    const maxBondPrice = (await bondContract.maxPayout()) / Math.pow(10, 9);
+    // const bondContract = bond.getContractForBond(networkID, provider);
+    // const bondCalcContract = getBondCalculator(networkID, provider);
 
-    let marketPrice = await getMarketPrice(networkID, provider);
+    // const terms = await bondContract.terms();
+    // const maxBondPrice = (await bondContract.maxPayout()) / Math.pow(10, 9);
 
-    const mimPrice = getTokenPrice("MIM");
-    marketPrice = (marketPrice / Math.pow(10, 9)) * mimPrice;
+    // let marketPrice = await getMarketPrice(networkID, provider);
 
-    try {
-        bondPrice = await bondContract.bondPriceInUSD();
+    // const mimPrice = getTokenPrice("MIM");
+    // marketPrice = (marketPrice / Math.pow(10, 9)) * mimPrice;
 
-        if (bond.name === bashUSDT.name) {
-            const avaxPrice = getTokenPrice("AVAX");
-            bondPrice = bondPrice * avaxPrice;
-        }
+    // try {
+    //     bondPrice = await bondContract.bondPriceInUSD();
 
-        bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice;
-    } catch (e) {
-        console.log("error getting bondPriceInUSD", e);
-    }
+    //     if (bond.name === avaxSb.name) {
+    //         const avaxPrice = getTokenPrice("AVAX");
+    //         bondPrice = bondPrice * avaxPrice;
+    //     } else if (bond.name === avaxFxs.name) {
+    //         const avaxPrice = getTokenPrice("AVAX");
+    //         bondPrice = bondPrice * avaxPrice;
+    //     }
 
-    let maxBondPriceToken = 0;
-    const maxBodValue = ethers.utils.parseEther("1");
+    //     bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice;
+    // } catch (e) {
+    //     console.log("error getting bondPriceInUSD", e);
+    // }
 
-    if (bond.isLP) {
-        valuation = await bondCalcContract.valuation(bond.getAddressForReserve(networkID), amountInWei);
-        bondQuote = await bondContract.payoutFor(valuation);
-        bondQuote = bondQuote / Math.pow(10, 9);
+    // let maxBondPriceToken = 0;
+    // const maxBodValue = ethers.utils.parseEther("1");
 
-        const maxValuation = await bondCalcContract.valuation(bond.getAddressForReserve(networkID), maxBodValue);
-        const maxBondQuote = await bondContract.payoutFor(maxValuation);
-        maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -9));
-    } else {
-        bondQuote = await bondContract.payoutFor(amountInWei);
-        bondQuote = bondQuote / Math.pow(10, 18);
+    // if (bond.isLP) {
+    //     valuation = await bondCalcContract.valuation(bond.getAddressForReserve(networkID), amountInWei);
+    //     bondQuote = await bondContract.payoutFor(valuation);
+    //     bondQuote = bondQuote / Math.pow(10, 9);
 
-        const maxBondQuote = await bondContract.payoutFor(maxBodValue);
-        maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -18));
-    }
+    //     const maxValuation = await bondCalcContract.valuation(bond.getAddressForReserve(networkID), maxBodValue);
+    //     const maxBondQuote = await bondContract.payoutFor(maxValuation);
+    //     maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -9));
+    // } else {
+    //     bondQuote = await bondContract.payoutFor(amountInWei);
+    //     bondQuote = bondQuote / Math.pow(10, 18);
 
-    if (!!value && bondQuote > maxBondPrice) {
-        dispatch(error({ text: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
-    }
+    //     const maxBondQuote = await bondContract.payoutFor(maxBodValue);
+    //     maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -18));
+    // }
 
-    // Calculate bonds purchased
-    const token = bond.getContractForReserve(networkID, provider);
-    let purchased = await token.balanceOf(addresses.TREASURY_ADDRESS);
+    // if (!!value && bondQuote > maxBondPrice) {
+    //     dispatch(error({ text: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
+    // }
 
-    if (bond.isLP) {
-        const assetAddress = bond.getAddressForReserve(networkID);
-        const markdown = await bondCalcContract.markdown(assetAddress);
+    // // Calculate bonds purchased
+    // const token = bond.getContractForReserve(networkID, provider);
+    // let purchased = await token.balanceOf(addresses.TREASURY_ADDRESS);
 
-        purchased = await bondCalcContract.valuation(assetAddress, purchased);
-        purchased = (markdown / Math.pow(10, 18)) * (purchased / Math.pow(10, 9));
+    // if (bond.isLP) {
+    //     const assetAddress = bond.getAddressForReserve(networkID);
+    //     const markdown = await bondCalcContract.markdown(assetAddress);
 
-        if (bond.name === bashUSDT.name) {
-            const avaxPrice = getTokenPrice("AVAX");
-            purchased = purchased * avaxPrice;
-        }
-    } else if (bond.name === wavax.name) {
-        purchased = purchased / Math.pow(10, 18);
-        const avaxPrice = getTokenPrice("AVAX");
-        purchased = purchased * avaxPrice;
-    } else {
-        purchased = purchased / Math.pow(10, 18);
-    }
+    //     purchased = await bondCalcContract.valuation(assetAddress, purchased);
+    //     purchased = (markdown / Math.pow(10, 18)) * (purchased / Math.pow(10, 9));
+
+    //     if (bond.name === avaxSb.name) {
+    //         const avaxPrice = getTokenPrice("AVAX");
+    //         purchased = purchased * avaxPrice;
+    //     }
+    // } else if (bond.name === wavax.name) {
+    //     purchased = purchased / Math.pow(10, 18);
+    //     const avaxPrice = getTokenPrice("AVAX");
+    //     purchased = purchased * avaxPrice;
+    // } else {
+    //     purchased = purchased / Math.pow(10, 18);
+    // }
 
     return {
         bond: bond.name,
-        bondDiscount,
-        bondQuote,
-        purchased,
-        vestingTerm: Number(terms.vestingTerm),
-        maxBondPrice,
-        bondPrice: bondPrice / Math.pow(10, 18),
-        marketPrice,
-        maxBondPriceToken,
+        bondDiscount: 0,
+        bondQuote: 0,
+        purchased: 0,
+        vestingTerm: 0, // Number(terms.vestingTerm),
+        maxBondPrice: 10,
+        bondPrice: 100, // bondPrice / Math.pow(10, 18),
+        marketPrice: 10,
+        maxBondPriceToken: 20,
     };
 });
 

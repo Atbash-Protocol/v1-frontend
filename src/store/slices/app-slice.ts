@@ -1,11 +1,12 @@
 import { ethers } from "ethers";
 import { getAddresses } from "../../constants";
-import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract } from "../../abi";
+import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract, LpReserveContract } from "../../abi";
 import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
-import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createSelector, createAsyncThunk, createReducer, createAction } from "@reduxjs/toolkit";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { RootState } from "../store";
 import allBonds from "../../helpers/bond";
+import { LPBond } from "helpers/bond/lp-bond";
 
 interface ILoadAppDetails {
     networkID: number;
@@ -28,7 +29,8 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
     const currentBlock = await provider.getBlockNumber();
     const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
 
-    const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * daiPrice;
+    // const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * daiPrice;
+    const marketPrice = 10;
 
     const totalSupply = (await BASHContract.totalSupply()) / Math.pow(10, 9);
     const circSupply = (await sBASHContract.circulatingSupply()) / Math.pow(10, 9);
@@ -133,15 +135,23 @@ const appSlice = createSlice({
     initialState,
     reducers: {
         fetchAppSuccess(state, action) {
-            setAll(state, action.payload);
+            console.log("fetch", state, action);
+            state = { ...state, ...action.payload };
+        },
+        contractFetched(state, action) {
+            console.log("state", action, state);
         },
     },
     extraReducers: builder => {
+        console.log(builder);
         builder
+
             .addCase(loadAppDetails.pending, (state, action) => {
+                console.log("before", state, action);
                 state.loading = true;
             })
             .addCase(loadAppDetails.fulfilled, (state, action) => {
+                console.log("done", state, action);
                 setAll(state, action.payload);
                 state.loading = false;
             })
@@ -156,6 +166,6 @@ const baseInfo = (state: RootState) => state.app;
 
 export default appSlice.reducer;
 
-export const { fetchAppSuccess } = appSlice.actions;
+export const { fetchAppSuccess, contractFetched } = appSlice.actions;
 
 export const getAppState = createSelector(baseInfo, app => app);

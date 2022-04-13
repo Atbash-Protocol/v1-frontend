@@ -1,102 +1,56 @@
-import { useEffect, useState, useCallback } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useAddress, useWeb3Context } from "hooks/web3";
-import { calcBondDetails } from "store/slices/bond-slice";
-import { loadAppDetails } from "store/slices/app-slice";
-import { loadAccountDetails, calculateUserBondDetails, calculateUserTokenDetails } from "store/slices/account-slice";
+import { useCallback, useEffect } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useWeb3Context } from "hooks/web3";
 import { IReduxState } from "store/slices/state.interface";
-import Loading from "components/Loader";
-import useBonds from "hooks/bonds";
 import ViewBase from "layout/ViewBase";
-import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } from "../views";
+import { Dashboard, CritialError, NotFound, Stake, Wrap, Bond } from "../views";
+import Loading from "components/Loader";
 
 import "./style.scss";
-import useTokens from "../hooks/tokens";
+import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from "store/modules/app/app.thunks";
+import { MainSliceState } from "store/modules/app/app.types";
+import { Route, Switch } from "react-router-dom";
+import { getMarketPrices } from "store/modules/markets/markets.thunks";
+import { Contract } from "ethers";
+import { DEFAULT_NETWORK } from "constants/blockchain";
 
 function App() {
     const dispatch = useDispatch();
+    const { provider, chainID, connected, checkWrongNetwork, providerChainID } = useWeb3Context();
 
-    const { connect, provider, hasCachedProvider, chainID, connected } = useWeb3Context();
-    const address = useAddress();
-
-    const [walletChecked, setWalletChecked] = useState(false);
-
-    const isAppLoading = useSelector<IReduxState, boolean>(state => {
-        return state.app.loading;
-    });
-    const isAppLoaded = useSelector<IReduxState, boolean>(state => !Boolean(state.app.marketPrice));
-
-    const { bonds } = useBonds();
-    const { tokens } = useTokens();
-
-    async function loadDetails(whichDetails: string) {
-        let loadProvider = provider;
-
-        if (whichDetails === "app") {
-            loadApp(loadProvider);
-        }
-
-        if (whichDetails === "account" && address && connected) {
-            loadAccount(loadProvider);
-            if (isAppLoaded) return;
-
-            loadApp(loadProvider);
-        }
-
-        if (whichDetails === "userBonds" && address && connected) {
-            bonds.map(bond => {
-                dispatch(calculateUserBondDetails({ address, bond, provider, networkID: chainID }));
-            });
-        }
-
-        if (whichDetails === "userTokens" && address && connected) {
-            tokens.map(token => {
-                dispatch(calculateUserTokenDetails({ address, token, provider, networkID: chainID }));
-            });
-        }
-    }
-
-    const loadApp = useCallback(
-        loadProvider => {
-            dispatch(loadAppDetails({ networkID: chainID, provider: loadProvider }));
-            bonds.map(bond => {
-                dispatch(calcBondDetails({ bond, value: null, provider: loadProvider, networkID: chainID }));
-            });
-            tokens.map(token => {
-                dispatch(calculateUserTokenDetails({ address: "", token, provider, networkID: chainID }));
-            });
-        },
-        [connected],
-    );
-
-    const loadAccount = useCallback(
-        loadProvider => {
-            dispatch(loadAccountDetails({ networkID: chainID, address, provider: loadProvider }));
-        },
-        [connected],
-    );
+    const { errorEncountered, loading, contracts } = useSelector<IReduxState, MainSliceState>(state => state.main, shallowEqual);
+    const stakingAddressReady = useSelector<IReduxState, Contract | null>(state => state.main.contracts.STAKING_ADDRESS);
+    const marketsLoading = useSelector<IReduxState, boolean>(state => state.markets.loading);
 
     useEffect(() => {
-        if (hasCachedProvider()) {
-            connect().then(() => {
-                setWalletChecked(true);
-            });
-        } else {
-            setWalletChecked(true);
-        }
-    }, []);
+        dispatch(initializeProviderContracts({ networkID: chainID, provider }));
+        dispatch(getBlockchainData(provider));
+        dispatch(getMarketPrices());
+    }, [connected]);
 
     useEffect(() => {
-        if (walletChecked || connected) {
-            loadDetails("app");
-            loadDetails("account");
-            loadDetails("userBonds");
-            loadDetails("userTokens");
-        }
-    }, [walletChecked, connected]);
+        if (contracts.BASH_CONTRACT && contracts.SBASH_CONTRACT && contracts.INITIAL_PAIR_ADDRESS) dispatch(getCoreMetrics());
 
-    if (isAppLoading) return <Loading />;
+        if (contracts.STAKING_ADDRESS) {
+            dispatch(getStakingMetrics());
+        }
+    }, [contracts]);
+
+    console.log("here", chainID, DEFAULT_NETWORK, providerChainID);
+
+    if (errorEncountered)
+        return (
+            <ViewBase>
+                <CritialError />
+            </ViewBase>
+        );
+
+    if (loading || marketsLoading)
+        return (
+            <ViewBase>
+                <Loading />
+            </ViewBase>
+        );
 
     return (
         <ViewBase>
@@ -105,33 +59,21 @@ function App() {
                     <Dashboard />
                 </Route>
 
-                <Route path="/stake">
-                    <Stake />
-                </Route>
+                {connected && (
+                    <>
+                        <Route path="/stake">
+                            <Stake />
+                        </Route>
+                        {/* 
+                        <Route path="/bond">
+                            <Bond />
+                        </Route> */}
 
-                <Route path="/wrap">
-                    <Wrap />
-                </Route>
-
-                <Route path="/redeem">
-                    <Redeem />
-                </Route>
-
-                <Route path="/Forecast">
-                    <Forecast />
-                </Route>
-
-                <Route path="/mints">
-                    {bonds.map(bond => {
-                        return (
-                            <Route exact key={bond.name} path={`/mints/${bond.name}`}>
-                                <Bond bond={bond} />
-                            </Route>
-                        );
-                    })}
-                    <ChooseBond />
-                </Route>
-
+                        {/* <Route path="/wrap">
+                            <Wrap />
+                        </Route> */}
+                    </>
+                )}
                 <Route component={NotFound} />
             </Switch>
         </ViewBase>
