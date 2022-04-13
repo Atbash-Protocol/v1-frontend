@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { Zoom } from "@material-ui/core";
 import RebaseTimer from "../../components/RebaseTimer";
-import "./stake.scss";
 import { useWeb3Context } from "../../hooks";
 import { IReduxState } from "../../store/slices/state.interface";
 import Loading from "components/Loader";
@@ -44,8 +43,14 @@ function Staking() {
     return (
         <Box
             sx={{
-                padding: theme.spacing(4),
-                marginRight: theme.spacing(4),
+                padding: {
+                    xs: 0,
+                    sm: 4,
+                },
+                marginRight: {
+                    xs: 0,
+                    sm: theme.spacing(4),
+                },
             }}
         >
             <Zoom in={true}>
@@ -55,7 +60,7 @@ function Staking() {
                         backdropFilter: "blur(100px)",
                         borderRadius: ".5rem",
                         color: theme.palette.secondary.main,
-                        p: 4,
+                        p: { xs: 2, sm: 4 },
                     }}
                 >
                     <Box sx={{ color: theme.palette.secondary.main }}>
@@ -66,7 +71,7 @@ function Staking() {
                     </Box>
 
                     <Box sx={{ marginTop: theme.spacing(4) }}>
-                        <StakeMetrics TVL={TVL} APY={stakingMetrics.stakingAPY || 0} currentIndex={stakingIndex!} BASHPrice={daiPrice!} />
+                        <StakeMetrics />
                     </Box>
                     <Box sx={{ marginTop: theme.spacing(4) }}>
                         <Stake />

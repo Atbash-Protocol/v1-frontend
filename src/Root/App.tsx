@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useWeb3Context } from "hooks/web3";
 import { IReduxState } from "store/slices/state.interface";
 import ViewBase from "layout/ViewBase";
-import { Dashboard, CritialError, NotFound, Stake } from "../views";
+import { Dashboard, CritialError, NotFound, Stake, Wrap, Bond } from "../views";
 import Loading from "components/Loader";
 
 import "./style.scss";
@@ -60,9 +60,19 @@ function App() {
                 </Route>
 
                 {connected && (
-                    <Route path="/stake">
-                        <Stake />
-                    </Route>
+                    <>
+                        <Route path="/stake">
+                            <Stake />
+                        </Route>
+                        {/* 
+                        <Route path="/bond">
+                            <Bond />
+                        </Route> */}
+
+                        {/* <Route path="/wrap">
+                            <Wrap />
+                        </Route> */}
+                    </>
                 )}
                 <Route component={NotFound} />
             </Switch>

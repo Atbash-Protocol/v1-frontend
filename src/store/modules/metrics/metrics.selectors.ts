@@ -1,3 +1,4 @@
+import { sum } from "lodash";
 import { RootState } from "store/store";
 import { StakingRewards } from "./metrics.types";
 
@@ -25,4 +26,15 @@ export const selectTVL = (state: RootState): number | null => {
     if (!circSupply || !dai) return null;
 
     return circSupply * dai;
+};
+
+export const selectTotalBalance = (state: RootState): number | null => {
+    const { dai } = state.markets.markets;
+    const balances = state.accountNew.balances;
+
+    if (!dai) return null;
+
+    // return sum(Object.values(balances).map(balance => balance.toNumber())) * dai;
+
+    return 0;
 };
