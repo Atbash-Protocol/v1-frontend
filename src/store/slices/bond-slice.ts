@@ -122,13 +122,13 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
 
     let marketPrice = await getMarketPrice(networkID, provider);
 
-    const mimPrice = getTokenPrice("MIM");
+    const mimPrice = getTokenPrice("DAI");
     marketPrice = (marketPrice / Math.pow(10, 9)) * mimPrice;
 
     try {
         bondPrice = await bondContract.bondPriceInUSD();
 
-        if (bond.name === bashUSDT.name) {
+        if (bond.name === bashUSDT.name) { // todo: not a current LP
             const avaxPrice = getTokenPrice("AVAX");
             bondPrice = bondPrice * avaxPrice;
         }
