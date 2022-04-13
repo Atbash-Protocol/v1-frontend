@@ -101,57 +101,8 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
     //     });
     // });
 
-    if (!address) {
-        return new Promise<any>(resevle => {
-            resevle({
-                bond: "",
-                displayName: "",
-                bondIconSvg: "",
-                isLP: false,
-                allowance: 0,
-                balance: 0,
-                interestDue: 0,
-                bondMaturationBlock: 0,
-                pendingPayout: "",
-                avaxBalance: 0,
-            });
-        });
-    }
-
-    const bondContract = bond.getContractForBond(networkID, provider);
-    const reserveContract = bond.getContractForReserve(networkID, provider);
-
-    let interestDue, pendingPayout, bondMaturationBlock;
-
-    const bondDetails = await bondContract.bondInfo(address);
-    interestDue = bondDetails.payout / Math.pow(10, 9);
-    bondMaturationBlock = Number(bondDetails.vesting) + Number(bondDetails.lastTime);
-    pendingPayout = await bondContract.pendingPayoutFor(address);
-
     let allowance,
         balance = "0";
-
-    allowance = await reserveContract.allowance(address, bond.getAddressForBond(networkID));
-    balance = await reserveContract.balanceOf(address);
-    const balanceVal = ethers.utils.formatEther(balance);
-
-    const avaxBalance = await provider.getSigner().getBalance();
-    const avaxVal = ethers.utils.formatEther(avaxBalance);
-
-    const pendingPayoutVal = ethers.utils.formatUnits(pendingPayout, "gwei");
-
-    return {
-        bond: bond.name,
-        displayName: bond.displayName,
-        bondIconSvg: bond.bondIconSvg,
-        isLP: bond.isLP,
-        allowance: Number(allowance),
-        balance: Number(balanceVal),
-        avaxBalance: Number(avaxVal),
-        interestDue,
-        bondMaturationBlock,
-        pendingPayout: Number(pendingPayoutVal),
-    };
 });
 
 export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
@@ -246,7 +197,7 @@ const accountSlice = createSlice({
     initialState,
     reducers: {
         fetchAccountSuccess(state, action) {
-            setAll(state, action.payload);
+            state = { ...state, ...action.payload };
         },
     },
     extraReducers: builder => {
@@ -255,8 +206,7 @@ const accountSlice = createSlice({
                 state.loading = true;
             })
             .addCase(loadAccountDetails.fulfilled, (state, action) => {
-                setAll(state, action.payload);
-                state.loading = false;
+                state = { ...state, ...action.payload, loading: false };
             });
 
         // .addCase(loadAccountDetails.rejected, (state, { error }) => {

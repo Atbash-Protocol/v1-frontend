@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Typography } from "@mui/material";
 import { theme } from "constants/theme";
 
-function NotFound() {
+const NotFound = () => {
     const { t } = useTranslation();
 
     return (
@@ -19,6 +19,6 @@ function NotFound() {
             </Typography>
         </Box>
     );
-}
+};
 
 export default NotFound;

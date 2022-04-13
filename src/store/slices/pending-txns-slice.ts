@@ -40,6 +40,8 @@ export const txnButtonText = (pendingTransactions: IPendingTxn[], type: string, 
     return isPendingTxn(pendingTransactions, type) ? i18n.t("PendingEllipsis") : defaultText;
 };
 
+export const getPendingActionText = (action: string) => (action === "stake" ? i18n.t("stake:Staking") : i18n.t("stake:Unstaking"));
+
 export const { fetchPendingTxns, clearPendingTxn } = pendingTxnsSlice.actions;
 
 export default pendingTxnsSlice.reducer;

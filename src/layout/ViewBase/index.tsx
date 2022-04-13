@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./view-base.scss";
 import Header from "components/Header";
 import { Box, Hidden, makeStyles, useMediaQuery, Drawer, IconButton } from "@material-ui/core";
@@ -7,6 +7,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 import { Sidebar, SidebarMobile } from "components/Sidebar";
 import Messages from "components/Messages";
+import { useWeb3Context } from "hooks/web3";
 
 interface IViewBaseProps {
     children: React.ReactNode;
@@ -42,18 +43,22 @@ function ViewBase({ children }: IViewBaseProps) {
     const classes = useStyles();
 
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [open, setOpen] = useState(false);
 
-    const handleDrawerClose = (e: React.SyntheticEvent) => setOpen(false);
+    const { connect, provider, hasCachedProvider, chainID, connected } = useWeb3Context();
 
     const isSmallerScreen = useMediaQuery("(max-width: 960px)");
-    const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
 
-    const drawerWidth = "5rem";
+    useEffect(() => {
+        if (hasCachedProvider()) {
+            connect().then(() => {
+                console.info("connected");
+            });
+        }
+    }, []);
 
     return (
         <div className="view-base-root">
