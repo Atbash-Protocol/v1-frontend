@@ -3,22 +3,24 @@ import { theme } from "constants/theme";
 import { formatAPY, formatNumber, formatUSD } from "helpers/price-units";
 import { t } from "i18next";
 import { memo } from "react";
+import { useSelector } from "react-redux";
+import { selectBashPrice } from "store/modules/markets/martets.selectors";
+import { selectStakingRewards, selectTVL } from "store/modules/metrics/metrics.selectors";
+import { IReduxState } from "store/slices/state.interface";
 
-interface StakeMetricsProps {
-    APY: number;
-    TVL: number;
-    currentIndex: number;
-    BASHPrice: number;
-}
+function StakeMetrics() {
+    const stakingMetrics = useSelector(selectStakingRewards);
+    const TVL = useSelector(selectTVL);
+    const BASHPrice = useSelector(selectBashPrice);
+    const currentIndex = useSelector<IReduxState, number | null>(state => state.main.staking.index);
 
-function StakeMetrics(props: StakeMetricsProps) {
-    const { APY, TVL, currentIndex, BASHPrice } = props;
+    if (!stakingMetrics || !TVL) return <Skeleton />;
 
     const metrics = [
-        { key: "APY", value: `${formatAPY(APY.toString())} %` },
+        { key: "APY", value: `${formatAPY(stakingMetrics.stakingAPY.toString())} %` },
         { key: "TVL", value: formatUSD(TVL) },
-        { key: "CurrentIndex", value: `${formatNumber(Number(currentIndex), 2)} BASH` },
-        { key: "BASHPrice", value: formatUSD(BASHPrice, 2) },
+        { key: "CurrentIndex", value: currentIndex !== null ? `${formatNumber(currentIndex, 2)} BASH` : null },
+        { key: "BASHPrice", value: BASHPrice },
     ].map(({ key, value }) => (
         <Grid xs={6} sm={4} md={4} lg={3} mt={2}>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>

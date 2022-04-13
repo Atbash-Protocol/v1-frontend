@@ -1,4 +1,4 @@
-import { Skeleton, Typography } from "@mui/material";
+import { Skeleton, Typography, Box } from "@mui/material";
 import { theme } from "constants/theme";
 import { formatNumber } from "helpers/price-units";
 import { trim } from "helpers/trim";
@@ -38,20 +38,30 @@ const UserStakeMetrics = () => {
     ];
 
     const metrics = [...keyMetrics, ...(balances.WSBASH.toNumber() > 0 ? optionalMetrics : [])].map(({ key, value }) => (
-        <div className="data-row">
-            <p className="data-row-name">{t(key)}</p>
-            <p className="data-row-value">{accountLoading ? <Skeleton /> : <>{value}</>}</p>
-        </div>
+        <Box
+            sx={{
+                display: "inline-flex",
+                width: "100%",
+                justifyContent: "space-between",
+                p: {
+                    xs: 0.5,
+                    sm: 0.75,
+                },
+            }}
+        >
+            <Typography variant="body1">{t(key)}</Typography>
+            <Typography variant="body2">{accountLoading ? <Skeleton /> : <>{value}</>}</Typography>
+        </Box>
     ));
 
     return (
-        <div className="stake-user-data">
-            <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>
+        <Box>
+            <Typography variant="h4" sx={{ color: theme.palette.secondary.main }}>
                 Staking metrics
             </Typography>
 
             {metrics}
-        </div>
+        </Box>
     );
 };
 

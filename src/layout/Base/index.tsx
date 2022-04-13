@@ -33,16 +33,6 @@ export const BaseLayout = ({ children }: IViewBaseProps): JSX.Element => {
         <>
             <CssBaseline />
 
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Typography variant="h6" style={{ flex: 1 }}>
-                        Test App
-                    </Typography>
-
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-
             <Box className="base-layout-root">
                 <Drawer
                     anchor="left"

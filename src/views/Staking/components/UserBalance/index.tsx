@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import { GlobalStyles } from "@mui/styled-engine";
 import { theme } from "constants/theme";
 import { formatNumber, formatUSD } from "helpers/price-units";
@@ -6,6 +6,7 @@ import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import { shallowEqual, useSelector } from "react-redux";
 import { AccountSlice } from "store/modules/account/account.types";
+import { selectTotalBalance } from "store/modules/metrics/metrics.selectors";
 import { IAppSlice } from "store/slices/app-slice";
 import { IReduxState } from "store/slices/state.interface";
 
@@ -22,7 +23,7 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
 
     const daiPrice = useSelector<IReduxState, number>(state => state.markets.markets.dai || 0);
 
-    const totalBalance = _.sum([balances.BASH, balances.SBASH, balances.WSBASH].map(balance => balance.toNumber())) * daiPrice;
+    const totalBalance = useSelector(selectTotalBalance);
 
     const nextRewardValue = stakingRebase * balances.SBASH.toNumber();
     const wrappedTokenEquivalent = balances.SBASH.toNumber() * Number(currentIndex);
@@ -52,9 +53,20 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
     ];
 
     const balanceItems = userBalances.map(({ key, value }) => (
-        <Box key={key} sx={{ display: "inline-flex", width: "100%", justifyContent: "space-between" }}>
-            <Typography> {t(key)} </Typography>
-            <Typography>
+        <Box
+            key={key}
+            sx={{
+                display: "inline-flex",
+                width: "100%",
+                justifyContent: "space-between",
+                p: {
+                    xs: 0.5,
+                    sm: 0.75,
+                },
+            }}
+        >
+            <Typography variant="body1"> {t(key)} </Typography>
+            <Typography variant="body2">
                 <>{value}</>
             </Typography>
         </Box>
@@ -65,7 +77,7 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
             <Box sx={{ display: "inline-flex", width: "100%", justifyContent: "space-between", alignItems: "center" }}>
                 <Typography variant="h4"> {t("YourBalance")} </Typography>
                 <Typography>
-                    <>{formatUSD(totalBalance, 2)}</>
+                    <> {totalBalance === null ? <Skeleton /> : formatUSD(totalBalance, 2)}</>
                 </Typography>
             </Box>
 

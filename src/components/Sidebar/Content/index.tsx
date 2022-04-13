@@ -105,6 +105,9 @@ function NavContent() {
                 minWidth: "10rem",
                 overflowY: "scroll",
                 backgroundColor: theme.palette.cardBackground.main,
+                backdropFilter: "blur(100px)",
+                borderRadius: ".5rem",
+                color: theme.palette.secondary.main,
                 height: "100%",
             }}
         >
