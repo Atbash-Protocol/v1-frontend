@@ -36,8 +36,6 @@ function App() {
         }
     }, [contracts]);
 
-    console.log("here", chainID, DEFAULT_NETWORK, providerChainID);
-
     if (errorEncountered)
         return (
             <ViewBase>

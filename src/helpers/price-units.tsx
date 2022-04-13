@@ -29,5 +29,5 @@ export const formatNumber = (number: number = 0, precision?: number) => {
 };
 
 export const formatAPY = (formatted: string): string => {
-    return formatted.length > 16 ? "> 1 000 000" : formatted;
+    return formatted.length > 16 ? "> 1 000 000 %" : formatted;
 };

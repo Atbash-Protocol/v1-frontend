@@ -1,13 +1,11 @@
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
-import { GlobalStyles } from "@mui/styled-engine";
-import { theme } from "constants/theme";
+import { Box, Skeleton, Typography } from "@mui/material";
 import { formatNumber, formatUSD } from "helpers/price-units";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
-import { shallowEqual, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AccountSlice } from "store/modules/account/account.types";
+import { selectFormattedBashBalance } from "store/modules/markets/markets.selectors";
 import { selectTotalBalance } from "store/modules/metrics/metrics.selectors";
-import { IAppSlice } from "store/slices/app-slice";
 import { IReduxState } from "store/slices/state.interface";
 
 interface UserBalanceProps {
@@ -28,11 +26,12 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
     const nextRewardValue = stakingRebase * balances.SBASH.toNumber();
     const wrappedTokenEquivalent = balances.SBASH.toNumber() * Number(currentIndex);
     const effectiveNextRewardValue = (nextRewardValue + stakingRebase) * wrappedTokenEquivalent * daiPrice;
+    const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [
         {
             key: "stake:ValueOfYourBASH",
-            value: formatUSD(balances.BASH.toNumber() * daiPrice),
+            value: BASHPrice,
         },
         {
             key: "stake:ValueOfYourStakedBASH",

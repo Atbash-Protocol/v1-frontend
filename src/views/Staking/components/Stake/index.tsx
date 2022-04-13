@@ -52,6 +52,7 @@ function Stake() {
     };
 
     const { stakingAllowance, balances } = useSelector<IReduxState, AccountSlice>(state => state.accountNew);
+
     const setMax = () => {
         // dispatch(approveContract({ provider, target: "BASH" }));
         if (viewId === 0) {

@@ -1,16 +1,27 @@
 import { ethers } from "ethers";
-import { getAddresses } from "../../constants";
+import { getAddresses, Networks } from "../../constants";
 import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract, LpReserveContract } from "../../abi";
-import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
+import { setAll, getTokenPrice } from "../../helpers";
 import { createSlice, createSelector, createAsyncThunk, createReducer, createAction } from "@reduxjs/toolkit";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { RootState } from "../store";
-import allBonds from "../../helpers/bond";
+import allBonds, { BASHDAI } from "../../helpers/bond";
 import { LPBond } from "helpers/bond/lp-bond";
 
 interface ILoadAppDetails {
     networkID: number;
     provider: JsonRpcProvider;
+}
+
+export async function getMarketPrice(networkID: Networks, provider: ethers.Signer | ethers.providers.Provider): Promise<number> {
+    // LpReserveContract has .getReserves - gets the amounts in the pool for that pair (bash-dai)
+    if (networkID == Networks.LOCAL) return (80 / 1) * 10 ** 9;
+    const BASHDAIAddress = BASHDAI.getAddressForReserve(networkID);
+    const pairContract = new ethers.Contract(BASHDAIAddress, LpReserveContract, provider);
+    const reserves = await pairContract.getReserves();
+    // const marketPrice = reserves[0] / reserves[1];
+    // return marketPrice;
+    return Number(reserves[1].toString()) / Number(reserves[0].toString());
 }
 
 export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ networkID, provider }: ILoadAppDetails) => {
@@ -29,8 +40,7 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
     const currentBlock = await provider.getBlockNumber();
     const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
 
-    // const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * daiPrice;
-    const marketPrice = 10;
+    const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * daiPrice;
 
     const totalSupply = (await BASHContract.totalSupply()) / Math.pow(10, 9);
     const circSupply = (await sBASHContract.circulatingSupply()) / Math.pow(10, 9);
