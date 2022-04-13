@@ -54,7 +54,7 @@ export const getCoreMetrics = createAsyncThunk("app/coreMetrics", async (_, { ge
     return {
         totalSupply,
         circSupply,
-        reserves: reserve2.div(reserve1).div(10 ** 9),
+        reserves: reserve2.div(reserve1),
     };
 });
 
