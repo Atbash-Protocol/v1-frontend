@@ -1,4 +1,4 @@
-import { Avatar, Box, Link, List } from "@mui/material";
+import { Avatar, Box, Link, List, Divider } from "@mui/material";
 
 import Social from "./components/Social";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -10,7 +10,6 @@ import CurrencyExchangeSharpIcon from "@mui/icons-material/CurrencyExchangeSharp
 import SelfImprovementSharpIcon from "@mui/icons-material/SelfImprovementSharp"; // Pro
 import PriceCheckSharpIcon from "@mui/icons-material/PriceCheckSharp";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import Divider from "@mui/material/Divider";
 
 import AtbashICON from "assets/icons/bash.svg";
 import { shorten } from "helpers";
@@ -106,7 +105,6 @@ function NavContent() {
                 overflowY: "scroll",
                 backgroundColor: theme.palette.cardBackground.main,
                 backdropFilter: "blur(100px)",
-                borderRadius: ".5rem",
                 color: theme.palette.secondary.main,
                 height: "100%",
             }}
@@ -119,7 +117,7 @@ function NavContent() {
                 }}
             >
                 <Link href="https://atbash.finance" target="_blank">
-                    <Avatar alt="Remy Sharp" src={AtbashICON} sx={{ width: 128, height: 128, textAlign: "center" }} />
+                    <Avatar alt="Atbash" src={AtbashICON} sx={{ width: 128, height: 128, textAlign: "center" }} />
                 </Link>
 
                 {address && (

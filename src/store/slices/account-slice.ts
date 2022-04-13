@@ -85,37 +85,80 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
 });
 
 export const calculateUserBondDetails = createAsyncThunk("account/calculateUserBondDetails", async ({ address, bond, networkID, provider }: ICalcUserBondDetails) => {
-    console.warn("disabled: calculateUserBondDetails");
-    return new Promise<any>(resevle => {
-        resevle({
-            bond: "",
-            displayName: "",
-            bondIconSvg: "",
-            isLP: false,
-            allowance: 0,
-            balance: 0,
-            interestDue: 0,
-            bondMaturationBlock: 0,
-            pendingPayout: "",
-            avaxBalance: 0,
-        });
-    });
+    // console.warn("disabled: calculateUserBondDetails");
+    // return new Promise<any>(resevle => {
+    //     resevle({
+    //         bond: "",
+    //         displayName: "",
+    //         bondIconSvg: "",
+    //         isLP: false,
+    //         allowance: 0,
+    //         balance: 0,
+    //         interestDue: 0,
+    //         bondMaturationBlock: 0,
+    //         pendingPayout: "",
+    //         avaxBalance: 0,
+    //     });
+    // });
 
     let allowance,
         balance = "0";
 });
 
 export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
-    console.warn("disabled: calculateUserTokenDetails");
-    return new Promise<any>(resevle => {
-        resevle({
-            token: "",
-            address: "",
-            img: "",
-            allowance: 0,
-            balance: 0,
+    // console.warn("disabled: calculateUserTokenDetails");
+    // return new Promise<any>(resevle => {
+    //     resevle({
+    //         token: "",
+    //         address: "",
+    //         img: "",
+    //         allowance: 0,
+    //         balance: 0,
+    //     });
+    // });
+    if (!address) {
+        return new Promise<any>(resevle => {
+            resevle({
+                token: "",
+                address: "",
+                img: "",
+                allowance: 0,
+                balance: 0,
+            });
         });
-    });
+    }
+
+    if (token.isAvax) {
+        const avaxBalance = await provider.getSigner().getBalance();
+        const avaxVal = ethers.utils.formatEther(avaxBalance);
+
+        return {
+            token: token.name,
+            tokenIcon: token.img,
+            balance: Number(avaxVal),
+            isAvax: true,
+        };
+    }
+
+    const addresses = getAddresses(networkID);
+
+    const tokenContract = new ethers.Contract(token.address, MimTokenContract, provider);
+
+    let allowance,
+        balance = "0";
+
+    allowance = await tokenContract.allowance(address, addresses.ZAPIN_ADDRESS);
+    balance = await tokenContract.balanceOf(address);
+
+    const balanceVal = Number(balance) / Math.pow(10, token.decimals);
+
+    return {
+        token: token.name,
+        address: token.address,
+        img: token.img,
+        allowance: Number(allowance),
+        balance: Number(balanceVal),
+    };
 });
 
 export interface IAccountSlice {

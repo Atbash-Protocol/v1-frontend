@@ -97,10 +97,8 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
 
     const state = getState();
 
-    console.log("calcBondDetails", state);
-    // if (!value) {
-    //     value = "0";
-    // }
+    const amountInWei = ethers.utils.parseEther(value!);
+    // return {};
 
     // const amountInWei = ethers.utils.parseEther(value);
 
@@ -109,7 +107,8 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
     //     valuation = 0,
     //     bondQuote = 0;
 
-    // const addresses = getAddresses(networkID);
+    let bondContract = bond.getContractForBond(networkID, provider);
+    let bondCalcContract = getBondCalculator(networkID, provider);
 
     // const bondContract = bond.getContractForBond(networkID, provider);
     // const bondCalcContract = getBondCalculator(networkID, provider);
