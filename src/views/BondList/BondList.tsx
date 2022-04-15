@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography, Grid } from "@mui/material";
-import { BondMint } from "./BondRow";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { BondtListItem } from "./BondListItem";
 import { formatUSD } from "../../helpers";
-// import "./choosebond.scss";
+import "./bondlist.scss";
 import { IReduxState } from "../../store/slices/state.interface";
 
 import { useTranslation } from "react-i18next";
@@ -56,16 +55,10 @@ function ChooseBond() {
     const dispatch = useDispatch();
 
     const { activeBonds, inactiveBonds } = useSelector(selectActiveBonds);
-
-    const isSmallScreen = useMediaQuery("(max-width: 733px)"); // change to breakpoint query
-
     const marketPrice = useSelector<IReduxState, number | null>(selectDAIPrice);
-
     const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
 
     const isAppLoading = !marketPrice || !treasuryBalance;
-
-    console.log(marketPrice, isAppLoading, treasuryBalance);
 
     useEffect(() => {
         dispatch(getTreasuryBalance(chainID));
@@ -93,11 +86,9 @@ function ChooseBond() {
                     <Grid container item>
                         <BondHeader />
 
-                        {[activeBonds[0], activeBonds[0]]
-                            .filter(bond => bond.bondOptions.isActive === true)
-                            .map(bond => (
-                                <BondMint key={bond.ID} bondID={bond.ID} />
-                            ))}
+                        {[activeBonds[0], activeBonds[0]].map(bond => (
+                            <BondtListItem key={bond.ID} bondID={bond.ID} />
+                        ))}
                     </Grid>
                     )
                 </Box>
@@ -108,7 +99,7 @@ function ChooseBond() {
                     <Grid container item>
                         <BondHeader />
                         {inactiveBonds.map(bond => (
-                            <BondMint key={bond.ID} bondID={bond.ID} />
+                            <BondtListItem key={bond.ID} bondID={bond.ID} />
                         ))}
                     </Grid>
                     )

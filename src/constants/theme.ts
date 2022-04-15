@@ -10,6 +10,7 @@ export const theme = createTheme({
         },
         cardBackground: {
             main: "rgba(0,1,40,.5)",
+            dark: "rgba(0, 1, 40, 0.9)",
         },
     },
 });

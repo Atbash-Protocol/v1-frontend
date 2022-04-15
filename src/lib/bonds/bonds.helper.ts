@@ -1,7 +1,5 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
 import { Networks } from "constants/blockchain";
-import { ethers } from "ethers";
-import { Bond, BondOptions } from "./bond/bond";
+import { BondOptions } from "./bond/bond";
 import { LPBond } from "./bond/lp-bond";
 import { BondAddresses, BondConfig, BondType } from "./bonds.types";
 
