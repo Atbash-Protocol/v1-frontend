@@ -18,8 +18,6 @@ interface IBondProps {
 }
 
 function Bond() {
-    // const { t } = useTranslation();
-
     const { chainID } = useWeb3Context();
 
     const dispatch = useDispatch();
@@ -28,10 +26,11 @@ function Bond() {
         dispatch(getTreasuryBalance(chainID));
     }, []);
 
-    const bonds = useSelector<IReduxState, LPBond[]>(selectActiveBonds);
+    const bonds = useSelector(selectActiveBonds);
+
     useEffect(() => {
-        if (bonds && bonds.length > 0) {
-            dispatch(calcBondDetails({ bond: bonds[0], value: 10, chainID }));
+        if (bonds && bonds.activeBonds.length > 0) {
+            dispatch(calcBondDetails({ bond: bonds.activeBonds[0], value: 10, chainID }));
         }
     }, [bonds]);
 
@@ -133,7 +132,7 @@ function Bond() {
 
     return (
         <Grid container item spacing={2}>
-            {bonds.map(bond => (
+            {bonds.activeBonds.map(bond => (
                 <Grid item xs={12} key={bond.ID}>
                     <BondDataCard bondID={bond.ID} />
                 </Grid>

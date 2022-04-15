@@ -14,6 +14,7 @@ import { getMarketPrices } from "store/modules/markets/markets.thunks";
 import { Contract } from "ethers";
 import { DEFAULT_NETWORK } from "constants/blockchain";
 import { initializeBonds } from "store/modules/bonds/bonds.thunks";
+import BondList from "views/BondList/BondList";
 
 function App() {
     const dispatch = useDispatch();
@@ -38,13 +39,11 @@ function App() {
         }
     }, [connected, contractsLoaded]);
 
-    // useEffect(() => {
-    //     if (contracts.BASH_CONTRACT && contracts.SBASH_CONTRACT && contracts.INITIAL_PAIR_ADDRESS) dispatch(getCoreMetrics());
-
-    //     if (contracts.STAKING_ADDRESS) {
-    //         dispatch(getStakingMetrics());
-    //     }
-    // }, [contracts]);
+    useEffect(() => {
+        if (contracts.STAKING_ADDRESS) {
+            dispatch(getStakingMetrics());
+        }
+    }, [contracts]);
 
     if (errorEncountered)
         return (
@@ -78,7 +77,7 @@ function App() {
                         </Route>
 
                         <Route path="/bonds">
-                            <ChooseBond />
+                            <BondList />
                         </Route>
 
                         {/* <Route path="/wrap">
