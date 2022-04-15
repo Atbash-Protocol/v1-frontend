@@ -6,6 +6,7 @@ import { BondOptions } from "./bond/bond";
 export enum BondType {
     StableAsset,
     LP,
+    CUSTOM,
 }
 
 export enum BondProviderEnum {

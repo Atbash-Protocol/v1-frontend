@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Paper, Grid, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Zoom } from "@material-ui/core";
 import { BondTableData, BondDataCard } from "./BondRow";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -9,21 +9,43 @@ import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "../../store/slices/state.interface";
 
 import { useTranslation } from "react-i18next";
+import { selectActiveBonds } from "store/modules/bonds/bonds.selector";
+import { LPBond } from "lib/bonds/bond/lp-bond";
+import { selectDAIPrice } from "store/modules/markets/markets.selectors";
+import { useEffect, useState } from "react";
+import { calcBondDetails, getTreasuryBalance } from "store/modules/bonds/bonds.thunks";
+import bond from "helpers/bond";
+import { BondItem, BondSlice } from "store/modules/bonds/bonds.types";
+import { useWeb3Context } from "hooks/web3";
 
 function ChooseBond() {
     const { t } = useTranslation();
+    const { chainID } = useWeb3Context();
+    const dispatch = useDispatch();
 
-    const { bonds } = useBonds();
+    const bonds = useSelector(selectActiveBonds);
+
+    // const { bonds, loading } = useSelector<IReduxState, Pick<BondSlice, "bonds" | "loading">>(state => state.bonds, shallowEqual);
+
     const isSmallScreen = useMediaQuery("(max-width: 733px)"); // change to breakpoint query
 
-    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
-    const marketPrice = useSelector<IReduxState, number>(state => {
-        return state.app.marketPrice;
-    });
+    const marketPrice = useSelector<IReduxState, number | null>(selectDAIPrice);
 
-    const treasuryBalance = useSelector<IReduxState, number>(state => {
-        return state.app.treasuryBalance;
-    });
+    const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
+
+    const isAppLoading = !marketPrice || !treasuryBalance;
+
+    console.log(marketPrice, isAppLoading, treasuryBalance);
+
+    useEffect(() => {
+        dispatch(getTreasuryBalance(chainID));
+    }, []);
+
+    useEffect(() => {
+        if (!isAppLoading) {
+            dispatch(calcBondDetails({ bond: bonds[0], value: 0, chainID }));
+        }
+    }, [isAppLoading]);
 
     return (
         <div className="choose-bond-view">
@@ -83,9 +105,9 @@ function ChooseBond() {
                                     </TableHead>
                                     <TableBody>
                                         {bonds
-                                            .filter(bond => bond.isActive)
+                                            .filter(bond => bond.bondOptions.isActive === true)
                                             .map(bond => (
-                                                <BondTableData key={bond.name} bond={bond} />
+                                                <BondTableData key={bond.ID} bondID={bond.ID} />
                                             ))}
                                     </TableBody>
                                 </Table>
@@ -121,13 +143,13 @@ function ChooseBond() {
                                             <TableCell align="right"></TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    <TableBody>
+                                    {/* <TableBody>
                                         {bonds
                                             .filter(bond => !bond.isActive)
                                             .map(bond => (
                                                 <BondTableData key={bond.name} bond={bond} />
                                             ))}
-                                    </TableBody>
+                                    </TableBody> */}
                                 </Table>
                             </TableContainer>
                         </Grid>
@@ -137,7 +159,7 @@ function ChooseBond() {
             {isSmallScreen && (
                 <>
                     <div className="choose-bond-view-card-container">
-                        <Grid container item spacing={2}>
+                        {/* <Grid container item spacing={2}>
                             {bonds
                                 .filter(bond => bond.isActive)
                                 .map(bond => (
@@ -145,7 +167,7 @@ function ChooseBond() {
                                         <BondDataCard key={bond.name} bond={bond} />
                                     </Grid>
                                 ))}
-                        </Grid>
+                        </Grid> */}
                     </div>
                     <div className="choose-bond-view-card inactive-view-card">
                         <div className="choose-bond-view-card-header">
@@ -153,7 +175,7 @@ function ChooseBond() {
                         </div>
                     </div>
                     <div className="choose-bond-view-card-container">
-                        <Grid container item spacing={2}>
+                        {/* <Grid container item spacing={2}>
                             {bonds
                                 .filter(bond => !bond.isActive)
                                 .map(bond => (
@@ -161,7 +183,7 @@ function ChooseBond() {
                                         <BondDataCard key={bond.name} bond={bond} />
                                     </Grid>
                                 ))}
-                        </Grid>
+                        </Grid> */}
                     </div>
                 </>
             )}
