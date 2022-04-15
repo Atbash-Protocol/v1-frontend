@@ -257,7 +257,8 @@ function Zapin({ open, handleClose, bond }: IZapinProps) {
                     </div>
                     <div className="zapin-body">
                         <div className="zapin-body-header">
-                            <BondLogo bond={bond} />
+                            <BondLogo bondLogoPath="path" isLP={false} />
+
                             <div className="zapin-body-header-name">
                                 <p>{t("bond:TXSettings")}</p>
                             </div>

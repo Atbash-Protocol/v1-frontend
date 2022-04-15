@@ -34,6 +34,7 @@ const initialState: MainSliceState = {
     },
     errorEncountered: false,
     loading: true,
+    contractsLoaded: false,
 };
 
 export const MainSlice = createSlice({
@@ -43,7 +44,7 @@ export const MainSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(initializeProviderContracts.fulfilled, (state, action) => {
-                return { ...state, contracts: action.payload };
+                return { ...state, contracts: action.payload, contractsLoaded: true };
             })
             .addCase(getBlockchainData.fulfilled, (state, action) => {
                 return {

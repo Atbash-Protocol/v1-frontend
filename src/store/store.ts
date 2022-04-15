@@ -9,12 +9,14 @@ import messagesReducer from "./slices/messages-slice";
 import mainReducer from "./modules/app/app.slice";
 import marketReducer from "./modules/markets/markets.slice";
 import newAccountReducer from "./modules/account/account.slice";
+import boundReducer from "./modules/bonds/bonds.slice";
 
 const store = configureStore({
     reducer: {
         account: accountReducer,
         bonding: bondingReducer,
         app: appReducer,
+        bonds: boundReducer,
         pendingTransactions: pendingTransactionsReducer,
         messages: messagesReducer,
         main: mainReducer,

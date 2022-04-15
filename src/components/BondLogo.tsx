@@ -1,20 +1,20 @@
 import { Box } from "@material-ui/core";
-import { Bond } from "../helpers/bond/bond";
 
 interface IBondLogoProps {
-    bond: Bond;
+    bondLogoPath: string;
+    isLP: boolean;
 }
 
-function BondLogo({ bond }: IBondLogoProps) {
+function BondLogo({ bondLogoPath, isLP }: IBondLogoProps) {
     let style = { height: "32px", width: "32px" };
 
-    if (bond.isLP) {
+    if (isLP) {
         style = { height: "32px", width: "62px" };
     }
 
     return (
         <Box display="flex" alignItems="center" justifyContent="center" width={"64px"}>
-            <img src={bond.bondIconSvg} style={style} />
+            <img src={bondLogoPath} style={style} />
         </Box>
     );
 }

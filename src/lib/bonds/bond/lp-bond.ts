@@ -8,9 +8,9 @@ import { LpBondContract, LpReserveContract } from "abi";
 export interface LPBondOpts extends BondOptions {}
 
 export class LPBond extends Bond {
-    readonly isLP = true;
+    public readonly LP_URL = "";
 
-    constructor(protected readonly bondOptions: BondOptions) {
+    constructor(public readonly bondOptions: BondOptions) {
         super(bondOptions);
     }
 
@@ -19,7 +19,7 @@ export class LPBond extends Bond {
         this.reserveContract = new Contract(reserveAddress, LpReserveContract, signer);
     }
 
-    async getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string) {
+    public async getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string) {
         const tokenAmount = await this.reserveContract!.balanceOf(treasuryAddress);
 
         const valuation = await bondCalculatorContract.valuation(this.reserveContract!.address, tokenAmount);
