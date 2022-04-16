@@ -1,4 +1,3 @@
-import { builder } from "@netlify/functions";
 import { createSlice } from "@reduxjs/toolkit";
 import { ActiveTokensEnum } from "config/tokens";
 import { getMarketPrices } from "./markets.thunks";

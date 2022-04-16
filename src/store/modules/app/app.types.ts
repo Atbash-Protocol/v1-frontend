@@ -35,4 +35,5 @@ export interface MainSliceState {
     };
     errorEncountered: boolean; // Flag to prevent page loading
     loading: boolean;
+    contractsLoaded: boolean;
 }

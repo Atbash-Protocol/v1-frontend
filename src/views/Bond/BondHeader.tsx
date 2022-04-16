@@ -16,7 +16,7 @@ interface IBondHeaderProps {
     onSlippageChange: (e: any) => void;
 }
 
-function BondHeader({ bond, slippage, recipientAddress, onRecipientAddressChange, onSlippageChange }: IBondHeaderProps) {
+function BondHeader({ bond, slippage, recipientAddress, onRecipientAddressChange, onSlippageChange }: any) {
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -41,7 +41,7 @@ function BondHeader({ bond, slippage, recipientAddress, onRecipientAddressChange
             </Link>
 
             <div className="bond-header-logo">
-                <BondLogo bond={bond} />
+                <BondLogo bondLogoPath={bond.bondIconSvg} isLP={false} />
                 <div className="bond-header-name">
                     <p>{bond.displayName}</p>
                 </div>
