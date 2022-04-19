@@ -15,10 +15,14 @@ import { Contract } from "ethers";
 import { DEFAULT_NETWORK } from "constants/blockchain";
 import { initializeBonds } from "store/modules/bonds/bonds.thunks";
 import BondList from "views/BondList/BondList";
+import { BondDialog } from "components/BondDialog";
+import { selectAllBonds } from "store/modules/bonds/bonds.selector";
+import useBonds from "hooks/bonds";
 
 function App() {
     const dispatch = useDispatch();
     const { provider, chainID, connected, checkWrongNetwork, providerChainID } = useWeb3Context();
+    const bonds = useBonds();
 
     const { errorEncountered, loading, contracts, contractsLoaded } = useSelector<IReduxState, MainSliceState>(state => state.main, shallowEqual);
     const stakingAddressReady = useSelector<IReduxState, Contract | null>(state => state.main.contracts.STAKING_ADDRESS);
@@ -44,6 +48,8 @@ function App() {
             dispatch(getStakingMetrics());
         }
     }, [contracts]);
+
+    console.log(loading, marketsLoading);
 
     if (errorEncountered)
         return (
@@ -80,9 +86,11 @@ function App() {
                             <BondList />
                         </Route>
 
-                        {/* <Route path="/wrap">
-                            <Wrap />
-                        </Route> */}
+                        {bonds.mostProfitableBonds.map(bond => (
+                            <Route path="/mints/bash_dai_lp">
+                                <BondDialog key={bond.bondInstance.bondOptions.displayName} open={true} bond={bond} />
+                            </Route>
+                        ))}
                     </>
                 )}
                 <Route component={NotFound} />

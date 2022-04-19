@@ -6,7 +6,7 @@ import "./bondlist.scss";
 import { IReduxState } from "../../store/slices/state.interface";
 
 import { useTranslation } from "react-i18next";
-import { selectActiveBonds } from "store/modules/bonds/bonds.selector";
+import { selectAllBonds } from "store/modules/bonds/bonds.selector";
 import { selectDAIPrice } from "store/modules/markets/markets.selectors";
 import { useEffect } from "react";
 import { calcBondDetails, getTreasuryBalance } from "store/modules/bonds/bonds.thunks";
@@ -54,7 +54,7 @@ function ChooseBond() {
     const { chainID } = useWeb3Context();
     const dispatch = useDispatch();
 
-    const { activeBonds, inactiveBonds } = useSelector(selectActiveBonds);
+    const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);
     const marketPrice = useSelector<IReduxState, number | null>(selectDAIPrice);
     const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
 
@@ -66,7 +66,7 @@ function ChooseBond() {
 
     useEffect(() => {
         if (!isAppLoading) {
-            dispatch(calcBondDetails({ bond: activeBonds[0], value: 0, chainID }));
+            dispatch(calcBondDetails({ bond: activeBonds[0], value: 0 }));
         }
     }, [isAppLoading]);
 
@@ -76,17 +76,17 @@ function ChooseBond() {
                 <Box>
                     <Grid container item xs={12} spacing={2} mb={4}>
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric metricKey={t("TreasuryBalance")} value={treasuryBalance ? formatUSD(treasuryBalance) : null} />
+                            <MenuMetric key={"treasuryBalance"} metricKey={t("TreasuryBalance")} value={treasuryBalance ? formatUSD(treasuryBalance) : null} />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric metricKey={t("BASHPrice")} value={marketPrice ? formatUSD(marketPrice, 2) : null} />
+                            <MenuMetric key={"BashPrice"} metricKey={t("BASHPrice")} value={marketPrice ? formatUSD(marketPrice, 2) : null} />
                         </Grid>
                     </Grid>
                     <Grid container item>
                         <BondHeader />
 
-                        {[activeBonds[0], activeBonds[0]].map(bond => (
+                        {activeBonds.map(bond => (
                             <BondtListItem key={bond.ID} bondID={bond.ID} />
                         ))}
                     </Grid>

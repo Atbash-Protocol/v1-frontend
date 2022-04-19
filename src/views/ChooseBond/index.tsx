@@ -7,7 +7,7 @@ import { formatUSD } from "../../helpers";
 import { IReduxState } from "../../store/slices/state.interface";
 
 import { useTranslation } from "react-i18next";
-import { selectActiveBonds } from "store/modules/bonds/bonds.selector";
+import { selectAllBonds } from "store/modules/bonds/bonds.selector";
 import { selectDAIPrice } from "store/modules/markets/markets.selectors";
 import { useEffect } from "react";
 import { calcBondDetails, getTreasuryBalance } from "store/modules/bonds/bonds.thunks";
@@ -55,7 +55,7 @@ function ChooseBond() {
     const { chainID } = useWeb3Context();
     const dispatch = useDispatch();
 
-    const { activeBonds, inactiveBonds } = useSelector(selectActiveBonds);
+    const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);
 
     const isSmallScreen = useMediaQuery("(max-width: 733px)"); // change to breakpoint query
 
@@ -65,7 +65,7 @@ function ChooseBond() {
 
     const isAppLoading = !marketPrice || !treasuryBalance;
 
-    console.log(marketPrice, isAppLoading, treasuryBalance);
+    console.log(marketPrice, isAppLoading, treasuryBalance, activeBonds);
 
     useEffect(() => {
         dispatch(getTreasuryBalance(chainID));
@@ -73,7 +73,7 @@ function ChooseBond() {
 
     useEffect(() => {
         if (!isAppLoading) {
-            dispatch(calcBondDetails({ bond: activeBonds[0], value: 0, chainID }));
+            dispatch(calcBondDetails({ bond: activeBonds[0], value: 0 }));
         }
     }, [isAppLoading]);
 
@@ -93,11 +93,9 @@ function ChooseBond() {
                     <Grid container item>
                         <BondHeader />
 
-                        {[activeBonds[0], activeBonds[0]]
-                            .filter(bond => bond.bondOptions.isActive === true)
-                            .map(bond => (
-                                <BondMint key={bond.ID} bondID={bond.ID} />
-                            ))}
+                        {activeBonds.map(bond => (
+                            <BondMint key={bond.ID} bondID={bond.ID} />
+                        ))}
                     </Grid>
                     )
                 </Box>

@@ -11,11 +11,19 @@ export interface BondMetrics {
     bondPrice: ethers.BigNumber | null;
     marketPrice: number | null;
     maxBondPriceToken: number | null;
+    allowance: number | null;
+    balance: number | null;
+    loading?: boolean;
+}
+
+export interface BondTerms {
+    vestingTerm: string;
 }
 
 export interface BondItem {
     bondInstance: LPBond;
     metrics: BondMetrics;
+    terms: BondTerms;
 }
 
 export interface BondSlice {

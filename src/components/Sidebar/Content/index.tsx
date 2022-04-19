@@ -84,7 +84,7 @@ function NavContent() {
     const { connected } = useWeb3Context();
 
     const address = useAddress();
-    const { bonds } = useBonds();
+    const bonds = useBonds();
     const { ensName } = useENS(address);
 
     const addresses = getAddresses(DEFAULT_NETWORK);
@@ -92,7 +92,20 @@ function NavContent() {
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
     const menuItems = getMenuItems(connected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
-    const bondItems = bonds.filter(bond => bond.isActive).map(bond => <ListItemLink key={`mint-bond-${bond.name}`} to={`/mints/${bond.name}`} primary={bond.displayName} />);
+    let bondItems: JSX.Element[] = [];
+
+    if (bonds) {
+        bondItems = bonds.bonds
+            .filter(bond => bond.bondInstance.bondOptions.isActive)
+            .map(bond => (
+                <ListItemLink
+                    key={`mint-bond-${bond.bondInstance.ID}`}
+                    to={`/mints/${bond.bondInstance.ID}`}
+                    primary={bond.bondInstance.bondOptions.displayName}
+                    extra={<>{bond.metrics.bondDiscount} %</>}
+                />
+            ));
+    }
 
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
     return (

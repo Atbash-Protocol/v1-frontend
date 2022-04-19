@@ -10,9 +10,10 @@ interface ListItemLinkProps {
     to: string;
     disabled?: boolean;
     renderComponent?: any;
+    extra?: JSX.Element;
 }
 
-export const ListItemLink = ({ icon, primary, to, disabled = false, renderComponent }: ListItemLinkProps) => {
+export const ListItemLink = ({ icon, primary, extra, to, disabled = false, renderComponent }: ListItemLinkProps) => {
     const renderLink = useMemo(
         () =>
             forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, "to">>(function Link(itemProps, ref) {
@@ -26,6 +27,7 @@ export const ListItemLink = ({ icon, primary, to, disabled = false, renderCompon
             <ListItemButton disabled={disabled} component={renderComponent ?? renderLink}>
                 {icon ? <ListItemIcon sx={{ color: theme.palette.secondary.main }}>{icon}</ListItemIcon> : null}
                 <ListItemText primary={primary} />
+                <> {extra}</>
             </ListItemButton>
         </li>
     );
