@@ -34,8 +34,8 @@ export const BondSlices = createSlice({
             state.bonds[bond.bond.ID].metrics.loading = true;
         });
 
-        builder.addCase(calcBondDetails.fulfilled, (state, { payload: { bond, ...metrics } }) => {
-            state.bonds[bond.ID].metrics = { ...state.bonds[bond.ID].metrics, ...metrics };
+        builder.addCase(calcBondDetails.fulfilled, (state, { payload: { bondID, ...metrics } }) => {
+            state.bonds[bondID].metrics = { ...state.bonds[bondID].metrics, ...metrics };
             state.loading = false;
             return state;
         });

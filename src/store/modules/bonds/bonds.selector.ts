@@ -45,6 +45,7 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
 
     return {
         bondPrice,
+        allowance: metrics.allowance,
         bondDiscount: metrics.bondDiscount !== null ? `${metrics.bondDiscount * 100} %` : null,
         purchased: metrics.purchased !== null ? formatUSD(metrics.purchased) : null,
     };

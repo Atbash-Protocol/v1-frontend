@@ -5,7 +5,7 @@ import { BondingCalcContract } from "abi";
 import { BONDS } from "config/bonds";
 import { getAddresses } from "constants/addresses";
 import { messages } from "constants/messages";
-import { constants, ethers } from "ethers";
+import { constants, Contract, ethers } from "ethers";
 import { getGasPrice } from "helpers/get-gas-price";
 import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
 import i18n from "i18n";
@@ -18,6 +18,7 @@ import { clearPendingTxn, fetchPendingTxns } from "store/slices/pending-txns-sli
 import { IReduxState } from "store/slices/state.interface";
 import { initDefaultBondMetrics } from "./bonds.helper";
 import { BondItem, BondSlice } from "./bonds.types";
+import { getLPBondQuote, getLPPurchasedBonds, getTokenBondQuote, getTokenPurchaseBonds } from "./bonds.utils";
 
 export const initializeBonds = createAsyncThunk("app/bonds", async (provider: JsonRpcProvider | Web3Provider): Promise<Pick<BondSlice, "bonds" | "bondCalculator">> => {
     const signer = provider.getSigner();
@@ -70,12 +71,11 @@ export const getTreasuryBalance = createAsyncThunk("bonds/bonds-treasury", async
 export const calcBondDetails = createAsyncThunk("bonds/calcBondDetails", async ({ bond, value }: { bond: LPBond; value: number }, { getState, dispatch }) => {
     if (!bond.getBondContract()) throw new Error("error init");
 
+    const state = getState() as IReduxState;
+
     const terms = await bond.getBondContract().terms();
     const maxBondPrice: number = await bond.getBondContract().maxPayout();
-
     const bondAmountInWei = ethers.utils.parseEther(value.toString());
-
-    const state = getState() as IReduxState;
 
     const reserves = state.main.metrics.reserves;
     const { bondCalculator } = state.bonds;
@@ -84,9 +84,7 @@ export const calcBondDetails = createAsyncThunk("bonds/calcBondDetails", async (
     if (!reserves || !daiPrice || !bondCalculator) throw new Error("CalcBondDetailsError");
 
     const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
-
     const baseBondPrice = (await bond.getBondContract().bondPriceInUSD()) as ethers.BigNumber;
-
     const bondPrice = bond.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
 
     // = (reserve - bondPrice) / bondPrice
@@ -96,59 +94,23 @@ export const calcBondDetails = createAsyncThunk("bonds/calcBondDetails", async (
         .div(bondPrice)
         .toNumber();
 
-    let maxBondPriceToken = 0;
-    let bondQuote = 0;
-    const maxBondValue = ethers.utils.parseEther("1");
-
-    if (bond.isLP()) {
-        const reserverAddress = bond.getBondAddresses().reserveAddress;
-
-        const valuation = await bondCalculator.valuation(reserverAddress, bondAmountInWei);
-        try {
-            bondQuote = (await bond.getBondContract().payoutFor(valuation)) / 10 ** 9;
-        } catch (err) {
-            console.error(err);
-        }
-
-        const maxValuation = await bondCalculator.valuation(reserverAddress, maxBondValue); // TODO should be static ?
-        const maxBondQuote = (await bond.getBondContract().payoutFor(maxValuation)) / 10 ** 9;
-
-        maxBondPriceToken = maxBondPrice / (maxBondQuote / 10 ** 9);
-    } else {
-        bondQuote = (await bond.getBondContract().payoutFor(bondAmountInWei)) / 10 ** 18;
-
-        maxBondPriceToken = maxBondPrice / 10 ** 18;
-    }
+    const { bondQuote, maxBondPriceToken } = bond.isLP()
+        ? await getLPBondQuote(bond, bondAmountInWei, bondCalculator, maxBondPrice)
+        : await getTokenBondQuote(bond, bondAmountInWei, maxBondPrice);
 
     if (!!value && bondQuote > maxBondPrice) {
         dispatch(error({ text: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
     }
 
-    const reverseContract = bond.getReserveContract();
-
     // let purchased = (await reverseContract.balanceOf(TREASURY_ADDRESS)).toNumber() as number;
-    let purchased = 0;
+    const initialPurchased = 0;
 
-    if (bond.isLP()) {
-        const markdown = await bondCalculator.markdown(reverseContract.address);
-
-        purchased = await bondCalculator.valuation(reverseContract.address, purchased);
-        purchased = (markdown / Math.pow(10, 18)) * (purchased / Math.pow(10, 9));
-
-        if (bond.isCustomBond()) {
-            purchased = purchased * daiPrice;
-        }
-    } else {
-        if (bond.isCustomBond()) {
-            purchased = purchased / Math.pow(10, 18);
-            purchased = purchased * daiPrice;
-        }
-
-        purchased = purchased / Math.pow(10, 18);
-    }
+    const { purchased } = bond.isLP()
+        ? await getLPPurchasedBonds(bond, bondCalculator, initialPurchased, daiPrice)
+        : await getTokenPurchaseBonds(bond, bondCalculator, initialPurchased, daiPrice);
 
     return {
-        bond,
+        bondID: bond.ID,
         bondDiscount,
         bondQuote,
         purchased,
@@ -166,14 +128,15 @@ export const getBondTerms = createAsyncThunk("bonds/terms", async (bond: BondIte
     return { terms };
 });
 
-export const approveBonds = createAsyncThunk("bonds/approve", async ({ provider, bond }: { provider: JsonRpcSigner; bond: BondItem }, { dispatch }) => {
+export const approveBonds = createAsyncThunk("bonds/approve", async ({ provider, bond }: { provider: JsonRpcProvider; bond: BondItem }, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
 
+    const address = await provider.getSigner().getAddress();
     const gasPrice = await provider.getGasPrice();
-    let approveTx = bond.bondInstance.getReserveContract().approve(bond.bondInstance.getBondAddresses(), constants.MaxUint256, { gasPrice });
+    let approveTx = await bond.bondInstance.getReserveContract().approve(bond.bondInstance.getBondAddresses().bondAddress, constants.MaxUint256, { gasPrice });
     try {
         dispatch(
             fetchPendingTxns({
@@ -183,8 +146,12 @@ export const approveBonds = createAsyncThunk("bonds/approve", async ({ provider,
             }),
         );
         await approveTx.wait();
+        // TODO : ENS error even if TX is going through
+        // TODO :
+
         dispatch(success({ text: messages.tx_successfully_send }));
     } catch (err) {
+        console.error(err);
         metamaskErrorWrap(err, dispatch);
     } finally {
         if (approveTx) {
@@ -192,9 +159,9 @@ export const approveBonds = createAsyncThunk("bonds/approve", async ({ provider,
         }
     }
 
-    const allowance = await bond.bondInstance.getReserveContract().allowance(provider._address, bond.bondInstance.getBondAddresses());
+    const allowance = await bond.bondInstance.getReserveContract().allowance(address, bond.bondInstance.getBondAddresses());
 
-    return { allowance };
+    return { allowance: 0 };
 });
 
 export const depositBond = createAsyncThunk(

@@ -3,6 +3,7 @@ import { Box, Dialog, DialogTitle, Grid, Typography } from "@mui/material";
 import BondLogo from "components/BondLogo";
 import { MenuMetric } from "components/Metrics/MenuMetric";
 import { theme } from "constants/theme";
+import { useWeb3Context } from "hooks/web3";
 import { t } from "i18next";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,16 +12,20 @@ import { selectFormattedReservePrice } from "store/modules/app/app.selectors";
 import { selectBondMintingMetrics } from "store/modules/bonds/bonds.selector";
 import { getBondTerms } from "store/modules/bonds/bonds.thunks";
 import { BondItem } from "store/modules/bonds/bonds.types";
+import { BondApprove } from "views/Bond/actions/BondApprove";
 import BondPurchase from "views/Bond/actions/BondPurchase";
 import BondMetrics from "views/Bond/BondMetrics";
 
 export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
     const history = useHistory();
     const dispatch = useDispatch();
+    const { provider } = useWeb3Context();
 
     const onBackdropClick = () => history.goBack();
 
     const metrics = selectBondMintingMetrics(bond.metrics);
+
+    console.log("metrics", metrics);
     const bashPrice = useSelector(selectFormattedReservePrice);
 
     useEffect(() => {
@@ -58,10 +63,18 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
                     </Grid>
                 </Box>
 
-                <Box>
-                    <BondPurchase bond={bond} />
-                    <BondMetrics />
-                </Box>
+                {metrics.allowance === null && (
+                    <Box>
+                        <BondApprove bond={bond} provider={provider} />
+                    </Box>
+                )}
+
+                {metrics.allowance !== null && (
+                    <Box>
+                        <BondPurchase bond={bond} />
+                        {/* <BondMetrics /> */}
+                    </Box>
+                )}
             </DialogContent>
         </Dialog>
     );
