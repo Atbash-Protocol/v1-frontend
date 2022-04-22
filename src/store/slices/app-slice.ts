@@ -145,29 +145,22 @@ const appSlice = createSlice({
     initialState,
     reducers: {
         fetchAppSuccess(state, action) {
-            console.log("fetch", state, action);
             state = { ...state, ...action.payload };
         },
-        contractFetched(state, action) {
-            console.log("state", action, state);
-        },
+        contractFetched(state, action) {},
     },
     extraReducers: builder => {
-        console.log(builder);
         builder
 
             .addCase(loadAppDetails.pending, (state, action) => {
-                console.log("before", state, action);
                 state.loading = true;
             })
             .addCase(loadAppDetails.fulfilled, (state, action) => {
-                console.log("done", state, action);
                 setAll(state, action.payload);
                 state.loading = false;
             })
             .addCase(loadAppDetails.rejected, (state, { error }) => {
                 state.loading = false;
-                console.log(error);
             });
     },
 });

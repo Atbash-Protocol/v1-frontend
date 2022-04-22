@@ -2,6 +2,8 @@ import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { StakingContract, LpReserveContract, RedeemContract, MemoTokenContract, TimeTokenContract, StakingHelperContract, ZapinContract } from "abi";
 import { getAddresses } from "constants/addresses";
+import { NewWeb3ContextProvider } from "contexts/web3/web3.context";
+import { Web3Context, WEB3State } from "contexts/web3/web3.types";
 import { BigNumber, Contract, ethers } from "ethers";
 import { ERC20_DECIMALS } from "lib/contracts/contracts";
 import { getSigner } from "lib/contracts/networks";
@@ -11,21 +13,26 @@ import { ContractEnum } from "./app.types";
 
 export const initializeProviderContracts = createAsyncThunk(
     "app/contracts",
-    async ({ networkID, provider }: { networkID: number; provider: JsonRpcProvider | Web3Provider }): Promise<{ [key in ContractEnum]: Contract }> => {
-        const addresses = getAddresses(networkID);
+    async ({ provider, signer }: Pick<WEB3State, "provider" | "signer">): Promise<{ [key in ContractEnum]: Contract }> => {
+        if (!provider && !signer) throw new Error("No provider or signer");
 
-        const signer = await getSigner(provider);
+        const chainID = (await (signer ?? provider)?.getNetwork())?.chainId;
+
+        if (!chainID || typeof chainID !== "number") throw new Error("Unable to initialize contracts");
+
+        const addresses = getAddresses(chainID);
+        const contractSignerOrProvider = signer ?? provider?.getSigner();
 
         return {
-            [ContractEnum.STAKING_ADDRESS]: new Contract(addresses.STAKING_ADDRESS, StakingContract, signer),
-            [ContractEnum.STAKING_HELPER_ADDRESS]: new Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, signer),
-            [ContractEnum.INITIAL_PAIR_ADDRESS]: new Contract(addresses.INITIAL_PAIR_ADDRESS, LpReserveContract, signer),
-            [ContractEnum.REDEEM_ADDRESS]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, signer),
-            [ContractEnum.SBASH_CONTRACT]: new Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer),
-            [ContractEnum.BASH_CONTRACT]: new Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer),
-            [ContractEnum.DAI_ADDRESS]: new Contract(addresses.DAI_ADDRESS, TimeTokenContract, signer),
-            [ContractEnum.WSBASH_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, signer),
-            [ContractEnum.ZAPIN_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, ZapinContract, signer),
+            [ContractEnum.STAKING_ADDRESS]: new Contract(addresses.STAKING_ADDRESS, StakingContract, contractSignerOrProvider),
+            [ContractEnum.STAKING_HELPER_ADDRESS]: new Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, contractSignerOrProvider),
+            [ContractEnum.INITIAL_PAIR_ADDRESS]: new Contract(addresses.INITIAL_PAIR_ADDRESS, LpReserveContract, contractSignerOrProvider),
+            [ContractEnum.REDEEM_ADDRESS]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, contractSignerOrProvider),
+            [ContractEnum.SBASH_CONTRACT]: new Contract(addresses.SBASH_ADDRESS, MemoTokenContract, contractSignerOrProvider),
+            [ContractEnum.BASH_CONTRACT]: new Contract(addresses.BASH_ADDRESS, TimeTokenContract, contractSignerOrProvider),
+            [ContractEnum.DAI_ADDRESS]: new Contract(addresses.DAI_ADDRESS, TimeTokenContract, contractSignerOrProvider),
+            [ContractEnum.WSBASH_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, contractSignerOrProvider),
+            [ContractEnum.ZAPIN_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, ZapinContract, contractSignerOrProvider),
         };
     },
 );

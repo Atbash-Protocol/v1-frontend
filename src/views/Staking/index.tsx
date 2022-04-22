@@ -38,8 +38,6 @@ function Staking() {
         dispatch(loadBalancesAndAllowances({ address, chainID, provider }));
     }, []);
 
-    console.log("here", stakingMetrics, TVL);
-
     if (!stakingMetrics || !TVL) return <Loading />;
 
     return (

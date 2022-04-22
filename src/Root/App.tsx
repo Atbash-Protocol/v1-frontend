@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useWeb3Context } from "hooks/web3";
 import { IReduxState } from "store/slices/state.interface";
@@ -18,60 +18,86 @@ import BondList from "views/BondList/BondList";
 import { BondDialog } from "components/BondDialog";
 import { selectAllBonds } from "store/modules/bonds/bonds.selector";
 import useBonds from "hooks/bonds";
+import { PWeb3Context } from "contexts/web3/web3.context";
+import { Button } from "@mui/material";
+import { useGoodNetworkCheck, useProvider, useSignerConnected, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
+import _ from "lodash";
 
 function App() {
     const dispatch = useDispatch();
-    const { provider, chainID, connected, checkWrongNetwork, providerChainID } = useWeb3Context();
-    const bonds = useBonds();
+    // const { provider, chainID, checkWrongNetwork, providerChainID } = useWeb3Context();
+    // const bonds = useBonds();
+
+    // console.log("bonds");
+
+    const {
+        memoConnect,
+        memoDisconnect,
+        state: { signer, networkID },
+    } = useContext(PWeb3Context);
+
+    const provider = useProvider();
+    const isSignerConnected = useSignerConnected();
+    const isSignerOnGoodNetwork = useGoodNetworkCheck();
 
     const { errorEncountered, loading, contracts, contractsLoaded } = useSelector<IReduxState, MainSliceState>(state => state.main, shallowEqual);
-    const stakingAddressReady = useSelector<IReduxState, Contract | null>(state => state.main.contracts.STAKING_ADDRESS);
-    const marketsLoading = useSelector<IReduxState, boolean>(state => state.markets.loading);
+    // const stakingAddressReady = useSelector<IReduxState, Contract | null>(state => state.main.contracts.STAKING_ADDRESS);
+    // const marketsLoading = useSelector<IReduxState, boolean>(state => state.markets.loading);
 
     useEffect(() => {
-        if (connected && !contractsLoaded) {
-            dispatch(initializeProviderContracts({ networkID: chainID, provider }));
+        if (provider && provider !== null && !signer) {
+            dispatch(initializeProviderContracts({ provider } as any));
         }
-    }, [connected]);
 
-    useEffect(() => {
-        if (connected && contractsLoaded) {
-            dispatch(getBlockchainData(provider));
-            dispatch(getCoreMetrics());
-            dispatch(getMarketPrices());
-            dispatch(initializeBonds(provider));
+        if (!provider && !signer) {
+            dispatch(initializeProviderContracts({ signer } as any)); // TODO change
         }
-    }, [connected, contractsLoaded]);
+    }, [provider, signer]);
 
-    useEffect(() => {
-        if (contracts.STAKING_ADDRESS) {
-            dispatch(getStakingMetrics());
-        }
-    }, [contracts]);
+    const handleConnect = useCallback(() => {
+        if (!signer) memoConnect();
+    }, [signer]);
 
-    console.log(loading, marketsLoading);
+    const handleDisconnect = useCallback(() => {
+        memoDisconnect();
+    }, [signer]);
 
-    if (errorEncountered)
-        return (
-            <ViewBase>
-                <CritialError />
-            </ViewBase>
-        );
+    // TODO: Create a subscription on signer change
+    // useEffect(() => {
+    //     if (!isSignerConnected && provider && contractsLoaded) {
+    //         dispatch(initializeProviderContracts({ networkID: chainID, provider }));
+    //     }
 
-    if (loading || marketsLoading)
-        return (
-            <ViewBase>
-                <Loading />
-            </ViewBase>
-        );
+    //     if (!signer && web3Provider) {
+    //         dispatch(initializeProviderContracts({ provider, networkID: chainID }));
+    //     }
+    // }, [connected]);
+
+    // useEffect(() => {
+    //     if (connected && contractsLoaded) {
+    //         dispatch(getBlockchainData(provider));
+    //         dispatch(getCoreMetrics());
+    //         dispatch(getMarketPrices());
+    //         dispatch(initializeBonds(provider));
+    //     }
+    // }, [connected, contractsLoaded]);
+
+    // useEffect(() => {
+    //     if (contracts.STAKING_ADDRESS) {
+    //         dispatch(getStakingMetrics());
+    //     }
+    // }, [contracts]);
+
+    // if ([provider, signer, networkID].some(e => e === null)) return null;
+
+    if (errorEncountered) return <CritialError />;
 
     return (
-        <ViewBase>
-            <Switch>
-                <Route exact path="/">
-                    <Dashboard />
-                </Route>
-
+        <Switch>
+            <Route exact path="/">
+                <Dashboard />
+            </Route>
+            {/*
                 {connected && (
                     <>
                         <Route path="/stake">
@@ -93,9 +119,8 @@ function App() {
                         ))}
                     </>
                 )}
-                <Route component={NotFound} />
-            </Switch>
-        </ViewBase>
+                <Route component={NotFound} /> */}
+        </Switch>
     );
 }
 

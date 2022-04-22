@@ -13,7 +13,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 
 import AtbashICON from "assets/icons/bash.svg";
 import { shorten } from "helpers";
-import { useAddress, useWeb3Context } from "hooks";
+import { useAddress } from "hooks";
 import useBonds from "hooks/bonds";
 import useENS from "hooks/useENS";
 import Davatar from "@davatar/react";
@@ -24,6 +24,9 @@ import { DEFAULT_NETWORK } from "constants/blockchain";
 import { ListItemLink } from "./components/ListItemLink";
 import { getBuyLink } from "lib/uniswap/link";
 import { theme } from "constants/theme";
+import { useSignerAddress, useSignerConnected, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
+import Loader from "components/Loader";
+import { useHistory } from "react-router-dom";
 
 const getMenuItems = (connected: Boolean) => [
     {
@@ -81,17 +84,21 @@ const cominSoonMenu = [
 
 function NavContent() {
     const { t } = useTranslation();
-    const { connected } = useWeb3Context();
 
-    const address = useAddress();
+    const history = useHistory();
+
+    const address = useSignerAddress();
     const bonds = useBonds();
-    const { ensName } = useENS(address);
+    const signerConnected = useSignerConnected();
+    const { ensName } = useENS();
+
+    console.log("add", address, signerConnected, ensName);
 
     const addresses = getAddresses(DEFAULT_NETWORK);
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
-    const menuItems = getMenuItems(connected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
+    const menuItems = getMenuItems(signerConnected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
     let bondItems: JSX.Element[] = [];
 
     if (bonds) {
@@ -116,7 +123,7 @@ function NavContent() {
                 alignItems: "center",
                 minWidth: "10rem",
                 overflowY: "scroll",
-                backgroundColor: theme.palette.cardBackground.main,
+                backgroundColor: theme.palette.cardBackground.light,
                 backdropFilter: "blur(100px)",
                 color: theme.palette.secondary.main,
                 height: "100%",
@@ -134,7 +141,25 @@ function NavContent() {
                 </Link>
 
                 {address && (
-                    <Box sx={{ display: "inline-flex", justifyContent: "space-around", marginTop: theme.spacing(2), width: "100%" }}>
+                    <Box
+                        sx={{
+                            xs: {
+                                display: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: theme.spacing(0),
+                            },
+                            sm: {
+                                display: "inline-flex",
+                                justifyContent: "space-around",
+                                marginTop: theme.spacing(2),
+                            },
+
+                            justifyContent: "space-around",
+
+                            width: "100%",
+                        }}
+                    >
                         <Davatar size={20} address={address} generatedAvatarType="jazzicon" />
                         <Link href={`https://etherscan.io/address/${address}`} target="_blank">
                             <p>{ensName || shorten(address)}</p>

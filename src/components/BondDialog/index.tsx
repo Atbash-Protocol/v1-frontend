@@ -65,7 +65,7 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
 
                 {metrics.allowance === null && (
                     <Box>
-                        <BondApprove bond={bond} provider={provider} />
+                        <BondApprove bond={bond} />
                     </Box>
                 )}
 
