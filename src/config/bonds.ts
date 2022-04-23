@@ -4,6 +4,7 @@ import { BondConfig, BondProviderEnum } from "lib/bonds/bonds.types";
 import { ActiveTokensEnum } from "./tokens";
 
 import MimIcon from "assets/tokens/BASH-DAI.png";
+import DAIIcon from "assets/tokens/DAI.e.png";
 
 const BASH_DAI: BondConfig = {
     name: "bash_dai_lp",
@@ -27,6 +28,30 @@ const BASH_DAI: BondConfig = {
         },
     },
     isActive: true,
+};
+
+const StableDAI: BondConfig = {
+    name: "DAI",
+    displayName: "DAI",
+    token: ActiveTokensEnum.DAI,
+    iconPath: DAIIcon,
+    lpProvider: BondProviderEnum.UNISWAP_V2, // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
+    type: BondType.StableAsset,
+    addresses: {
+        [Networks.RINKEBY]: {
+            bondAddress: "0xd0D5024c723c4F047C7626FBA18E7797A4E50a12",
+            reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB", // DAI
+        },
+        [Networks.LOCAL]: {
+            bondAddress: "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
+            reserveAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9", // DAI
+        },
+        [Networks.MAINNET]: {
+            bondAddress: "",
+            reserveAddress: "",
+        },
+    },
+    isActive: false,
 };
 
 export const BONDS = [BASH_DAI];

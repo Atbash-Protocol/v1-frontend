@@ -68,10 +68,6 @@ function ChooseBond() {
     console.log(marketPrice, isAppLoading, treasuryBalance, activeBonds);
 
     useEffect(() => {
-        dispatch(getTreasuryBalance(chainID));
-    }, []);
-
-    useEffect(() => {
         if (!isAppLoading) {
             dispatch(calcBondDetails({ bond: activeBonds[0], value: 0 }));
         }

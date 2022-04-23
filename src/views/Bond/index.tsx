@@ -22,11 +22,8 @@ function Bond() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getTreasuryBalance(chainID));
-    }, []);
-
     const bonds = useSelector(selectAllBonds);
+    const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
 
     useEffect(() => {
         if (bonds && bonds.activeBonds.length > 0) {

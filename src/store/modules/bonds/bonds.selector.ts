@@ -46,6 +46,8 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
     return {
         bondPrice,
         allowance: metrics.allowance,
+        maxBondPrice: metrics.maxBondPrice,
+        vestingTerm: metrics.vestingTerm,
         bondDiscount: metrics.bondDiscount !== null ? `${metrics.bondDiscount * 100} %` : null,
         purchased: metrics.purchased !== null ? formatUSD(metrics.purchased) : null,
     };
@@ -55,4 +57,12 @@ export const selectMaxPurchaseAmount = (state: RootState) => {
     const { bonds } = state.bonds;
 
     return 0;
+};
+
+export const selectBondIsQuoting = (bonds: Record<string, BondItem>, bondID: string) => {
+    const bond = bonds[bondID];
+
+    if (!bond) throw new Error("Unable to get bond");
+
+    return bond.metrics.loading ?? false;
 };

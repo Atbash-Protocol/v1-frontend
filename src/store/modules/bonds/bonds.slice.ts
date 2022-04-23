@@ -2,7 +2,7 @@ import { ActionTypes } from "@mui/base";
 import { createSlice } from "@reduxjs/toolkit";
 import bond from "helpers/bond";
 import { useSelector } from "react-redux";
-import { approveBonds, calcBondDetails, getBondTerms, getTreasuryBalance, initializeBonds, loadBondBalancesAndAllowances } from "./bonds.thunks";
+import { approveBonds, calcBondDetails, calculateUserBondDetails, getBondTerms, getTreasuryBalance, initializeBonds, loadBondBalancesAndAllowances } from "./bonds.thunks";
 import { BondSlice } from "./bonds.types";
 
 // Define the initial state using that type
@@ -11,6 +11,7 @@ const initialState: BondSlice = {
     bondCalculator: null,
     treasuryBalance: null,
     loading: true,
+    bondQuoting: false,
 };
 
 export const BondSlices = createSlice({
@@ -53,12 +54,20 @@ export const BondSlices = createSlice({
         });
 
         builder.addCase(loadBondBalancesAndAllowances.fulfilled, (state, { payload }) => {
+            console.log("payload", payload[0], state.bonds);
             for (const bond of payload) {
                 state.bonds[bond.ID].metrics.allowance = bond.allowance;
                 state.bonds[bond.ID].metrics.balance = bond.balance;
             }
 
             return state;
+        });
+
+        builder.addCase(calculateUserBondDetails.pending, (state, { payload }) => {
+            state.bondQuoting = true;
+        });
+        builder.addCase(calculateUserBondDetails.fulfilled, (state, { payload }) => {
+            state.bondQuoting = false;
         });
     },
 });

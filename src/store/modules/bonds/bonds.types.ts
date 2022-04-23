@@ -31,4 +31,5 @@ export interface BondSlice {
     bondCalculator: ethers.Contract | null;
     treasuryBalance: number | null;
     loading: boolean;
+    bondQuoting: boolean;
 }

@@ -10,20 +10,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { selectFormattedReservePrice } from "store/modules/app/app.selectors";
 import { selectBondMintingMetrics } from "store/modules/bonds/bonds.selector";
-import { getBondTerms } from "store/modules/bonds/bonds.thunks";
+import { calcBondDetails, calculateUserBondDetails, getBondTerms, loadBondBalancesAndAllowances } from "store/modules/bonds/bonds.thunks";
 import { BondItem } from "store/modules/bonds/bonds.types";
-import { BondApprove } from "views/Bond/actions/BondApprove";
+import { BondQuote } from "views/Bond/actions/BondQuote";
 import BondPurchase from "views/Bond/actions/BondPurchase";
 import BondMetrics from "views/Bond/BondMetrics";
+import { selectBondPurchaseReady, selectBondReady } from "hooks/bonds";
+import { useSignerConnected } from "lib/web3/web3.hooks";
+import { usePWeb3Context } from "contexts/web3/web3.context";
+import Loader from "components/Loader";
+
+// Ajouter une surcouche qui gère le dialog + le chargement du bond avec le router
 
 export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const { provider } = useWeb3Context();
+
+    const {
+        state: { signer, signerAddress },
+    } = usePWeb3Context();
 
     const onBackdropClick = () => history.goBack();
 
     const metrics = selectBondMintingMetrics(bond.metrics);
+    const bondIsReady = selectBondReady(bond);
+    const selectAppReadyForBondCalculation = selectBondPurchaseReady();
 
     console.log("metrics", metrics);
     const bashPrice = useSelector(selectFormattedReservePrice);
@@ -33,6 +44,20 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
             dispatch(getBondTerms(bond));
         }
     }, [bond.terms]);
+
+    useEffect(() => {
+        if (!bondIsReady && selectAppReadyForBondCalculation) {
+            dispatch(calcBondDetails({ bond: bond.bondInstance, value: 0 }));
+
+            if (signer && signerAddress) {
+                dispatch(loadBondBalancesAndAllowances({ address: signerAddress }));
+            }
+        }
+    }, [bondIsReady, signer, signerAddress, selectAppReadyForBondCalculation]);
+
+    //TODO: Add the custom settings : Slippage & Recipient address
+
+    if (!bondIsReady || !selectAppReadyForBondCalculation) return <Loader />;
 
     return (
         <Dialog
@@ -63,16 +88,10 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
                     </Grid>
                 </Box>
 
-                {metrics.allowance === null && (
-                    <Box>
-                        <BondApprove bond={bond} />
-                    </Box>
-                )}
-
                 {metrics.allowance !== null && (
                     <Box>
                         <BondPurchase bond={bond} />
-                        {/* <BondMetrics /> */}
+                        <BondMetrics bond={metrics} />
                     </Box>
                 )}
             </DialogContent>

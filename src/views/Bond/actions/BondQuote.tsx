@@ -1,16 +1,17 @@
 import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers";
 import { Button } from "@mui/material";
 import { useWeb3Context } from "hooks/web3";
+import { useSafeSigner } from "lib/web3/web3.hooks";
 import { useDispatch } from "react-redux";
-import { approveBonds } from "store/modules/bonds/bonds.thunks";
+import { approveBonds, calcBondDetails } from "store/modules/bonds/bonds.thunks";
 import { BondItem } from "store/modules/bonds/bonds.types";
 
-export const BondApprove = ({ bond }: { bond: BondItem }) => {
-    const { provider } = useWeb3Context();
+export const BondQuote = ({ bond }: { bond: BondItem }) => {
+    const { signer } = useSafeSigner();
     const dispatch = useDispatch();
 
     const handleApprove = () => {
-        dispatch(approveBonds({ provider: provider!, bond }));
+        // dispatch(approveBonds({ signer, bond }));
     };
 
     return (

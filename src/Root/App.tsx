@@ -67,7 +67,6 @@ function App() {
 
     useEffect(() => {
         if (contracts.STAKING_ADDRESS) {
-            // dispatch(loadBalancesAndAllowances());
             dispatch(getStakingMetrics());
         }
     }, [contracts]);
@@ -86,13 +85,13 @@ function App() {
                         <Stake />
                     </Route>
 
-                    {/* <Route path="/bond">
+                    <Route path="/bond">
                         <Bond />
                     </Route>
 
                     <Route path="/bonds">
                         <BondList />
-                    </Route> */}
+                    </Route>
 
                     {bonds.mostProfitableBonds.map((bond, key) => (
                         <Route key={key} path="/mints/bash_dai_lp">

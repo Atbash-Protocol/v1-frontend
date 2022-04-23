@@ -9,9 +9,11 @@ import { WEB3State } from "contexts/web3/web3.types";
 import { constants, Contract, ethers } from "ethers";
 import { getGasPrice } from "helpers/get-gas-price";
 import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
+import { sleep } from "helpers/sleep";
 import i18n from "i18n";
 import { LPBond } from "lib/bonds/bond/lp-bond";
 import { createBond, getBondContracts } from "lib/bonds/bonds.helper";
+import { useSafeSigner } from "lib/web3/web3.hooks";
 import _ from "lodash";
 import { sum } from "lodash";
 import { error, info, success, warning } from "store/slices/messages-slice";
@@ -35,16 +37,16 @@ export const initializeBonds = createAsyncThunk(
         const bondCalculator = new ethers.Contract(BASH_BONDING_CALC_ADDRESS, BondingCalcContract, signer);
 
         const bondstoOutput = BONDS.reduce((acc, bondConfig) => {
-            const cBOND = createBond({ ...bondConfig, networkID: chainID });
+            const bondInstance = createBond({ ...bondConfig, networkID: chainID });
 
             const contracts = getBondContracts(bondConfig, chainID);
 
-            cBOND.initializeContracts(contracts, signer);
+            bondInstance.initializeContracts(contracts, signer);
 
             return {
                 ...acc,
                 [_.snakeCase(bondConfig.name)]: {
-                    bondInstance: cBOND,
+                    bondInstance,
                     metrics: initDefaultBondMetrics(),
                     terms: { vestingTerm: "" },
                 },
@@ -64,6 +66,8 @@ export const getTreasuryBalance = createAsyncThunk("bonds/bonds-treasury", async
     } = getState() as IReduxState;
 
     const { TREASURY_ADDRESS } = getAddresses(chainID);
+
+    console.log("here", bondCalculator, TREASURY_ADDRESS);
 
     if (!bondCalculator) return { balance: null };
 
@@ -134,15 +138,17 @@ export const getBondTerms = createAsyncThunk("bonds/terms", async (bond: BondIte
     return { terms };
 });
 
-export const approveBonds = createAsyncThunk("bonds/approve", async ({ provider, bond }: { provider: JsonRpcProvider; bond: BondItem }, { dispatch }) => {
-    if (!provider) {
+export const approveBonds = createAsyncThunk("bonds/approve", async ({ signer, bond }: { signer: Web3Provider; bond: BondItem }, { dispatch }) => {
+    if (!signer) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
 
-    const address = await provider.getSigner().getAddress();
-    const gasPrice = await provider.getGasPrice();
-    let approveTx = await bond.bondInstance.getReserveContract().approve(bond.bondInstance.getBondAddresses().bondAddress, constants.MaxUint256, { gasPrice });
+    const address = await signer.getSigner().getAddress();
+    const gasPrice = await signer.getGasPrice();
+
+    const { bondAddress } = bond.bondInstance.getBondAddresses();
+    let approveTx = await bond.bondInstance.getReserveContract().approve(bondAddress, constants.MaxUint256, { gasPrice });
     try {
         dispatch(
             fetchPendingTxns({
@@ -152,8 +158,6 @@ export const approveBonds = createAsyncThunk("bonds/approve", async ({ provider,
             }),
         );
         await approveTx.wait();
-        // TODO : ENS error even if TX is going through
-        // TODO :
 
         dispatch(success({ text: messages.tx_successfully_send }));
     } catch (err) {
@@ -165,15 +169,15 @@ export const approveBonds = createAsyncThunk("bonds/approve", async ({ provider,
         }
     }
 
-    const allowance = await bond.bondInstance.getReserveContract().allowance(address, bond.bondInstance.getBondAddresses());
+    const allowance = await bond.bondInstance.getReserveContract().allowance(address, bondAddress);
 
-    return { allowance: 0 };
+    return { allowance };
 });
 
 export const depositBond = createAsyncThunk(
     "bonds/deposit",
-    async ({ amount, bond, provider, slippage }: { amount: number; bond: BondItem; provider: JsonRpcSigner; slippage?: number }, { dispatch }) => {
-        const address = await provider.getAddress();
+    async ({ amount, bond, signer, signerAddress, slippage }: { amount: number; bond: BondItem; signer: Web3Provider; signerAddress: string; slippage?: number }, { dispatch }) => {
+        const address = signerAddress;
         const acceptedSlippage = (slippage ?? 0.5) / 100 || 0.005;
         const valueInWei = ethers.utils.parseUnits(amount.toString(), "ether");
         const bondContract = bond.bondInstance.getBondContract();
@@ -183,7 +187,7 @@ export const depositBond = createAsyncThunk(
         const realBondPrice = bond.metrics.bondPrice.div(10 ** 15).toNumber() / 10 ** 3;
 
         const maxPremium = Math.round(realBondPrice * (1 + acceptedSlippage));
-        const gasPrice = await provider.getGasPrice();
+        const gasPrice = await signer.getGasPrice();
 
         let bondTx;
         try {
@@ -200,10 +204,11 @@ export const depositBond = createAsyncThunk(
             dispatch(success({ text: messages.tx_successfully_send }));
             dispatch(info({ text: messages.your_balance_update_soon }));
 
-            await dispatch(calculateUserBondDetails({ bond, provider }));
+            await dispatch(calculateUserBondDetails({ bond, signer, signerAddress }));
 
             dispatch(info({ text: messages.your_balance_updated }));
         } catch (err: any) {
+            console.error(err);
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (bondTx) {
@@ -215,9 +220,9 @@ export const depositBond = createAsyncThunk(
 
 export const calculateUserBondDetails = createAsyncThunk(
     "account/calculateUserBondDetails",
-    async ({ provider, bond }: { provider: JsonRpcSigner; bond: BondItem }, { dispatch }) => {
+    async ({ signer, signerAddress, bond }: { signer: Web3Provider; signerAddress: string; bond: BondItem }, { dispatch }) => {
         const bondContract = bond.bondInstance.getBondContract();
-        const userAddress = await provider.getAddress();
+        const userAddress = signerAddress;
 
         let interestDue, pendingPayout, bondMaturationBlock;
 
@@ -239,6 +244,17 @@ export const calculateUserBondDetails = createAsyncThunk(
 export const loadBondBalancesAndAllowances = createAsyncThunk("account/balances-and-allowances/bonds", async ({ address }: { address: string }, { getState }) => {
     const { bonds } = getState() as IReduxState;
 
+    console.log(
+        Object.values(bonds.bonds).map(async bond => {
+            const bondContract = bond.bondInstance.getBondContract();
+            const reserveContract = bond.bondInstance.getReserveContract();
+
+            const allowance = await reserveContract.allowance(address, bondContract.address);
+            const balance = await reserveContract.balanceOf(address);
+
+            return { allowance, balance, ID: bond.bondInstance.ID };
+        }),
+    );
     const data = await Promise.all(
         Object.values(bonds.bonds).map(async bond => {
             const bondContract = bond.bondInstance.getBondContract();

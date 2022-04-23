@@ -3,7 +3,7 @@ import { Box, Skeleton, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-const InlineMetric = ({ metricKey, value }: { metricKey: string; value: string }) => {
+const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null | undefined }) => {
     const { t } = useTranslation();
 
     return (
@@ -25,6 +25,7 @@ const InlineMetric = ({ metricKey, value }: { metricKey: string; value: string }
     );
 };
 
-const MemoInlineMetric = ({ metricKey, value }: { metricKey: string; value: string }) => useMemo(() => <InlineMetric {...{ metricKey, value }} />, [metricKey, value]);
+const MemoInlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null | undefined }) =>
+    useMemo(() => <InlineMetric {...{ metricKey, value }} />, [metricKey, value]);
 
 export default MemoInlineMetric;

@@ -1,30 +1,33 @@
 import { Box, Grid, Typography } from "@mui/material";
+import MemoInlineMetric from "components/Metrics/InlineMetric";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { BondItem } from "store/modules/bonds/bonds.types";
 import { IReduxState } from "store/slices/state.interface";
 
-const BondMetrics = () => {
+const BondMetrics = ({ bond }: any) => {
     const { t } = useTranslation();
-    const metrics = useSelector((state: IReduxState) => state.bonds.bonds[0].metrics);
+
+    console.log("bond meetrics", bond);
+
+    if (!bond) {
+        return <> </>;
+    }
+
+    const { maxBondPrice, bondDiscount, vestingTerm } = bond;
+
+    const metrics2 = [
+        { value: (maxBondPrice ?? "").toString(), metricKey: t("bond:MaxYouCanBuy") },
+        {
+            metricKey: t("bond:ROI"),
+            value: bondDiscount,
+        },
+        { metricKey: t("bond:MinimumPurchase"), value: vestingTerm },
+    ].map(({ value, metricKey }, index) => <MemoInlineMetric {...{ value, metricKey }} key={index} />);
 
     return (
         <Grid xs={12} container>
-            <Grid xs={12}>
-                <Typography variant="body1">{t("bond:MaxYouCanBuy")}</Typography>
-                {metrics.maxBondPrice}
-            </Grid>
-            <Grid xs={12}>
-                <Typography variant="body1">{t("bond:ROI")}</Typography>
-                {metrics.bondDiscount}
-            </Grid>
-            <Grid xs={12}>
-                <Typography variant="body1">{t("bond:VestingTerm")}</Typography>
-                {metrics.vestingTerm}
-            </Grid>
-            <Grid xs={12}>
-                <Typography variant="body1">{t("bond:MinimumPurchase")}</Typography>
-                0.01 SB
-            </Grid>
+            {metrics2}
         </Grid>
     );
 };
