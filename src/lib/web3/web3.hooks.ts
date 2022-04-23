@@ -1,7 +1,9 @@
 import Loader from "components/Loader";
 import { DEFAULT_NETWORK, getDefaultNetwork } from "constants/blockchain";
 import { PWeb3Context } from "contexts/web3/web3.context";
-import { useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { memo, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { Dispatch } from "redux";
+import { walletConnectWarning, warning } from "store/slices/messages-slice";
 
 export const useGoodNetworkCheck = () => {
     const {
@@ -40,7 +42,7 @@ export const useWeb3ContextInitialized = () => {
 
     const [isContextInitialized, setIsContextInitialized] = useState([provider, signer, networkID].some(e => e !== null));
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (provider || signer) {
             setIsContextInitialized(true);
         }
@@ -51,7 +53,7 @@ export const useWeb3ContextInitialized = () => {
 
 export const useSignerAddress = () => {
     const {
-        state: { signer: s2, signerAddress },
+        state: { signerAddress },
     } = useContext(PWeb3Context);
 
     const [signer, setSigner] = useState(signerAddress);
@@ -65,10 +67,28 @@ export const useSignerAddress = () => {
     return signer;
 };
 
-export const useRpcProvider = () => {
+export const useProvider = () => {
     const {
         state: { provider },
     } = useContext(PWeb3Context);
 
     return provider;
+};
+
+export const useSafeSigner = (dispatch?: Dispatch) => {
+    const {
+        state: { signer, signerAddress },
+    } = useContext(PWeb3Context);
+
+    const memoSigner = useMemo(() => {
+        if (!signer || !signerAddress) {
+            if (dispatch) dispatch(walletConnectWarning);
+
+            throw new Error("Missing signer or signerAddress ");
+        }
+
+        return { signer, signerAddress };
+    }, [signer, signerAddress]);
+
+    return memoSigner;
 };

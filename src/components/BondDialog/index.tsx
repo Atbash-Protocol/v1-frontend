@@ -1,7 +1,7 @@
-import { DialogContent } from "@material-ui/core";
+import { DialogContent, Menu } from "@material-ui/core";
 import { Box, Dialog, DialogTitle, Grid, Typography } from "@mui/material";
 import BondLogo from "components/BondLogo";
-import { MenuMetric } from "components/Metrics/MenuMetric";
+import MenuMetric from "components/Metrics/MenuMetric";
 import { theme } from "constants/theme";
 import { useWeb3Context } from "hooks/web3";
 import { t } from "i18next";

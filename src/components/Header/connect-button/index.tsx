@@ -20,7 +20,7 @@ function ConnectMenu() {
 
     const handleButtonClick = useCallback(
         e => {
-            return isUserSigned ? memoDisconnect() : memoConnect();
+            return isUserSigned ? memoDisconnect(state.signer) : memoConnect();
         },
         [isUserSigned, memoConnect, memoDisconnect],
     );

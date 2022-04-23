@@ -1,19 +1,16 @@
-import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { StakingContract, LpReserveContract, RedeemContract, MemoTokenContract, TimeTokenContract, StakingHelperContract, ZapinContract } from "abi";
+import { LpReserveContract, MemoTokenContract, RedeemContract, StakingContract, StakingHelperContract, TimeTokenContract, ZapinContract } from "abi";
 import { getAddresses } from "constants/addresses";
-import { NewWeb3ContextProvider } from "contexts/web3/web3.context";
-import { Web3Context, WEB3State } from "contexts/web3/web3.types";
+import { WEB3State } from "contexts/web3/web3.types";
 import { BigNumber, Contract, ethers } from "ethers";
 import { ERC20_DECIMALS } from "lib/contracts/contracts";
-import { getSigner } from "lib/contracts/networks";
 import { IReduxState } from "store/slices/state.interface";
 import { RootState } from "store/store";
 import { ContractEnum } from "./app.types";
 
 export const initializeProviderContracts = createAsyncThunk(
     "app/contracts",
-    async ({ provider, signer }: Pick<WEB3State, "provider" | "signer">): Promise<{ [key in ContractEnum]: Contract }> => {
+    async ({ provider, signer }: { provider?: WEB3State["provider"]; signer?: WEB3State["signer"] }): Promise<{ [key in ContractEnum]: Contract }> => {
         if (!provider && !signer) throw new Error("No provider or signer");
 
         const chainID = (await (signer ?? provider)?.getNetwork())?.chainId;
@@ -21,8 +18,11 @@ export const initializeProviderContracts = createAsyncThunk(
         if (!chainID || typeof chainID !== "number") throw new Error("Unable to initialize contracts");
 
         const addresses = getAddresses(chainID);
-        const contractSignerOrProvider = signer ?? provider?.getSigner();
+        const contractSignerOrProvider = signer ? await signer.getSigner() : await provider?.getSigner();
 
+        if (!contractSignerOrProvider) throw new Error("Unable to get a contract signer or provider");
+
+        console.log("init", signer, provider);
         return {
             [ContractEnum.STAKING_ADDRESS]: new Contract(addresses.STAKING_ADDRESS, StakingContract, contractSignerOrProvider),
             [ContractEnum.STAKING_HELPER_ADDRESS]: new Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, contractSignerOrProvider),
@@ -37,7 +37,8 @@ export const initializeProviderContracts = createAsyncThunk(
     },
 );
 
-export const getBlockchainData = createAsyncThunk("app/blockchain", async (provider: JsonRpcProvider) => {
+export const getBlockchainData = createAsyncThunk("app/blockchain", async (provider: WEB3State["provider"] | WEB3State["signer"]) => {
+    if (!provider) throw new Error("Unable to find provider");
     const currentBlock = await provider.getBlockNumber();
     const { timestamp } = await provider.getBlock(currentBlock);
 

@@ -1,11 +1,10 @@
 import App from "./App";
-import { HashRouter } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { usePWeb3Context } from "contexts/web3/web3.context";
-import { useWeb3ContextInitialized } from "lib/web3/web3.hooks";
+import { BrowserRouter, HashRouter } from "react-router-dom";
+import { useProvider, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
 import Loader from "components/Loader";
 import ViewBase from "layout/ViewBase";
-import { Box } from "@mui/material";
+import { usePWeb3Context } from "contexts/web3/web3.context";
+import { useEffect } from "react";
 
 function Root() {
     const web3ContextReady = useWeb3ContextInitialized();
@@ -15,12 +14,12 @@ function Root() {
     return <App />;
 }
 
-// DOC : Using Hashrouter before viewbase because of the <Link> components in Menu
+// DOC : Using BrowserRouter before viewbase because of the <Link> components in Menu
 export const RenderWithViewBase = () => (
-    <HashRouter>
+    <BrowserRouter>
         <ViewBase>
             <Root />
         </ViewBase>
-    </HashRouter>
+    </BrowserRouter>
 );
 export default RenderWithViewBase;

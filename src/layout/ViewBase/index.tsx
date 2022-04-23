@@ -46,12 +46,7 @@ function ViewBase({ children }: IViewBaseProps) {
     const [isSidebarOpen, setisSidebarOpen] = useState(false);
 
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
     const { state } = useContext(PWeb3Context);
-
-    useEffect(() => {
-        console.log("view base", state);
-    }, [state]);
 
     const handleDrawerToggle = () => {
         setisSidebarOpen(!isSidebarOpen);
@@ -77,7 +72,16 @@ function ViewBase({ children }: IViewBaseProps) {
             <Box>
                 <SideBar isSidebarOpen={isSidebarOpen} isSmallScreen handleDrawerToggle={handleDrawerToggle} />
             </Box>
-            <Box>{children}</Box>
+            <Box
+                sx={{
+                    paddingLeft: {
+                        xs: 0,
+                        sm: theme.spacing(32), //TODO: Use a dynamic drawer
+                    },
+                }}
+            >
+                {children}
+            </Box>
         </Box>
     );
 }

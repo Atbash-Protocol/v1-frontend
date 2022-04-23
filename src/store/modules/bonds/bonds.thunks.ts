@@ -5,6 +5,7 @@ import { BondingCalcContract } from "abi";
 import { BONDS } from "config/bonds";
 import { getAddresses } from "constants/addresses";
 import { messages } from "constants/messages";
+import { WEB3State } from "contexts/web3/web3.types";
 import { constants, Contract, ethers } from "ethers";
 import { getGasPrice } from "helpers/get-gas-price";
 import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
@@ -20,37 +21,42 @@ import { initDefaultBondMetrics } from "./bonds.helper";
 import { BondItem, BondSlice } from "./bonds.types";
 import { getLPBondQuote, getLPPurchasedBonds, getTokenBondQuote, getTokenPurchaseBonds } from "./bonds.utils";
 
-export const initializeBonds = createAsyncThunk("app/bonds", async (provider: JsonRpcProvider | Web3Provider): Promise<Pick<BondSlice, "bonds" | "bondCalculator">> => {
-    const signer = provider.getSigner();
-    const chainID = await signer.getChainId();
+export const initializeBonds = createAsyncThunk(
+    "app/bonds",
+    async (provider: WEB3State["provider"] | WEB3State["signer"]): Promise<Pick<BondSlice, "bonds" | "bondCalculator">> => {
+        if (!provider) throw new Error("Bond initialization error");
 
-    // init bond calculator
-    const { BASH_BONDING_CALC_ADDRESS } = getAddresses(chainID);
+        const signer = provider.getSigner();
+        const chainID = await signer.getChainId();
 
-    const bondCalculator = new ethers.Contract(BASH_BONDING_CALC_ADDRESS, BondingCalcContract, signer);
+        // init bond calculator
+        const { BASH_BONDING_CALC_ADDRESS } = getAddresses(chainID);
 
-    const bondstoOutput = BONDS.reduce((acc, bondConfig) => {
-        const cBOND = createBond({ ...bondConfig, networkID: chainID });
+        const bondCalculator = new ethers.Contract(BASH_BONDING_CALC_ADDRESS, BondingCalcContract, signer);
 
-        const contracts = getBondContracts(bondConfig, chainID);
+        const bondstoOutput = BONDS.reduce((acc, bondConfig) => {
+            const cBOND = createBond({ ...bondConfig, networkID: chainID });
 
-        cBOND.initializeContracts(contracts, signer);
+            const contracts = getBondContracts(bondConfig, chainID);
+
+            cBOND.initializeContracts(contracts, signer);
+
+            return {
+                ...acc,
+                [_.snakeCase(bondConfig.name)]: {
+                    bondInstance: cBOND,
+                    metrics: initDefaultBondMetrics(),
+                    terms: { vestingTerm: "" },
+                },
+            };
+        }, {} as BondSlice["bonds"]);
 
         return {
-            ...acc,
-            [_.snakeCase(bondConfig.name)]: {
-                bondInstance: cBOND,
-                metrics: initDefaultBondMetrics(),
-                terms: { vestingTerm: "" },
-            },
+            bonds: bondstoOutput,
+            bondCalculator,
         };
-    }, {} as BondSlice["bonds"]);
-
-    return {
-        bonds: bondstoOutput,
-        bondCalculator,
-    };
-});
+    },
+);
 
 export const getTreasuryBalance = createAsyncThunk("bonds/bonds-treasury", async (chainID: number, { getState }) => {
     const {

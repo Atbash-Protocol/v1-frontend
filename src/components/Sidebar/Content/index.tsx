@@ -1,4 +1,4 @@
-import { Avatar, Box, Link, List, Divider } from "@mui/material";
+import { Avatar, Box, Link, List, Divider, Typography } from "@mui/material";
 
 import Social from "./components/Social";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -85,36 +85,29 @@ const cominSoonMenu = [
 function NavContent() {
     const { t } = useTranslation();
 
-    const history = useHistory();
-
     const address = useSignerAddress();
     const bonds = useBonds();
     const signerConnected = useSignerConnected();
     const { ensName } = useENS();
-
-    console.log("add", address, signerConnected, ensName);
 
     const addresses = getAddresses(DEFAULT_NETWORK);
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
     const menuItems = getMenuItems(signerConnected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
-    let bondItems: JSX.Element[] = [];
-
-    if (bonds) {
-        bondItems = bonds.bonds
-            .filter(bond => bond.bondInstance.bondOptions.isActive)
-            .map(bond => (
-                <ListItemLink
-                    key={`mint-bond-${bond.bondInstance.ID}`}
-                    to={`/mints/${bond.bondInstance.ID}`}
-                    primary={bond.bondInstance.bondOptions.displayName}
-                    extra={<>{bond.metrics.bondDiscount} %</>}
-                />
-            ));
-    }
-
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
+
+    const bondItems = (bonds?.bonds ?? [])
+        .filter(bond => bond.bondInstance.bondOptions.isActive)
+        .map(bond => (
+            <ListItemLink
+                key={`mint-bond-${bond.bondInstance.ID}`}
+                to={`/mints/${bond.bondInstance.ID}`}
+                primary={bond.bondInstance.bondOptions.displayName}
+                extra={<>{bond.metrics.bondDiscount} %</>}
+            />
+        ));
+
     return (
         <Box
             sx={{
@@ -143,26 +136,19 @@ function NavContent() {
                 {address && (
                     <Box
                         sx={{
-                            xs: {
-                                display: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginTop: theme.spacing(0),
-                            },
-                            sm: {
-                                display: "inline-flex",
-                                justifyContent: "space-around",
-                                marginTop: theme.spacing(2),
-                            },
-
-                            justifyContent: "space-around",
+                            display: "inline-flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginTop: theme.spacing(2),
 
                             width: "100%",
                         }}
                     >
                         <Davatar size={20} address={address} generatedAvatarType="jazzicon" />
                         <Link href={`https://etherscan.io/address/${address}`} target="_blank">
-                            <p>{ensName || shorten(address)}</p>
+                            <Typography sx={{ ml: 1 }} variant="body1">
+                                {ensName || shorten(address)}
+                            </Typography>
                         </Link>
                     </Box>
                 )}

@@ -40,6 +40,7 @@ function Header({ handleDrawerToggle, isSmallScreen }: IHeader) {
                         </IconButton>
                     )}
                     <Box sx={{ flexGrow: 1 }}></Box>
+                    <AtbashMenu />
                     <ConnectButton />
                 </Toolbar>
             </AppBar>
