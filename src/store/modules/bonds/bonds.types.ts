@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { LPBond } from "lib/bonds/bond/lp-bond";
+import { StableBond } from "lib/bonds/bond/stable-bond";
 
 export interface BondMetrics {
     treasuryBalance: number | null;
@@ -11,11 +12,19 @@ export interface BondMetrics {
     bondPrice: ethers.BigNumber | null;
     marketPrice: number | null;
     maxBondPriceToken: number | null;
+    allowance: number | null;
+    balance: number | null;
+    loading?: boolean;
+}
+
+export interface BondTerms {
+    vestingTerm: string;
 }
 
 export interface BondItem {
-    bondInstance: LPBond;
+    bondInstance: LPBond | StableBond;
     metrics: BondMetrics;
+    terms: BondTerms;
 }
 
 export interface BondSlice {
@@ -23,4 +32,5 @@ export interface BondSlice {
     bondCalculator: ethers.Contract | null;
     treasuryBalance: number | null;
     loading: boolean;
+    bondQuoting: boolean;
 }

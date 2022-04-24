@@ -2,6 +2,7 @@ import { Box, Button, Grid, Link, Skeleton, Typography } from "@mui/material";
 import BondLogo from "components/BondLogo";
 import { theme } from "constants/theme";
 import { useWeb3Context } from "hooks/web3";
+import { useSafeSigner } from "lib/web3/web3.hooks";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -50,15 +51,16 @@ const BondMintMetric = ({ metric, value }: { metric: string; value: string | nul
 export const BondtListItem = ({ bondID }: IBondProps) => {
     const { t } = useTranslation();
 
-    const { connected } = useWeb3Context();
+    const { signer } = useSafeSigner();
 
     const bond = useSelector<IReduxState, BondItem | null>(state => selectBondInfos(state.bonds.bonds, bondID)) as BondItem | null;
 
     if (!bond) return <>"Loading";</>;
 
     const { bondPrice, bondDiscount, purchased } = selectBondMintingMetrics(bond.metrics);
-
     const bondSoldOut = (bond.metrics.bondDiscount ?? 0) * 100 < -30;
+
+    console.log(bond, bondPrice, bondDiscount, purchased);
 
     const metrics = [
         { metric: t("bond:Mint"), value: bondPrice },
@@ -67,13 +69,13 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
             value: bondDiscount,
         },
         { metric: t("ROI"), value: purchased },
-    ].map(metric => <BondMintMetric {...metric} />);
+    ].map((metric, i) => <BondMintMetric key={`bondMetric-${i}`} {...metric} />);
 
     return (
         <Grid
             container
             sx={{
-                color: bondSoldOut ? theme.palette.primary.main : theme.palette.secondary.main,
+                color: bondSoldOut ? theme.palette.primary.main : theme.palette.primary.main,
                 [theme.breakpoints.up("xs")]: {
                     marginBottom: theme.spacing(2),
                     paddingBottom: theme.spacing(4),
@@ -96,19 +98,19 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
             <Grid
                 item
                 sm={3}
-                xs={12}
                 sx={{
-                    [theme.breakpoints.up("xs")]: {
-                        marginTop: theme.spacing(1),
+                    border: "1px solid",
+                    [theme.breakpoints.down("xs")]: {
+                        display: "none",
                     },
                 }}
             >
-                {connected && (
-                    <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`}>
-                        <Button sx={{ background: theme.palette.background.default, padding: `${theme.spacing(1)} ${theme.spacing(8)}` }}>
+                {signer && (
+                    <Button disabled={!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}` }}>
+                        <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`}>
                             <p>{bond.bondInstance.bondOptions.isActive ? t("bond:Mint") : t("bond:Redeem")}</p>
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 )}
             </Grid>
         </Grid>

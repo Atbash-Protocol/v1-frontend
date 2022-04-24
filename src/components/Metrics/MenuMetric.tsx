@@ -1,6 +1,6 @@
 import { Box, Skeleton, Typography } from "@mui/material";
 import { theme } from "constants/theme";
-import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 export const MenuMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null }) => {
     return (
@@ -8,9 +8,17 @@ export const MenuMetric = ({ metricKey, value }: { metricKey: string; value: unk
             <Typography variant="h6" sx={{ color: theme.palette.primary.main }}>
                 {metricKey}
             </Typography>
-            <Typography variant="body1" sx={{ overflow: "hidden", wordBreak: "break-all", overflowX: "hidden", color: theme.palette.secondary.main }}>
-                {!value ? <Skeleton /> : <>{value}</>}
+            <Typography variant="body1" sx={{ overflow: "hidden", wordBreak: "break-all", overflowX: "hidden", color: theme.palette.primary.main }}>
+                {value === undefined ? <Skeleton /> : <>{value}</>}
             </Typography>
         </Box>
     );
 };
+
+const MemoMenuMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null }) => {
+    return useMemo(() => {
+        return <MenuMetric {...{ metricKey, value }} />;
+    }, [metricKey, value]);
+};
+
+export default MemoMenuMetric;

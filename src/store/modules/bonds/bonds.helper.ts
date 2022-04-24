@@ -10,4 +10,6 @@ export const initDefaultBondMetrics = (): BondMetrics => ({
     bondPrice: null,
     marketPrice: null,
     maxBondPriceToken: null,
+    allowance: null,
+    balance: null,
 });

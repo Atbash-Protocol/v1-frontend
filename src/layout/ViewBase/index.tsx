@@ -1,79 +1,91 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./view-base.scss";
 import Header from "components/Header";
-import { Box, Hidden, makeStyles, useMediaQuery, Drawer, IconButton } from "@material-ui/core";
+import { Box, Hidden, makeStyles, useMediaQuery, Drawer, IconButton, Container, Slide } from "@mui/material";
 import { DRAWER_WIDTH, TRANSITION_DURATION } from "constants/styles";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-import { Sidebar, SidebarMobile } from "components/Sidebar";
+import BackgroundImage from "../../assets/background.png";
+
+import { SideBar } from "components/Sidebar";
 import Messages from "components/Messages";
-import { useWeb3Context } from "hooks/web3";
+import { NewWeb3ContextProvider, PWeb3Context } from "contexts/web3/web3.context";
+import { theme } from "constants/theme";
+import { isMobile } from "web3modal";
 
 interface IViewBaseProps {
     children: React.ReactNode;
 }
 
-const useStyles = makeStyles(theme => ({
-    drawer: {
-        [theme.breakpoints.up("md")]: {
-            width: DRAWER_WIDTH,
-            flexShrink: 0,
-        },
-    },
-    content: {
-        padding: theme.spacing(1),
-        transition: theme.transitions.create("margin", {
-            easing: theme.transitions.easing.sharp,
-            duration: TRANSITION_DURATION,
-        }),
-        height: "100%",
-        overflow: "auto",
-        marginLeft: DRAWER_WIDTH,
-    },
-    contentShift: {
-        transition: theme.transitions.create("margin", {
-            easing: theme.transitions.easing.easeOut,
-            duration: TRANSITION_DURATION,
-        }),
-        marginLeft: 0,
-    },
-}));
+// const useStyles = makeStyles(theme => ({
+//     drawer: {
+//         [theme.breakpoints.up("md")]: {
+//             width: DRAWER_WIDTH,
+//             flexShrink: 0,
+//         },
+//     },
+//     content: {
+//         padding: theme.spacing(1),
+//         transition: theme.transitions.create("margin", {
+//             easing: theme.transitions.easing.sharp,
+//             duration: TRANSITION_DURATION,
+//         }),
+//         height: "100%",
+//         overflow: "auto",
+//         marginLeft: DRAWER_WIDTH,
+//     },
+//     contentShift: {
+//         transition: theme.transitions.create("margin", {
+//             easing: theme.transitions.easing.easeOut,
+//             duration: TRANSITION_DURATION,
+//         }),
+//         marginLeft: 0,
+//     },
+// }));
 
 function ViewBase({ children }: IViewBaseProps) {
-    const classes = useStyles();
+    const [isSidebarOpen, setisSidebarOpen] = useState(false);
 
-    const [mobileOpen, setMobileOpen] = useState(false);
-
-    const { connect, provider, hasCachedProvider, chainID, connected } = useWeb3Context();
-
-    const isSmallerScreen = useMediaQuery("(max-width: 960px)");
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const { state } = useContext(PWeb3Context);
 
     const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
+        setisSidebarOpen(!isSidebarOpen);
     };
 
-    useEffect(() => {
-        if (hasCachedProvider()) {
-            connect().then(() => {
-                console.info("connected");
-            });
-        }
-    }, []);
+    const {
+        state: { provider, signer },
+    } = useContext(PWeb3Context);
 
     return (
-        <div className="view-base-root">
+        <Box
+            sx={{
+                height: "100vh",
+                backgroundImage: `url(${BackgroundImage})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPositionX: "center",
+                backgroundPositionY: "center",
+            }}
+        >
             <Messages />
-            <Header drawe={!isSmallerScreen} handleDrawerToggle={handleDrawerToggle} />
-            <div className={classes.drawer}>
-                <Hidden mdUp>
-                    <SidebarMobile mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
-                </Hidden>
-                <Hidden smDown>
-                    <Sidebar />
-                </Hidden>
-            </div>
-            <div className={`${classes.content} ${isSmallerScreen && classes.contentShift}`}>{children}</div>
-        </div>
+            <Header {...{ handleDrawerToggle, isSmallScreen }} />
+            <Box>
+                <SideBar isSidebarOpen={isSidebarOpen} isSmallScreen={isSmallScreen} handleDrawerToggle={handleDrawerToggle} />
+            </Box>
+            <Box
+                sx={{
+                    paddingLeft: {
+                        xs: 0,
+                        sm: theme.spacing(32), //TODO: Use a dynamic drawer
+                    },
+                    maxHeight: "100vh",
+                    overflowY: "scroll",
+                    paddingBottom: theme.spacing(8),
+                }}
+            >
+                {children}
+            </Box>
+        </Box>
     );
 }
 

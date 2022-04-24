@@ -6,7 +6,7 @@ import "./bondlist.scss";
 import { IReduxState } from "../../store/slices/state.interface";
 
 import { useTranslation } from "react-i18next";
-import { selectActiveBonds } from "store/modules/bonds/bonds.selector";
+import { selectAllBonds } from "store/modules/bonds/bonds.selector";
 import { selectDAIPrice } from "store/modules/markets/markets.selectors";
 import { useEffect } from "react";
 import { calcBondDetails, getTreasuryBalance } from "store/modules/bonds/bonds.thunks";
@@ -14,6 +14,8 @@ import { useWeb3Context } from "hooks/web3";
 import { theme } from "constants/theme";
 import { MenuMetric } from "components/Metrics/MenuMetric";
 import { BCard } from "components/BCard";
+import { usePWeb3Context } from "contexts/web3/web3.context";
+import { useContractLoaded } from "store/modules/app/app.selectors";
 
 const BondHeader = () => {
     const { t } = useTranslation();
@@ -28,7 +30,7 @@ const BondHeader = () => {
                 [theme.breakpoints.up("sm")]: {
                     display: "inline-flex",
                 },
-                color: theme.palette.secondary.main,
+                color: theme.palette.primary.main,
             }}
         >
             <Grid item sm={1} />
@@ -49,24 +51,34 @@ const BondHeader = () => {
     );
 };
 
-function ChooseBond() {
+function BondList() {
     const { t } = useTranslation();
-    const { chainID } = useWeb3Context();
+
+    const {
+        state: { networkID, provider, signer },
+    } = usePWeb3Context();
     const dispatch = useDispatch();
 
-    const { activeBonds, inactiveBonds } = useSelector(selectActiveBonds);
+    const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);
+    const contractsLoaded = useSelector(useContractLoaded);
     const marketPrice = useSelector<IReduxState, number | null>(selectDAIPrice);
     const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
+    const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
 
     const isAppLoading = !marketPrice || !treasuryBalance;
 
     useEffect(() => {
-        dispatch(getTreasuryBalance(chainID));
-    }, []);
+        if (networkID && contractsLoaded && loadedBonds) {
+            dispatch(getTreasuryBalance(networkID));
+        }
+    }, [networkID, contractsLoaded, loadedBonds]);
 
     useEffect(() => {
         if (!isAppLoading) {
-            dispatch(calcBondDetails({ bond: activeBonds[0], value: 0, chainID }));
+            console.log("isAppLoading", isAppLoading);
+            [...activeBonds, ...inactiveBonds].map(bond => {
+                dispatch(calcBondDetails({ bond, value: 0 }));
+            });
         }
     }, [isAppLoading]);
 
@@ -76,21 +88,20 @@ function ChooseBond() {
                 <Box>
                     <Grid container item xs={12} spacing={2} mb={4}>
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric metricKey={t("TreasuryBalance")} value={treasuryBalance ? formatUSD(treasuryBalance) : null} />
+                            <MenuMetric key={"treasuryBalance"} metricKey={t("TreasuryBalance")} value={treasuryBalance ? formatUSD(treasuryBalance) : null} />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric metricKey={t("BASHPrice")} value={marketPrice ? formatUSD(marketPrice, 2) : null} />
+                            <MenuMetric key={"BashPrice"} metricKey={t("BASHPrice")} value={marketPrice ? formatUSD(marketPrice, 2) : null} />
                         </Grid>
                     </Grid>
                     <Grid container item>
                         <BondHeader />
 
-                        {[activeBonds[0], activeBonds[0]].map(bond => (
+                        {activeBonds.map(bond => (
                             <BondtListItem key={bond.ID} bondID={bond.ID} />
                         ))}
                     </Grid>
-                    )
                 </Box>
             </BCard>
 
@@ -102,11 +113,10 @@ function ChooseBond() {
                             <BondtListItem key={bond.ID} bondID={bond.ID} />
                         ))}
                     </Grid>
-                    )
                 </Box>
             </BCard>
         </>
     );
 }
 
-export default ChooseBond;
+export default BondList;

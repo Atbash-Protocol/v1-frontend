@@ -43,6 +43,9 @@ export const MainSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
+            .addCase(initializeProviderContracts.pending, (state, action) => {
+                return { ...state, contractsLoaded: false };
+            })
             .addCase(initializeProviderContracts.fulfilled, (state, action) => {
                 return { ...state, contracts: action.payload, contractsLoaded: true };
             })

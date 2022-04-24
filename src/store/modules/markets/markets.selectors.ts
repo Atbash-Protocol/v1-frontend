@@ -6,7 +6,7 @@ export const selectFormattedBashBalance = (state: RootState): string | null => {
     const { dai } = state.markets.markets;
     const balance = selectBASHBalance(state);
 
-    if (!dai || !balance) return null;
+    if (!dai || balance === null) return null;
 
     return formatUSD(balance * dai, 2);
 };

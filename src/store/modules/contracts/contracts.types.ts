@@ -7,7 +7,5 @@ export enum StakeActionEnum {
 
 export interface ChangeStakeOptions {
     action: StakeActionEnum;
-    address: string;
-    value: number;
-    provider: StaticJsonRpcProvider | JsonRpcProvider;
+    amount: number;
 }

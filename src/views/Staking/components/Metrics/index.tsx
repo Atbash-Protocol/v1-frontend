@@ -1,5 +1,5 @@
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
-import { MenuMetric } from "components/Metrics/MenuMetric";
+import MenuMetric from "components/Metrics/MenuMetric";
 import { theme } from "constants/theme";
 import { formatAPY, formatNumber, formatUSD } from "helpers/price-units";
 import { memo } from "react";
@@ -25,7 +25,7 @@ function StakeMetrics() {
         { key: "CurrentIndex", value: currentIndex },
         { key: "BASHPrice", value: BASHPrice },
     ].map(({ key, value }) => (
-        <Grid xs={6} sm={4} md={4} lg={3} mt={2}>
+        <Grid key={key} xs={6} sm={4} md={4} lg={3} mt={2}>
             <MenuMetric metricKey={t(key)} value={value} />
         </Grid>
     ));
@@ -37,6 +37,4 @@ function StakeMetrics() {
     );
 }
 
-const memoStakeMetrics = memo(StakeMetrics);
-
-export default memoStakeMetrics;
+export default StakeMetrics;
