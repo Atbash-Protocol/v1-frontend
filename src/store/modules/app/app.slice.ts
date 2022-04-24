@@ -1,4 +1,3 @@
-import { JsonRpcProvider } from "@ethersproject/providers";
 import { createSlice } from "@reduxjs/toolkit";
 import { isActionRejected } from "store/utils/action";
 
@@ -71,9 +70,6 @@ export const MainSlice = createSlice({
                 };
             })
             .addMatcher(isActionRejected, (state, action) => {
-                console.log(action);
-                console.error(action.error); //critial error
-
                 if (action.type.startsWith("app/")) state.errorEncountered = true;
             });
     },

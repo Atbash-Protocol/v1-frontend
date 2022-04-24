@@ -1,14 +1,9 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import MemoInlineMetric from "components/Metrics/InlineMetric";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { BondItem } from "store/modules/bonds/bonds.types";
-import { IReduxState } from "store/slices/state.interface";
 
 const BondMetrics = ({ bond }: any) => {
     const { t } = useTranslation();
-
-    console.log("bond meetrics", bond);
 
     if (!bond) {
         return <> </>;

@@ -25,8 +25,6 @@ import { ListItemLink } from "./components/ListItemLink";
 import { getBuyLink } from "lib/uniswap/link";
 import { theme } from "constants/theme";
 import { useSignerAddress, useSignerConnected, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
-import Loader from "components/Loader";
-import { useHistory } from "react-router-dom";
 
 const getMenuItems = (connected: Boolean) => [
     {
@@ -42,12 +40,6 @@ const getMenuItems = (connected: Boolean) => [
         disabled: connected === false,
     },
     {
-        path: "/borrow",
-        key: "Borrow",
-        icon: <CurrencyExchangeSharpIcon />,
-        disabled: !connected,
-    },
-    {
         path: "/bonds",
         key: "Minting",
         icon: <HandymanSharpIcon />,
@@ -57,6 +49,12 @@ const getMenuItems = (connected: Boolean) => [
         path: "/forecast",
         key: "Forecast",
         icon: <ShowChartSharpIcon />,
+        disabled: !connected,
+    },
+    {
+        path: "/wrap",
+        key: "Wrap",
+        icon: <CurrencyExchangeSharpIcon />,
         disabled: !connected,
     },
 ];
@@ -75,8 +73,8 @@ const cominSoonMenu = [
         disabled: true,
     },
     {
-        path: "/404",
-        key: "BashPro",
+        path: "/redeem",
+        key: "Redeem",
         icon: <SelfImprovementSharpIcon />,
         disabled: true,
     },

@@ -42,5 +42,14 @@ export const theme = createTheme({
                 },
             },
         },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    "&.MuiPaper-root": {
+                        borderRight: "none",
+                    },
+                },
+            },
+        },
     },
 });
