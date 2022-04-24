@@ -9,6 +9,8 @@ import { calculateStakingRewards } from "store/modules/app/app.helpers";
 import { MainSliceState } from "store/modules/app/app.types";
 import { selectBASHBalance } from "store/modules/account/account.selectors";
 import { IReduxState } from "store/slices/state.interface";
+import MemoInlineMetric from "components/Metrics/InlineMetric";
+import { useEffect } from "react";
 
 const UserStakeMetrics = () => {
     const { loading: accountLoading, balances, stakingAllowance } = useSelector<IReduxState, AccountSlice>(state => state.accountNew, shallowEqual);
@@ -35,32 +37,15 @@ const UserStakeMetrics = () => {
         { key: "stake:ROIFiveDayRate", value: `${trim(Number(fiveDayRate) * 100, 4)} %` },
     ];
 
-    const optionalMetrics = [
-        { key: "stake:YourWrappedStakedBalance", value: `${balances.WSBASH} wsBASH` },
-        { key: "stake:WrappedTokenEquivalent", value: `${trim(balances.WSBASH.toNumber() * (stakingIndex ?? 0), 6)} sBASH` },
-        { key: "stake:EffectiveNextRewardAmount", value: `${effectiveNextRewardValue} wsBASH` },
-    ];
+    const optionalMetrics = [{ key: "stake:EffectiveNextRewardAmount", value: `${effectiveNextRewardValue} wsBASH` }];
 
-    const metrics = [...keyMetrics, ...(balances.WSBASH.toNumber() > 0 ? optionalMetrics : [])].map(({ key, value }) => (
-        <Box
-            sx={{
-                display: "inline-flex",
-                width: "100%",
-                justifyContent: "space-between",
-                p: {
-                    xs: 0.5,
-                    sm: 0.75,
-                },
-            }}
-        >
-            <Typography variant="body1">{t(key)}</Typography>
-            <Typography variant="body2">{accountLoading ? <Skeleton /> : <>{value}</>}</Typography>
-        </Box>
+    const metrics = [...keyMetrics, ...(balances.WSBASH.toNumber() > 0 ? optionalMetrics : [])].map(({ key: metricKey, value }, i) => (
+        <MemoInlineMetric key={`metric-${i}`} {...{ metricKey, value }} />
     ));
 
     return (
         <Box>
-            <Typography variant="h4" sx={{ color: theme.palette.secondary.main }}>
+            <Typography variant="h4" sx={{ color: theme.palette.primary.main }}>
                 Staking metrics
             </Typography>
 

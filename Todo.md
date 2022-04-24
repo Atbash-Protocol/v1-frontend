@@ -13,3 +13,6 @@ Refacto :
 - Bonding 
 
 
+- Web3Provider : 
+  Distringuing Signer to Provider (signer = connected wallet and provider = Infura provider)
+

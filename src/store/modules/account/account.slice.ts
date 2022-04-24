@@ -13,6 +13,7 @@ const initialState: AccountSlice = {
         BASH: BigNumber.from(0),
         SBASH: BigNumber.from(0),
     },
+    // TODO : bonds: [] /** [{balances, allowance}] */
     loading: true,
 };
 

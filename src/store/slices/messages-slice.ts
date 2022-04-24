@@ -1,5 +1,6 @@
 import { Color } from "@material-ui/lab/Alert";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { messages } from "constants/messages";
 
 export type Message = IMessage & {
     severity: Color;
@@ -53,3 +54,8 @@ const messagesSlice = createSlice({
 export const { error, info, close, warning, success } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
+
+// actions
+
+export const walletConnectWarning = warning({ text: messages.please_connect_wallet });
+export const successTransaction = success({ text: messages.tx_successfully_send });

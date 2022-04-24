@@ -116,7 +116,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         if (chainId === Networks.RINKEBY || chainId === Networks.MAINNET) {
             setProvider(connectedProvider);
-            console.log("here", connectedProvider);
         }
 
         setConnected(true);

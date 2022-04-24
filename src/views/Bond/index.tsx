@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { LPBond } from "lib/bonds/bond/lp-bond";
 import { calcBondDetails, getTreasuryBalance } from "store/modules/bonds/bonds.thunks";
 import { useWeb3Context } from "hooks/web3";
-import { selectActiveBonds } from "store/modules/bonds/bonds.selector";
+import { selectAllBonds } from "store/modules/bonds/bonds.selector";
 import { BondDataCard } from "views/ChooseBond/BondRow";
 
 interface IBondProps {
@@ -22,15 +22,12 @@ function Bond() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getTreasuryBalance(chainID));
-    }, []);
-
-    const bonds = useSelector(selectActiveBonds);
+    const bonds = useSelector(selectAllBonds);
+    const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
 
     useEffect(() => {
         if (bonds && bonds.activeBonds.length > 0) {
-            dispatch(calcBondDetails({ bond: bonds.activeBonds[0], value: 10, chainID }));
+            dispatch(calcBondDetails({ bond: bonds.activeBonds[0], value: 10 }));
         }
     }, [bonds]);
 

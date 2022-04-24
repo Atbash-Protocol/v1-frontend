@@ -1,4 +1,4 @@
-import { Avatar, Box, Link, List, Divider } from "@mui/material";
+import { Avatar, Box, Link, List, Divider, Typography } from "@mui/material";
 
 import Social from "./components/Social";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -13,7 +13,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 
 import AtbashICON from "assets/icons/bash.svg";
 import { shorten } from "helpers";
-import { useAddress, useWeb3Context } from "hooks";
+import { useAddress } from "hooks";
 import useBonds from "hooks/bonds";
 import useENS from "hooks/useENS";
 import Davatar from "@davatar/react";
@@ -24,6 +24,9 @@ import { DEFAULT_NETWORK } from "constants/blockchain";
 import { ListItemLink } from "./components/ListItemLink";
 import { getBuyLink } from "lib/uniswap/link";
 import { theme } from "constants/theme";
+import { useSignerAddress, useSignerConnected, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
+import Loader from "components/Loader";
+import { useHistory } from "react-router-dom";
 
 const getMenuItems = (connected: Boolean) => [
     {
@@ -45,7 +48,7 @@ const getMenuItems = (connected: Boolean) => [
         disabled: !connected,
     },
     {
-        path: "/mints",
+        path: "/bonds",
         key: "Minting",
         icon: <HandymanSharpIcon />,
         disabled: !connected,
@@ -81,20 +84,30 @@ const cominSoonMenu = [
 
 function NavContent() {
     const { t } = useTranslation();
-    const { connected } = useWeb3Context();
 
-    const address = useAddress();
-    const { bonds } = useBonds();
-    const { ensName } = useENS(address);
+    const address = useSignerAddress();
+    const bonds = useBonds();
+    const signerConnected = useSignerConnected();
+    const { ensName } = useENS();
 
     const addresses = getAddresses(DEFAULT_NETWORK);
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
-    const menuItems = getMenuItems(connected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
-    const bondItems = bonds.filter(bond => bond.isActive).map(bond => <ListItemLink key={`mint-bond-${bond.name}`} to={`/mints/${bond.name}`} primary={bond.displayName} />);
-
+    const menuItems = getMenuItems(signerConnected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
+
+    const bondItems = (bonds?.bonds ?? [])
+        .filter(bond => bond.bondInstance.bondOptions.isActive)
+        .map(bond => (
+            <ListItemLink
+                key={`mint-bond-${bond.bondInstance.ID}`}
+                to={`/mints/${bond.bondInstance.ID}`}
+                primary={bond.bondInstance.bondOptions.displayName}
+                extra={<>{bond.metrics.bondDiscount} %</>}
+            />
+        ));
+
     return (
         <Box
             sx={{
@@ -103,9 +116,9 @@ function NavContent() {
                 alignItems: "center",
                 minWidth: "10rem",
                 overflowY: "scroll",
-                backgroundColor: theme.palette.cardBackground.main,
+                backgroundColor: theme.palette.cardBackground.light,
                 backdropFilter: "blur(100px)",
-                color: theme.palette.secondary.main,
+                color: theme.palette.primary.main,
                 height: "100%",
             }}
         >
@@ -121,10 +134,21 @@ function NavContent() {
                 </Link>
 
                 {address && (
-                    <Box sx={{ display: "inline-flex", justifyContent: "space-around", marginTop: theme.spacing(2), width: "100%" }}>
+                    <Box
+                        sx={{
+                            display: "inline-flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginTop: theme.spacing(2),
+
+                            width: "100%",
+                        }}
+                    >
                         <Davatar size={20} address={address} generatedAvatarType="jazzicon" />
                         <Link href={`https://etherscan.io/address/${address}`} target="_blank">
-                            <p>{ensName || shorten(address)}</p>
+                            <Typography sx={{ ml: 1 }} variant="body1">
+                                {ensName || shorten(address)}
+                            </Typography>
                         </Link>
                     </Box>
                 )}
@@ -134,7 +158,7 @@ function NavContent() {
                 <div>
                     <List
                         sx={{
-                            color: theme.palette.secondary.main,
+                            color: theme.palette.primary.main,
                             "& .MuiListItemButton-root:hover": {
                                 textDecoration: "underline",
                             },

@@ -12,3 +12,9 @@ export const selectFormattedReservePrice = (state: RootState): string | null => 
 
     return formatUSD(reservePrice, 2);
 };
+
+export const useContractLoaded = (state: RootState): boolean => {
+    const { contracts } = state.main;
+
+    return Object.values(contracts).every(contract => contract !== null);
+};

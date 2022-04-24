@@ -1,17 +1,19 @@
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
-import { getNetworkURI } from "./web3/helpers/get-network-uri";
-import { DEFAULT_NETWORK } from "../constants";
+import { useContext, useEffect, useState } from "react";
+import { PWeb3Context } from "contexts/web3/web3.context";
 
-const useENS = (address: string) => {
+const useENS = () => {
     const [ensName, setENSName] = useState<string | null>(null);
+
+    const {
+        state: { provider, signerAddress },
+    } = useContext(PWeb3Context);
 
     useEffect(() => {
         const resolveENS = async () => {
-            if (ethers.utils.isAddress(address)) {
-                const provider = new ethers.providers.JsonRpcProvider(getNetworkURI(DEFAULT_NETWORK));
+            if (signerAddress && provider && ethers.utils.isAddress(signerAddress)) {
                 try {
-                    const ensName = await provider.lookupAddress(address);
+                    const ensName = await provider.lookupAddress(signerAddress);
                     setENSName(ensName);
                 } catch (e) {
                     console.info("ENS not found");
@@ -19,7 +21,7 @@ const useENS = (address: string) => {
             }
         };
         resolveENS();
-    }, [address]);
+    }, [provider, signerAddress]);
 
     return { ensName };
 };

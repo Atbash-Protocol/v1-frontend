@@ -19,7 +19,7 @@ export const BCard = ({ title, children, zoom, className }: { title: string; chi
                 },
             }}
         >
-            <Box sx={{ color: theme.palette.secondary.main }}>
+            <Box sx={{ color: theme.palette.primary.main }}>
                 <Typography variant="h4" sx={{ textTransform: "uppercase" }}>
                     {title}
                 </Typography>

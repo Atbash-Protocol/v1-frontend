@@ -1,53 +1,34 @@
-import { Drawer, makeStyles } from "@material-ui/core";
-import { DRAWER_WIDTH } from "constants/styles";
+import { Drawer } from "@mui/material";
+import { theme } from "constants/theme";
+import { useAppReady } from "hooks/useAppReady";
 import Content from "./Content";
 
-const useStyles = makeStyles(theme => ({
-    drawer: {
-        [theme.breakpoints.up("md")]: {
-            width: DRAWER_WIDTH,
-            flexShrink: 0,
-        },
-    },
-    drawerPaper: {
-        width: DRAWER_WIDTH,
-        borderRight: 0,
-    },
-}));
-
 interface INavDrawer {
-    mobileOpen: boolean;
+    isSidebarOpen: boolean;
+    isSmallScreen: boolean;
     handleDrawerToggle: () => void;
 }
 
-function Sidebar() {
-    return (
-        <Drawer variant="permanent" anchor="left">
-            <Content />
-        </Drawer>
-    );
-}
+const SideBar = ({ isSidebarOpen, isSmallScreen, handleDrawerToggle }: INavDrawer) => {
+    const isAppReady = useAppReady();
 
-function SidebarMobile({ mobileOpen, handleDrawerToggle }: INavDrawer) {
-    const classes = useStyles();
+    console.log("isSmallScreen", isAppReady, isSmallScreen);
 
     return (
         <Drawer
-            variant="temporary"
-            anchor="left"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            onClick={handleDrawerToggle}
-            classes={{
-                paper: classes.drawerPaper,
-            }}
+            variant={isSidebarOpen ? "temporary" : "permanent"}
+            anchor={"left"}
+            open={isSidebarOpen}
+            onClick={isSmallScreen ? handleDrawerToggle : undefined}
             ModalProps={{
                 keepMounted: true,
             }}
+            sx={{
+                transition: theme.transitions.create(["background-color", "transform"]),
+            }}
         >
-            <Content />
+            {isAppReady && <Content />}
         </Drawer>
     );
-}
-
-export { Sidebar, SidebarMobile };
+};
+export { SideBar };

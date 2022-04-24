@@ -2,11 +2,14 @@ import { useState } from "react";
 import { getAddresses, TOKEN_DECIMALS, DEFAULT_NETWORK } from "../../../constants";
 import { useSelector } from "react-redux";
 import { Link, Fade, Popper } from "@material-ui/core";
-import "./atbash-menu.scss";
 import { IReduxState } from "../../../store/slices/state.interface";
 import { getTokenUrl } from "../../../helpers";
 
 import { useTranslation } from "react-i18next";
+import { Box, Button, Divider, Popover, Typography } from "@mui/material";
+import { theme } from "constants/theme";
+import { useSignerConnected } from "lib/web3/web3.hooks";
+import { getBuyLink } from "lib/uniswap/link";
 
 const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async () => {
     const tokenImage = getTokenUrl(tokenSymbol.toLowerCase());
@@ -34,8 +37,8 @@ const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async ()
 function AtbashMenu() {
     const { t } = useTranslation();
 
+    const isUserSigned = useSignerConnected();
     const [anchorEl, setAnchorEl] = useState(null);
-    const isEthereumAPIAvailable = window.ethereum;
 
     const networkID = useSelector<IReduxState, number>(state => {
         return (state.app && state.app.networkID) || DEFAULT_NETWORK;
@@ -52,44 +55,39 @@ function AtbashMenu() {
     };
 
     const open = Boolean(anchorEl);
+    const id = open ? "menu-popover" : undefined;
 
     return (
-        <div className="bash-menu-root" onMouseEnter={e => handleClick(e)} onMouseLeave={e => handleClick(e)}>
-            <div className="bash-menu-btn">
-                <p>{t("BuyBASH")}</p>
-            </div>
+        <Box sx={{ padding: theme.spacing(1) }} onMouseEnter={e => handleClick(e)} onMouseLeave={e => handleClick(e)}>
+            <Button>
+                <Typography>{t("BuyBASH")}</Typography>
+            </Button>
 
-            <Popper className="bash-menu-popper" open={open} anchorEl={anchorEl} transition>
+            <Popper open={open} anchorEl={anchorEl} transition>
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={200}>
-                        <div className="tooltip">
-                            {/* TODO: Update for MAINNET */}
-                            <Link
-                                className="tooltip-item"
-                                href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}`}
-                                target="_blank"
-                            >
-                                <p>{t("BuyOnUniswap")}</p>
+                        <Box sx={{ background: theme.palette.cardBackground.light }}>
+                            <Link href={getBuyLink(DAI_ADDRESS, BASH_ADDRESS)} component={Typography} target="_blank">
+                                {t("BuyOnUniswap")}
                             </Link>
 
-                            {isEthereumAPIAvailable && (
-                                <div className="add-tokens">
-                                    <div className="divider" />
-                                    <p className="add-tokens-title">{t("AddTokenToWallet")}</p>
-                                    <div className="divider" />
-                                    <div className="tooltip-item" onClick={addTokenToWallet("BASH", BASH_ADDRESS)}>
-                                        <p>↑ BASH</p>
-                                    </div>
-                                    <div className="tooltip-item" onClick={addTokenToWallet("sBASH", SBASH_ADDRESS)}>
-                                        <p>↑ sBASH</p>
-                                    </div>
-                                </div>
+                            {isUserSigned && (
+                                <Box sx={{ color: theme.palette.primary.light }}>
+                                    <Typography>{t("AddTokenToWallet")}</Typography>
+                                    <Divider />
+                                    <Typography sx={{ cursor: "pointer" }} onClick={addTokenToWallet("BASH", BASH_ADDRESS)}>
+                                        ↑ BASH
+                                    </Typography>
+                                    <Typography sx={{ cursor: "pointer" }} onClick={() => addTokenToWallet("sBASH", SBASH_ADDRESS)}>
+                                        ↑ sBASH
+                                    </Typography>
+                                </Box>
                             )}
-                        </div>
+                        </Box>
                     </Fade>
                 )}
             </Popper>
-        </div>
+        </Box>
     );
 }
 
