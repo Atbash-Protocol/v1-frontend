@@ -1,15 +1,7 @@
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import allBonds from "../helpers/bond";
-import { Bond } from "../helpers/bond/bond";
-import { IBondDetails, IBondSlice } from "../store/slices/bond-slice";
+import { useEffect } from "react";
 import { IReduxState } from "store/slices/state.interface";
-import { IUserBondDetails } from "store/account/account.types";
-import { selectAllBonds } from "store/modules/bonds/bonds.selector";
 import { BondItem } from "store/modules/bonds/bonds.types";
-
-// Smash all the interfaces together to get the BondData Type
-export interface IAllBondData extends Bond, IBondDetails, IUserBondDetails {}
 
 // Slaps together bond data within the account & bonding states
 const useBonds = () => {

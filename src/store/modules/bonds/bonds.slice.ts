@@ -1,7 +1,4 @@
-import { ActionTypes } from "@mui/base";
 import { createSlice } from "@reduxjs/toolkit";
-import bond from "helpers/bond";
-import { useSelector } from "react-redux";
 import { approveBonds, calcBondDetails, calculateUserBondDetails, getBondTerms, getTreasuryBalance, initializeBonds, loadBondBalancesAndAllowances } from "./bonds.thunks";
 import { BondSlice } from "./bonds.types";
 

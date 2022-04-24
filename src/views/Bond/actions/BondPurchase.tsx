@@ -1,12 +1,10 @@
-import { Box, Grid, FormControl, InputAdornment, OutlinedInput, Button, Skeleton } from "@mui/material";
+import { Box, Grid, FormControl, Button } from "@mui/material";
 import { theme } from "constants/theme";
-import { usePWeb3Context } from "contexts/web3/web3.context";
-import { useWeb3Context } from "hooks/web3";
 import { useSafeSigner } from "lib/web3/web3.hooks";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { approveBonds, calcBondDetails, calculateUserBondDetails, depositBond } from "store/modules/bonds/bonds.thunks";
+import { approveBonds, calculateUserBondDetails, depositBond } from "store/modules/bonds/bonds.thunks";
 import { BondItem } from "store/modules/bonds/bonds.types";
 import AmountForm from "views/Staking/components/AmountForm";
 

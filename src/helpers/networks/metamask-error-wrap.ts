@@ -1,8 +1,8 @@
 import { Dispatch } from "redux";
-import { error } from "../store/slices/messages-slice";
-import { messages } from "../constants/messages";
+import { error } from "../../store/slices/messages-slice";
+import { messages } from "../../constants/messages";
 
-import i18n from "../i18n";
+import i18n from "../../i18n";
 
 export const metamaskErrorWrap = (err: any, dispatch: Dispatch) => {
     let text = messages.something_wrong;

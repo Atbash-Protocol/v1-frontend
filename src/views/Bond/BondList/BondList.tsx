@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography, Grid } from "@mui/material";
 import { BondtListItem } from "./BondListItem";
-import { formatUSD } from "../../../helpers";
 import "./bondlist.scss";
 import { IReduxState } from "../../../store/slices/state.interface";
 
@@ -10,12 +9,12 @@ import { selectAllBonds } from "store/modules/bonds/bonds.selector";
 import { selectDAIPrice } from "store/modules/markets/markets.selectors";
 import { useEffect } from "react";
 import { calcBondDetails, getTreasuryBalance } from "store/modules/bonds/bonds.thunks";
-import { useWeb3Context } from "hooks/web3";
 import { theme } from "constants/theme";
 import { MenuMetric } from "components/Metrics/MenuMetric";
 import { BCard } from "components/BCard";
 import { usePWeb3Context } from "contexts/web3/web3.context";
 import { useContractLoaded } from "store/modules/app/app.selectors";
+import { formatUSD } from "helpers/price-units";
 
 const BondHeader = () => {
     const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { JsonRpcProvider, JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import { Web3Provider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BondingCalcContract } from "abi";
 
@@ -6,15 +6,12 @@ import { BONDS } from "config/bonds";
 import { getAddresses } from "constants/addresses";
 import { messages } from "constants/messages";
 import { WEB3State } from "contexts/web3/web3.types";
-import { constants, Contract, ethers } from "ethers";
-import { getGasPrice } from "helpers/get-gas-price";
-import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
-import { sleep } from "helpers/sleep";
+import { constants, ethers } from "ethers";
+import { metamaskErrorWrap } from "helpers/networks/metamask-error-wrap";
 import i18n from "i18n";
 import { LPBond } from "lib/bonds/bond/lp-bond";
 import { StableBond } from "lib/bonds/bond/stable-bond";
 import { createBond, getBondContracts } from "lib/bonds/bonds.helper";
-import { useSafeSigner } from "lib/web3/web3.hooks";
 import _ from "lodash";
 import { sum } from "lodash";
 import { error, info, success, warning } from "store/slices/messages-slice";

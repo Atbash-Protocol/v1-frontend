@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { PWeb3Context } from "contexts/web3/web3.context";
 import { BigNumber, constants, Contract, ethers } from "ethers";
-import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
+import { metamaskErrorWrap } from "helpers/networks/metamask-error-wrap";
 import { useSafeSigner } from "lib/web3/web3.hooks";
 import { useContext } from "react";
 import { successTransaction, walletConnectWarning, warning } from "store/slices/messages-slice";

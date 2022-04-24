@@ -1,22 +1,19 @@
-import { DialogContent, Menu } from "@material-ui/core";
+import { DialogContent } from "@material-ui/core";
 import { Box, Dialog, DialogTitle, Grid, Typography } from "@mui/material";
 import BondLogo from "components/BondLogo";
 import MenuMetric from "components/Metrics/MenuMetric";
 import { theme } from "constants/theme";
-import { useWeb3Context } from "hooks/web3";
 import { t } from "i18next";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { selectFormattedReservePrice } from "store/modules/app/app.selectors";
 import { selectBondMintingMetrics } from "store/modules/bonds/bonds.selector";
-import { calcBondDetails, calculateUserBondDetails, getBondTerms, loadBondBalancesAndAllowances } from "store/modules/bonds/bonds.thunks";
+import { calcBondDetails, getBondTerms, loadBondBalancesAndAllowances } from "store/modules/bonds/bonds.thunks";
 import { BondItem } from "store/modules/bonds/bonds.types";
-import { BondQuote } from "views/Bond/actions/BondQuote";
 import BondPurchase from "views/Bond/actions/BondPurchase";
 import BondMetrics from "views/Bond/BondMetrics";
 import { selectBondPurchaseReady, selectBondReady } from "hooks/bonds";
-import { useSignerConnected } from "lib/web3/web3.hooks";
 import { usePWeb3Context } from "contexts/web3/web3.context";
 import Loader from "components/Loader";
 

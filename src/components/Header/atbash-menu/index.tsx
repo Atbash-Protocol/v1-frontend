@@ -3,16 +3,18 @@ import { getAddresses, TOKEN_DECIMALS, DEFAULT_NETWORK } from "../../../constant
 import { useSelector } from "react-redux";
 import { Link, Fade, Popper } from "@material-ui/core";
 import { IReduxState } from "../../../store/slices/state.interface";
-import { getTokenUrl } from "../../../helpers";
+// import { getTokenUrl } from "../../../helpers";
 
 import { useTranslation } from "react-i18next";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
 import { theme } from "constants/theme";
 import { useSignerConnected } from "lib/web3/web3.hooks";
 import { getBuyLink } from "lib/uniswap/link";
+import { usePWeb3Context } from "contexts/web3/web3.context";
 
 const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async () => {
-    const tokenImage = getTokenUrl(tokenSymbol.toLowerCase());
+    // const tokenImage = getTokenUrl(tokenSymbol.toLowerCase());
+    const tokenImage = "";
 
     if (window.ethereum) {
         try {
@@ -40,9 +42,11 @@ function AtbashMenu() {
     const isUserSigned = useSignerConnected();
     const [anchorEl, setAnchorEl] = useState(null);
 
-    const networkID = useSelector<IReduxState, number>(state => {
-        return (state.app && state.app.networkID) || DEFAULT_NETWORK;
-    });
+    const {
+        state: { networkID },
+    } = usePWeb3Context();
+
+    if (!networkID) return null;
 
     const addresses = getAddresses(networkID);
 

@@ -12,8 +12,6 @@ import PriceCheckSharpIcon from "@mui/icons-material/PriceCheckSharp";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 
 import AtbashICON from "assets/icons/bash.svg";
-import { shorten } from "helpers";
-import { useAddress } from "hooks";
 import useBonds from "hooks/bonds";
 import useENS from "hooks/useENS";
 import Davatar from "@davatar/react";
@@ -25,6 +23,7 @@ import { ListItemLink } from "./components/ListItemLink";
 import { getBuyLink } from "lib/uniswap/link";
 import { theme } from "constants/theme";
 import { useSignerAddress, useSignerConnected, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
+import { shorten } from "helpers/shorten";
 
 const getMenuItems = (connected: Boolean) => [
     {

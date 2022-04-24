@@ -1,7 +1,6 @@
 import { Box, Button, Grid, Link, Skeleton, Typography } from "@mui/material";
 import BondLogo from "components/BondLogo";
 import { theme } from "constants/theme";
-import { useWeb3Context } from "hooks/web3";
 import { useSafeSigner } from "lib/web3/web3.hooks";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";

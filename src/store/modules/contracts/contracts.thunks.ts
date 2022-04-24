@@ -1,16 +1,9 @@
-import { StaticJsonRpcProvider, JsonRpcProvider } from "@ethersproject/providers";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Networks } from "constants/blockchain";
 import { messages } from "constants/messages";
-import { PWeb3Context } from "contexts/web3/web3.context";
 import { ethers } from "ethers";
-import { getGasPrice } from "helpers/get-gas-price";
-import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
-import { sleep } from "helpers/sleep";
+import { metamaskErrorWrap } from "helpers/networks/metamask-error-wrap";
 import { useSafeSigner } from "lib/web3/web3.hooks";
-import { useContext } from "react";
-import { getBalances } from "store/slices/account-slice";
-import { warning, success, info } from "store/slices/messages-slice";
+import { success, info } from "store/slices/messages-slice";
 import { fetchPendingTxns, getStakingTypeText, clearPendingTxn, getPendingActionText } from "store/slices/pending-txns-slice";
 import { IReduxState } from "store/slices/state.interface";
 import { loadBalancesAndAllowances } from "../account/account.thunks";
@@ -23,7 +16,7 @@ export const stakeAction = createAsyncThunk("contracts/stake", async ({ action, 
         main: { contracts },
     } = getState() as IReduxState;
 
-    const gasPrice = await getGasPrice(signer);
+    const gasPrice = await signer.getGasPrice();
 
     const transaction =
         action === "STAKE"
