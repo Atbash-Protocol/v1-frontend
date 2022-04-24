@@ -45,7 +45,7 @@ const UserStakeMetrics = () => {
 
     return (
         <Box>
-            <Typography variant="h4" sx={{ color: theme.palette.secondary.main }}>
+            <Typography variant="h4" sx={{ color: theme.palette.primary.main }}>
                 Staking metrics
             </Typography>
 

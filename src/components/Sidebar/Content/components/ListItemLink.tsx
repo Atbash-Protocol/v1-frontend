@@ -25,7 +25,7 @@ export const ListItemLink = ({ icon, primary, extra, to, disabled = false, rende
     return (
         <li key={`route-${to}`}>
             <ListItemButton disabled={disabled} component={renderComponent ?? renderLink}>
-                {icon ? <ListItemIcon sx={{ color: theme.palette.secondary.main }}>{icon}</ListItemIcon> : null}
+                {icon ? <ListItemIcon sx={{ color: theme.palette.primary.main }}>{icon}</ListItemIcon> : null}
                 <ListItemText primary={primary} />
                 <> {extra}</>
             </ListItemButton>

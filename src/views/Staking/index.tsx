@@ -61,11 +61,11 @@ function Staking() {
                         backgroundColor: theme.palette.cardBackground.main,
                         backdropFilter: "blur(100px)",
                         borderRadius: ".5rem",
-                        color: theme.palette.secondary.main,
+                        color: theme.palette.primary.main,
                         p: { xs: 2, sm: 4 },
                     }}
                 >
-                    <Box sx={{ color: theme.palette.secondary.main }}>
+                    <Box sx={{ color: theme.palette.primary.main }}>
                         <Typography variant="h4" sx={{ textTransform: "uppercase" }}>
                             {t("stake:StakeTitle")}
                         </Typography>
@@ -91,7 +91,7 @@ function Staking() {
                         marginTop: 4,
                         backdropFilter: "blur(100px)",
                         borderRadius: ".5rem",
-                        color: theme.palette.secondary.main,
+                        color: theme.palette.primary.main,
                         p: 4,
                     }}
                 >

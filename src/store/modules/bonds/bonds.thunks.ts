@@ -12,6 +12,7 @@ import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
 import { sleep } from "helpers/sleep";
 import i18n from "i18n";
 import { LPBond } from "lib/bonds/bond/lp-bond";
+import { StableBond } from "lib/bonds/bond/stable-bond";
 import { createBond, getBondContracts } from "lib/bonds/bonds.helper";
 import { useSafeSigner } from "lib/web3/web3.hooks";
 import _ from "lodash";
@@ -78,7 +79,7 @@ export const getTreasuryBalance = createAsyncThunk("bonds/bonds-treasury", async
     };
 });
 
-export const calcBondDetails = createAsyncThunk("bonds/calcBondDetails", async ({ bond, value }: { bond: LPBond; value: number }, { getState, dispatch }) => {
+export const calcBondDetails = createAsyncThunk("bonds/calcBondDetails", async ({ bond, value }: { bond: LPBond | StableBond; value: number }, { getState, dispatch }) => {
     if (!bond.getBondContract()) throw new Error("error init");
 
     const state = getState() as IReduxState;

@@ -31,7 +31,7 @@ const RebaseTimer = () => {
     if (!currentBlockTime || !nextRebase) return <Skeleton />;
 
     return (
-        <Box sx={{ color: theme.palette.secondary.main, textTransform: "uppercase", letterSpacing: 2 }}>
+        <Box sx={{ color: theme.palette.primary.main, textTransform: "uppercase", letterSpacing: 2 }}>
             {timeUntilRebase ? <Typography>{t("TimeToNextRebase", { time: timeUntilRebase })}</Typography> : <Typography>{t("Rebasing")}</Typography>}
         </Box>
     );

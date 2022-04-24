@@ -41,6 +41,10 @@ export const BondSlices = createSlice({
             return state;
         });
 
+        builder.addCase(calcBondDetails.rejected, (state, action) => {
+            console.log("here", action, state);
+        });
+
         builder.addCase(getBondTerms.fulfilled, (state, { payload, meta: { arg: bond } }) => {
             state.bonds[bond.bondInstance.ID].metrics.vestingTerm = payload.terms;
 

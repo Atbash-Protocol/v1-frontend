@@ -46,7 +46,7 @@
 //         return (
 //             <Button
 //                 sx={{
-//                     color: theme.palette.secondary.main,
+//                     color: theme.palette.primary.main,
 //                 }}
 //                 onClick={handleStakingClick}
 //             >
@@ -56,7 +56,7 @@
 //     }
 
 //     return (
-//         <Button sx={{ color: theme.palette.secondary.main }} onClick={handleApproveClick}>
+//         <Button sx={{ color: theme.palette.primary.main }} onClick={handleApproveClick}>
 //             <Typography variant="body1">{selectStakingPendingTx ? t("PendingEllipsis") : <>"TODO"</>}</Typography>
 //         </Button>
 //     );
@@ -65,7 +65,7 @@
 // //                      {stakingAllowance.BASH.gte(balances.BASH) ? (
 // //                         <Button
 // //                             sx={{
-// //                                 color: theme.palette.secondary.main,
+// //                                 color: theme.palette.primary.main,
 // //                             }}
 // //                             onClick={() => {
 // //                                 if (isPendingTxn(pendingTransactions, "staking")) return;
@@ -76,7 +76,7 @@
 // //                         </Button>
 // //                     ) : (
 // //                         <Button
-// //                             sx={{ color: theme.palette.secondary.main }}
+// //                             sx={{ color: theme.palette.primary.main }}
 // //                             onClick={() => {
 // //                                 if (isPendingTxn(pendingTransactions, "approve_staking")) return;
 // //                                 onSeekApproval("BASH");
@@ -162,9 +162,9 @@
 //     //             <Grid xs={10}>
 //     //                 <OutlinedInput
 //     //                     sx={{
-//     //                         color: theme.palette.secondary.main,
+//     //                         color: theme.palette.primary.main,
 //     //                         border: "1px solid",
-//     //                         outlineColor: theme.palette.secondary.main,
+//     //                         outlineColor: theme.palette.primary.main,
 //     //                         width: "100%",
 //     //                     }}
 //     //                     color="primary"
@@ -175,7 +175,7 @@
 //     //                     endAdornment={
 //     //                         <InputAdornment position="end">
 //     //                             <Box onClick={handleSetMax}>
-//     //                                 <Typography sx={{ textTransform: "uppercase", color: theme.palette.secondary.main }}>{t("Max")}</Typography>
+//     //                                 <Typography sx={{ textTransform: "uppercase", color: theme.palette.primary.main }}>{t("Max")}</Typography>
 //     //                             </Box>
 //     //                         </InputAdornment>
 //     //                     }
@@ -186,7 +186,7 @@
 //     //                 {stakingAllowance.BASH.gte(balances.BASH) ? (
 //     //                     <Button
 //     //                         sx={{
-//     //                             color: theme.palette.secondary.main,
+//     //                             color: theme.palette.primary.main,
 //     //                         }}
 //     //                         onClick={() => {
 //     //                             if (isPendingTxn(pendingTransactions, "staking")) return;
@@ -197,7 +197,7 @@
 //     //                     </Button>
 //     //                 ) : (
 //     //                     <Button
-//     //                         sx={{ color: theme.palette.secondary.main }}
+//     //                         sx={{ color: theme.palette.primary.main }}
 //     //                         onClick={() => {
 //     //                             if (isPendingTxn(pendingTransactions, "approve_staking")) return;
 //     //                             onSeekApproval("BASH");
@@ -219,7 +219,7 @@
 //                 centered
 //                 sx={{
 //                     "& .MuiButtonBase-root": {
-//                         color: theme.palette.secondary.main,
+//                         color: theme.palette.primary.main,
 //                     },
 //                 }}
 //             >
@@ -232,9 +232,9 @@
 //                     <Grid xs={10}>
 //                         <OutlinedInput
 //                             sx={{
-//                                 color: theme.palette.secondary.main,
+//                                 color: theme.palette.primary.main,
 //                                 border: "1px solid",
-//                                 outlineColor: theme.palette.secondary.main,
+//                                 outlineColor: theme.palette.primary.main,
 //                                 width: "100%",
 //                             }}
 //                             color="primary"
@@ -245,7 +245,7 @@
 //                             endAdornment={
 //                                 <InputAdornment position="end">
 //                                     <Box onClick={setMax}>
-//                                         <Typography sx={{ textTransform: "uppercase", color: theme.palette.secondary.main }}>{t("Max")}</Typography>
+//                                         <Typography sx={{ textTransform: "uppercase", color: theme.palette.primary.main }}>{t("Max")}</Typography>
 //                                     </Box>
 //                                 </InputAdornment>
 //                             }
@@ -258,7 +258,7 @@
 //                         {stakingAllowance.BASH.gte(balances.BASH) ? (
 //                             <Button
 //                                 sx={{
-//                                     color: theme.palette.secondary.main,
+//                                     color: theme.palette.primary.main,
 //                                 }}
 //                                 onClick={() => {
 //                                     if (isPendingTxn(pendingTransactions, "staking")) return;
@@ -269,7 +269,7 @@
 //                             </Button>
 //                         ) : (
 //                             <Button
-//                                 sx={{ color: theme.palette.secondary.main }}
+//                                 sx={{ color: theme.palette.primary.main }}
 //                                 onClick={() => {
 //                                     if (isPendingTxn(pendingTransactions, "approve_staking")) return;
 //                                     onSeekApproval("BASH");
@@ -287,9 +287,9 @@
 //                     <Grid xs={10}>
 //                         <OutlinedInput
 //                             sx={{
-//                                 color: theme.palette.secondary.main,
+//                                 color: theme.palette.primary.main,
 //                                 border: "1px solid",
-//                                 outlineColor: theme.palette.secondary.main,
+//                                 outlineColor: theme.palette.primary.main,
 //                                 width: "100%",
 //                             }}
 //                             type="number"
@@ -298,7 +298,7 @@
 //                             onChange={e => setQuantity(Number(e.target.value))}
 //                             endAdornment={
 //                                 <InputAdornment position="end">
-//                                     <Box sx={{ color: theme.palette.secondary.main, textTransform: "uppercase" }} onClick={setMax}>
+//                                     <Box sx={{ color: theme.palette.primary.main, textTransform: "uppercase" }} onClick={setMax}>
 //                                         <p>{t("Max")}</p>
 //                                     </Box>
 //                                 </InputAdornment>
@@ -309,7 +309,7 @@
 //                         {signer && stakingAllowance.SBASH.gte(balances.SBASH) ? (
 //                             <Button
 //                                 sx={{
-//                                     color: theme.palette.secondary.main,
+//                                     color: theme.palette.primary.main,
 //                                 }}
 //                                 onClick={() => {
 //                                     if (isPendingTxn(pendingTransactions, "unstaking")) return;
@@ -351,6 +351,7 @@ import { StakeActionEnum } from "store/modules/contracts/contracts.types";
 import { approveContract } from "store/modules/stake/stake.thunks";
 import { useSafeSigner } from "lib/web3/web3.hooks";
 import { useTranslation } from "react-i18next";
+import { theme } from "constants/theme";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -362,9 +363,9 @@ function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
     return (
-        <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+        <div role="tabpanel" hidden={value !== index} id={`stake-tabpanel-${index}`} aria-labelledby={`stake-tab-${index}`} {...other}>
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{ p: 3, color: "red" }}>
                     <Typography>{children}</Typography>
                 </Box>
             )}
@@ -374,8 +375,11 @@ function TabPanel(props: TabPanelProps) {
 
 function a11yProps(index: number) {
     return {
-        id: `simple-tab-${index}`,
-        "aria-controls": `simple-tabpanel-${index}`,
+        id: `stake-tab-${index}`,
+        "aria-controls": `stake-tabpanel-${index}`,
+        sx: {
+            color: "white",
+        },
     };
 }
 

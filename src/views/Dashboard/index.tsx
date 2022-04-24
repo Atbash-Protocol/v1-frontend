@@ -61,7 +61,7 @@ function Dashboard() {
                                 backgroundColor: theme.palette.cardBackground.main,
                                 backdropFilter: "blur(100px)",
                                 borderRadius: ".5rem",
-                                color: theme.palette.secondary.main,
+                                color: theme.palette.primary.main,
                                 px: theme.spacing(2),
                                 py: theme.spacing(4),
                                 textAlign: "center",

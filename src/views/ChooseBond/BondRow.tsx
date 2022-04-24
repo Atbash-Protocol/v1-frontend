@@ -188,7 +188,7 @@ export const BondMint = ({ bondID }: IBondProps) => {
         <Grid
             container
             sx={{
-                color: bondSoldOut ? theme.palette.primary.main : theme.palette.secondary.main,
+                color: bondSoldOut ? theme.palette.primary.main : theme.palette.primary.main,
                 [theme.breakpoints.up("xs")]: {
                     marginBottom: theme.spacing(2),
                     paddingBottom: theme.spacing(4),

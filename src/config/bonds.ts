@@ -27,7 +27,7 @@ const BASH_DAI: BondConfig = {
             reserveAddress: "0x26DF06b47412dA76061ddA1fD9fe688A497FB88b", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
         },
     },
-    isActive: true,
+    isActive: false,
 };
 
 const StableDAI: BondConfig = {
@@ -51,7 +51,7 @@ const StableDAI: BondConfig = {
             reserveAddress: "",
         },
     },
-    isActive: false,
+    isActive: true,
 };
 
-export const BONDS = [BASH_DAI];
+export const BONDS = [BASH_DAI, StableDAI];

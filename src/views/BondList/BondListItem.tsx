@@ -75,7 +75,7 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
         <Grid
             container
             sx={{
-                color: bondSoldOut ? theme.palette.primary.main : theme.palette.secondary.main,
+                color: bondSoldOut ? theme.palette.primary.main : theme.palette.primary.main,
                 [theme.breakpoints.up("xs")]: {
                     marginBottom: theme.spacing(2),
                     paddingBottom: theme.spacing(4),
@@ -106,11 +106,11 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
                 }}
             >
                 {signer && (
-                    <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`}>
-                        <Button disabled={!!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}` }}>
+                    <Button disabled={!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}` }}>
+                        <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`}>
                             <p>{bond.bondInstance.bondOptions.isActive ? t("bond:Mint") : t("bond:Redeem")}</p>
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 )}
             </Grid>
         </Grid>

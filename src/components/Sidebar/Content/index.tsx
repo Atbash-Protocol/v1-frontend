@@ -48,7 +48,7 @@ const getMenuItems = (connected: Boolean) => [
         disabled: !connected,
     },
     {
-        path: "/mints",
+        path: "/bonds",
         key: "Minting",
         icon: <HandymanSharpIcon />,
         disabled: !connected,
@@ -118,7 +118,7 @@ function NavContent() {
                 overflowY: "scroll",
                 backgroundColor: theme.palette.cardBackground.light,
                 backdropFilter: "blur(100px)",
-                color: theme.palette.secondary.main,
+                color: theme.palette.primary.main,
                 height: "100%",
             }}
         >
@@ -158,7 +158,7 @@ function NavContent() {
                 <div>
                     <List
                         sx={{
-                            color: theme.palette.secondary.main,
+                            color: theme.palette.primary.main,
                             "& .MuiListItemButton-root:hover": {
                                 textDecoration: "underline",
                             },

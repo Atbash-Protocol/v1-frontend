@@ -36,7 +36,6 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
     const bondIsReady = selectBondReady(bond);
     const selectAppReadyForBondCalculation = selectBondPurchaseReady();
 
-    console.log("metrics", metrics);
     const bashPrice = useSelector(selectFormattedReservePrice);
 
     useEffect(() => {

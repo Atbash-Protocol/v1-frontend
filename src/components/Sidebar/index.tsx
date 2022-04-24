@@ -12,12 +12,14 @@ interface INavDrawer {
 const SideBar = ({ isSidebarOpen, isSmallScreen, handleDrawerToggle }: INavDrawer) => {
     const isAppReady = useAppReady();
 
+    console.log("isSmallScreen", isAppReady, isSmallScreen);
+
     return (
         <Drawer
             variant={isSidebarOpen ? "temporary" : "permanent"}
             anchor={"left"}
             open={isSidebarOpen}
-            onClick={isSmallScreen ? handleDrawerToggle : () => {}}
+            onClick={isSmallScreen ? handleDrawerToggle : undefined}
             ModalProps={{
                 keepMounted: true,
             }}

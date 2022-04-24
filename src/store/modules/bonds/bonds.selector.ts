@@ -1,6 +1,7 @@
 import { formatUSD } from "helpers/price-units";
 import { Bond } from "lib/bonds/bond/bond";
 import { LPBond } from "lib/bonds/bond/lp-bond";
+import { StableBond } from "lib/bonds/bond/stable-bond";
 import { groupBy } from "lodash";
 import { RootState } from "store/store";
 import { BondItem, BondMetrics } from "./bonds.types";
@@ -22,7 +23,7 @@ export const selectAllBonds = (state: RootState) => {
                 inactiveBonds: [...acc.inactiveBonds, bondInstance],
             };
         },
-        { activeBonds: new Array<LPBond>(), inactiveBonds: new Array<LPBond>() },
+        { activeBonds: new Array<LPBond | StableBond>(), inactiveBonds: new Array<LPBond | StableBond>() },
     );
 };
 

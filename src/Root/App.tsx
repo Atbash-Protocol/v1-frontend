@@ -93,11 +93,11 @@ function App() {
                         <BondList />
                     </Route>
 
-                    {bonds.mostProfitableBonds.map((bond, key) => (
-                        <Route key={key} path="/mints/bash_dai_lp">
+                    {/* {bonds.mostProfitableBonds.map((bond, key) => (
+                        <Route key={key} path={`/mints/${bond.bondInstance.ID}`}>
                             <BondDialog key={bond.bondInstance.bondOptions.displayName} open={true} bond={bond} />
                         </Route>
-                    ))}
+                    ))} */}
                 </>
             )}
             <Route component={NotFound} />

@@ -15,6 +15,9 @@ export interface IAllBondData extends Bond, IBondDetails, IUserBondDetails {}
 const useBonds = () => {
     const bonds = useSelector<IReduxState, BondItem[]>(state => Object.values(state.bonds.bonds));
 
+    useEffect(() => {
+        console.log("userBonds", bonds);
+    });
     const mostProfitableBonds = bonds.sort((bond1, bond2): any => {
         if (bond1.metrics.bondDiscount === null || bond2.metrics.bondDiscount === null) return 0;
 

@@ -57,7 +57,7 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
                     <Button
                         variant="outlined"
                         sx={{
-                            color: theme.palette.secondary.main,
+                            color: theme.palette.primary.main,
                             textAlign: "center",
                             width: "100%",
                             p: theme.spacing(2),

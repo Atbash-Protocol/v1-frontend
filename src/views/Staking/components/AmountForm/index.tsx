@@ -54,9 +54,9 @@ const AmountForm = (props: AmountFormProps) => {
             <Grid xs={10}>
                 <OutlinedInput
                     sx={{
-                        color: theme.palette.secondary.main,
+                        color: theme.palette.primary.main,
                         border: "1px solid",
-                        outlineColor: theme.palette.secondary.main,
+                        outlineColor: theme.palette.primary.main,
                         width: "100%",
                     }}
                     type="number"
@@ -65,17 +65,17 @@ const AmountForm = (props: AmountFormProps) => {
                     onChange={handleChange}
                     endAdornment={
                         <InputAdornment position="end">
-                            <Box sx={{ color: theme.palette.secondary.main, textTransform: "uppercase", cursor: "pointer" }} onClick={handleClickMaxValue}>
+                            <Box sx={{ color: theme.palette.primary.main, textTransform: "uppercase", cursor: "pointer" }} onClick={handleClickMaxValue}>
                                 <p>{t("Max")}</p>
                             </Box>
                         </InputAdornment>
                     }
                 />
             </Grid>
-            <Grid item xs={2} sx={{ alignItems: "center" }}>
+            <Grid xs={2} p={0}>
                 <Button
                     sx={{
-                        color: theme.palette.secondary.main,
+                        color: theme.palette.primary.main,
                     }}
                     onClick={handleActionClick}
                 >

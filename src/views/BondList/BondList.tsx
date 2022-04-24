@@ -30,7 +30,7 @@ const BondHeader = () => {
                 [theme.breakpoints.up("sm")]: {
                     display: "inline-flex",
                 },
-                color: theme.palette.secondary.main,
+                color: theme.palette.primary.main,
             }}
         >
             <Grid item sm={1} />
@@ -74,10 +74,11 @@ function BondList() {
     }, [networkID, contractsLoaded, loadedBonds]);
 
     useEffect(() => {
-        console.log("isAppLoading", isAppLoading, marketPrice, treasuryBalance);
         if (!isAppLoading) {
             console.log("isAppLoading", isAppLoading);
-            dispatch(calcBondDetails({ bond: inactiveBonds[0], value: 0 }));
+            [...activeBonds, ...inactiveBonds].map(bond => {
+                dispatch(calcBondDetails({ bond, value: 0 }));
+            });
         }
     }, [isAppLoading]);
 
@@ -101,7 +102,6 @@ function BondList() {
                             <BondtListItem key={bond.ID} bondID={bond.ID} />
                         ))}
                     </Grid>
-                    )
                 </Box>
             </BCard>
 

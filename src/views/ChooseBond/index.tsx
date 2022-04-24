@@ -29,7 +29,7 @@ const BondHeader = () => {
                 [theme.breakpoints.up("sm")]: {
                     display: "inline-flex",
                 },
-                color: theme.palette.secondary.main,
+                color: theme.palette.primary.main,
             }}
         >
             <Grid item sm={1} />

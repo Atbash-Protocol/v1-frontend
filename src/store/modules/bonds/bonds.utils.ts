@@ -1,7 +1,8 @@
 import { Contract, ethers } from "ethers";
 import { LPBond } from "lib/bonds/bond/lp-bond";
+import { StableBond } from "lib/bonds/bond/stable-bond";
 
-export const getLPBondQuote = async (bond: LPBond, bondAmountInWei: ethers.BigNumber, bondCalculator: Contract, maxBondPrice: number) => {
+export const getLPBondQuote = async (bond: LPBond | StableBond, bondAmountInWei: ethers.BigNumber, bondCalculator: Contract, maxBondPrice: number) => {
     const reserverAddress = bond.getBondAddresses().reserveAddress;
     const maxBondValue = ethers.utils.parseEther("1");
 
@@ -16,7 +17,7 @@ export const getLPBondQuote = async (bond: LPBond, bondAmountInWei: ethers.BigNu
     return { bondQuote, maxBondPriceToken };
 };
 
-export const getTokenBondQuote = async (bond: LPBond, bondAmountInWei: ethers.BigNumber, maxBondPrice: number) => {
+export const getTokenBondQuote = async (bond: LPBond | StableBond, bondAmountInWei: ethers.BigNumber, maxBondPrice: number) => {
     const bondQuote = (await bond.getBondContract().payoutFor(bondAmountInWei)) / 10 ** 18;
 
     const maxBondPriceToken = maxBondPrice / 10 ** 18;
@@ -24,7 +25,7 @@ export const getTokenBondQuote = async (bond: LPBond, bondAmountInWei: ethers.Bi
     return { bondQuote, maxBondPriceToken };
 };
 
-export const getLPPurchasedBonds = async (bond: LPBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
+export const getLPPurchasedBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
     const reverseContract = bond.getReserveContract();
     const markdown = await bondCalculator.markdown(reverseContract.address);
 
@@ -38,7 +39,7 @@ export const getLPPurchasedBonds = async (bond: LPBond, bondCalculator: ethers.C
     return { purchased };
 };
 
-export const getTokenPurchaseBonds = async (bond: LPBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
+export const getTokenPurchaseBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
     let purchased = initialPurchased / Math.pow(10, 18);
 
     if (bond.isCustomBond()) {

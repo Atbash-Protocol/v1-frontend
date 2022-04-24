@@ -14,7 +14,7 @@ const NotFound = () => {
                 height: "100%",
             }}
         >
-            <Typography variant="h1" sx={{ textAlign: "center", fontWeight: "600", color: theme.palette.secondary.main }}>
+            <Typography variant="h1" sx={{ textAlign: "center", fontWeight: "600", color: theme.palette.primary.main }}>
                 {t("PageNotFound")}
             </Typography>
         </Box>

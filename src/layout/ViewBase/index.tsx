@@ -70,7 +70,7 @@ function ViewBase({ children }: IViewBaseProps) {
             <Messages />
             <Header {...{ handleDrawerToggle, isSmallScreen }} />
             <Box>
-                <SideBar isSidebarOpen={isSidebarOpen} isSmallScreen handleDrawerToggle={handleDrawerToggle} />
+                <SideBar isSidebarOpen={isSidebarOpen} isSmallScreen={isSmallScreen} handleDrawerToggle={handleDrawerToggle} />
             </Box>
             <Box
                 sx={{
@@ -78,6 +78,9 @@ function ViewBase({ children }: IViewBaseProps) {
                         xs: 0,
                         sm: theme.spacing(32), //TODO: Use a dynamic drawer
                     },
+                    maxHeight: "100vh",
+                    overflowY: "scroll",
+                    paddingBottom: theme.spacing(8),
                 }}
             >
                 {children}
