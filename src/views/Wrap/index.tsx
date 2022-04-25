@@ -8,7 +8,9 @@ function Wrap() {
 
     return (
         <BCard title={t('bond:Wrap')} zoom={true}>
-            <Typography> {t('ComingSoon')} </Typography>
+            <Typography>
+                <>{t('ComingSoon')} </>
+            </Typography>
         </BCard>
     );
 }

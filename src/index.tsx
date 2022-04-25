@@ -20,12 +20,12 @@ ReactDOM.render(
                 <Provider store={store}>
                     <SnackbarProvider
                         maxSnack={4}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                        }}
-                        content={(key, message: string) => <SnackMessage id={key} message={JSON.parse(message)} />}
-                        autoHideDuration={5000}
+                        // anchorOrigin={{
+                        //     vertical: 'bottom',
+                        //     horizontal: 'right',
+                        // }}
+                        // content={(key, message: string) => <SnackMessage id={key} message={JSON.parse(message)} />}
+                        // autoHideDuration={5000}
                     >
                         <Root />
                     </SnackbarProvider>

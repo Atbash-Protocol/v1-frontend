@@ -8,7 +8,9 @@ function Redeem() {
 
     return (
         <BCard title={t('bond:Redeem')} zoom={true}>
-            <Typography> {t('ComingSoon')} </Typography>
+            <Typography>
+                <> {t('ComingSoon')}</>
+            </Typography>
         </BCard>
     );
 }

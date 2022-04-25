@@ -45,6 +45,8 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/space-before-blocks": "off",
+      "no-shadow": "off",
+  "@typescript-eslint/no-shadow": ["error"],
     "react/jsx-filename-extension": [
       "off"
     ],
@@ -69,7 +71,7 @@
           "caseInsensitive":true
         }
       }
-    ]
+    ],
   },
   "settings": {
     "import/resolver": {

@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 
+import { Web3Provider } from '@ethersproject/providers';
+
 import { initWeb3Modal } from 'lib/web3/web3.utils';
 
 import { USER_REJECTED } from './constants';
@@ -49,7 +51,7 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
     }, [signer, web3Modal]);
 
     const memoDisconnect = useCallback(
-        async currentSigner => {
+        async (currentSigner: WEB3State['signer']) => {
             if (currentSigner && web3Modal) await resetWeb3Signer(dispatch, web3Modal);
         },
         [web3Modal],

@@ -62,7 +62,9 @@ function AtbashMenu() {
     return (
         <Box sx={{ padding: theme.spacing(1) }} onMouseEnter={e => handleClick(e)} onMouseLeave={e => handleClick(e)}>
             <Button>
-                <Typography>{t('BuyBASH')}</Typography>
+                <Typography>
+                    <>{t('BuyBASH')}</>
+                </Typography>
             </Button>
 
             <Popper open={open} anchorEl={anchorEl} transition>
@@ -70,12 +72,14 @@ function AtbashMenu() {
                     <Fade {...TransitionProps} timeout={200}>
                         <Box sx={{ background: theme.palette.cardBackground.light }}>
                             <Link href={getBuyLink(DAI_ADDRESS, BASH_ADDRESS)} component={Typography} target="_blank">
-                                {t('BuyOnUniswap')}
+                                <>{t('BuyOnUniswap')}</>
                             </Link>
 
                             {isUserSigned && (
                                 <Box sx={{ color: theme.palette.primary.light }}>
-                                    <Typography>{t('AddTokenToWallet')}</Typography>
+                                    <Typography>
+                                        <>{t('AddTokenToWallet')}</>
+                                    </Typography>
                                     <Divider />
                                     <Typography sx={{ cursor: 'pointer' }} onClick={addTokenToWallet('BASH', BASH_ADDRESS)}>
                                         ↑ BASH

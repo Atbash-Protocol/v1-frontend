@@ -67,7 +67,7 @@ function Staking() {
                 >
                     <Box sx={{ color: theme.palette.primary.main }}>
                         <Typography variant="h4" sx={{ textTransform: 'uppercase' }}>
-                            {t('stake:StakeTitle')}
+                            <>{t('stake:StakeTitle')}</>
                         </Typography>
                         <RebaseTimer />
                     </Box>

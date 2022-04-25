@@ -13,7 +13,7 @@ export interface WEB3State {
 export interface Web3Context {
     state: WEB3State;
     memoConnect: () => void;
-    memoDisconnect: (signer: Web3Provider | null) => void;
+    memoDisconnect: (currentSigner: WEB3State['signer']) => Promise<void>;
 }
 
 export enum WEB3ActionTypesEnum {

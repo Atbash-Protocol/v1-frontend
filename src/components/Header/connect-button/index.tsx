@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { MouseEvent, useCallback, useContext, useEffect, useState } from 'react';
 
 import { Box, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -19,12 +19,9 @@ function ConnectMenu() {
 
     const isOneTransactionPending = useSelector<IReduxState, boolean>(rState => rState.pendingTransactions.length > 0);
 
-    const handleButtonClick = useCallback(
-        e => {
-            return isUserSigned ? memoDisconnect(state.signer) : memoConnect();
-        },
-        [isUserSigned, memoConnect, memoDisconnect],
-    );
+    const handleButtonClick = useCallback(() => {
+        return isUserSigned ? memoDisconnect(state.signer) : memoConnect();
+    }, [isUserSigned, memoConnect, memoDisconnect]);
 
     const [buttonText, setButtonText] = useState(t('ConnectWallet'));
 
@@ -51,7 +48,7 @@ function ConnectMenu() {
                 }}
                 onClick={handleButtonClick}
             >
-                {buttonText}
+                <>{buttonText}</>
             </Button>
         </Box>
     );

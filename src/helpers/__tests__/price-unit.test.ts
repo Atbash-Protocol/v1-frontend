@@ -1,6 +1,4 @@
-import { formatNumber, formatUSD } from 'helpers/price-units';
-
-import { formatAPY } from '..';
+import { formatNumber, formatUSD, formatAPY } from 'helpers/price-units';
 
 describe('formatUSD', () => {
     it.each([

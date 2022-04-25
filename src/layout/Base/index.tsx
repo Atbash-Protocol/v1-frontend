@@ -1,9 +1,8 @@
 import './styles.scss';
 import React, { useState } from 'react';
 
-import { CssBaseline } from '@material-ui/core';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Box, Button, Drawer, Toolbar, Typography, useTheme } from '@mui/material';
+import { CssBaseline, AppBar, Box, Button, Drawer, Toolbar, Typography, useTheme } from '@mui/material';
 
 interface IViewBaseProps {
     children: React.ReactNode;

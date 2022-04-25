@@ -16,7 +16,7 @@ const NotFound = () => {
             }}
         >
             <Typography variant="h1" sx={{ textAlign: 'center', fontWeight: '600', color: theme.palette.primary.main }}>
-                {t('PageNotFound')}
+                <>{t('PageNotFound')}</>
             </Typography>
         </Box>
     );

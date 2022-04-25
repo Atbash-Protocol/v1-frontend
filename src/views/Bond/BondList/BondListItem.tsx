@@ -108,7 +108,9 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
                 {signer && (
                     <Button disabled={!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}` }}>
                         <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`}>
-                            <p>{bond.bondInstance.bondOptions.isActive ? t('bond:Mint') : t('bond:Redeem')}</p>
+                            <Typography>
+                                <>{bond.bondInstance.bondOptions.isActive ? t('bond:Mint') : t('bond:Redeem')}</>
+                            </Typography>
                         </Link>
                     </Button>
                 )}

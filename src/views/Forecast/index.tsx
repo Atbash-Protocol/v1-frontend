@@ -8,7 +8,9 @@ function Forecast() {
 
     return (
         <BCard title={t('bond:Forecast')} zoom={true}>
-            <Typography> {t('ComingSoon')} </Typography>
+            <Typography>
+                <>{t('ComingSoon')} </>
+            </Typography>
         </BCard>
     );
 }

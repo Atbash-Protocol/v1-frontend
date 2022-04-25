@@ -22,7 +22,7 @@ const store = {
     getState: jest.fn(),
 };
 
-const withProvider = (component: JSX.Element, store: any) => <redux.Provider store={store}>{component}</redux.Provider>;
+const withProvider = (component: JSX.Element, storeProvider: any) => <redux.Provider store={storeProvider}>{component}</redux.Provider>;
 
 describe('NotFound', () => {
     let container: HTMLDivElement;

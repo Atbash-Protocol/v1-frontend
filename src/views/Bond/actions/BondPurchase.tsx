@@ -64,7 +64,7 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
                         }}
                         onClick={depositBondAction}
                     >
-                        {t('bond:Mint')}
+                        <>{t('bond:Mint')}</>
                     </Button>
                 </Grid>
             </Grid>

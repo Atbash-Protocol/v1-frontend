@@ -64,7 +64,9 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
                 },
             }}
         >
-            <Typography variant="body1"> {t(key)} </Typography>
+            <Typography variant="body1">
+                <> {t(key)}</>
+            </Typography>
             <Typography variant="body2">
                 <>{value}</>
             </Typography>
@@ -74,7 +76,9 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
     return (
         <>
             <Box sx={{ display: 'inline-flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h4"> {t('YourBalance')} </Typography>
+                <Typography variant="h4">
+                    <>{t('YourBalance')}</>
+                </Typography>
                 <Typography>
                     <> {totalBalance === null ? <Skeleton /> : formatUSD(totalBalance, 2)}</>
                 </Typography>

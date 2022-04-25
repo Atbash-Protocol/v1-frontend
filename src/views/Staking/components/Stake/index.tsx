@@ -60,12 +60,12 @@ export default function BasicTabs() {
 
     const { balances, stakingAllowance } = useSelector(selectStakeBalanceAndAllowances);
 
-    const handleStakingClick = React.useCallback(amount => {
+    const handleStakingClick = React.useCallback((amount: number) => {
         dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount }));
     }, []);
 
     const handleApproveClick = React.useCallback(
-        target => {
+        (target: string) => {
             dispatch(approveContract({ signer, signerAddress, target }));
         },
         [signer],
@@ -74,8 +74,8 @@ export default function BasicTabs() {
     return (
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs centered value={value} onChange={handleChange} aria-label="basic tabs example">
-                <Tab label={t('stake:Stake')} {...a11yProps(0)} />
-                <Tab label={t('stake:Unstake')} {...a11yProps(1)} />
+                <Tab label={<>{t('stake:Stake')}</>} {...a11yProps(0)} />
+                <Tab label={<>{t('stake:Unstake')}</>} {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <AmountForm

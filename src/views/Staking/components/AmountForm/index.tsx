@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, MouseEvent, ChangeEvent } from 'react';
 
 import { Box, Button, Grid, InputAdornment, OutlinedInput, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -14,8 +14,8 @@ interface AmountFormProps {
     maxValue: number;
     transactionType: TransactionType; // TODO: transaction types
     approvesNeeded: boolean;
-    onApprove: (transactionType: unknown) => void;
-    onAction: (number: number) => void;
+    onApprove: any;
+    onAction: any;
     approveLabel: string;
     actionLabel: string;
 }
@@ -27,16 +27,16 @@ const AmountForm = (props: AmountFormProps) => {
     const [value, setValue] = useState(initialValue);
     const selectPendingTransaction = useSelector<IReduxState, boolean>(state => selectIsPendingTransactionType(state, transactionType));
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(Number(e.target.value));
     };
 
-    const handleClickMaxValue = (e: any) => {
+    const handleClickMaxValue = () => {
         setValue(maxValue);
     };
 
     const handleActionClick = useCallback(
-        e => {
+        (e: MouseEvent) => {
             e.preventDefault();
 
             if (selectPendingTransaction) return;
@@ -67,7 +67,9 @@ const AmountForm = (props: AmountFormProps) => {
                     endAdornment={
                         <InputAdornment position="end">
                             <Box sx={{ color: theme.palette.primary.main, textTransform: 'uppercase', cursor: 'pointer' }} onClick={handleClickMaxValue}>
-                                <p>{t('Max')}</p>
+                                <Typography>
+                                    <>{t('Max')}</>
+                                </Typography>
                             </Box>
                         </InputAdornment>
                     }

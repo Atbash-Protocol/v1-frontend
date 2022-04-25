@@ -72,7 +72,9 @@ function Dashboard() {
                                 height: '100%',
                             }}
                         >
-                            <Typography variant="h5">{t(metric.name)}</Typography>
+                            <Typography variant="h5">
+                                <>{t(metric.name)}</>
+                            </Typography>
                             <Typography sx={{ overflowX: 'hidden' }} variant="h6">
                                 {loading ? <Skeleton /> : <>{metric.value}</>}
                             </Typography>

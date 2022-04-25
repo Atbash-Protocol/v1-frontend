@@ -1,10 +1,10 @@
-import { Color } from '@material-ui/lab/Alert';
+import { Color } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { messages } from 'constants/messages';
 
 export type Message = IMessage & {
-    severity: Color;
+    severity?: Color;
 };
 
 export interface MessagesState {
@@ -17,9 +17,8 @@ interface IMessage {
 }
 
 // Adds a message to the store
-const createMessage = function (state: MessagesState, severity: Color, text: IMessage) {
+const createMessage = function (state: MessagesState, text: IMessage) {
     const message: Message = {
-        severity,
         ...text,
     };
     state.message = message;
@@ -33,17 +32,17 @@ const messagesSlice = createSlice({
     reducers: {
         // Creates an error message
         error(state, action: PayloadAction<IMessage>) {
-            createMessage(state, 'error', action.payload);
+            createMessage(state, action.payload);
         },
         // Creates an information message
         info(state, action: PayloadAction<IMessage>) {
-            createMessage(state, 'info', action.payload);
+            createMessage(state, action.payload);
         },
         warning(state, action: PayloadAction<IMessage>) {
-            createMessage(state, 'warning', action.payload);
+            createMessage(state, action.payload);
         },
         success(state, action: PayloadAction<IMessage>) {
-            createMessage(state, 'success', action.payload);
+            createMessage(state, action.payload);
         },
         // Closes a message
         close(state) {

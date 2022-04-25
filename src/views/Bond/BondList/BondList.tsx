@@ -36,16 +36,24 @@ const BondHeader = () => {
         >
             <Grid item sm={1} />
             <Grid item sm={2}>
-                <Typography variant="h6">{t('bond:Mint')}</Typography>
+                <Typography variant="h6">
+                    <>{t('bond:Mint')}</>
+                </Typography>
             </Grid>
             <Grid item sm={2}>
-                <Typography variant="h6">{t('Price')}</Typography>
+                <Typography variant="h6">
+                    <>{t('Price')}</>
+                </Typography>
             </Grid>
             <Grid item sm={2}>
-                <Typography variant="h6">{t('ROI')}</Typography>
+                <Typography variant="h6">
+                    <>{t('ROI')}</>
+                </Typography>
             </Grid>
             <Grid item sm={2}>
-                <Typography variant="h6">{t('bond:Purchased')}</Typography>
+                <Typography variant="h6">
+                    <>{t('bond:Purchased')}</>
+                </Typography>
             </Grid>
             <Grid item sm={2} />
         </Grid>

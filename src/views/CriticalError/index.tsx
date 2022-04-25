@@ -6,7 +6,9 @@ export const CritialError = () => {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography variant="h1">{t('errors.critical')}</Typography>
+            <Typography variant="h1">
+                <>{t('errors.critical')}</>
+            </Typography>
         </Box>
     );
 };

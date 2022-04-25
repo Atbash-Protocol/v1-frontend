@@ -32,7 +32,9 @@ const RebaseTimer = () => {
 
     return (
         <Box sx={{ color: theme.palette.primary.main, textTransform: 'uppercase', letterSpacing: 2 }}>
-            {timeUntilRebase ? <Typography>{t('TimeToNextRebase', { time: timeUntilRebase })}</Typography> : <Typography>{t('Rebasing')}</Typography>}
+            <Typography>
+                <>{timeUntilRebase ? t('TimeToNextRebase', { time: timeUntilRebase }) : t('Rebasing')}</>
+            </Typography>
         </Box>
     );
 };
