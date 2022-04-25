@@ -1,5 +1,5 @@
-import { ethers } from "ethers";
-import Web3Modal from "web3modal";
+import { ethers } from 'ethers';
+import Web3Modal from 'web3modal';
 
 export interface WEB3State {
     networkID: number | null;
@@ -11,19 +11,20 @@ export interface WEB3State {
 
 export interface Web3Context {
     state: WEB3State;
-    memoConnect: Function;
-    memoDisconnect: Function;
+    memoConnect: () => void;
+    memoDisconnect: (currentSigner: WEB3State['signer']) => Promise<void>;
 }
 
 export enum WEB3ActionTypesEnum {
-    CLOSE = "CLOSE",
-    NETWORK_CHANGED = "NETWORK_CHANGED",
-    SET_SIGNER = "SET_SIGNER",
-    CLEAR_SIGNER = "CLEAR_SIGNER",
-    SET_PROVIDER = "SET_PROVIDER",
+    CLOSE = 'CLOSE',
+    NETWORK_CHANGED = 'NETWORK_CHANGED',
+    SET_SIGNER = 'SET_SIGNER',
+    CLEAR_SIGNER = 'CLEAR_SIGNER',
+    SET_PROVIDER = 'SET_PROVIDER',
 }
 
 export interface WEB3ContextAction {
     type: WEB3ActionTypesEnum;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload?: any; // TODO : better typing
 }

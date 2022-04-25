@@ -1,5 +1,5 @@
 export enum ActiveTokensEnum {
-    "DAI" = "dai",
+    'DAI' = 'dai',
 }
 
 export const ACTIVE_TOKENS: ActiveTokensEnum[] = [ActiveTokensEnum.DAI];

@@ -1,26 +1,29 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { PWeb3Context } from "contexts/web3/web3.context";
-import { BigNumber, constants, Contract, ethers } from "ethers";
-import { metamaskErrorWrap } from "helpers/metamask-error-wrap";
-import { useSafeSigner } from "lib/web3/web3.hooks";
-import { useContext } from "react";
-import { successTransaction, walletConnectWarning, warning } from "store/slices/messages-slice";
-import { clearPendingTxn, fetchPendingTxns } from "store/slices/pending-txns-slice";
-import { IReduxState } from "store/slices/state.interface";
-import { AccountSlice } from "./account.types";
+import { useContext } from 'react';
+
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { BigNumber, constants, Contract, ethers } from 'ethers';
+
+import { PWeb3Context } from 'contexts/web3/web3.context';
+import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
+import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { successTransaction, walletConnectWarning, warning } from 'store/slices/messages-slice';
+import { clearPendingTxn, fetchPendingTxns } from 'store/slices/pending-txns-slice';
+import { IReduxState } from 'store/slices/state.interface';
+
+import { AccountSlice } from './account.types';
 
 export const loadBalancesAndAllowances = createAsyncThunk(
-    "account/loadBalancesAndAllowances",
-    async (address: string, { getState }): Promise<Pick<AccountSlice, "balances" | "stakingAllowance">> => {
-        if (!address) throw new Error("Missing address");
+    'account/loadBalancesAndAllowances',
+    async (address: string, { getState }): Promise<Pick<AccountSlice, 'balances' | 'stakingAllowance'>> => {
+        if (!address) throw new Error('Missing address');
 
         let BASHbalance = ethers.BigNumber.from(0);
-        let sBASHBalance = ethers.BigNumber.from(0);
-        let wsBASHBalance = ethers.BigNumber.from(0);
+        const sBASHBalance = ethers.BigNumber.from(0);
+        const wsBASHBalance = ethers.BigNumber.from(0);
         let stakeAllowance = ethers.BigNumber.from(0);
         let unstakeAllowance = ethers.BigNumber.from(0);
         let wrapAllowance = ethers.BigNumber.from(0);
-        let redeemAllowance = ethers.BigNumber.from(0);
+        const redeemAllowance = ethers.BigNumber.from(0);
 
         const {
             main: {
@@ -65,13 +68,13 @@ export const loadBalancesAndAllowances = createAsyncThunk(
 );
 
 export const approveContract = createAsyncThunk(
-    "account/approveContract",
+    'account/approveContract',
     async ({ contract, amount, type }: { contract: Contract; type: string; amount?: BigNumber }, { getState, dispatch }) => {
         const {
             state: { signer, signerAddress },
         } = useContext(PWeb3Context);
 
-        if (!signerAddress || !signer) throw new Error("Unable to get signerAddress");
+        if (!signerAddress || !signer) throw new Error('Unable to get signerAddress');
 
         if (!signerAddress) {
             dispatch(walletConnectWarning);
@@ -86,7 +89,7 @@ export const approveContract = createAsyncThunk(
 
             // const text = token === "BASH" ? i18n.t("stake:ApproveStaking") : i18n.t("stake:ApproveUnstaking");
             // const pendingTxnType = token === "BASH" ? "approve_staking" : "approve_unstaking";
-            const text = "some text";
+            const text = 'some text';
 
             dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type }));
             await approveTx.wait();
@@ -101,12 +104,12 @@ export const approveContract = createAsyncThunk(
     },
 );
 
-export const getContractAllowance = createAsyncThunk("account/allowance", async ({ contract, toAddress }: { contract: Contract; toAddress: string }, { dispatch }) => {
+export const getContractAllowance = createAsyncThunk('account/allowance', async ({ contract, toAddress }: { contract: Contract; toAddress: string }, { dispatch }) => {
     const {
         state: { signer, signerAddress },
     } = useContext(PWeb3Context);
 
-    if (!signerAddress || !signer) throw new Error("Unable to get signerAddress");
+    if (!signerAddress || !signer) throw new Error('Unable to get signerAddress');
 
     if (!signerAddress) {
         dispatch(walletConnectWarning);

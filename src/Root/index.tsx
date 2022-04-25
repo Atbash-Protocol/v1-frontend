@@ -1,12 +1,12 @@
-import App from "./App";
-import { BrowserRouter, HashRouter } from "react-router-dom";
-import { useProvider, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
-import Loader from "components/Loader";
-import ViewBase from "layout/ViewBase";
-import { usePWeb3Context } from "contexts/web3/web3.context";
-import { useEffect } from "react";
+import { BrowserRouter } from 'react-router-dom';
 
-function Root() {
+import Loader from 'components/Loader';
+import ViewBase from 'layout/ViewBase';
+import { useWeb3ContextInitialized } from 'lib/web3/web3.hooks';
+
+import App from './App';
+
+function Root(): JSX.Element {
     const web3ContextReady = useWeb3ContextInitialized();
 
     if (!web3ContextReady) return <Loader />;

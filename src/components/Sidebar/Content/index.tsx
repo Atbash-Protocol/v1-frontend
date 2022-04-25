@@ -1,82 +1,82 @@
-import { Avatar, Box, Link, List, Divider, Typography } from "@mui/material";
+import Davatar from '@davatar/react';
+import AccountBalanceSharpIcon from '@mui/icons-material/AccountBalanceSharp';
+// Mint
+import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+// Forecast
+import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
+// Pro
+import PriceCheckSharpIcon from '@mui/icons-material/PriceCheckSharp';
+import SelfImprovementSharpIcon from '@mui/icons-material/SelfImprovementSharp';
+// GOV
+import ShowChartSharpIcon from '@mui/icons-material/ShowChartSharp';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import { Avatar, Box, Link, List, Divider, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-import Social from "./components/Social";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import TableRowsIcon from "@mui/icons-material/TableRows";
-import AccountBalanceSharpIcon from "@mui/icons-material/AccountBalanceSharp"; // GOV
-import ShowChartSharpIcon from "@mui/icons-material/ShowChartSharp"; // Forecast
-import HandymanSharpIcon from "@mui/icons-material/HandymanSharp"; // Mint
-import CurrencyExchangeSharpIcon from "@mui/icons-material/CurrencyExchangeSharp";
-import SelfImprovementSharpIcon from "@mui/icons-material/SelfImprovementSharp"; // Pro
-import PriceCheckSharpIcon from "@mui/icons-material/PriceCheckSharp";
-import StorefrontIcon from "@mui/icons-material/Storefront";
+import AtbashICON from 'assets/icons/bash-compress.svg';
+import { getAddresses } from 'constants/addresses';
+import { DEFAULT_NETWORK } from 'constants/blockchain';
+import { theme } from 'constants/theme';
+import { shorten } from 'helpers/shorten';
+import useBonds from 'hooks/bonds';
+import useENS from 'hooks/useENS';
+import { getBuyLink } from 'lib/uniswap/link';
+import { useSignerAddress, useSignerConnected } from 'lib/web3/web3.hooks';
 
-import AtbashICON from "assets/icons/bash.svg";
-import { shorten } from "helpers";
-import { useAddress } from "hooks";
-import useBonds from "hooks/bonds";
-import useENS from "hooks/useENS";
-import Davatar from "@davatar/react";
+import { ListItemLink } from './components/ListItemLink';
+import Social from './components/Social';
 
-import { useTranslation } from "react-i18next";
-import { getAddresses } from "constants/addresses";
-import { DEFAULT_NETWORK } from "constants/blockchain";
-import { ListItemLink } from "./components/ListItemLink";
-import { getBuyLink } from "lib/uniswap/link";
-import { theme } from "constants/theme";
-import { useSignerAddress, useSignerConnected, useWeb3ContextInitialized } from "lib/web3/web3.hooks";
-import Loader from "components/Loader";
-import { useHistory } from "react-router-dom";
-
-const getMenuItems = (connected: Boolean) => [
+const getMenuItems = (connected: boolean) => [
     {
-        path: "/",
-        key: "Dashboard",
+        path: '/',
+        key: 'Dashboard',
         icon: <DashboardIcon />,
         disabled: false,
     },
     {
-        path: "/stake",
-        key: "Stake",
+        path: '/stake',
+        key: 'Stake',
         icon: <TableRowsIcon />,
         disabled: connected === false,
     },
     {
-        path: "/borrow",
-        key: "Borrow",
-        icon: <CurrencyExchangeSharpIcon />,
-        disabled: !connected,
-    },
-    {
-        path: "/bonds",
-        key: "Minting",
+        path: '/bonds',
+        key: 'Minting',
         icon: <HandymanSharpIcon />,
         disabled: !connected,
     },
     {
-        path: "/forecast",
-        key: "Forecast",
+        path: '/forecast',
+        key: 'Forecast',
         icon: <ShowChartSharpIcon />,
+        disabled: !connected,
+    },
+    {
+        path: '/wrap',
+        key: 'Wrap',
+        icon: <CurrencyExchangeSharpIcon />,
         disabled: !connected,
     },
 ];
 
 const cominSoonMenu = [
     {
-        path: "/governance",
-        key: "Governance",
+        path: '/governance',
+        key: 'Governance',
         icon: <AccountBalanceSharpIcon />,
         disabled: true,
     },
     {
-        path: "/borrow",
-        key: "Borrow",
+        path: '/borrow',
+        key: 'Borrow',
         icon: <PriceCheckSharpIcon />,
         disabled: true,
     },
     {
-        path: "/404",
-        key: "BashPro",
+        path: '/redeem',
+        key: 'Redeem',
         icon: <SelfImprovementSharpIcon />,
         disabled: true,
     },
@@ -111,37 +111,37 @@ function NavContent() {
     return (
         <Box
             sx={{
-                padding: "1rem",
-                flexDirection: "column",
-                alignItems: "center",
-                minWidth: "10rem",
-                overflowY: "scroll",
+                padding: '1rem',
+                flexDirection: 'column',
+                alignItems: 'center',
+                minWidth: '10rem',
+                overflowY: 'scroll',
                 backgroundColor: theme.palette.cardBackground.light,
-                backdropFilter: "blur(100px)",
+                backdropFilter: 'blur(100px)',
                 color: theme.palette.primary.main,
-                height: "100%",
+                height: '100%',
             }}
         >
             <Box
                 sx={{
-                    flexDirection: "column",
-                    padding: "1rem",
-                    width: "100%",
+                    flexDirection: 'column',
+                    padding: '1rem',
+                    width: '100%',
                 }}
             >
                 <Link href="https://atbash.finance" target="_blank">
-                    <Avatar alt="Atbash" src={AtbashICON} sx={{ width: 128, height: 128, textAlign: "center" }} />
+                    <Avatar alt="Atbash" src={AtbashICON} sx={{ width: 128, height: 128, textAlign: 'center' }} />
                 </Link>
 
                 {address && (
                     <Box
                         sx={{
-                            display: "inline-flex",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            display: 'inline-flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                             marginTop: theme.spacing(2),
 
-                            width: "100%",
+                            width: '100%',
                         }}
                     >
                         <Davatar size={20} address={address} generatedAvatarType="jazzicon" />
@@ -159,8 +159,8 @@ function NavContent() {
                     <List
                         sx={{
                             color: theme.palette.primary.main,
-                            "& .MuiListItemButton-root:hover": {
-                                textDecoration: "underline",
+                            '& .MuiListItemButton-root:hover': {
+                                textDecoration: 'underline',
                             },
                         }}
                     >
@@ -168,7 +168,7 @@ function NavContent() {
                         <Divider />
                         {bondItems}
                         <Divider />
-                        <ListItemLink to={getBuyLink(BASH_ADDRESS, DAI_ADDRESS)} primary={t("Buy")} renderComponent={Link} icon={<StorefrontIcon />} />
+                        <ListItemLink to={getBuyLink(BASH_ADDRESS, DAI_ADDRESS)} primary={t('Buy')} renderComponent={Link} icon={<StorefrontIcon />} />
                         {comingSoonItems}
                     </List>
                 </div>

@@ -1,6 +1,7 @@
-import { ethers } from "ethers";
-import { LPBond } from "lib/bonds/bond/lp-bond";
-import { StableBond } from "lib/bonds/bond/stable-bond";
+import { ethers } from 'ethers';
+
+import { LPBond } from 'lib/bonds/bond/lp-bond';
+import { StableBond } from 'lib/bonds/bond/stable-bond';
 
 export interface BondMetrics {
     treasuryBalance: number | null;

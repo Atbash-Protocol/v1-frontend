@@ -1,33 +1,95 @@
 {
-    "env": {
-        "browser": true
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "parserOptions": {
-        "sourceType": "module",
-        "project": "./tsconfig.json",
-        "tsconfigRootDir": "./"
-    },
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-        "plugin:prettier/recommended", 
-        "prettier/react", 
-        "prettier/@typescript-eslint"
+    "ecmaVersion": 6,
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": true,
+    "jest": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "prettier",
+    "prettier/react",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:jest/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "react",
+    "react-hooks",
+    "import",
+    "@typescript-eslint",
+    "prettier",
+    "jest"
+  ],
+  "rules": {
+    "no-console": "warn",
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true
+      }
     ],
-    "plugins": ["prettier", "@typescript-eslint"],
-    "rules": {
-        "prettier/prettier": ["warn", { "endOfLine": "auto" }],
-        "import/prefer-default-export": "off",
-        "prefer-destructuring": "off",
-        "prefer-template": "off",
-        "react/prop-types": "off",
-        "react/destructuring-assignment": "off",
-        "no-console": "off",
-        "jsx-a11y/accessible-emoji": ["off"],
-        "jsx-a11y/click-events-have-key-events": ["off"],
-        "jsx-a11y/no-static-element-interactions": ["off"],
-        "no-underscore-dangle": "off",
-        "no-nested-ternary": "off",
-        "no-restricted-syntax": "off",
-        "no-plusplus": "off"
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/space-before-blocks": "off",
+      "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react/jsx-filename-extension": [
+      "off"
+    ],
+    "react/jsx-closing-bracket-location": [
+      1,
+      "tag-aligned"
+    ],
+    "import/no-extraneous-dependencies": 1,
+    "import/order":[
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups":[{
+          "pattern": "react",
+          "group": "external",
+          "position": "before"
+        }],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive":true
+        }
+      }
+    ],
+    "import/no-named-as-default": "off",
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts", ".tsx"],
+        "moduleDirectory": [
+          "node_modules",
+          "src/"
+        ]
+      },
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    },
+    "react": {
+      "version": "detect"
     }
+  }
 }

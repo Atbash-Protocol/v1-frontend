@@ -1,19 +1,19 @@
-import { shallowEqual, useSelector } from "react-redux";
-import { Zoom } from "@material-ui/core";
-import { formatUSD, formatAPY } from "helpers/price-units";
-import { IReduxState } from "store/slices/state.interface";
-import Loading from "components/Loader";
+import { Box, Grow } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { useTranslation } from 'react-i18next';
+import { shallowEqual, useSelector } from 'react-redux';
 
-import { useTranslation } from "react-i18next";
-import Grid from "@mui/material/Grid";
-import { Box, Skeleton, Typography } from "@mui/material";
-import { theme } from "constants/theme";
+import Loading from 'components/Loader';
+import MenuMetric from 'components/Metrics/MenuMetric';
+import { theme } from 'constants/theme';
+import { formatUSD, formatAPY } from 'helpers/price-units';
+import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
+import { selectDAIPrice } from 'store/modules/markets/markets.selectors';
+import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
+import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
+import { IReduxState } from 'store/slices/state.interface';
 
-import "./dashboard.scss";
-import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from "store/modules/metrics/metrics.selectors";
-import { selectFormattedIndex } from "store/modules/stake/stake.selectors";
-import { selectFormattedReservePrice } from "store/modules/app/app.selectors";
-import { selectDAIPrice } from "store/modules/markets/markets.selectors";
+import './dashboard.scss';
 
 function Dashboard() {
     const { t } = useTranslation();
@@ -32,16 +32,16 @@ function Dashboard() {
 
     const APYMetrics = stakingRewards
         ? [
-              { name: "APY", value: stakingRewards ? formatAPY(stakingRewards.stakingAPY.toString()) : null },
-              { name: "CurrentIndex", value: currentIndex },
-              { name: "wsBASHPrice", value: wsPrice },
+              { name: 'APY', value: stakingRewards ? formatAPY(stakingRewards.stakingAPY.toString()) : null },
+              { name: 'CurrentIndex', value: currentIndex },
+              { name: 'wsBASHPrice', value: wsPrice },
           ]
         : [];
 
     const DashboardItems = [
-        { name: "BashPrice", value: bashPrice },
-        { name: "MarketCap", value: marketCap },
-        { name: "TVL", value: formatUSD(TVL || 0, 2) },
+        { name: 'BashPrice', value: bashPrice },
+        { name: 'MarketCap', value: marketCap },
+        { name: 'TVL', value: formatUSD(TVL || 0, 2) },
 
         ...APYMetrics,
         // { name: "RiskFreeValue", value: formatUSD(app.rfv) },
@@ -54,32 +54,31 @@ function Dashboard() {
         <Box>
             <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
                 {DashboardItems.map(metric => (
-                    <Grid key={`dashboard-item-${metric.name}`} item lg={6} md={6} sm={6} xs={12}>
-                        <Box
-                            className="Dashboard__box__item"
-                            sx={{
-                                backgroundColor: theme.palette.cardBackground.main,
-                                backdropFilter: "blur(100px)",
-                                borderRadius: ".5rem",
-                                color: theme.palette.primary.main,
-                                px: theme.spacing(2),
-                                py: theme.spacing(4),
-                                textAlign: "center",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                display: "flex",
-                                flex: "1 1 auto",
-                                overflow: "auto",
-                                flexDirection: "column",
-                                height: "100%",
-                            }}
-                        >
-                            <Typography variant="h5">{t(metric.name)}</Typography>
-                            <Typography sx={{ overflowX: "hidden" }} variant="h6">
-                                {loading ? <Skeleton /> : <>{metric.value}</>}
-                            </Typography>
-                        </Box>
-                    </Grid>
+                    <Grow in={!loading} {...(!loading ? { timeout: 1000 } : {})} key={`dashboard-item-${metric.name}`}>
+                        <Grid item lg={6} md={6} sm={6} xs={12}>
+                            <Box
+                                className="Dashboard__box__item"
+                                sx={{
+                                    backgroundColor: theme.palette.cardBackground.main,
+                                    backdropFilter: 'blur(100px)',
+                                    borderRadius: '.5rem',
+                                    color: theme.palette.primary.main,
+                                    px: theme.spacing(2),
+                                    py: theme.spacing(4),
+                                    textAlign: 'center',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                    flex: '1 1 auto',
+                                    overflow: 'auto',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                }}
+                            >
+                                <MenuMetric metricKey={t(metric.name)} value={metric.value} />
+                            </Box>
+                        </Grid>
+                    </Grow>
                 ))}
             </Grid>
         </Box>

@@ -1,9 +1,10 @@
-import MenuIcon from "@mui/icons-material/Menu";
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 
-import AtbashMenu from "./atbash-menu";
-import ConnectButton from "./connect-button";
-import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
-import { theme } from "constants/theme";
+import { theme } from 'constants/theme';
+
+import AtbashMenu from './atbash-menu';
+import ConnectButton from './connect-button';
 
 interface IHeader {
     handleDrawerToggle: () => void;
@@ -17,16 +18,16 @@ function Header({ handleDrawerToggle, isSmallScreen }: IHeader) {
                 color="transparent"
                 position="sticky"
                 sx={{
-                    background: "transparent",
-                    border: "none",
-                    boxShadow: "none",
-                    position: "relative",
+                    background: 'transparent',
+                    border: 'none',
+                    boxShadow: 'none',
+                    position: 'relative',
                     zIndex: theme.zIndex.drawer + 1,
                 }}
             >
                 <Toolbar
                     sx={{
-                        background: "transparent",
+                        background: 'transparent',
                     }}
                 >
                     {isSmallScreen && (

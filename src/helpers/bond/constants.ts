@@ -1,4 +1,4 @@
-import { Networks } from "../../constants/blockchain";
+import { Networks } from '../../constants/blockchain';
 
 export enum BondType {
     StableAsset,

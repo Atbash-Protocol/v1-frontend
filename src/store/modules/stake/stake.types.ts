@@ -1,4 +1,4 @@
 export enum StakeTargetEnum {
-    "BASH" = "BASH",
-    "SBASH" = "SBASH",
+    'BASH' = 'BASH',
+    'SBASH' = 'SBASH',
 }

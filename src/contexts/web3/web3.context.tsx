@@ -1,8 +1,10 @@
-import { initWeb3Modal } from "lib/web3/web3.utils";
-import { createContext, useCallback, useContext, useEffect, useReducer } from "react";
-import { USER_REJECTED } from "./constants";
-import { subscribeProvider, createSigner, resetWeb3Signer } from "./subscribers";
-import { WEB3ActionTypesEnum, Web3Context, WEB3ContextAction, WEB3State } from "./web3.types";
+import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
+
+import { initWeb3Modal } from 'lib/web3/web3.utils';
+
+import { USER_REJECTED } from './constants';
+import { subscribeProvider, createSigner, resetWeb3Signer } from './subscribers';
+import { WEB3ActionTypesEnum, Web3Context, WEB3ContextAction, WEB3State } from './web3.types';
 
 export const initialState: WEB3State = {
     provider: null,
@@ -41,14 +43,13 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
 
     const memoConnect = useCallback(async () => {
         if (web3Modal && !signer) {
-            console.log("memoConnect");
             await createSigner(web3Modal, dispatch);
         }
     }, [signer, web3Modal]);
 
     const memoDisconnect = useCallback(
-        async signer => {
-            if (signer && web3Modal) await resetWeb3Signer(dispatch, web3Modal);
+        async (currentSigner: WEB3State['signer']) => {
+            if (currentSigner && web3Modal) await resetWeb3Signer(dispatch, web3Modal);
         },
         [web3Modal],
     );
@@ -56,8 +57,8 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
     useEffect(() => {
         // happens when user reload when metamask popup appears
         if (web3Modal) {
-            web3Modal.on("error", (err: any) => {
-                if (err && err?.message && err?.message === USER_REJECTED) alert("User rejected connection");
+            web3Modal.on('error', (err: any) => {
+                if (err && err?.message && err?.message === USER_REJECTED) alert('User rejected connection');
             });
         }
 
