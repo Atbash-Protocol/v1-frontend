@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { Box, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +43,6 @@ function ConnectMenu() {
                 sx={{
                     background: isUserSigned && !isUserOnGoodNetwork ? 'red' : 'rgba(255, 255, 255, 0.9)',
                     boxShadow: '0px 0px 10px rgba(44, 39, 109, 0.1)',
-                    border: '1px solid #30363a',
                     padding: theme.spacing(1),
                 }}
                 onClick={handleButtonClick}

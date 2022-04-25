@@ -1,4 +1,3 @@
-import './view-base.scss';
 import React, { useContext, useState } from 'react';
 
 import { Box, useMediaQuery } from '@mui/material';
@@ -45,15 +44,10 @@ function ViewBase({ children }: IViewBaseProps) {
     const [isSidebarOpen, setisSidebarOpen] = useState(false);
 
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const { state } = useContext(PWeb3Context);
 
     const handleDrawerToggle = () => {
         setisSidebarOpen(!isSidebarOpen);
     };
-
-    const {
-        state: { provider, signer },
-    } = useContext(PWeb3Context);
 
     return (
         <Box
@@ -72,9 +66,11 @@ function ViewBase({ children }: IViewBaseProps) {
                 <SideBar isSidebarOpen={isSidebarOpen} isSmallScreen={isSmallScreen} handleDrawerToggle={handleDrawerToggle} />
             </Box>
             <Box
+                className="content"
                 sx={{
                     paddingLeft: {
                         xs: 0,
+                        height: '100%',
                         sm: theme.spacing(32), //TODO: Use a dynamic drawer
                     },
                     maxHeight: '100vh',

@@ -11,7 +11,7 @@ export const MenuMetric = ({ metricKey, value }: { metricKey: string; value: unk
                 {metricKey}
             </Typography>
             <Typography variant="body1" sx={{ overflow: 'hidden', wordBreak: 'break-all', overflowX: 'hidden', color: theme.palette.primary.main }}>
-                {value === undefined ? <Skeleton /> : <>{value}</>}
+                {value === undefined ? <Skeleton sx={{ width: '100%' }} /> : <>{value}</>}
             </Typography>
         </Box>
     );

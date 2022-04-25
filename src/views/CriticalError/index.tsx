@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-export const CritialError = () => {
+const CritialError = () => {
     const { t } = useTranslation('common');
 
     return (
@@ -12,3 +12,5 @@ export const CritialError = () => {
         </Box>
     );
 };
+
+export default CritialError;

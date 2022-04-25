@@ -1,3 +1,4 @@
+import { darkScrollbar } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
@@ -16,6 +17,11 @@ export const theme = createTheme({
         },
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: darkScrollbar(),
+            },
+        },
         MuiButton: {
             styleOverrides: {
                 root: {
@@ -28,6 +34,9 @@ export const theme = createTheme({
                         justifyContent: 'center',
                         margin: 0,
                         borderRadius: 0,
+                    },
+                    '&.MuiButton-root.Mui-disabled': {
+                        color: grey[500],
                     },
                 },
             },

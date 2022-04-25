@@ -22,7 +22,7 @@ const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown 
             <Typography variant="body1">
                 <>{t(metricKey)}</>
             </Typography>
-            <Typography variant="body2">{value === undefined ? <Skeleton /> : <>{value}</>}</Typography>
+            <Typography variant="body2">{value === undefined ? <Skeleton sx={{ width: '100%' }} /> : <>{value}</>}</Typography>
         </Box>
     );
 };

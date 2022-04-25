@@ -1,10 +1,11 @@
 import './dashboard.scss';
-import { Box, Skeleton, Typography, Zoom } from '@mui/material';
+import { Box, Grow, Skeleton, Typography, Zoom } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import Loading from 'components/Loader';
+import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { formatUSD, formatAPY } from 'helpers/price-units';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
@@ -52,34 +53,31 @@ function Dashboard() {
         <Box>
             <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
                 {DashboardItems.map(metric => (
-                    <Grid key={`dashboard-item-${metric.name}`} item lg={6} md={6} sm={6} xs={12}>
-                        <Box
-                            className="Dashboard__box__item"
-                            sx={{
-                                backgroundColor: theme.palette.cardBackground.main,
-                                backdropFilter: 'blur(100px)',
-                                borderRadius: '.5rem',
-                                color: theme.palette.primary.main,
-                                px: theme.spacing(2),
-                                py: theme.spacing(4),
-                                textAlign: 'center',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                display: 'flex',
-                                flex: '1 1 auto',
-                                overflow: 'auto',
-                                flexDirection: 'column',
-                                height: '100%',
-                            }}
-                        >
-                            <Typography variant="h5">
-                                <>{t(metric.name)}</>
-                            </Typography>
-                            <Typography sx={{ overflowX: 'hidden' }} variant="h6">
-                                {loading ? <Skeleton /> : <>{metric.value}</>}
-                            </Typography>
-                        </Box>
-                    </Grid>
+                    <Grow in={!loading} {...(!loading ? { timeout: 1000 } : {})}>
+                        <Grid key={`dashboard-item-${metric.name}`} item lg={6} md={6} sm={6} xs={12}>
+                            <Box
+                                className="Dashboard__box__item"
+                                sx={{
+                                    backgroundColor: theme.palette.cardBackground.main,
+                                    backdropFilter: 'blur(100px)',
+                                    borderRadius: '.5rem',
+                                    color: theme.palette.primary.main,
+                                    px: theme.spacing(2),
+                                    py: theme.spacing(4),
+                                    textAlign: 'center',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                    flex: '1 1 auto',
+                                    overflow: 'auto',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                }}
+                            >
+                                <MenuMetric metricKey={t(metric.name)} value={metric.value} />
+                            </Box>
+                        </Grid>
+                    </Grow>
                 ))}
             </Grid>
         </Box>

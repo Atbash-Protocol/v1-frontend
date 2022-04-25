@@ -84,7 +84,6 @@ function BondList() {
 
     useEffect(() => {
         if (!isAppLoading) {
-            console.log('isAppLoading', isAppLoading);
             [...activeBonds, ...inactiveBonds].map(bond => {
                 dispatch(calcBondDetails({ bond, value: 0 }));
             });

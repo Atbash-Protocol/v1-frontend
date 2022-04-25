@@ -60,8 +60,8 @@ function AtbashMenu() {
     const id = open ? 'menu-popover' : undefined;
 
     return (
-        <Box sx={{ padding: theme.spacing(1) }} onMouseEnter={e => handleClick(e)} onMouseLeave={e => handleClick(e)}>
-            <Button>
+        <Box mr={1} onClick={e => handleClick(e)}>
+            <Button sx={{ padding: theme.spacing(1) }}>
                 <Typography>
                     <>{t('BuyBASH')}</>
                 </Typography>
@@ -70,7 +70,7 @@ function AtbashMenu() {
             <Popper open={open} anchorEl={anchorEl} transition>
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={200}>
-                        <Box sx={{ background: theme.palette.cardBackground.light }}>
+                        <Box sx={{ background: theme.palette.cardBackground.light, padding: theme.spacing(2) }}>
                             <Link href={getBuyLink(DAI_ADDRESS, BASH_ADDRESS)} component={Typography} target="_blank">
                                 <>{t('BuyOnUniswap')}</>
                             </Link>

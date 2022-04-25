@@ -15,7 +15,7 @@ import TableRowsIcon from '@mui/icons-material/TableRows';
 import { Avatar, Box, Link, List, Divider, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import AtbashICON from 'assets/icons/bash.svg';
+import AtbashICON from 'assets/icons/bash-compress.svg';
 import { getAddresses } from 'constants/addresses';
 import { DEFAULT_NETWORK } from 'constants/blockchain';
 import { theme } from 'constants/theme';

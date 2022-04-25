@@ -1,6 +1,5 @@
 import { useContext, useState, useLayoutEffect } from 'react';
 
-import Loader from 'components/Loader';
 import { PWeb3Context } from 'contexts/web3/web3.context';
 
 export const useAppReady = () => {
@@ -15,8 +14,6 @@ export const useAppReady = () => {
             setIsContextInitialized(true);
         }
     }, [provider, signer]);
-
-    if (!isContextInitialized) return <Loader />;
 
     return isContextInitialized;
 };

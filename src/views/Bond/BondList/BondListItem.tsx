@@ -40,7 +40,7 @@ const BondMintMetric = ({ metric, value }: { metric: string; value: string | nul
             >
                 <Typography variant="body1">{metric}</Typography>
             </Box>
-            <Box>
+            <Box sx={{ width: '100%' }}>
                 {!value && <Skeleton />}
                 {value && <Typography variant="h6">{value}</Typography>}
             </Box>
@@ -106,8 +106,8 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
                 }}
             >
                 {signer && (
-                    <Button disabled={!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}` }}>
-                        <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`}>
+                    <Button disabled={!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}`, cursor: 'pointer' }}>
+                        <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
                             <Typography>
                                 <>{bond.bondInstance.bondOptions.isActive ? t('bond:Mint') : t('bond:Redeem')}</>
                             </Typography>

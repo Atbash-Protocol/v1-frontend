@@ -2,6 +2,7 @@ import { Box, Skeleton, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import MemoInlineMetric from 'components/Metrics/InlineMetric';
 import { formatNumber, formatUSD } from 'helpers/price-units';
 import { AccountSlice } from 'store/modules/account/account.types';
 import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
@@ -51,27 +52,7 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
         },
     ];
 
-    const balanceItems = userBalances.map(({ key, value }) => (
-        <Box
-            key={key}
-            sx={{
-                display: 'inline-flex',
-                width: '100%',
-                justifyContent: 'space-between',
-                p: {
-                    xs: 0.5,
-                    sm: 0.75,
-                },
-            }}
-        >
-            <Typography variant="body1">
-                <> {t(key)}</>
-            </Typography>
-            <Typography variant="body2">
-                <>{value}</>
-            </Typography>
-        </Box>
-    ));
+    const balanceItems = userBalances.map(({ key, value }) => <MemoInlineMetric key={key} metricKey={key} value={value} />);
 
     return (
         <>
