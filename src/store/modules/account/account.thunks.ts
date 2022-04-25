@@ -1,12 +1,11 @@
 import { useContext } from 'react';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, constants, Contract, ethers } from 'ethers';
+import { BigNumber, Contract, ethers } from 'ethers';
 
 import { PWeb3Context } from 'contexts/web3/web3.context';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
-import { useSafeSigner } from 'lib/web3/web3.hooks';
-import { successTransaction, walletConnectWarning, warning } from 'store/slices/messages-slice';
+import { successTransaction, walletConnectWarning } from 'store/slices/messages-slice';
 import { clearPendingTxn, fetchPendingTxns } from 'store/slices/pending-txns-slice';
 import { IReduxState } from 'store/slices/state.interface';
 
@@ -22,12 +21,11 @@ export const loadBalancesAndAllowances = createAsyncThunk(
         const wsBASHBalance = ethers.BigNumber.from(0);
         let stakeAllowance = ethers.BigNumber.from(0);
         let unstakeAllowance = ethers.BigNumber.from(0);
-        let wrapAllowance = ethers.BigNumber.from(0);
-        const redeemAllowance = ethers.BigNumber.from(0);
+        // const wrapAllowance = ethers.BigNumber.from(0);
 
         const {
             main: {
-                contracts: { BASH_CONTRACT, SBASH_CONTRACT, STAKING_ADDRESS, STAKING_HELPER_ADDRESS, WSBASH_ADDRESS },
+                contracts: { BASH_CONTRACT, SBASH_CONTRACT, STAKING_ADDRESS, STAKING_HELPER_ADDRESS },
             },
         } = getState() as IReduxState;
 
@@ -39,7 +37,7 @@ export const loadBalancesAndAllowances = createAsyncThunk(
         }
 
         if (SBASH_CONTRACT) {
-            wrapAllowance = await SBASH_CONTRACT.allowance(address, WSBASH_ADDRESS?.address);
+            // wrapAllowance = await SBASH_CONTRACT.allowance(address, WSBASH_ADDRESS?.address);
             stakeAllowance = await SBASH_CONTRACT.allowance(address, STAKING_ADDRESS?.address);
             unstakeAllowance = await SBASH_CONTRACT.balanceOf(address);
         }
@@ -69,7 +67,7 @@ export const loadBalancesAndAllowances = createAsyncThunk(
 
 export const approveContract = createAsyncThunk(
     'account/approveContract',
-    async ({ contract, amount, type }: { contract: Contract; type: string; amount?: BigNumber }, { getState, dispatch }) => {
+    async ({ contract, amount, type }: { contract: Contract; type: string; amount?: BigNumber }, { dispatch }) => {
         const {
             state: { signer, signerAddress },
         } = useContext(PWeb3Context);
@@ -94,7 +92,7 @@ export const approveContract = createAsyncThunk(
             dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type }));
             await approveTx.wait();
             dispatch(successTransaction);
-        } catch (err: any) {
+        } catch (err: unknown) {
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (approveTx) {

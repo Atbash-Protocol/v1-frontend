@@ -65,10 +65,10 @@ export const BondSlices = createSlice({
             return state;
         });
 
-        builder.addCase(calculateUserBondDetails.pending, (state, { payload }) => {
+        builder.addCase(calculateUserBondDetails.pending, (state, {}) => {
             state.bondQuoting = true;
         });
-        builder.addCase(calculateUserBondDetails.fulfilled, (state, { payload }) => {
+        builder.addCase(calculateUserBondDetails.fulfilled, (state, {}) => {
             state.bondQuoting = false;
         });
     },

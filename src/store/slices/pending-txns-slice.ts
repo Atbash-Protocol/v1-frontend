@@ -48,7 +48,8 @@ export const getPendingActionText = (action: string) => (action === 'stake' ? i1
 
 export const selectIsStakingPendingTx = (state: RootState): boolean => state.pendingTransactions.find(tx => tx.type === 'staking') !== undefined;
 
-export const selectIsPendingTransactionType = (state: RootState, type: TransactionType): boolean => state.pendingTransactions.find(tx => tx.type === 'staking') !== undefined;
+export const selectIsPendingTransactionType = (state: RootState, type: TransactionType): boolean =>
+    state.pendingTransactions.find(tx => tx.type === 'staking' || tx.type === type) !== undefined;
 
 export const { fetchPendingTxns, clearPendingTxn } = pendingTxnsSlice.actions;
 

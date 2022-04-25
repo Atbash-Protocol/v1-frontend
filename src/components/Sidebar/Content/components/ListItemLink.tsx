@@ -10,6 +10,7 @@ interface ListItemLinkProps {
     primary: string;
     to: string;
     disabled?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     renderComponent?: any;
     extra?: JSX.Element;
 }

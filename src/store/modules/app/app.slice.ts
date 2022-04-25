@@ -43,7 +43,7 @@ export const MainSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(initializeProviderContracts.pending, (state, action) => {
+            .addCase(initializeProviderContracts.pending, state => {
                 return { ...state, contractsLoaded: false };
             })
             .addCase(initializeProviderContracts.fulfilled, (state, action) => {

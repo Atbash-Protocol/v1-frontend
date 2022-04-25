@@ -172,7 +172,7 @@ export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, b
 
 export const calculateUserBondDetails = createAsyncThunk(
     'account/calculateUserBondDetails',
-    async ({ signer, signerAddress, bond }: { signer: Web3Provider; signerAddress: string; bond: BondItem }, { dispatch }) => {
+    async ({ signerAddress, bond }: { signer: Web3Provider; signerAddress: string; bond: BondItem }) => {
         const bondContract = bond.bondInstance.getBondContract();
         const userAddress = signerAddress;
 
@@ -224,7 +224,7 @@ export const depositBond = createAsyncThunk(
             await dispatch(calculateUserBondDetails({ bond, signer, signerAddress }));
 
             dispatch(info({ text: messages.your_balance_updated }));
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             return metamaskErrorWrap(err, dispatch);
         } finally {

@@ -1,7 +1,4 @@
-import { groupBy } from 'lodash';
-
 import { formatUSD } from 'helpers/price-units';
-import { Bond } from 'lib/bonds/bond/bond';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { RootState } from 'store/store';
@@ -51,8 +48,6 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
         purchased: metrics.purchased !== null ? formatUSD(metrics.purchased) : null,
     };
 };
-
-export const selectMaxPurchaseAmount = (state: RootState) => {};
 
 export const selectBondIsQuoting = (bonds: Record<string, BondItem>, bondID: string) => {
     const bond = bonds[bondID];
