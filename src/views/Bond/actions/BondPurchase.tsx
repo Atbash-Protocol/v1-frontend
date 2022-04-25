@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { theme } from 'constants/theme';
-import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { approveBonds, calculateUserBondDetails, depositBond } from 'store/modules/bonds/bonds.thunks';
 import { BondItem } from 'store/modules/bonds/bonds.types';
 import AmountForm from 'views/Staking/components/AmountForm';

@@ -6,7 +6,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import Loading from 'components/Loader';
 import { theme } from 'constants/theme';
-import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { loadBalancesAndAllowances } from 'store/modules/account/account.thunks';
 import { AccountSlice } from 'store/modules/account/account.types';
 import { useContractLoaded } from 'store/modules/app/app.selectors';

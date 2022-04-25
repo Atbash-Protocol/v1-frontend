@@ -18,12 +18,10 @@ export interface BondAddresses {
 }
 
 export interface NetworkAddresses {
-    [Networks.MAINNET]?: BondAddresses; // TODO : Remove optional in PROD
+    [Networks.MAINNET]?: BondAddresses;
     [Networks.RINKEBY]: BondAddresses;
     [Networks.LOCAL]: BondAddresses;
 }
-
-// TODO : can be extended from BondOptions
 
 export type BondConfig = Omit<BondOptions, 'networkID'> & {
     addresses: NetworkAddresses;

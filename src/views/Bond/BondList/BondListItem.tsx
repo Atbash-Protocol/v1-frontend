@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import BondLogo from 'components/BondLogo';
 import { theme } from 'constants/theme';
-import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { selectBondInfos, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
 import { BondItem } from 'store/modules/bonds/bonds.types';
 import { IReduxState } from 'store/slices/state.interface';

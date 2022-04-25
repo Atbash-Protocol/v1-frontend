@@ -4,7 +4,7 @@ import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
 import Core from 'web3modal';
 
 import { DEFAULT_NETWORK } from 'constants/blockchain';
-import { getProviderURI } from 'lib/web3/web3.utils';
+import { getProviderURI } from 'contexts/web3/web3.utils';
 
 import { WEB3ContextAction, WEB3ActionTypesEnum } from './web3.types';
 

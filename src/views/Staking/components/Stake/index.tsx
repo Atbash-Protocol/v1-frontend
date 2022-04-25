@@ -8,7 +8,7 @@ import { BigNumber } from 'ethers';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { selectStakeBalanceAndAllowances } from 'store/modules/account/account.selectors';
 import { stakeAction } from 'store/modules/contracts/contracts.thunks';
 import { StakeActionEnum } from 'store/modules/contracts/contracts.types';
@@ -61,7 +61,7 @@ export default function BasicTabs() {
     const { balances, stakingAllowance } = useSelector(selectStakeBalanceAndAllowances);
 
     const handleStakingClick = React.useCallback((amount: number) => {
-        dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount }));
+        dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount, signer, signerAddress }));
     }, []);
 
     const handleApproveClick = React.useCallback(

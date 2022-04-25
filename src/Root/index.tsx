@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import Loader from 'components/Loader';
 import ViewBase from 'layout/ViewBase';
-import { useWeb3ContextInitialized } from 'lib/web3/web3.hooks';
+import { useWeb3ContextInitialized } from 'contexts/web3/web3.hooks';
 
 import App from './App';
 
