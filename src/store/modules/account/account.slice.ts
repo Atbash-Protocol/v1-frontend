@@ -30,7 +30,7 @@ export const marketSlice = createSlice({
                 loading: false,
             };
         });
-        builder.addCase(loadBalancesAndAllowances.rejected, (state, action) => {
+        builder.addCase(loadBalancesAndAllowances.rejected, state => {
             return {
                 ...state,
                 loading: false,

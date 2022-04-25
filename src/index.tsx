@@ -1,11 +1,10 @@
 import './i18n';
 import { CssBaseline } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import SnackMessage from 'components/Messages/snackbar';
 import { theme } from 'constants/theme';
 import { NewWeb3ContextProvider } from 'contexts/web3/web3.context';
 

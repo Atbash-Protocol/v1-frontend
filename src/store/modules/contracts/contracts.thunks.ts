@@ -35,8 +35,7 @@ export const stakeAction = createAsyncThunk('contracts/stake', async ({ action, 
         await transaction.wait();
 
         dispatch(success({ text: messages.tx_successfully_send }));
-    } catch (err: any) {
-        console.error(err);
+    } catch (err: unknown) {
         return metamaskErrorWrap(err, dispatch);
     } finally {
         if (transaction) {

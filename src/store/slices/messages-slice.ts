@@ -13,7 +13,7 @@ export interface MessagesState {
 
 interface IMessage {
     text: string;
-    error?: any;
+    error?: unknown;
 }
 
 // Adds a message to the store
