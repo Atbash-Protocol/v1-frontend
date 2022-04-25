@@ -1,4 +1,4 @@
-import { Epoch } from "./app.types";
+import { Epoch } from './app.types';
 
 export const calculateStakingRewards = (epoch: Epoch | null, circSupply: number) => {
     const stakingReward = epoch ? epoch.distribute : null; // the amount of BASH to distribute in the coming epoch

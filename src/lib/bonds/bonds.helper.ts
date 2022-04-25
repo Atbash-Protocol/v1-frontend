@@ -1,8 +1,9 @@
-import { Networks } from "constants/blockchain";
-import { BondOptions } from "./bond/bond";
-import { LPBond } from "./bond/lp-bond";
-import { StableBond } from "./bond/stable-bond";
-import { BondAddresses, BondConfig, BondType } from "./bonds.types";
+import { Networks } from 'constants/blockchain';
+
+import { BondOptions } from './bond/bond';
+import { LPBond } from './bond/lp-bond';
+import { StableBond } from './bond/stable-bond';
+import { BondAddresses, BondConfig, BondType } from './bonds.types';
 
 export const createBond = (bondConfig: BondOptions): LPBond | StableBond => {
     switch (bondConfig.type) {
@@ -12,14 +13,14 @@ export const createBond = (bondConfig: BondOptions): LPBond | StableBond => {
             return new StableBond(bondConfig);
 
         default:
-            throw new Error("Unedefined bond type");
+            throw new Error('Unedefined bond type');
     }
 };
 
 export const getBondContracts = (bondConfig: BondConfig, networkID: Networks): BondAddresses => {
     const addresses = bondConfig.addresses[networkID];
 
-    if (!addresses || !addresses.bondAddress || !addresses.reserveAddress) throw new Error("Unable to get bond addresses");
+    if (!addresses || !addresses.bondAddress || !addresses.reserveAddress) throw new Error('Unable to get bond addresses');
 
     return { bondAddress: addresses.bondAddress, reserveAddress: addresses.reserveAddress };
 };

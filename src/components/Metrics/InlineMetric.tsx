@@ -1,7 +1,7 @@
-import { ConstructionOutlined } from "@mui/icons-material";
-import { Box, Skeleton, Typography } from "@mui/material";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useMemo } from 'react';
+
+import { Box, Skeleton, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null | undefined }) => {
     const { t } = useTranslation();
@@ -10,17 +10,19 @@ const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown 
         <Box
             key={metricKey}
             sx={{
-                display: "inline-flex",
-                width: "100%",
-                justifyContent: "space-between",
+                display: 'inline-flex',
+                width: '100%',
+                justifyContent: 'space-between',
                 p: {
                     xs: 0.5,
                     sm: 0.75,
                 },
             }}
         >
-            <Typography variant="body1">{t(metricKey)}</Typography>
-            <Typography variant="body2">{value === undefined ? <Skeleton /> : <>{value}</>}</Typography>
+            <Typography variant="body1">
+                <>{t(metricKey)}</>
+            </Typography>
+            <Typography variant="body2">{value === undefined ? <Skeleton sx={{ width: '100%' }} /> : <>{value}</>}</Typography>
         </Box>
     );
 };

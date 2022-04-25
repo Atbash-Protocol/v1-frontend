@@ -1,11 +1,11 @@
-import CircularProgress from "@material-ui/core/CircularProgress";
-import "./loader.scss";
+import { Box } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Loader() {
     return (
-        <div className="loader-wrap">
-            <CircularProgress size={120} color="inherit" />
-        </div>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            <CircularProgress size={120} />
+        </Box>
     );
 }
 

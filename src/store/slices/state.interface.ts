@@ -1,18 +1,13 @@
-import { IPendingTxn } from "./pending-txns-slice";
-import { IAccountSlice } from "./account-slice";
-import { IAppSlice } from "./app-slice";
-import { IBondSlice } from "./bond-slice";
-import { MessagesState } from "./messages-slice";
-import { MainSliceState } from "store/modules/app/app.types";
-import { MarketSlice } from "store/modules/markets/markets.type";
-import { AccountSlice } from "store/modules/account/account.types";
-import { BondSlice } from "store/modules/bonds/bonds.types";
+import { AccountSlice } from 'store/modules/account/account.types';
+import { MainSliceState } from 'store/modules/app/app.types';
+import { BondSlice } from 'store/modules/bonds/bonds.types';
+import { MarketSlice } from 'store/modules/markets/markets.type';
+
+import { MessagesState } from './messages-slice';
+import { IPendingTxn } from './pending-txns-slice';
 
 export interface IReduxState {
     pendingTransactions: IPendingTxn[];
-    account: IAccountSlice;
-    app: IAppSlice;
-    bonding: IBondSlice;
     messages: MessagesState;
     main: MainSliceState;
     markets: MarketSlice;

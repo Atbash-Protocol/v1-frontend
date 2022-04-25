@@ -1,21 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 
-import accountReducer from "./slices/account-slice";
-import bondingReducer from "./slices/bond-slice";
-import appReducer from "./slices/app-slice";
-import pendingTransactionsReducer from "./slices/pending-txns-slice";
-import messagesReducer from "./slices/messages-slice";
-
-import mainReducer from "./modules/app/app.slice";
-import marketReducer from "./modules/markets/markets.slice";
-import newAccountReducer from "./modules/account/account.slice";
-import boundReducer from "./modules/bonds/bonds.slice";
+import newAccountReducer from './modules/account/account.slice';
+import mainReducer from './modules/app/app.slice';
+import boundReducer from './modules/bonds/bonds.slice';
+import marketReducer from './modules/markets/markets.slice';
+import messagesReducer from './slices/messages-slice';
+import pendingTransactionsReducer from './slices/pending-txns-slice';
 
 const store = configureStore({
     reducer: {
-        account: accountReducer,
-        bonding: bondingReducer,
-        app: appReducer,
         bonds: boundReducer,
         pendingTransactions: pendingTransactionsReducer,
         messages: messagesReducer,

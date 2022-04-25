@@ -1,7 +1,6 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
-import { ActiveTokensEnum } from "config/tokens";
-import { Networks } from "constants/blockchain";
-import { BondOptions } from "./bond/bond";
+import { Networks } from 'constants/blockchain';
+
+import { BondOptions } from './bond/bond';
 
 export enum BondType {
     StableAsset,
@@ -10,7 +9,7 @@ export enum BondType {
 }
 
 export enum BondProviderEnum {
-    UNISWAP_V2 = "https://app.uniswap.org/#/add/v2",
+    UNISWAP_V2 = 'https://app.uniswap.org/#/add/v2',
 }
 
 export interface BondAddresses {
@@ -26,7 +25,7 @@ export interface NetworkAddresses {
 
 // TODO : can be extended from BondOptions
 
-export type BondConfig = Omit<BondOptions, "networkID"> & {
+export type BondConfig = Omit<BondOptions, 'networkID'> & {
     addresses: NetworkAddresses;
     isActive?: boolean;
 };

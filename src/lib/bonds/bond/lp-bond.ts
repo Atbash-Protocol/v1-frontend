@@ -1,14 +1,16 @@
-import { Contract, ethers } from "ethers";
-import { Bond, BondOptions } from "./bond";
-import { JsonRpcSigner } from "@ethersproject/providers";
-import { BondAddresses } from "helpers/bond/constants";
-import { LpBondContract, LpReserveContract } from "abi";
+import { JsonRpcSigner } from '@ethersproject/providers';
+import { Contract, ethers } from 'ethers';
+
+import { LpBondContract, LpReserveContract } from 'abi';
+import { BondAddresses } from 'helpers/bond/constants';
+
+import { Bond, BondOptions } from './bond';
 
 // Keep all LP specific fields/logic within the LPBond class
-export interface LPBondOpts extends BondOptions {}
+export type LPBondOpts = BondOptions;
 
 export class LPBond extends Bond {
-    public readonly LP_URL = "";
+    public readonly LP_URL = '';
 
     constructor(public readonly bondOptions: BondOptions) {
         super(bondOptions);
@@ -20,17 +22,19 @@ export class LPBond extends Bond {
     }
 
     public async getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string) {
-        const tokenAmount = await this.reserveContract!.balanceOf(treasuryAddress);
+        if (!this.reserveContract) throw new Error('Reserve contract is undefined');
 
-        const valuation = await bondCalculatorContract.valuation(this.reserveContract!.address, tokenAmount);
-        const markdown = await bondCalculatorContract.markdown(this.reserveContract!.address);
+        const tokenAmount = await this.reserveContract.balanceOf(treasuryAddress);
+
+        const valuation = await bondCalculatorContract.valuation(this.reserveContract.address, tokenAmount);
+        const markdown = await bondCalculatorContract.markdown(this.reserveContract.address);
         const tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
 
         return tokenUSD;
     }
 
     public getTokenAmount() {
-        return this.getReserves("", true);
+        return this.getReserves('', true);
     }
 
     public getSbAmount(BASH_ADDRESS: string) {
@@ -38,9 +42,11 @@ export class LPBond extends Bond {
     }
 
     private async getReserves(BASH_ADDRESS: string, isToken: boolean): Promise<number> {
-        const token = this.reserveContract!;
+        const token = this.reserveContract;
 
-        let [reserve0, reserve1] = await token.getReserves();
+        if (!token) throw new Error('Reserve contract is not defined');
+
+        const [reserve0, reserve1] = await token.getReserves();
         const token1: string = await token.token1();
         const isBASH = token1.toLowerCase() === BASH_ADDRESS.toLowerCase();
 

@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
-import { theme } from "constants/theme";
+import { Box } from '@mui/material';
+
+import { theme } from 'constants/theme';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -10,11 +11,11 @@ interface TabPanelProps {
 const TabPanel = (props: TabPanelProps) => {
     const { children, value, index, ...other } = props;
 
-    console.log("TabPanel", props);
+    console.log('TabPanel', props);
 
     return (
         <Box role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
-            {value === index && <Box sx={{ p: 3, display: "inline-flex", alignItems: "center", width: "100%" }}>{children}</Box>}
+            {value === index && <Box sx={{ p: 3, display: 'inline-flex', alignItems: 'center', width: '100%' }}>{children}</Box>}
         </Box>
     );
 };

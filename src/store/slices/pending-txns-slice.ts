@@ -1,6 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "store/store";
-import i18n from "../../i18n";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { RootState } from 'store/store';
+
+import i18n from '../../i18n';
+
 export interface IPendingTxn {
     readonly txnHash: string;
     readonly text: string;
@@ -10,7 +13,7 @@ export interface IPendingTxn {
 const initialState: Array<IPendingTxn> = [];
 
 const pendingTxnsSlice = createSlice({
-    name: "pendingTransactions",
+    name: 'pendingTransactions',
     initialState,
     reducers: {
         fetchPendingTxns(state, action: PayloadAction<IPendingTxn>) {
@@ -26,11 +29,11 @@ const pendingTxnsSlice = createSlice({
 });
 
 export const getStakingTypeText = (action: string) => {
-    return action.toLowerCase() === "stake" ? i18n.t("stake:StakingSB") : i18n.t("stake:UnstakingStakedSB");
+    return action.toLowerCase() === 'stake' ? i18n.t('stake:StakingSB') : i18n.t('stake:UnstakingStakedSB');
 };
 
 export const getWrappingTypeText = (action: string) => {
-    return action.toLowerCase() === "wrap" ? i18n.t("stake:WrappingsBASH") : i18n.t("stake:UnwrappingBASH");
+    return action.toLowerCase() === 'wrap' ? i18n.t('stake:WrappingsBASH') : i18n.t('stake:UnwrappingBASH');
 };
 
 export const isPendingTxn = (pendingTransactions: IPendingTxn[], type: string) => {
@@ -38,14 +41,14 @@ export const isPendingTxn = (pendingTransactions: IPendingTxn[], type: string) =
 };
 
 export const txnButtonText = (pendingTransactions: IPendingTxn[], type: string, defaultText: string) => {
-    return isPendingTxn(pendingTransactions, type) ? i18n.t("PendingEllipsis") : defaultText;
+    return isPendingTxn(pendingTransactions, type) ? i18n.t('PendingEllipsis') : defaultText;
 };
 
-export const getPendingActionText = (action: string) => (action === "stake" ? i18n.t("stake:Staking") : i18n.t("stake:Unstaking"));
+export const getPendingActionText = (action: string) => (action === 'stake' ? i18n.t('stake:Staking') : i18n.t('stake:Unstaking'));
 
-export const selectIsStakingPendingTx = (state: RootState): boolean => state.pendingTransactions.find(tx => tx.type === "staking") !== undefined;
+export const selectIsStakingPendingTx = (state: RootState): boolean => state.pendingTransactions.find(tx => tx.type === 'staking') !== undefined;
 
-export const selectIsPendingTransactionType = (state: RootState, type: TransactionTypeEnum): boolean => state.pendingTransactions.find(tx => tx.type === "staking") !== undefined;
+export const selectIsPendingTransactionType = (state: RootState, type: TransactionType): boolean => state.pendingTransactions.find(tx => tx.type === 'staking') !== undefined;
 
 export const { fetchPendingTxns, clearPendingTxn } = pendingTxnsSlice.actions;
 
@@ -53,8 +56,12 @@ export default pendingTxnsSlice.reducer;
 
 // interfaces to add
 
-export type TransactionTypeEnum = {
-    APPROVE_CONTRACT: "APPROVE_CONTRACT";
-    STAKING_APPROVAL: "STAKING_APPROVAL";
-    STAKING_PENDING: "STAKING_PENDING";
-};
+export const TransactionTypeEnum = {
+    APPROVE_CONTRACT: 'APPROVE_CONTRACT',
+    STAKING_APPROVAL: 'STAKING_APPROVAL',
+    STAKING_PENDING: 'STAKING_PENDING',
+    BASH_APPROVAL: 'BASH_APPROVAL',
+    SBASH_APPROVAL: 'SBASH_APPROVAL',
+} as const;
+
+export type TransactionType = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];

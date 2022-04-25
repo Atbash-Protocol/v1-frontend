@@ -1,10 +1,11 @@
-import { Contract, ethers } from "ethers";
-import { LPBond } from "lib/bonds/bond/lp-bond";
-import { StableBond } from "lib/bonds/bond/stable-bond";
+import { Contract, ethers } from 'ethers';
+
+import { LPBond } from 'lib/bonds/bond/lp-bond';
+import { StableBond } from 'lib/bonds/bond/stable-bond';
 
 export const getLPBondQuote = async (bond: LPBond | StableBond, bondAmountInWei: ethers.BigNumber, bondCalculator: Contract, maxBondPrice: number) => {
     const reserverAddress = bond.getBondAddresses().reserveAddress;
-    const maxBondValue = ethers.utils.parseEther("1");
+    const maxBondValue = ethers.utils.parseEther('1');
 
     const valuation = await bondCalculator.valuation(reserverAddress, bondAmountInWei);
     const bondQuote = (await bond.getBondContract().payoutFor(valuation)) / 10 ** 9;

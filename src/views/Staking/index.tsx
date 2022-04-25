@@ -1,24 +1,24 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { Zoom } from "@material-ui/core";
-import RebaseTimer from "../../components/RebaseTimer";
-import { IReduxState } from "../../store/slices/state.interface";
-import Loading from "components/Loader";
+import { useEffect } from 'react';
 
-import { useTranslation } from "react-i18next";
-import Stake from "./components/Stake";
-import StakeMetrics from "./components/Metrics";
-import { MainSliceState } from "store/modules/app/app.types";
-import { loadBalancesAndAllowances } from "store/modules/account/account.thunks";
-import { AccountSlice } from "store/modules/account/account.types";
-import UserStakeMetrics from "./components/Stake/StakeMetrics";
-import { Box, Typography } from "@mui/material";
-import { theme } from "constants/theme";
+import { Box, Typography, Zoom } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
-import { selectStakingRewards, selectTVL } from "store/modules/metrics/metrics.selectors";
-import UserBalance from "./components/UserBalance";
-import { useSafeSigner } from "lib/web3/web3.hooks";
-import { useContractLoaded } from "store/modules/app/app.selectors";
+import Loading from 'components/Loader';
+import { theme } from 'constants/theme';
+import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { loadBalancesAndAllowances } from 'store/modules/account/account.thunks';
+import { AccountSlice } from 'store/modules/account/account.types';
+import { useContractLoaded } from 'store/modules/app/app.selectors';
+import { MainSliceState } from 'store/modules/app/app.types';
+import { selectStakingRewards } from 'store/modules/metrics/metrics.selectors';
+import { IReduxState } from 'store/slices/state.interface';
+
+import StakeMetrics from './components/Metrics';
+import RebaseTimer from './components/RebaseTimer';
+import Stake from './components/Stake';
+import UserStakeMetrics from './components/Stake/StakeMetrics';
+import UserBalance from './components/UserBalance';
 
 function Staking() {
     const { t } = useTranslation();
@@ -30,7 +30,7 @@ function Staking() {
     const contractsLoaded = useSelector(useContractLoaded);
     const { loading, balances } = useSelector<IReduxState, AccountSlice>(state => state.accountNew, shallowEqual);
 
-    const { epoch, index: stakingIndex } = useSelector<IReduxState, MainSliceState["staking"]>(state => state.main.staking, shallowEqual);
+    const { index: stakingIndex } = useSelector<IReduxState, MainSliceState['staking']>(state => state.main.staking, shallowEqual);
 
     const stakingMetrics = useSelector(selectStakingRewards);
 
@@ -59,15 +59,15 @@ function Staking() {
                 <Box
                     sx={{
                         backgroundColor: theme.palette.cardBackground.main,
-                        backdropFilter: "blur(100px)",
-                        borderRadius: ".5rem",
+                        backdropFilter: 'blur(100px)',
+                        borderRadius: '.5rem',
                         color: theme.palette.primary.main,
                         p: { xs: 2, sm: 4 },
                     }}
                 >
                     <Box sx={{ color: theme.palette.primary.main }}>
-                        <Typography variant="h4" sx={{ textTransform: "uppercase" }}>
-                            {t("stake:StakeTitle")}
+                        <Typography variant="h4" sx={{ textTransform: 'uppercase' }}>
+                            <>{t('stake:StakeTitle')}</>
                         </Typography>
                         <RebaseTimer />
                     </Box>
@@ -89,18 +89,18 @@ function Staking() {
                     sx={{
                         backgroundColor: theme.palette.cardBackground.main,
                         marginTop: 4,
-                        backdropFilter: "blur(100px)",
-                        borderRadius: ".5rem",
+                        backdropFilter: 'blur(100px)',
+                        borderRadius: '.5rem',
                         color: theme.palette.primary.main,
                         p: 4,
                     }}
                 >
                     <UserBalance
-                        stakingAPY={stakingMetrics.stakingAPY!}
-                        stakingRebase={stakingMetrics.stakingRebase!}
-                        daiPrice={daiPrice!}
+                        stakingAPY={stakingMetrics.stakingAPY}
+                        stakingRebase={stakingMetrics.stakingRebase}
+                        daiPrice={daiPrice}
                         balances={balances}
-                        currentIndex={stakingIndex!}
+                        currentIndex={stakingIndex}
                     />
                 </Box>
             </Zoom>

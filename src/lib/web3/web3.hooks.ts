@@ -1,9 +1,10 @@
-import Loader from "components/Loader";
-import { DEFAULT_NETWORK, getDefaultNetwork } from "constants/blockchain";
-import { PWeb3Context } from "contexts/web3/web3.context";
-import { memo, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { walletConnectWarning, warning } from "store/slices/messages-slice";
+import { useContext, useEffect, useMemo, useState } from 'react';
+
+import { Dispatch } from 'redux';
+
+import { DEFAULT_NETWORK } from 'constants/blockchain';
+import { PWeb3Context } from 'contexts/web3/web3.context';
+import { walletConnectWarning } from 'store/slices/messages-slice';
 
 export const useGoodNetworkCheck = () => {
     const {
@@ -84,7 +85,7 @@ export const useSafeSigner = (dispatch?: Dispatch) => {
         if (!signer || !signerAddress) {
             if (dispatch) dispatch(walletConnectWarning);
 
-            throw new Error("Missing signer or signerAddress ");
+            throw new Error('Missing signer or signerAddress ');
         }
 
         return { signer, signerAddress };

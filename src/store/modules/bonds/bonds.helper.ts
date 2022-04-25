@@ -1,4 +1,4 @@
-import { BondMetrics } from "./bonds.types";
+import { BondMetrics } from './bonds.types';
 
 export const initDefaultBondMetrics = (): BondMetrics => ({
     treasuryBalance: null,

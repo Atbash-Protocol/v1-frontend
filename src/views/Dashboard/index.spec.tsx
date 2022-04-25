@@ -1,10 +1,10 @@
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import * as redux from 'react-redux';
 
-import { act } from "react-dom/test-utils";
-import Dashboard from ".";
-import * as redux from "react-redux";
+import Dashboard from '.';
 
-jest.mock("react-i18next", () => ({
+jest.mock('react-i18next', () => ({
     // this mock makes sure any components using the translate hook can use it without a warning being shown
     useTranslation: () => {
         return {
@@ -22,25 +22,25 @@ const store = {
     getState: jest.fn(),
 };
 
-const withProvider = (component: JSX.Element, store: any) => <redux.Provider store={store}>{component}</redux.Provider>;
+const withProvider = (component: JSX.Element, storeProvider: any) => <redux.Provider store={storeProvider}>{component}</redux.Provider>;
 
-describe("NotFound", () => {
+describe('NotFound', () => {
     let container: HTMLDivElement;
 
     beforeEach(() => {
-        container = document.createElement("div");
+        container = document.createElement('div');
         document.body.appendChild(container);
     });
 
-    it("renders with loading", () => {
-        jest.spyOn(redux, "useSelector").mockReturnValue({ markets: {} });
+    it('renders with loading', () => {
+        jest.spyOn(redux, 'useSelector').mockReturnValue({ markets: {} });
         act(() => {
             ReactDOM.render(withProvider(<Dashboard />, store), container);
         });
     });
 
-    it("renders with values", () => {
-        jest.spyOn(redux, "useSelector").mockReturnValue({
+    it('renders with values', () => {
+        jest.spyOn(redux, 'useSelector').mockReturnValue({
             markets: {
                 loading: false,
                 marketPrice: 0,

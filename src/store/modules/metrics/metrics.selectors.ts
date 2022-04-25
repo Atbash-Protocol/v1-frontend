@@ -1,7 +1,9 @@
-import { formatUSD } from "helpers/price-units";
-import { sum } from "lodash";
-import { RootState } from "store/store";
-import { StakingRewards } from "./metrics.types";
+import { sum } from 'lodash';
+
+import { formatUSD } from 'helpers/price-units';
+import { RootState } from 'store/store';
+
+import { StakingRewards } from './metrics.types';
 
 export const selectStakingRewards = (state: RootState): StakingRewards | null => {
     const { epoch } = state.main.staking;
@@ -44,7 +46,7 @@ export const selectFormattedMarketCap = (state: RootState): string | null => {
 
     if (!totalSupply || !dai) return null;
 
-    return formatUSD(totalSupply! * dai, 2);
+    return formatUSD(totalSupply * dai, 2);
 };
 
 export const selectWSBASHPrice = (state: RootState): string | null => {

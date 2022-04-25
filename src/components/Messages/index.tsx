@@ -1,10 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import { close } from "../../store/slices/messages-slice";
-import "./console-interceptor";
-import { MessagesState } from "../../store/slices/messages-slice";
-import { IReduxState } from "../../store/slices/state.interface";
-import React, { useEffect } from "react";
-import { useSnackbar } from "notistack";
+import './console-interceptor';
+
+import { useEffect } from 'react';
+
+import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { close, MessagesState } from 'store/slices/messages-slice';
+import { IReduxState } from 'store/slices/state.interface';
 
 // A component that displays error messages
 function Messages() {

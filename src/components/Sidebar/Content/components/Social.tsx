@@ -1,13 +1,14 @@
-import { ReactComponent as GitHub } from "assets/icons/github.svg";
-import { ReactComponent as Twitter } from "assets/icons/twitter.svg";
-import { ReactComponent as Telegram } from "assets/icons/telegram.svg";
-import { ReactComponent as Discord } from "assets/icons/discord.svg";
-import { ReactComponent as DocsIcon } from "assets/icons/docs.svg";
-import { Box, SvgIcon, Link } from "@mui/material";
+import { Box, SvgIcon, Link } from '@mui/material';
+
+import { ReactComponent as Discord } from 'assets/icons/discord.svg';
+import { ReactComponent as DocsIcon } from 'assets/icons/docs.svg';
+import { ReactComponent as GitHub } from 'assets/icons/github.svg';
+import { ReactComponent as Telegram } from 'assets/icons/telegram.svg';
+import { ReactComponent as Twitter } from 'assets/icons/twitter.svg';
 
 export default function Social() {
     return (
-        <Box sx={{ width: "100%", display: "flex", justifyContent: "space-around" }}>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-around' }}>
             <Link href="https://github.com/Atbash-Protocol" target="_blank">
                 <SvgIcon color="primary" component={GitHub} />
             </Link>

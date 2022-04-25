@@ -1,9 +1,7 @@
-import { ActionTypes } from "@mui/base";
-import { createSlice } from "@reduxjs/toolkit";
-import bond from "helpers/bond";
-import { useSelector } from "react-redux";
-import { approveBonds, calcBondDetails, calculateUserBondDetails, getBondTerms, getTreasuryBalance, initializeBonds, loadBondBalancesAndAllowances } from "./bonds.thunks";
-import { BondSlice } from "./bonds.types";
+import { createSlice } from '@reduxjs/toolkit';
+
+import { approveBonds, calcBondDetails, calculateUserBondDetails, getBondTerms, getTreasuryBalance, initializeBonds, loadBondBalancesAndAllowances } from './bonds.thunks';
+import { BondSlice } from './bonds.types';
 
 // Define the initial state using that type
 const initialState: BondSlice = {
@@ -15,7 +13,7 @@ const initialState: BondSlice = {
 };
 
 export const BondSlices = createSlice({
-    name: "app-bonds",
+    name: 'app-bonds',
     initialState,
     reducers: {},
     extraReducers: builder => {
@@ -42,7 +40,7 @@ export const BondSlices = createSlice({
         });
 
         builder.addCase(calcBondDetails.rejected, (state, action) => {
-            console.log("here", action, state);
+            console.log('here', action, state);
         });
 
         builder.addCase(getBondTerms.fulfilled, (state, { payload, meta: { arg: bond } }) => {
@@ -58,7 +56,7 @@ export const BondSlices = createSlice({
         });
 
         builder.addCase(loadBondBalancesAndAllowances.fulfilled, (state, { payload }) => {
-            console.log("payload", payload[0], state.bonds);
+            console.log('payload', payload[0], state.bonds);
             for (const bond of payload) {
                 state.bonds[bond.ID].metrics.allowance = bond.allowance;
                 state.bonds[bond.ID].metrics.balance = bond.balance;

@@ -1,10 +1,12 @@
-import { formatUSD } from "helpers/price-units";
-import { Bond } from "lib/bonds/bond/bond";
-import { LPBond } from "lib/bonds/bond/lp-bond";
-import { StableBond } from "lib/bonds/bond/stable-bond";
-import { groupBy } from "lodash";
-import { RootState } from "store/store";
-import { BondItem, BondMetrics } from "./bonds.types";
+import { groupBy } from 'lodash';
+
+import { formatUSD } from 'helpers/price-units';
+import { Bond } from 'lib/bonds/bond/bond';
+import { LPBond } from 'lib/bonds/bond/lp-bond';
+import { StableBond } from 'lib/bonds/bond/stable-bond';
+import { RootState } from 'store/store';
+
+import { BondItem, BondMetrics } from './bonds.types';
 
 export const selectAllBonds = (state: RootState) => {
     const { bonds } = state.bonds;
@@ -38,11 +40,7 @@ export const selectBondInfos = (bonds: Record<string, BondItem>, bondID: string)
 export const selectBondMintingMetrics = (metrics: BondMetrics) => {
     let bondPrice = null;
 
-    try {
-        bondPrice = formatUSD(Number(metrics.bondPrice) / 1e18, 2);
-    } catch (err) {
-        console.error(err);
-    }
+    bondPrice = formatUSD(Number(metrics.bondPrice) / 1e18, 2);
 
     return {
         bondPrice,
@@ -54,16 +52,12 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
     };
 };
 
-export const selectMaxPurchaseAmount = (state: RootState) => {
-    const { bonds } = state.bonds;
-
-    return 0;
-};
+export const selectMaxPurchaseAmount = (state: RootState) => {};
 
 export const selectBondIsQuoting = (bonds: Record<string, BondItem>, bondID: string) => {
     const bond = bonds[bondID];
 
-    if (!bond) throw new Error("Unable to get bond");
+    if (!bond) throw new Error('Unable to get bond');
 
     return bond.metrics.loading ?? false;
 };
