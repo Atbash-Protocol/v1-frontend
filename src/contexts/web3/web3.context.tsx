@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 
-import { initWeb3Modal } from 'lib/web3/web3.utils';
+import { initWeb3Modal } from 'contexts/web3/web3.utils';
 
 import { USER_REJECTED } from './constants';
 import { subscribeProvider, createSigner, resetWeb3Signer } from './subscribers';

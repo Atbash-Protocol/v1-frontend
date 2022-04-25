@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { theme } from 'constants/theme';
 import { PWeb3Context } from 'contexts/web3/web3.context';
-import { useSignerConnected, useGoodNetworkCheck } from 'lib/web3/web3.hooks';
+import { useSignerConnected, useGoodNetworkCheck } from 'contexts/web3/web3.hooks';
 import { IReduxState } from 'store/slices/state.interface';
 
 function ConnectMenu() {

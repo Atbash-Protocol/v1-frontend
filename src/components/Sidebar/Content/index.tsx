@@ -19,11 +19,11 @@ import AtbashICON from 'assets/icons/bash-compress.svg';
 import { getAddresses } from 'constants/addresses';
 import { DEFAULT_NETWORK } from 'constants/blockchain';
 import { theme } from 'constants/theme';
+import { useSignerAddress, useSignerConnected } from 'contexts/web3/web3.hooks';
 import { shorten } from 'helpers/shorten';
 import useBonds from 'hooks/bonds';
 import useENS from 'hooks/useENS';
 import { getBuyLink } from 'lib/uniswap/link';
-import { useSignerAddress, useSignerConnected } from 'lib/web3/web3.hooks';
 
 import { ListItemLink } from './components/ListItemLink';
 import Social from './components/Social';
