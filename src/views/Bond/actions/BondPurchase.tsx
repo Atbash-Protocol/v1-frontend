@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, Grid, FormControl, Button } from '@mui/material';
+import { Box, Grid, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -19,9 +19,9 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
     const dispatch = useDispatch();
     const { signer, signerAddress } = useSafeSigner();
 
-    const [max, setMax] = useState(0);
+    // const [max, setMax] = useState(0);
     const [quantity, setQuantity] = useState('');
-    const [bondLoading, setBondLoading] = useState(false);
+    // const [bondLoading, setBondLoading] = useState(false);
 
     const depositBondAction = () => {
         dispatch(depositBond({ amount: Number(quantity), signer, signerAddress, bond }));
@@ -31,15 +31,14 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
         dispatch(approveBonds({ signer, bond }));
     };
 
-    const handleBondQuote = (amount: any) => {
+    const handleBondQuote = (amount: string) => {
         setQuantity(amount);
         dispatch(calculateUserBondDetails({ signer, signerAddress, bond }));
     };
 
     return (
         <Box sx={{ color: 'white' }}>
-            <Grid container spacing={1}>
-                <FormControl variant="outlined" color="primary" fullWidth></FormControl>
+            <Grid container>
                 <Grid xs={12}>
                     <AmountForm
                         initialValue={0}
@@ -53,7 +52,7 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
                     />
                 </Grid>
 
-                <Grid xs={12}>
+                <Grid xs={12} mt={theme.spacing(2)}>
                     <Button
                         variant="outlined"
                         sx={{

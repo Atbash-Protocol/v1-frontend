@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box, useMediaQuery } from '@mui/material';
 
@@ -6,7 +6,6 @@ import Header from 'components/Header';
 import Messages from 'components/Messages';
 import { SideBar } from 'components/Sidebar';
 import { theme } from 'constants/theme';
-import { PWeb3Context } from 'contexts/web3/web3.context';
 
 import BackgroundImage from '../../assets/background.png';
 

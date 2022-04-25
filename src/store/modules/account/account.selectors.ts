@@ -38,6 +38,7 @@ export const selectStakeBalanceAndAllowances = (
     return {
         balances: Object.entries(balances).reduce((acc, [key, amount]) => {
             return { ...acc, [key]: Number(ethers.utils.formatUnits(amount, 'gwei')) };
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, {}) as any, //TODO: Typing
         stakingAllowance,
     };

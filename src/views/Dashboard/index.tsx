@@ -1,5 +1,4 @@
-import './dashboard.scss';
-import { Box, Grow, Skeleton, Typography, Zoom } from '@mui/material';
+import { Box, Grow } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -13,6 +12,8 @@ import { selectDAIPrice } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
 import { IReduxState } from 'store/slices/state.interface';
+
+import './dashboard.scss';
 
 function Dashboard() {
     const { t } = useTranslation();
@@ -53,8 +54,8 @@ function Dashboard() {
         <Box>
             <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
                 {DashboardItems.map(metric => (
-                    <Grow in={!loading} {...(!loading ? { timeout: 1000 } : {})}>
-                        <Grid key={`dashboard-item-${metric.name}`} item lg={6} md={6} sm={6} xs={12}>
+                    <Grow in={!loading} {...(!loading ? { timeout: 1000 } : {})} key={`dashboard-item-${metric.name}`}>
+                        <Grid item lg={6} md={6} sm={6} xs={12}>
                             <Box
                                 className="Dashboard__box__item"
                                 sx={{

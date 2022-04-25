@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Button, Divider, Link, Fade, Popper, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -8,29 +8,25 @@ import { usePWeb3Context } from 'contexts/web3/web3.context';
 import { getBuyLink } from 'lib/uniswap/link';
 import { useSignerConnected } from 'lib/web3/web3.hooks';
 
-import { getAddresses, TOKEN_DECIMALS, DEFAULT_NETWORK } from '../../../constants';
+import { getAddresses, TOKEN_DECIMALS } from '../../../constants';
 
 const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async () => {
     // const tokenImage = getTokenUrl(tokenSymbol.toLowerCase());
     const tokenImage = '';
 
     if (window.ethereum) {
-        try {
-            await window.ethereum.request({
-                method: 'wallet_watchAsset',
-                params: {
-                    type: 'ERC20',
-                    options: {
-                        address: tokenAddress,
-                        symbol: tokenSymbol,
-                        decimals: TOKEN_DECIMALS,
-                        image: tokenImage,
-                    },
+        await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20',
+                options: {
+                    address: tokenAddress,
+                    symbol: tokenSymbol,
+                    decimals: TOKEN_DECIMALS,
+                    image: tokenImage,
                 },
-            });
-        } catch (error) {
-            console.log(error);
-        }
+            },
+        });
     }
 };
 
@@ -38,7 +34,7 @@ function AtbashMenu() {
     const { t } = useTranslation();
 
     const isUserSigned = useSignerConnected();
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
     const {
         state: { networkID },
@@ -52,7 +48,7 @@ function AtbashMenu() {
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: React.MouseEvent) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
 
@@ -61,13 +57,13 @@ function AtbashMenu() {
 
     return (
         <Box mr={1} onClick={e => handleClick(e)}>
-            <Button sx={{ padding: theme.spacing(1) }}>
+            <Button sx={{ padding: theme.spacing(1) }} aria-describedby={id}>
                 <Typography>
                     <>{t('BuyBASH')}</>
                 </Typography>
             </Button>
 
-            <Popper open={open} anchorEl={anchorEl} transition>
+            <Popper id={id} open={open} anchorEl={anchorEl} transition>
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={200}>
                         <Box sx={{ background: theme.palette.cardBackground.light, padding: theme.spacing(2) }}>

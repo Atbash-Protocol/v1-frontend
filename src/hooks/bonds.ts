@@ -11,10 +11,10 @@ const useBonds = () => {
 
     const mostProfitableBonds = useMemo(
         () =>
-            bonds.sort((bond1, bond2): any => {
+            bonds.sort((bond1, bond2): number => {
                 if (bond1.metrics.bondDiscount === null || bond2.metrics.bondDiscount === null) return 0;
 
-                return bond1.metrics.bondDiscount > bond2.metrics.bondDiscount;
+                return bond1.metrics.bondDiscount > bond2.metrics.bondDiscount ? 0 : 1;
             }),
         [bonds],
     );

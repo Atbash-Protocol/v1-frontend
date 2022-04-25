@@ -64,7 +64,7 @@ function BondList() {
     const { t } = useTranslation();
 
     const {
-        state: { networkID, provider, signer },
+        state: { networkID },
     } = usePWeb3Context();
     const dispatch = useDispatch();
 

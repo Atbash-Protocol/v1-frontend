@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Box, Dialog, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+import { Box, Dialog, DialogContent, DialogTitle, Divider, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -67,14 +67,14 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
             }}
             sx={{ p: 2, backdropFilter: 'blur(10px)' }}
         >
-            <DialogTitle sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'space-evenly', gap: theme.spacing(2) }}>
+            <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: theme.spacing(1) }}>
                 <BondLogo bondLogoPath={bond.bondInstance.bondOptions.iconPath} isLP={bond.bondInstance.isLP()} />
 
                 <Typography variant="body1">{bond.bondInstance.bondOptions.displayName}</Typography>
             </DialogTitle>
             <DialogContent>
                 <Box>
-                    <Grid container item xs={12} spacing={2} mb={4}>
+                    <Grid container item xs={12} mb={4}>
                         <Grid item xs={12} sm={6}>
                             <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={metrics.bondPrice} />
                         </Grid>
@@ -88,7 +88,8 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
                 {metrics.allowance !== null && (
                     <Box>
                         <BondPurchase bond={bond} />
-                        <BondMetrics bond={metrics} />
+                        <Divider />
+                        <BondMetrics bondMetrics={bond.metrics} />
                     </Box>
                 )}
             </DialogContent>

@@ -65,8 +65,6 @@ export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async
 
     const { TREASURY_ADDRESS } = getAddresses(chainID);
 
-    console.log('here', bondCalculator, TREASURY_ADDRESS);
-
     if (!bondCalculator) return { balance: null };
 
     const balances = await Promise.all(Object.values(bonds).map(({ bondInstance }) => bondInstance.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS)));
@@ -240,17 +238,6 @@ export const depositBond = createAsyncThunk(
 export const loadBondBalancesAndAllowances = createAsyncThunk('account/balances-and-allowances/bonds', async ({ address }: { address: string }, { getState }) => {
     const { bonds } = getState() as IReduxState;
 
-    console.log(
-        Object.values(bonds.bonds).map(async bond => {
-            const bondContract = bond.bondInstance.getBondContract();
-            const reserveContract = bond.bondInstance.getReserveContract();
-
-            const allowance = await reserveContract.allowance(address, bondContract.address);
-            const balance = await reserveContract.balanceOf(address);
-
-            return { allowance, balance, ID: bond.bondInstance.ID };
-        }),
-    );
     const data = await Promise.all(
         Object.values(bonds.bonds).map(async bond => {
             const bondContract = bond.bondInstance.getBondContract();

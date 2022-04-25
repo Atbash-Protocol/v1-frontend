@@ -2,7 +2,7 @@ import { Box, Typography, Zoom } from '@mui/material';
 
 import { theme } from 'constants/theme';
 
-export const BCard = ({ title, children, zoom, className }: { title: string; children: any; zoom: boolean; className?: string }) => {
+export const BCard = ({ title, children, zoom, className }: { title: string; children: React.ReactNode; zoom: boolean; className?: string }) => {
     const card = (
         <Box
             className={className}

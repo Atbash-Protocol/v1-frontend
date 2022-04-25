@@ -14,7 +14,9 @@ interface AmountFormProps {
     maxValue: number;
     transactionType: TransactionType; // TODO: transaction types
     approvesNeeded: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onApprove: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onAction: any;
     approveLabel: string;
     actionLabel: string;
@@ -51,13 +53,16 @@ const AmountForm = (props: AmountFormProps) => {
     );
 
     return (
-        <Grid container spacing={1}>
+        <Grid container>
             <Grid xs={10}>
                 <OutlinedInput
                     sx={{
                         color: theme.palette.primary.main,
                         border: '1px solid',
+                        borderColor: theme.palette.primary.main,
+                        borderRadius: 0,
                         outlineColor: theme.palette.primary.main,
+                        borderRight: 'none',
                         width: '100%',
                     }}
                     type="number"
@@ -78,6 +83,7 @@ const AmountForm = (props: AmountFormProps) => {
             <Grid xs={2} p={0}>
                 <Button
                     sx={{
+                        padding: 0,
                         color: theme.palette.primary.main,
                     }}
                     onClick={handleActionClick}

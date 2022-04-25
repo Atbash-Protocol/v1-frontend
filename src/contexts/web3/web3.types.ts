@@ -1,4 +1,3 @@
-import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
 
@@ -26,5 +25,6 @@ export enum WEB3ActionTypesEnum {
 
 export interface WEB3ContextAction {
     type: WEB3ActionTypesEnum;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload?: any; // TODO : better typing
 }

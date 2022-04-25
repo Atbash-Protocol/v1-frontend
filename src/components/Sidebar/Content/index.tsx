@@ -23,7 +23,7 @@ import { shorten } from 'helpers/shorten';
 import useBonds from 'hooks/bonds';
 import useENS from 'hooks/useENS';
 import { getBuyLink } from 'lib/uniswap/link';
-import { useSignerAddress, useSignerConnected, useWeb3ContextInitialized } from 'lib/web3/web3.hooks';
+import { useSignerAddress, useSignerConnected } from 'lib/web3/web3.hooks';
 
 import { ListItemLink } from './components/ListItemLink';
 import Social from './components/Social';

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
 
-import { messages } from '../../constants/messages';
-import i18n from '../../i18n';
-import { error } from '../../store/slices/messages-slice';
+import { messages } from 'constants/messages';
+import i18n from 'i18n';
+import { error } from 'store/slices/messages-slice';
 
 export const metamaskErrorWrap = (err: any, dispatch: Dispatch) => {
     let text = messages.something_wrong;

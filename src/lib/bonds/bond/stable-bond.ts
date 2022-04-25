@@ -21,11 +21,10 @@ export class StableBond extends Bond {
     }
 
     public getTokenAmount() {
-        console.warn('Not implemented');
         return Promise.resolve(0);
     }
 
-    public getSbAmount(BASH_ADDRESS: string) {
+    public getSbAmount() {
         return Promise.resolve(0);
     }
 }

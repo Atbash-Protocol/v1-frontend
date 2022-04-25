@@ -28,12 +28,10 @@ export const createSigner = async (web3Modal: Core, dispatch: Dispatch<WEB3Conte
     try {
         const [{ chainId }, address] = await Promise.all([signer.getNetwork(), signer.getSigner().getAddress()]);
 
-        console.log('address', address);
         dispatch({ type: WEB3ActionTypesEnum.SET_SIGNER, payload: { signer, chainId, address } });
     } catch (err) {
         console.error(err);
     } finally {
-        console.log('createSigner done');
     }
 };
 

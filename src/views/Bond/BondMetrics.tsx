@@ -2,15 +2,19 @@ import { Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
+import { selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
+import { BondMetrics } from 'store/modules/bonds/bonds.types';
 
-const BondMetrics = ({ bond }: any) => {
+const CBondMetrics = ({ bondMetrics }: { bondMetrics: BondMetrics }) => {
     const { t } = useTranslation();
 
-    if (!bond) {
+    const metrics = selectBondMintingMetrics(bondMetrics);
+
+    if (!metrics) {
         return <> </>;
     }
 
-    const { maxBondPrice, bondDiscount, vestingTerm } = bond;
+    const { maxBondPrice, bondDiscount, vestingTerm } = metrics;
 
     const metrics2 = [
         { value: (maxBondPrice ?? '').toString(), metricKey: t('bond:MaxYouCanBuy') },
@@ -28,4 +32,4 @@ const BondMetrics = ({ bond }: any) => {
     );
 };
 
-export default BondMetrics;
+export default CBondMetrics;

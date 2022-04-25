@@ -24,7 +24,7 @@ export const marketSlice = createSlice({
                     loading: false,
                 };
             })
-            .addCase(getMarketPrices.rejected, (state, action) => {
+            .addCase(getMarketPrices.rejected, () => {
                 console.error('API not available');
             });
     },

@@ -40,11 +40,7 @@ export const selectBondInfos = (bonds: Record<string, BondItem>, bondID: string)
 export const selectBondMintingMetrics = (metrics: BondMetrics) => {
     let bondPrice = null;
 
-    try {
-        bondPrice = formatUSD(Number(metrics.bondPrice) / 1e18, 2);
-    } catch (err) {
-        console.error(err);
-    }
+    bondPrice = formatUSD(Number(metrics.bondPrice) / 1e18, 2);
 
     return {
         bondPrice,
@@ -56,11 +52,7 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
     };
 };
 
-export const selectMaxPurchaseAmount = (state: RootState) => {
-    const { bonds } = state.bonds;
-
-    return 0;
-};
+export const selectMaxPurchaseAmount = (state: RootState) => {};
 
 export const selectBondIsQuoting = (bonds: Record<string, BondItem>, bondID: string) => {
     const bond = bonds[bondID];

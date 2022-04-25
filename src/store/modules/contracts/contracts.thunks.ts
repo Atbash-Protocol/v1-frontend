@@ -15,15 +15,19 @@ export const stakeAction = createAsyncThunk('contracts/stake', async ({ action, 
     const { signer, signerAddress } = useSafeSigner();
 
     const {
-        main: { contracts },
+        main: {
+            contracts: { STAKING_HELPER_ADDRESS, STAKING_ADDRESS },
+        },
     } = getState() as IReduxState;
 
     const gasPrice = await signer.getGasPrice();
 
+    if (!STAKING_ADDRESS || !STAKING_HELPER_ADDRESS) throw new Error('Unable to get contracts');
+
     const transaction =
         action === 'STAKE'
-            ? await contracts.STAKING_HELPER_ADDRESS!.stake(ethers.utils.parseUnits(amount.toString(), 'gwei'), signerAddress, { gasPrice })
-            : await contracts.STAKING_ADDRESS!.unstake(ethers.utils.parseUnits(amount.toString(), 'gwei'), true, { gasPrice });
+            ? await STAKING_HELPER_ADDRESS.stake(ethers.utils.parseUnits(amount.toString(), 'gwei'), signerAddress, { gasPrice })
+            : await STAKING_ADDRESS.unstake(ethers.utils.parseUnits(amount.toString(), 'gwei'), true, { gasPrice });
 
     try {
         dispatch(fetchPendingTxns({ txnHash: transaction.hash, text: getStakingTypeText(action), type: getPendingActionText(action) }));

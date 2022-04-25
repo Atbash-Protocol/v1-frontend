@@ -1,6 +1,3 @@
-import { JsonRpcSigner } from '@ethersproject/providers';
-
-import { ActiveTokensEnum } from 'config/tokens';
 import { Networks } from 'constants/blockchain';
 
 import { BondOptions } from './bond/bond';

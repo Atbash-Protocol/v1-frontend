@@ -46,7 +46,7 @@ export const selectFormattedMarketCap = (state: RootState): string | null => {
 
     if (!totalSupply || !dai) return null;
 
-    return formatUSD(totalSupply! * dai, 2);
+    return formatUSD(totalSupply * dai, 2);
 };
 
 export const selectWSBASHPrice = (state: RootState): string | null => {

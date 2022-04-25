@@ -14,12 +14,8 @@ const useENS = () => {
     useEffect(() => {
         const resolveENS = async () => {
             if (signerAddress && provider && ethers.utils.isAddress(signerAddress)) {
-                try {
-                    const name = await provider.lookupAddress(signerAddress);
-                    setENSName(name);
-                } catch (e) {
-                    console.info('ENS not found');
-                }
+                const name = await provider.lookupAddress(signerAddress);
+                setENSName(name);
             }
         };
         resolveENS();

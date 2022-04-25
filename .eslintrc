@@ -73,6 +73,7 @@
         }
       }
     ],
+    "import/no-named-as-default": "off",
   },
   "settings": {
     "import/resolver": {

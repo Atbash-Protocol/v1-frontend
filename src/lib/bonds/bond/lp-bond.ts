@@ -22,10 +22,12 @@ export class LPBond extends Bond {
     }
 
     public async getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string) {
-        const tokenAmount = await this.reserveContract!.balanceOf(treasuryAddress);
+        if (!this.reserveContract) throw new Error('Reserve contract is undefined');
 
-        const valuation = await bondCalculatorContract.valuation(this.reserveContract!.address, tokenAmount);
-        const markdown = await bondCalculatorContract.markdown(this.reserveContract!.address);
+        const tokenAmount = await this.reserveContract.balanceOf(treasuryAddress);
+
+        const valuation = await bondCalculatorContract.valuation(this.reserveContract.address, tokenAmount);
+        const markdown = await bondCalculatorContract.markdown(this.reserveContract.address);
         const tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
 
         return tokenUSD;
@@ -40,7 +42,9 @@ export class LPBond extends Bond {
     }
 
     private async getReserves(BASH_ADDRESS: string, isToken: boolean): Promise<number> {
-        const token = this.reserveContract!;
+        const token = this.reserveContract;
+
+        if (!token) throw new Error('Reserve contract is not defined');
 
         const [reserve0, reserve1] = await token.getReserves();
         const token1: string = await token.token1();

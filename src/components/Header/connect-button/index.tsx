@@ -41,7 +41,7 @@ function ConnectMenu() {
         <Box>
             <Button
                 sx={{
-                    background: isUserSigned && !isUserOnGoodNetwork ? 'red' : 'rgba(255, 255, 255, 0.9)',
+                    background: isUserSigned && !isUserOnGoodNetwork ? 'red !important' : 'rgba(255, 255, 255, 0.9)',
                     boxShadow: '0px 0px 10px rgba(44, 39, 109, 0.1)',
                     padding: theme.spacing(1),
                 }}
