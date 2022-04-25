@@ -6,8 +6,8 @@ import { Route, Switch } from 'react-router-dom';
 
 import { BondDialog } from 'components/BondDialog';
 import { PWeb3Context } from 'contexts/web3/web3.context';
-import useBonds from 'hooks/bonds';
 import { useProvider, useSignerConnected } from 'contexts/web3/web3.hooks';
+import useBonds from 'hooks/bonds';
 import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
 import { MainSliceState } from 'store/modules/app/app.types';
 import { initializeBonds } from 'store/modules/bonds/bonds.thunks';
