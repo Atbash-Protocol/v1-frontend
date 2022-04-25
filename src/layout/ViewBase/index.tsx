@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import "./view-base.scss";
-import Header from "components/Header";
-import { Box, Hidden, makeStyles, useMediaQuery, Drawer, IconButton, Container, Slide } from "@mui/material";
-import { DRAWER_WIDTH, TRANSITION_DURATION } from "constants/styles";
+import './view-base.scss';
+import React, { useContext, useState } from 'react';
 
-import BackgroundImage from "../../assets/background.png";
+import { Box, useMediaQuery } from '@mui/material';
 
-import { SideBar } from "components/Sidebar";
-import Messages from "components/Messages";
-import { NewWeb3ContextProvider, PWeb3Context } from "contexts/web3/web3.context";
-import { theme } from "constants/theme";
-import { isMobile } from "web3modal";
+import Header from 'components/Header';
+import Messages from 'components/Messages';
+import { SideBar } from 'components/Sidebar';
+import { theme } from 'constants/theme';
+import { PWeb3Context } from 'contexts/web3/web3.context';
+
+import BackgroundImage from '../../assets/background.png';
 
 interface IViewBaseProps {
     children: React.ReactNode;
@@ -45,7 +44,7 @@ interface IViewBaseProps {
 function ViewBase({ children }: IViewBaseProps) {
     const [isSidebarOpen, setisSidebarOpen] = useState(false);
 
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const { state } = useContext(PWeb3Context);
 
     const handleDrawerToggle = () => {
@@ -59,12 +58,12 @@ function ViewBase({ children }: IViewBaseProps) {
     return (
         <Box
             sx={{
-                height: "100vh",
+                height: '100vh',
                 backgroundImage: `url(${BackgroundImage})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundPositionX: "center",
-                backgroundPositionY: "center",
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPositionX: 'center',
+                backgroundPositionY: 'center',
             }}
         >
             <Messages />
@@ -78,8 +77,8 @@ function ViewBase({ children }: IViewBaseProps) {
                         xs: 0,
                         sm: theme.spacing(32), //TODO: Use a dynamic drawer
                     },
-                    maxHeight: "100vh",
-                    overflowY: "scroll",
+                    maxHeight: '100vh',
+                    overflowY: 'scroll',
                     paddingBottom: theme.spacing(8),
                 }}
             >

@@ -1,8 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { isActionRejected } from "store/utils/action";
+import { createSlice } from '@reduxjs/toolkit';
 
-import { initializeProviderContracts, getBlockchainData, getCoreMetrics, getStakingMetrics } from "./app.thunks";
-import { ContractEnum, MainSliceState } from "./app.types";
+import { isActionRejected } from 'store/utils/action';
+
+import { initializeProviderContracts, getBlockchainData, getCoreMetrics, getStakingMetrics } from './app.thunks';
+import { ContractEnum, MainSliceState } from './app.types';
 
 // Define the initial state using that type
 const initialState: MainSliceState = {
@@ -37,7 +38,7 @@ const initialState: MainSliceState = {
 };
 
 export const MainSlice = createSlice({
-    name: "app-main",
+    name: 'app-main',
     initialState,
     reducers: {},
     extraReducers: builder => {
@@ -70,7 +71,7 @@ export const MainSlice = createSlice({
                 };
             })
             .addMatcher(isActionRejected, (state, action) => {
-                if (action.type.startsWith("app/")) state.errorEncountered = true;
+                if (action.type.startsWith('app/')) state.errorEncountered = true;
             });
     },
 });

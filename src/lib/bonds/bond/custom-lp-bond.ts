@@ -1,9 +1,11 @@
-import { StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Networks } from "constants/blockchain";
-import { LPBond, LPBondOpts } from "./lp-bond";
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
+
+import { Networks } from 'constants/blockchain';
+
+import { LPBond, LPBondOpts } from './lp-bond';
 
 // These are special bonds that have different valuation methods
-export interface CustomLPBondOpts extends LPBondOpts {}
+export type CustomLPBondOpts = LPBondOpts;
 
 export class CustomLPBond extends LPBond {
     constructor(customBondOpts: CustomLPBondOpts) {

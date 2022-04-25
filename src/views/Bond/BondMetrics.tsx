@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
-import MemoInlineMetric from "components/Metrics/InlineMetric";
-import { useTranslation } from "react-i18next";
+import { Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+
+import MemoInlineMetric from 'components/Metrics/InlineMetric';
 
 const BondMetrics = ({ bond }: any) => {
     const { t } = useTranslation();
@@ -12,12 +13,12 @@ const BondMetrics = ({ bond }: any) => {
     const { maxBondPrice, bondDiscount, vestingTerm } = bond;
 
     const metrics2 = [
-        { value: (maxBondPrice ?? "").toString(), metricKey: t("bond:MaxYouCanBuy") },
+        { value: (maxBondPrice ?? '').toString(), metricKey: t('bond:MaxYouCanBuy') },
         {
-            metricKey: t("bond:ROI"),
+            metricKey: t('bond:ROI'),
             value: bondDiscount,
         },
-        { metricKey: t("bond:MinimumPurchase"), value: vestingTerm },
+        { metricKey: t('bond:MinimumPurchase'), value: vestingTerm },
     ].map(({ value, metricKey }, index) => <MemoInlineMetric {...{ value, metricKey }} key={index} />);
 
     return (

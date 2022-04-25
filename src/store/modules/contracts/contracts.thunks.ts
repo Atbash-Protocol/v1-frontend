@@ -1,15 +1,17 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { messages } from "constants/messages";
-import { ethers } from "ethers";
-import { metamaskErrorWrap } from "helpers/networks/metamask-error-wrap";
-import { useSafeSigner } from "lib/web3/web3.hooks";
-import { success, info } from "store/slices/messages-slice";
-import { fetchPendingTxns, getStakingTypeText, clearPendingTxn, getPendingActionText } from "store/slices/pending-txns-slice";
-import { IReduxState } from "store/slices/state.interface";
-import { loadBalancesAndAllowances } from "../account/account.thunks";
-import { ChangeStakeOptions } from "./contracts.types";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ethers } from 'ethers';
 
-export const stakeAction = createAsyncThunk("contracts/stake", async ({ action, amount }: ChangeStakeOptions, { dispatch, getState }) => {
+import { messages } from 'constants/messages';
+import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
+import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { success, info } from 'store/slices/messages-slice';
+import { fetchPendingTxns, getStakingTypeText, clearPendingTxn, getPendingActionText } from 'store/slices/pending-txns-slice';
+import { IReduxState } from 'store/slices/state.interface';
+
+import { loadBalancesAndAllowances } from '../account/account.thunks';
+import { ChangeStakeOptions } from './contracts.types';
+
+export const stakeAction = createAsyncThunk('contracts/stake', async ({ action, amount }: ChangeStakeOptions, { dispatch, getState }) => {
     const { signer, signerAddress } = useSafeSigner();
 
     const {
@@ -19,9 +21,9 @@ export const stakeAction = createAsyncThunk("contracts/stake", async ({ action, 
     const gasPrice = await signer.getGasPrice();
 
     const transaction =
-        action === "STAKE"
-            ? await contracts.STAKING_HELPER_ADDRESS!.stake(ethers.utils.parseUnits(amount.toString(), "gwei"), signerAddress, { gasPrice })
-            : await contracts.STAKING_ADDRESS!.unstake(ethers.utils.parseUnits(amount.toString(), "gwei"), true, { gasPrice });
+        action === 'STAKE'
+            ? await contracts.STAKING_HELPER_ADDRESS!.stake(ethers.utils.parseUnits(amount.toString(), 'gwei'), signerAddress, { gasPrice })
+            : await contracts.STAKING_ADDRESS!.unstake(ethers.utils.parseUnits(amount.toString(), 'gwei'), true, { gasPrice });
 
     try {
         dispatch(fetchPendingTxns({ txnHash: transaction.hash, text: getStakingTypeText(action), type: getPendingActionText(action) }));

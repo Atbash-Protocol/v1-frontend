@@ -1,5 +1,5 @@
-import CircularProgress from "@material-ui/core/CircularProgress";
-import "./loader.scss";
+import './loader.scss';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Loader() {
     return (

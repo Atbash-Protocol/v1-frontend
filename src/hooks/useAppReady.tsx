@@ -1,6 +1,7 @@
-import Loader from "components/Loader";
-import { PWeb3Context } from "contexts/web3/web3.context";
-import { useContext, useState, useLayoutEffect } from "react";
+import { useContext, useState, useLayoutEffect } from 'react';
+
+import Loader from 'components/Loader';
+import { PWeb3Context } from 'contexts/web3/web3.context';
 
 export const useAppReady = () => {
     const {

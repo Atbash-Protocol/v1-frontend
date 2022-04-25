@@ -1,15 +1,15 @@
-import { ethereumMainetInfos } from "helpers/networks/ethereum-mainnet";
+import { ethereumMainetInfos } from 'helpers/networks/ethereum-mainnet';
 
 const switchRequest = () => {
     return window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0x1" }],
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x1' }],
     });
 };
 
 const addChainRequest = () => {
     return window.ethereum.request({
-        method: "wallet_addEthereumChain",
+        method: 'wallet_addEthereumChain',
         params: [ethereumMainetInfos],
     });
 };

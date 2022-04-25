@@ -1,14 +1,16 @@
-import { Contract, ethers } from "ethers";
-import { Bond, BondOptions } from "./bond";
-import { JsonRpcSigner } from "@ethersproject/providers";
-import { BondAddresses } from "helpers/bond/constants";
-import { LpBondContract, LpReserveContract } from "abi";
+import { JsonRpcSigner } from '@ethersproject/providers';
+import { Contract, ethers } from 'ethers';
+
+import { LpBondContract, LpReserveContract } from 'abi';
+import { BondAddresses } from 'helpers/bond/constants';
+
+import { Bond, BondOptions } from './bond';
 
 // Keep all LP specific fields/logic within the LPBond class
-export interface LPBondOpts extends BondOptions {}
+export type LPBondOpts = BondOptions;
 
 export class LPBond extends Bond {
-    public readonly LP_URL = "";
+    public readonly LP_URL = '';
 
     constructor(public readonly bondOptions: BondOptions) {
         super(bondOptions);
@@ -30,7 +32,7 @@ export class LPBond extends Bond {
     }
 
     public getTokenAmount() {
-        return this.getReserves("", true);
+        return this.getReserves('', true);
     }
 
     public getSbAmount(BASH_ADDRESS: string) {
@@ -40,7 +42,7 @@ export class LPBond extends Bond {
     private async getReserves(BASH_ADDRESS: string, isToken: boolean): Promise<number> {
         const token = this.reserveContract!;
 
-        let [reserve0, reserve1] = await token.getReserves();
+        const [reserve0, reserve1] = await token.getReserves();
         const token1: string = await token.token1();
         const isBASH = token1.toLowerCase() === BASH_ADDRESS.toLowerCase();
 

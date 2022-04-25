@@ -1,6 +1,7 @@
-import { ethers } from "ethers";
-import { snakeCase } from "lodash";
-import { BondAddresses, BondProviderEnum, BondType } from "../bonds.types";
+import { ethers } from 'ethers';
+import { snakeCase } from 'lodash';
+
+import { BondAddresses, BondProviderEnum, BondType } from '../bonds.types';
 
 export interface BondOptions {
     name: string;
@@ -17,6 +18,7 @@ export abstract class Bond {
     public ID: string;
 
     protected bondContract?: ethers.Contract;
+
     protected reserveContract?: ethers.Contract;
 
     constructor(public readonly bondOptions: BondOptions) {
@@ -37,7 +39,7 @@ export abstract class Bond {
 
         switch (this.bondOptions.lpProvider) {
             case BondProviderEnum.UNISWAP_V2: {
-                return [BondProviderEnum.UNISWAP_V2, bondAddress, reserveAddress].join("/");
+                return [BondProviderEnum.UNISWAP_V2, bondAddress, reserveAddress].join('/');
             }
         }
     }
@@ -56,8 +58,8 @@ export abstract class Bond {
 
     public getBondAddresses(): BondAddresses {
         return {
-            bondAddress: "0xcE24D6A45D5c59D31D05c8C278cA3455dD6a43DA",
-            reserveAddress: "0x26DF06b47412dA76061ddA1fD9fe688A497FB88b",
+            bondAddress: '0xcE24D6A45D5c59D31D05c8C278cA3455dD6a43DA',
+            reserveAddress: '0x26DF06b47412dA76061ddA1fD9fe688A497FB88b',
         };
     }
 

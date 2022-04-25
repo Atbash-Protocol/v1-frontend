@@ -1,7 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { ActiveTokensEnum } from "config/tokens";
-import { getMarketPrices } from "./markets.thunks";
-import { MarketSlice } from "./markets.type";
+import { createSlice } from '@reduxjs/toolkit';
+
+import { ActiveTokensEnum } from 'config/tokens';
+
+import { getMarketPrices } from './markets.thunks';
+import { MarketSlice } from './markets.type';
 
 const initialState: MarketSlice = {
     markets: {
@@ -11,7 +13,7 @@ const initialState: MarketSlice = {
 };
 
 export const marketSlice = createSlice({
-    name: "market-slice",
+    name: 'market-slice',
     initialState,
     reducers: {},
     extraReducers: builder => {
@@ -23,7 +25,7 @@ export const marketSlice = createSlice({
                 };
             })
             .addCase(getMarketPrices.rejected, (state, action) => {
-                console.error("API not available");
+                console.error('API not available');
             });
     },
 });

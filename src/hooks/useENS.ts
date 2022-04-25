@@ -1,6 +1,8 @@
-import { ethers } from "ethers";
-import { useContext, useEffect, useState } from "react";
-import { PWeb3Context } from "contexts/web3/web3.context";
+import { useContext, useEffect, useState } from 'react';
+
+import { ethers } from 'ethers';
+
+import { PWeb3Context } from 'contexts/web3/web3.context';
 
 const useENS = () => {
     const [ensName, setENSName] = useState<string | null>(null);
@@ -13,10 +15,10 @@ const useENS = () => {
         const resolveENS = async () => {
             if (signerAddress && provider && ethers.utils.isAddress(signerAddress)) {
                 try {
-                    const ensName = await provider.lookupAddress(signerAddress);
-                    setENSName(ensName);
+                    const name = await provider.lookupAddress(signerAddress);
+                    setENSName(name);
                 } catch (e) {
-                    console.info("ENS not found");
+                    console.info('ENS not found');
                 }
             }
         };

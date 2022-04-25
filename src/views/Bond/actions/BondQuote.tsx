@@ -1,7 +1,8 @@
-import { Button } from "@mui/material";
-import { useSafeSigner } from "lib/web3/web3.hooks";
-import { useDispatch } from "react-redux";
-import { BondItem } from "store/modules/bonds/bonds.types";
+import { Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
+
+import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { BondItem } from 'store/modules/bonds/bonds.types';
 
 export const BondQuote = ({ bond }: { bond: BondItem }) => {
     const { signer } = useSafeSigner();

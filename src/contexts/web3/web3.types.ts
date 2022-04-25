@@ -1,5 +1,6 @@
-import { ethers } from "ethers";
-import Web3Modal from "web3modal";
+import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
+import Web3Modal from 'web3modal';
 
 export interface WEB3State {
     networkID: number | null;
@@ -11,16 +12,16 @@ export interface WEB3State {
 
 export interface Web3Context {
     state: WEB3State;
-    memoConnect: Function;
-    memoDisconnect: Function;
+    memoConnect: () => void;
+    memoDisconnect: (signer: Web3Provider | null) => void;
 }
 
 export enum WEB3ActionTypesEnum {
-    CLOSE = "CLOSE",
-    NETWORK_CHANGED = "NETWORK_CHANGED",
-    SET_SIGNER = "SET_SIGNER",
-    CLEAR_SIGNER = "CLEAR_SIGNER",
-    SET_PROVIDER = "SET_PROVIDER",
+    CLOSE = 'CLOSE',
+    NETWORK_CHANGED = 'NETWORK_CHANGED',
+    SET_SIGNER = 'SET_SIGNER',
+    CLEAR_SIGNER = 'CLEAR_SIGNER',
+    SET_PROVIDER = 'SET_PROVIDER',
 }
 
 export interface WEB3ContextAction {

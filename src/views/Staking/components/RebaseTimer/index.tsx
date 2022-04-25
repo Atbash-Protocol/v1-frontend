@@ -1,11 +1,12 @@
-import { shallowEqual, useSelector } from "react-redux";
-import { formatTimer } from "helpers/prettify-seconds";
-import { IReduxState } from "store/slices/state.interface";
+import { useState, useEffect } from 'react';
 
-import { useTranslation } from "react-i18next";
-import { Box, Skeleton, Typography } from "@mui/material";
-import { theme } from "constants/theme";
-import { useState, useEffect } from "react";
+import { Box, Skeleton, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { shallowEqual, useSelector } from 'react-redux';
+
+import { theme } from 'constants/theme';
+import { formatTimer } from 'helpers/prettify-seconds';
+import { IReduxState } from 'store/slices/state.interface';
 
 const RebaseTimer = () => {
     const { t } = useTranslation();
@@ -15,15 +16,14 @@ const RebaseTimer = () => {
             return state.main.staking.epoch.endTime;
         }
     }, shallowEqual);
-    const currentBlockTime = useSelector<IReduxState, number>(state => state.main.blockchain.timestamp!);
+    const currentBlockTime = useSelector<IReduxState, number | null>(state => state.main.blockchain.timestamp);
 
     const [timeUntilRebase, setTimeUntilRebase] = useState<string | null>(null);
 
     useEffect(() => {
         if (currentBlockTime && nextRebase) {
             if (currentBlockTime > nextRebase) {
-                const timeUntilRebase = formatTimer(currentBlockTime, nextRebase, t);
-                setTimeUntilRebase(timeUntilRebase);
+                setTimeUntilRebase(formatTimer(currentBlockTime, nextRebase, t));
             }
         }
     }, [currentBlockTime, nextRebase]);
@@ -31,8 +31,8 @@ const RebaseTimer = () => {
     if (!currentBlockTime || !nextRebase) return <Skeleton />;
 
     return (
-        <Box sx={{ color: theme.palette.primary.main, textTransform: "uppercase", letterSpacing: 2 }}>
-            {timeUntilRebase ? <Typography>{t("TimeToNextRebase", { time: timeUntilRebase })}</Typography> : <Typography>{t("Rebasing")}</Typography>}
+        <Box sx={{ color: theme.palette.primary.main, textTransform: 'uppercase', letterSpacing: 2 }}>
+            {timeUntilRebase ? <Typography>{t('TimeToNextRebase', { time: timeUntilRebase })}</Typography> : <Typography>{t('Rebasing')}</Typography>}
         </Box>
     );
 };

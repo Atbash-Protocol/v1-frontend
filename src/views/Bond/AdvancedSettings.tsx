@@ -1,9 +1,10 @@
-import { Box, Modal, Paper, SvgIcon, IconButton, FormControl, OutlinedInput, InputLabel, InputAdornment } from "@material-ui/core";
-import { useEffect, useState } from "react";
-import { ReactComponent as XIcon } from "../../assets/icons/x.svg";
-import "./bondSettings.scss";
+import { ReactComponent as XIcon } from '../../assets/icons/x.svg';
 
-import { useTranslation } from "react-i18next";
+import './bondSettings.scss';
+import { useEffect, useState } from 'react';
+
+import { Box, Modal, Paper, SvgIcon, IconButton, FormControl, OutlinedInput, InputLabel, InputAdornment } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 interface IAdvancedSettingsProps {
     open: boolean;
@@ -36,11 +37,11 @@ function AdvancedSettings({ open, handleClose, slippage, recipientAddress, onRec
                     </IconButton>
                 </div>
 
-                <p className="hades-title">{t("bond:Settings")}</p>
+                <p className="hades-title">{t('bond:Settings')}</p>
 
                 <Box className="card-content">
                     <InputLabel htmlFor="slippage">
-                        <p className="input-lable">{t("bond:Slippage")}</p>
+                        <p className="input-lable">{t('bond:Slippage')}</p>
                     </InputLabel>
                     <FormControl variant="outlined" color="primary" fullWidth>
                         <OutlinedInput
@@ -57,17 +58,17 @@ function AdvancedSettings({ open, handleClose, slippage, recipientAddress, onRec
                             }
                         />
                         <div className="help-text">
-                            <p className="text-bond-desc">{t("bond:SlippageHelpText")}</p>
+                            <p className="text-bond-desc">{t('bond:SlippageHelpText')}</p>
                         </div>
                     </FormControl>
 
                     <InputLabel htmlFor="recipient">
-                        <p className="input-lable">{t("bond:RecipientAddress")}</p>
+                        <p className="input-lable">{t('bond:RecipientAddress')}</p>
                     </InputLabel>
                     <FormControl variant="outlined" color="primary" fullWidth>
                         <OutlinedInput className="bond-input" id="recipient" value={recipientAddress} onChange={onRecipientAddressChange} type="text" />
                         <div className="help-text">
-                            <p className="text-bond-desc">{t("bond:RecipientAddressHelpText")}</p>
+                            <p className="text-bond-desc">{t('bond:RecipientAddressHelpText')}</p>
                         </div>
                     </FormControl>
                 </Box>

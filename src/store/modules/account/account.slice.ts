@@ -1,7 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { BigNumber } from "ethers";
-import { loadBalancesAndAllowances } from "./account.thunks";
-import { AccountSlice } from "./account.types";
+import { createSlice } from '@reduxjs/toolkit';
+import { BigNumber } from 'ethers';
+
+import { loadBalancesAndAllowances } from './account.thunks';
+import { AccountSlice } from './account.types';
 
 const initialState: AccountSlice = {
     balances: {
@@ -18,7 +19,7 @@ const initialState: AccountSlice = {
 };
 
 export const marketSlice = createSlice({
-    name: "app-account-slice",
+    name: 'app-account-slice',
     initialState,
     reducers: {},
     extraReducers: builder => {

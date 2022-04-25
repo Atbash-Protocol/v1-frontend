@@ -1,13 +1,14 @@
-import { Box, Button, Grid, Link, Skeleton, Typography } from "@mui/material";
-import BondLogo from "components/BondLogo";
-import { theme } from "constants/theme";
-import { useSafeSigner } from "lib/web3/web3.hooks";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { selectBondInfos, selectBondMintingMetrics } from "store/modules/bonds/bonds.selector";
-import { BondItem } from "store/modules/bonds/bonds.types";
-import { IReduxState } from "store/slices/state.interface";
+import { Box, Button, Grid, Link, Skeleton, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
+import BondLogo from 'components/BondLogo';
+import { theme } from 'constants/theme';
+import { useSafeSigner } from 'lib/web3/web3.hooks';
+import { selectBondInfos, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
+import { BondItem } from 'store/modules/bonds/bonds.types';
+import { IReduxState } from 'store/slices/state.interface';
 
 interface IBondProps {
     bondID: string;
@@ -20,20 +21,20 @@ const BondMintMetric = ({ metric, value }: { metric: string; value: string | nul
             sm={2}
             xs={12}
             sx={{
-                [theme.breakpoints.up("xs")]: {
-                    display: "inline-flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                [theme.breakpoints.up('xs')]: {
+                    display: 'inline-flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                 },
             }}
         >
             <Box
                 sx={{
-                    [theme.breakpoints.up("xs")]: {
-                        display: "flex",
+                    [theme.breakpoints.up('xs')]: {
+                        display: 'flex',
                     },
-                    [theme.breakpoints.up("sm")]: {
-                        display: "none",
+                    [theme.breakpoints.up('sm')]: {
+                        display: 'none',
                     },
                 }}
             >
@@ -62,12 +63,12 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
     console.log(bond, bondPrice, bondDiscount, purchased);
 
     const metrics = [
-        { metric: t("bond:Mint"), value: bondPrice },
+        { metric: t('bond:Mint'), value: bondPrice },
         {
-            metric: t("Price"),
+            metric: t('Price'),
             value: bondDiscount,
         },
-        { metric: t("ROI"), value: purchased },
+        { metric: t('ROI'), value: purchased },
     ].map((metric, i) => <BondMintMetric key={`bondMetric-${i}`} {...metric} />);
 
     return (
@@ -75,15 +76,15 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
             container
             sx={{
                 color: bondSoldOut ? theme.palette.primary.main : theme.palette.primary.main,
-                [theme.breakpoints.up("xs")]: {
+                [theme.breakpoints.up('xs')]: {
                     marginBottom: theme.spacing(2),
                     paddingBottom: theme.spacing(4),
                 },
-                [theme.breakpoints.up("sm")]: {
+                [theme.breakpoints.up('sm')]: {
                     marginBottom: theme.spacing(0),
                     paddingBottom: theme.spacing(2),
                 },
-                alignItems: "center",
+                alignItems: 'center',
             }}
         >
             <Grid item sm={1} xs={4}>
@@ -98,16 +99,16 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
                 item
                 sm={3}
                 sx={{
-                    border: "1px solid",
-                    [theme.breakpoints.down("xs")]: {
-                        display: "none",
+                    border: '1px solid',
+                    [theme.breakpoints.down('xs')]: {
+                        display: 'none',
                     },
                 }}
             >
                 {signer && (
                     <Button disabled={!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}` }}>
                         <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`}>
-                            <p>{bond.bondInstance.bondOptions.isActive ? t("bond:Mint") : t("bond:Redeem")}</p>
+                            <p>{bond.bondInstance.bondOptions.isActive ? t('bond:Mint') : t('bond:Redeem')}</p>
                         </Link>
                     </Button>
                 )}

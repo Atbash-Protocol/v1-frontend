@@ -1,8 +1,9 @@
-import { Link as RouterLink, LinkProps as RouterLinkProps } from "react-router-dom";
+import { ReactElement, useMemo, forwardRef } from 'react';
 
-import { ReactElement, useMemo, forwardRef } from "react";
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { theme } from "constants/theme";
+import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+
+import { theme } from 'constants/theme';
 
 interface ListItemLinkProps {
     icon?: ReactElement;
@@ -16,7 +17,7 @@ interface ListItemLinkProps {
 export const ListItemLink = ({ icon, primary, extra, to, disabled = false, renderComponent }: ListItemLinkProps) => {
     const renderLink = useMemo(
         () =>
-            forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, "to">>(function Link(itemProps, ref) {
+            forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'to'>>(function Link(itemProps, ref) {
                 return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} onClick={() => null} />;
             }),
         [to],

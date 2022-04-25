@@ -1,22 +1,23 @@
-import { useContext, useEffect } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { IReduxState } from "store/slices/state.interface";
-import { Dashboard, CritialError, NotFound, Stake, Wrap, Forecast, Redeem } from "../views";
+import './style.scss';
+import { useContext, useEffect } from 'react';
 
-import "./style.scss";
-import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from "store/modules/app/app.thunks";
-import { MainSliceState } from "store/modules/app/app.types";
-import { Route, Switch } from "react-router-dom";
-import { getMarketPrices } from "store/modules/markets/markets.thunks";
-import { initializeBonds } from "store/modules/bonds/bonds.thunks";
-import BondList from "views/Bond/BondList/BondList";
-import useBonds from "hooks/bonds";
-import { PWeb3Context } from "contexts/web3/web3.context";
-import { useProvider, useSignerConnected } from "lib/web3/web3.hooks";
-import _ from "lodash";
-import { BondDialog } from "components/BondDialog";
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 
-function App() {
+import { BondDialog } from 'components/BondDialog';
+import { PWeb3Context } from 'contexts/web3/web3.context';
+import useBonds from 'hooks/bonds';
+import { useProvider, useSignerConnected } from 'lib/web3/web3.hooks';
+import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
+import { MainSliceState } from 'store/modules/app/app.types';
+import { initializeBonds } from 'store/modules/bonds/bonds.thunks';
+import { getMarketPrices } from 'store/modules/markets/markets.thunks';
+import { IReduxState } from 'store/slices/state.interface';
+import BondList from 'views/Bond/BondList/BondList';
+
+import { Dashboard, CritialError, NotFound, Stake, Wrap, Forecast, Redeem } from '../views';
+
+function App(): JSX.Element {
     const dispatch = useDispatch();
     const bonds = useBonds();
 

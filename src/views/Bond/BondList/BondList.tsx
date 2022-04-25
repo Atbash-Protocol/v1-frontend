@@ -1,20 +1,22 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Box, Typography, Grid } from "@mui/material";
-import { BondtListItem } from "./BondListItem";
-import "./bondlist.scss";
-import { IReduxState } from "../../../store/slices/state.interface";
+import './bondlist.scss';
+import { useEffect } from 'react';
 
-import { useTranslation } from "react-i18next";
-import { selectAllBonds } from "store/modules/bonds/bonds.selector";
-import { selectDAIPrice } from "store/modules/markets/markets.selectors";
-import { useEffect } from "react";
-import { calcBondDetails, getTreasuryBalance } from "store/modules/bonds/bonds.thunks";
-import { theme } from "constants/theme";
-import { MenuMetric } from "components/Metrics/MenuMetric";
-import { BCard } from "components/BCard";
-import { usePWeb3Context } from "contexts/web3/web3.context";
-import { useContractLoaded } from "store/modules/app/app.selectors";
-import { formatUSD } from "helpers/price-units";
+import { Box, Typography, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { BCard } from 'components/BCard';
+import { MenuMetric } from 'components/Metrics/MenuMetric';
+import { theme } from 'constants/theme';
+import { usePWeb3Context } from 'contexts/web3/web3.context';
+import { formatUSD } from 'helpers/price-units';
+import { useContractLoaded } from 'store/modules/app/app.selectors';
+import { selectAllBonds } from 'store/modules/bonds/bonds.selector';
+import { calcBondDetails, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
+import { selectDAIPrice } from 'store/modules/markets/markets.selectors';
+import { IReduxState } from 'store/slices/state.interface';
+
+import { BondtListItem } from './BondListItem';
 
 const BondHeader = () => {
     const { t } = useTranslation();
@@ -23,27 +25,27 @@ const BondHeader = () => {
         <Grid
             container
             sx={{
-                [theme.breakpoints.up("xs")]: {
-                    display: "none",
+                [theme.breakpoints.up('xs')]: {
+                    display: 'none',
                 },
-                [theme.breakpoints.up("sm")]: {
-                    display: "inline-flex",
+                [theme.breakpoints.up('sm')]: {
+                    display: 'inline-flex',
                 },
                 color: theme.palette.primary.main,
             }}
         >
             <Grid item sm={1} />
             <Grid item sm={2}>
-                <Typography variant="h6">{t("bond:Mint")}</Typography>
+                <Typography variant="h6">{t('bond:Mint')}</Typography>
             </Grid>
             <Grid item sm={2}>
-                <Typography variant="h6">{t("Price")}</Typography>
+                <Typography variant="h6">{t('Price')}</Typography>
             </Grid>
             <Grid item sm={2}>
-                <Typography variant="h6">{t("ROI")}</Typography>
+                <Typography variant="h6">{t('ROI')}</Typography>
             </Grid>
             <Grid item sm={2}>
-                <Typography variant="h6">{t("bond:Purchased")}</Typography>
+                <Typography variant="h6">{t('bond:Purchased')}</Typography>
             </Grid>
             <Grid item sm={2} />
         </Grid>
@@ -74,7 +76,7 @@ function BondList() {
 
     useEffect(() => {
         if (!isAppLoading) {
-            console.log("isAppLoading", isAppLoading);
+            console.log('isAppLoading', isAppLoading);
             [...activeBonds, ...inactiveBonds].map(bond => {
                 dispatch(calcBondDetails({ bond, value: 0 }));
             });
@@ -83,15 +85,15 @@ function BondList() {
 
     return (
         <>
-            <BCard title={t("bond:MintTitle")} zoom={true}>
+            <BCard title={t('bond:MintTitle')} zoom={true}>
                 <Box>
                     <Grid container item xs={12} spacing={2} mb={4}>
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric key={"treasuryBalance"} metricKey={t("TreasuryBalance")} value={treasuryBalance ? formatUSD(treasuryBalance) : null} />
+                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={treasuryBalance ? formatUSD(treasuryBalance) : null} />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric key={"BashPrice"} metricKey={t("BASHPrice")} value={marketPrice ? formatUSD(marketPrice, 2) : null} />
+                            <MenuMetric key={'BashPrice'} metricKey={t('BASHPrice')} value={marketPrice ? formatUSD(marketPrice, 2) : null} />
                         </Grid>
                     </Grid>
                     <Grid container item>
@@ -104,7 +106,7 @@ function BondList() {
                 </Box>
             </BCard>
 
-            <BCard title={t("bond:MintInactiveTitle")} zoom={true} className="BondList__card">
+            <BCard title={t('bond:MintInactiveTitle')} zoom={true} className="BondList__card">
                 <Box>
                     <Grid container item>
                         <BondHeader />
