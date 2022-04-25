@@ -11,7 +11,9 @@ interface IAdvancedSettingsProps {
     handleClose: () => void;
     slippage: number;
     recipientAddress: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onRecipientAddressChange: (e: any) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSlippageChange: (e: any) => void;
 }
 
