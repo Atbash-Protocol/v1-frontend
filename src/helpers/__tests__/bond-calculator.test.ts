@@ -12,6 +12,6 @@ describe('#getBondCalculator', () => {
         const calculator = getBondCalculator(Networks.LOCAL, {} as StaticJsonRpcProvider);
 
         expect(calculator).toBeInstanceOf(ethers.Contract);
-        expect(calculator.address).toBe('0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6');
+        expect(calculator.address).toBe('0x7969c5eD335650692Bc04293B07F5BF2e7A673C0');
     });
 });
