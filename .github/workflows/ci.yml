@@ -34,7 +34,7 @@ jobs:
 
     - name: Test
       env:
-        - REACT_APP_DEFAULT_NETWORK_ID=4
+        REACT_APP_DEFAULT_NETWORK_ID: 4
       run: yarn test
 
     - name: Build
