@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { Box, Dialog, DialogContent, DialogTitle, Divider, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
+import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -37,7 +38,7 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
     const bashPrice = useSelector(selectFormattedReservePrice);
 
     useEffect(() => {
-        if (!bond.terms) {
+        if (_.isEmpty(bond.terms)) {
             dispatch(getBondTerms(bond));
         }
     }, [bond.terms]);

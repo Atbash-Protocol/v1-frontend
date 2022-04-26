@@ -39,7 +39,7 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
     return (
         <Box sx={{ color: 'white' }}>
             <Grid container>
-                <Grid xs={12}>
+                <Grid item xs={12}>
                     <AmountForm
                         initialValue={0}
                         maxValue={bond.metrics.balance || 0}
@@ -52,7 +52,7 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
                     />
                 </Grid>
 
-                <Grid xs={12} mt={theme.spacing(2)}>
+                <Grid item xs={12} mt={theme.spacing(2)}>
                     <Button
                         variant="outlined"
                         sx={{

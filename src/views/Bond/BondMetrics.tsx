@@ -26,7 +26,7 @@ const CBondMetrics = ({ bondMetrics }: { bondMetrics: BondMetrics }) => {
     ].map(({ value, metricKey }, index) => <MemoInlineMetric {...{ value, metricKey }} key={index} />);
 
     return (
-        <Grid xs={12} container>
+        <Grid item xs={12} container>
             {metrics2}
         </Grid>
     );

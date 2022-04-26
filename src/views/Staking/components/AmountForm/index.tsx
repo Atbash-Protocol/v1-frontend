@@ -54,7 +54,7 @@ const AmountForm = (props: AmountFormProps) => {
 
     return (
         <Grid container>
-            <Grid xs={10}>
+            <Grid item xs={10}>
                 <OutlinedInput
                     sx={{
                         color: theme.palette.primary.main,
@@ -80,7 +80,7 @@ const AmountForm = (props: AmountFormProps) => {
                     }
                 />
             </Grid>
-            <Grid xs={2} p={0}>
+            <Grid item xs={2} p={0}>
                 <Button
                     sx={{
                         padding: 0,
