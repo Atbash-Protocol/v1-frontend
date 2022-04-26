@@ -4,7 +4,7 @@ import { Box, Button, Divider, Link, Fade, Popper, Typography } from '@mui/mater
 import { useTranslation } from 'react-i18next';
 
 import { theme } from 'constants/theme';
-import { usePWeb3Context } from 'contexts/web3/web3.context';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected } from 'contexts/web3/web3.hooks';
 import { getBuyLink } from 'lib/uniswap/link';
 
@@ -38,7 +38,7 @@ function AtbashMenu() {
 
     const {
         state: { networkID },
-    } = usePWeb3Context();
+    } = useWeb3Context();
 
     if (!networkID) return null;
 

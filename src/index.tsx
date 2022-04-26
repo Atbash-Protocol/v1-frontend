@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import { theme } from 'constants/theme';
-import { NewWeb3ContextProvider } from 'contexts/web3/web3.context';
+import { Web3ContextProvider } from 'contexts/web3/web3.context';
 
 import Root from './Root';
 import store from './store/store';
@@ -15,7 +15,7 @@ ReactDOM.render(
     <>
         <CssBaseline />
         <ThemeProvider theme={theme}>
-            <NewWeb3ContextProvider>
+            <Web3ContextProvider>
                 <Provider store={store}>
                     <SnackbarProvider
                         maxSnack={4}
@@ -29,7 +29,7 @@ ReactDOM.render(
                         <Root />
                     </SnackbarProvider>
                 </Provider>
-            </NewWeb3ContextProvider>
+            </Web3ContextProvider>
         </ThemeProvider>
     </>,
     document.getElementById('root'),

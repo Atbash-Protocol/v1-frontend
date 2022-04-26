@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, Contract, ethers } from 'ethers';
 
-import { PWeb3Context } from 'contexts/web3/web3.context';
+import { Web3Context } from 'contexts/web3/web3.context';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
 import { successTransaction, walletConnectWarning } from 'store/slices/messages-slice';
 import { clearPendingTxn, fetchPendingTxns } from 'store/slices/pending-txns-slice';
@@ -70,7 +70,7 @@ export const approveContract = createAsyncThunk(
     async ({ contract, amount, type }: { contract: Contract; type: string; amount?: BigNumber }, { dispatch }) => {
         const {
             state: { signer, signerAddress },
-        } = useContext(PWeb3Context);
+        } = useContext(Web3Context);
 
         if (!signerAddress || !signer) throw new Error('Unable to get signerAddress');
 
@@ -105,7 +105,7 @@ export const approveContract = createAsyncThunk(
 export const getContractAllowance = createAsyncThunk('account/allowance', async ({ contract, toAddress }: { contract: Contract; toAddress: string }, { dispatch }) => {
     const {
         state: { signer, signerAddress },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     if (!signerAddress || !signer) throw new Error('Unable to get signerAddress');
 

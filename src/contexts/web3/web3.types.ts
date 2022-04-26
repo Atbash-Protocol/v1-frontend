@@ -9,7 +9,7 @@ export interface WEB3State {
     web3Modal: Web3Modal;
 }
 
-export interface Web3Context {
+export interface IWeb3Context {
     state: WEB3State;
     memoConnect: () => void;
     memoDisconnect: (currentSigner: WEB3State['signer']) => Promise<void>;

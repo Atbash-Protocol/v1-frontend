@@ -5,7 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
 import { BondDialog } from 'components/BondDialog';
-import { PWeb3Context } from 'contexts/web3/web3.context';
+import { Web3Context } from 'contexts/web3/web3.context';
 import { useProvider, useSignerConnected } from 'contexts/web3/web3.hooks';
 import useBonds from 'hooks/bonds';
 import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
@@ -23,7 +23,7 @@ function App(): JSX.Element {
 
     const {
         state: { signer, networkID },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     const provider = useProvider();
     const isSignerConnected = useSignerConnected();

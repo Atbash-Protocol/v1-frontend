@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { theme } from 'constants/theme';
-import { PWeb3Context } from 'contexts/web3/web3.context';
+import { Web3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected, useGoodNetworkCheck } from 'contexts/web3/web3.hooks';
 import { IReduxState } from 'store/slices/state.interface';
 
 function ConnectMenu() {
     const { t } = useTranslation();
-    const { memoConnect, memoDisconnect, state } = useContext(PWeb3Context);
+    const { memoConnect, memoDisconnect, state } = useContext(Web3Context);
 
     const isUserSigned = useSignerConnected();
 

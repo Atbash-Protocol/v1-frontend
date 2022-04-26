@@ -3,13 +3,13 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { Dispatch } from 'redux';
 
 import { DEFAULT_NETWORK } from 'constants/blockchain';
-import { PWeb3Context } from 'contexts/web3/web3.context';
+import { Web3Context } from 'contexts/web3/web3.context';
 import { walletConnectWarning } from 'store/slices/messages-slice';
 
 export const useGoodNetworkCheck = () => {
     const {
         state: { networkID },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     const [isNetworkOk, setIsNetworkOk] = useState(false);
 
@@ -23,7 +23,7 @@ export const useGoodNetworkCheck = () => {
 export const useSignerConnected = () => {
     const {
         state: { signer, networkID },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     const [isConnected, setIsConnected] = useState(signer !== null);
 
@@ -39,7 +39,7 @@ export const useSignerConnected = () => {
 export const useWeb3ContextInitialized = () => {
     const {
         state: { signer, networkID, provider },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     const [isContextInitialized, setIsContextInitialized] = useState([provider, signer, networkID].some(e => e !== null));
 
@@ -55,7 +55,7 @@ export const useWeb3ContextInitialized = () => {
 export const useSignerAddress = () => {
     const {
         state: { signerAddress },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     const [signer, setSigner] = useState(signerAddress);
 
@@ -71,7 +71,7 @@ export const useSignerAddress = () => {
 export const useProvider = () => {
     const {
         state: { provider },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     return provider;
 };
@@ -79,7 +79,7 @@ export const useProvider = () => {
 export const useSafeSigner = (dispatch?: Dispatch) => {
     const {
         state: { signer, signerAddress },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     const memoSigner = useMemo(() => {
         if (!signer || !signerAddress) {

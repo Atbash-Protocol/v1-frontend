@@ -41,6 +41,8 @@ export abstract class Bond {
             case BondProviderEnum.UNISWAP_V2: {
                 return [BondProviderEnum.UNISWAP_V2, bondAddress, reserveAddress].join('/');
             }
+            default:
+                throw new Error(`This LP Provider is not handled : "${this.bondOptions.lpProvider}"`);
         }
     }
 
@@ -57,9 +59,11 @@ export abstract class Bond {
     }
 
     public getBondAddresses(): BondAddresses {
+        if (!this.reserveContract || !this.bondContract) throw new Error('Unable to get the bonds contracts');
+
         return {
-            bondAddress: '0xcE24D6A45D5c59D31D05c8C278cA3455dD6a43DA',
-            reserveAddress: '0x26DF06b47412dA76061ddA1fD9fe688A497FB88b',
+            bondAddress: this.bondContract.address,
+            reserveAddress: this.reserveContract.address,
         };
     }
 

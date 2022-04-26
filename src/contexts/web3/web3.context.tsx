@@ -4,7 +4,7 @@ import { initWeb3Modal } from 'contexts/web3/web3.utils';
 
 import { USER_REJECTED } from './constants';
 import { subscribeProvider, createSigner, resetWeb3Signer } from './subscribers';
-import { WEB3ActionTypesEnum, Web3Context, WEB3ContextAction, WEB3State } from './web3.types';
+import { WEB3ActionTypesEnum, IWeb3Context, WEB3ContextAction, WEB3State } from './web3.types';
 
 export const initialState: WEB3State = {
     provider: null,
@@ -14,7 +14,7 @@ export const initialState: WEB3State = {
     web3Modal: initWeb3Modal(),
 };
 
-export const PWeb3Context = createContext<Web3Context>({
+export const Web3Context = createContext<IWeb3Context>({
     state: initialState,
     memoConnect: Promise.reject,
     memoDisconnect: Promise.reject,
@@ -35,10 +35,10 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
     }
 };
 
-export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) => {
+export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => {
     const {
         state: { web3Modal, signer, provider },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
     const [state, dispatch] = useReducer(WEB3Reducer, initialState);
 
     const memoConnect = useCallback(async () => {
@@ -81,7 +81,7 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
     // }, [provider, signer]);
 
     return (
-        <PWeb3Context.Provider
+        <Web3Context.Provider
             value={{
                 state,
                 memoConnect,
@@ -89,10 +89,10 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
             }}
         >
             {children}
-        </PWeb3Context.Provider>
+        </Web3Context.Provider>
     );
 };
 
-export const usePWeb3Context = () => {
-    return useContext(PWeb3Context);
+export const useWeb3Context = () => {
+    return useContext(Web3Context);
 };

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BCard } from 'components/BCard';
 import { MenuMetric } from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
-import { usePWeb3Context } from 'contexts/web3/web3.context';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { formatUSD } from 'helpers/price-units';
 import { useContractLoaded } from 'store/modules/app/app.selectors';
 import { selectAllBonds } from 'store/modules/bonds/bonds.selector';
@@ -65,7 +65,7 @@ function BondList() {
 
     const {
         state: { networkID },
-    } = usePWeb3Context();
+    } = useWeb3Context();
     const dispatch = useDispatch();
 
     const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);

@@ -3,11 +3,13 @@
 exports[`NotFound renders 1`] = `
 <div>
   <div
-    class="not-found-page"
+    class="MuiBox-root css-9vzy08"
   >
-    <p>
+    <h1
+      class="MuiTypography-root MuiTypography-h1 css-lt69zl-MuiTypography-root"
+    >
       Page not found
-    </p>
+    </h1>
   </div>
 </div>
 `;

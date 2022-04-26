@@ -2,14 +2,14 @@ import { useContext, useEffect, useState } from 'react';
 
 import { ethers } from 'ethers';
 
-import { PWeb3Context } from 'contexts/web3/web3.context';
+import { Web3Context } from 'contexts/web3/web3.context';
 
 const useENS = () => {
     const [ensName, setENSName] = useState<string | null>(null);
 
     const {
         state: { provider, signerAddress },
-    } = useContext(PWeb3Context);
+    } = useContext(Web3Context);
 
     useEffect(() => {
         const resolveENS = async () => {

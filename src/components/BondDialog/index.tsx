@@ -9,7 +9,7 @@ import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
-import { usePWeb3Context } from 'contexts/web3/web3.context';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { useBondPurchaseReady, selectBondReady } from 'hooks/bonds';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
@@ -26,7 +26,7 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
 
     const {
         state: { signer, signerAddress },
-    } = usePWeb3Context();
+    } = useWeb3Context();
 
     const onBackdropClick = () => history.goBack();
 
