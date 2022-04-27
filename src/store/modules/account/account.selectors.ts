@@ -5,7 +5,7 @@ import { RootState } from 'store/store';
 export const selectBASHBalance = (state: RootState): number | null => {
     const BASHAmount = state.accountNew.balances.BASH; // 9 Decimals
 
-    return Number(ethers.utils.formatUnits(BASHAmount, 'gwei'));
+    return BASHAmount.div(10 ** 9).toNumber();
 };
 
 export const selectSBASHBalance = (state: RootState): number | null => {

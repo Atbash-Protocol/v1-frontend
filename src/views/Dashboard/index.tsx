@@ -8,7 +8,7 @@ import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { formatUSD, formatAPY } from 'helpers/price-units';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectDAIPrice } from 'store/modules/markets/markets.selectors';
+import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
 import { IReduxState } from 'store/slices/state.interface';
@@ -18,7 +18,7 @@ import './dashboard.scss';
 function Dashboard() {
     const { t } = useTranslation();
 
-    const marketPrice = useSelector(selectDAIPrice);
+    const marketPrice = useSelector(selectMarketsLoading);
     const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
 
     const bashPrice = useSelector(selectFormattedReservePrice);

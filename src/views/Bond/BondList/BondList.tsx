@@ -13,7 +13,7 @@ import { formatUSD } from 'helpers/price-units';
 import { useContractLoaded } from 'store/modules/app/app.selectors';
 import { selectAllBonds } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
-import { selectDAIPrice } from 'store/modules/markets/markets.selectors';
+import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { IReduxState } from 'store/slices/state.interface';
 
 import { BondtListItem } from './BondListItem';
@@ -70,7 +70,7 @@ function BondList() {
 
     const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);
     const contractsLoaded = useSelector(useContractLoaded);
-    const marketPrice = useSelector<IReduxState, number | null>(selectDAIPrice);
+    const marketPrice = useSelector<IReduxState, number | null>(selectMarketsLoading);
     const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
     const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
 

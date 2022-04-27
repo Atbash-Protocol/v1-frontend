@@ -12,8 +12,8 @@ export const selectFormattedBashBalance = (state: RootState): string | null => {
     return formatUSD(balance * dai, 2);
 };
 
-export const selectDAIPrice = (state: RootState): number | null => {
-    const { dai } = state.markets.markets;
+export const selectMarketsLoading = (state: RootState): boolean => {
+    const { loading } = state.markets;
 
-    return dai;
+    return loading;
 };

@@ -1,14 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import _ from 'lodash';
 
 import { ActiveTokensEnum, ACTIVE_TOKENS } from 'config/tokens';
 import { getTokensPrice } from 'lib/coingecko/get-prices';
 
-type MarketPrices<T> = {
-    [key in ActiveTokensEnum]: T;
-};
-
 export const getMarketPrices = createAsyncThunk('app/markets', async () => {
     const prices = await getTokensPrice(ACTIVE_TOKENS);
 
-    return prices as MarketPrices<number>;
+    if (_.isEmpty(prices)) throw new Error('getMarketPrices Error');
+
+    return prices as { [key in ActiveTokensEnum]: number };
 });
