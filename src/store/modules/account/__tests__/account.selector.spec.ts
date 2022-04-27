@@ -26,6 +26,7 @@ describe('#selectFormattedStakeBalance', () => {
             balances: {
                 BASH: 10,
                 SBASH: 20,
+                WSBASH: 0,
             },
         });
     });

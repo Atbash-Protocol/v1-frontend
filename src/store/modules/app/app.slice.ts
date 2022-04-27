@@ -12,7 +12,7 @@ const initialState: MainSliceState = {
         [ContractEnum.SBASH_CONTRACT]: null,
         [ContractEnum.DAI_ADDRESS]: null,
         [ContractEnum.INITIAL_PAIR_ADDRESS]: null,
-        [ContractEnum.STAKING_ADDRESS]: null,
+        [ContractEnum.STAKING_CONTRACT]: null,
         [ContractEnum.STAKING_HELPER_ADDRESS]: null,
         [ContractEnum.WSBASH_ADDRESS]: null,
         [ContractEnum.ZAPIN_ADDRESS]: null,

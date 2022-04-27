@@ -51,7 +51,7 @@ function App(): JSX.Element {
     }, [provider, contractsLoaded]);
 
     useEffect(() => {
-        if (contracts.STAKING_ADDRESS) {
+        if (contracts.STAKING_CONTRACT) {
             dispatch(getStakingMetrics());
         }
     }, [contracts]);

@@ -11,8 +11,6 @@ export const selectBASHBalance = (state: RootState): number | null => {
 export const selectSBASHBalance = (state: RootState): number | null => {
     const SBASHAmount = state.accountNew.balances.SBASH; // 9 Decimals
 
-    console.log(SBASHAmount);
-
     return Number(ethers.utils.formatUnits(SBASHAmount, 'gwei'));
 };
 
@@ -30,9 +28,16 @@ export const selectFormattedStakeBalance = (
     } = state;
 
     return {
-        balances: Object.entries(balances).reduce((acc, [key, amount]) => {
-            return { ...acc, [key]: Number(ethers.utils.formatUnits(amount, 'gwei')) };
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        }, {}) as any, //TODO: Typing
+        balances: Object.entries(balances).reduce(
+            (acc, [key, amount]) => {
+                return { ...acc, [key]: Number(ethers.utils.formatUnits(amount, 'gwei')) };
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            },
+            {
+                BASH: 0,
+                SBASH: 0,
+                WSBASH: 0,
+            },
+        ),
     };
 };

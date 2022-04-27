@@ -11,6 +11,7 @@ export interface IPendingTxn {
 }
 
 const initialState: Array<IPendingTxn> = [];
+//TODO: redo this slice
 
 const pendingTxnsSlice = createSlice({
     name: 'pendingTransactions',
