@@ -37,15 +37,9 @@ export const loadBalancesAndAllowances = createAsyncThunk(
         }
 
         if (SBASH_CONTRACT) {
-            // wrapAllowance = await SBASH_CONTRACT.allowance(address, WSBASH_ADDRESS?.address);
             stakeAllowance = await SBASH_CONTRACT.allowance(address, STAKING_ADDRESS?.address);
             unstakeAllowance = await SBASH_CONTRACT.balanceOf(address);
         }
-
-        // if (addresses.WSBASH_ADDRESS) {
-        //     const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, SBashTokenContract, provider);
-        //     wsBASHBalance = await wsBASHContract.balanceOf(address);
-        // }
 
         return {
             balances: {
@@ -58,9 +52,6 @@ export const loadBalancesAndAllowances = createAsyncThunk(
                 BASH: stakeAllowance,
                 SBASH: unstakeAllowance,
             },
-            // wrapping: {
-            //     sBASHAllowance: Number(wrapAllowance),
-            // },
         };
     },
 );

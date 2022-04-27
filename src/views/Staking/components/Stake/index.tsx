@@ -6,14 +6,16 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'ethers';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
-import { selectStakeBalanceAndAllowances } from 'store/modules/account/account.selectors';
+import { selectFormattedStakeBalance } from 'store/modules/account/account.selectors';
+import { AccountSlice } from 'store/modules/account/account.types';
 import { stakeAction } from 'store/modules/contracts/contracts.thunks';
 import { StakeActionEnum } from 'store/modules/contracts/contracts.types';
 import { approveContract } from 'store/modules/stake/stake.thunks';
 import { TransactionTypeEnum } from 'store/slices/pending-txns-slice';
+import { IReduxState } from 'store/slices/state.interface';
 
 import AmountForm from '../AmountForm';
 
@@ -58,7 +60,8 @@ export default function BasicTabs() {
         setValue(newValue);
     };
 
-    const { balances, stakingAllowance } = useSelector(selectStakeBalanceAndAllowances);
+    const { balances } = useSelector(selectFormattedStakeBalance);
+    const { stakingAllowance } = useSelector<IReduxState, Pick<AccountSlice, 'stakingAllowance'>>(state => state.accountNew, shallowEqual);
 
     const handleStakingClick = React.useCallback((amount: number) => {
         dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount, signer, signerAddress }));

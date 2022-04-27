@@ -5,26 +5,20 @@ import { RootState } from 'store/store';
 export const selectBASHBalance = (state: RootState): number | null => {
     const BASHAmount = state.accountNew.balances.BASH; // 9 Decimals
 
-    if (!BASHAmount) return null;
-
     return Number(ethers.utils.formatUnits(BASHAmount, 'gwei'));
 };
 
 export const selectSBASHBalance = (state: RootState): number | null => {
-    const SBASHAmount = state.accountNew.balances.BASH; // 9 Decimals
+    const SBASHAmount = state.accountNew.balances.SBASH; // 9 Decimals
 
-    if (!SBASHAmount) return null;
+    console.log(SBASHAmount);
 
     return Number(ethers.utils.formatUnits(SBASHAmount, 'gwei'));
 };
 
-export const selectStakeBalanceAndAllowances = (
+export const selectFormattedStakeBalance = (
     state: RootState,
 ): {
-    stakingAllowance: {
-        BASH: ethers.BigNumber;
-        SBASH: ethers.BigNumber;
-    };
     balances: {
         BASH: number;
         SBASH: number;
@@ -32,7 +26,7 @@ export const selectStakeBalanceAndAllowances = (
     };
 } => {
     const {
-        accountNew: { balances, stakingAllowance },
+        accountNew: { balances },
     } = state;
 
     return {
@@ -40,6 +34,5 @@ export const selectStakeBalanceAndAllowances = (
             return { ...acc, [key]: Number(ethers.utils.formatUnits(amount, 'gwei')) };
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, {}) as any, //TODO: Typing
-        stakingAllowance,
     };
 };
