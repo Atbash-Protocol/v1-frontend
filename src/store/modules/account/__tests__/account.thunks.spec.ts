@@ -1,4 +1,3 @@
-// import { configureStore } from '@reduxjs/toolkit';
 import { Dispatch } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
 
@@ -31,13 +30,4 @@ describe('#loadBalancesAndAllowances', () => {
             stakingAllowance: { BASH: ethers.BigNumber.from(ethers.constants.MaxUint256), SBASH: ethers.BigNumber.from(ethers.constants.MaxUint256) },
         });
     });
-});
-
-describe('#approveContract', () => {
-    it.todo('throws an error if there is no signer or signerAddress');
-
-    it.todo('correctly dispatches an error');
-    it.todo('correctly clear the transaction pool');
-
-    it.todo('approves a contract');
 });

@@ -11,9 +11,8 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { selectFormattedStakeBalance } from 'store/modules/account/account.selectors';
 import { AccountSlice } from 'store/modules/account/account.types';
-import { stakeAction } from 'store/modules/contracts/contracts.thunks';
-import { StakeActionEnum } from 'store/modules/contracts/contracts.types';
-import { approveContract } from 'store/modules/stake/stake.thunks';
+import { approveContract, stakeAction } from 'store/modules/stake/stake.thunks';
+import { StakeActionEnum } from 'store/modules/stake/stake.types';
 import { TransactionTypeEnum } from 'store/slices/pending-txns-slice';
 import { IReduxState } from 'store/slices/state.interface';
 

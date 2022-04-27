@@ -15,7 +15,6 @@ describe('MarketReducer', () => {
             BASH: BigNumber.from(0),
             SBASH: BigNumber.from(0),
         },
-        // TODO : bonds: [] /** [{balances, allowance}] */
         loading: true,
     };
     it('reduces fulfilled action', () => {
