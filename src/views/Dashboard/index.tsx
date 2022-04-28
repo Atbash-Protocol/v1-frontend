@@ -1,25 +1,26 @@
+import { lazy, Suspense } from 'react';
+
 import { Box, Grow } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Loading from 'components/Loader';
-import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { formatUSD, formatAPY } from 'helpers/price-units';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
-import { IReduxState } from 'store/slices/state.interface';
 
 import './dashboard.scss';
+
+const MenuMetric = lazy(() => import('components/Metrics/MenuMetric'));
 
 function Dashboard() {
     const { t } = useTranslation();
 
-    const marketPrice = useSelector(selectMarketsLoading);
-    const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
+    const marketsLoading = useSelector(selectMarketsLoading);
 
     const bashPrice = useSelector(selectFormattedReservePrice);
     const wsPrice = useSelector(selectWSBASHPrice);
@@ -28,7 +29,7 @@ function Dashboard() {
     const TVL = useSelector(selectTVL);
     const currentIndex = useSelector(selectFormattedIndex);
 
-    if (!marketPrice || loading) return <Loading />;
+    if (marketsLoading) return <Loading />;
 
     const APYMetrics = stakingRewards
         ? [
@@ -54,7 +55,7 @@ function Dashboard() {
         <Box>
             <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
                 {DashboardItems.map(metric => (
-                    <Grow in={!loading} {...(!loading ? { timeout: 1000 } : {})} key={`dashboard-item-${metric.name}`}>
+                    <Grow in={!marketsLoading} {...(!marketsLoading ? { timeout: 1000 } : {})} key={`dashboard-item-${metric.name}`}>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <Box
                                 className="Dashboard__box__item"
@@ -75,7 +76,9 @@ function Dashboard() {
                                     height: '100%',
                                 }}
                             >
-                                <MenuMetric metricKey={t(metric.name)} value={metric.value} />
+                                <Suspense fallback={<Loading />}>
+                                    <MenuMetric metricKey={t(metric.name)} value={metric.value} />
+                                </Suspense>
                             </Box>
                         </Grid>
                     </Grow>

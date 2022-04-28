@@ -18,7 +18,6 @@ import FraxIcon from '../assets/tokens/FRAX.png';
 import GbIcon from '../assets/tokens/GB.png';
 import HatIcon from '../assets/tokens/HAT.png';
 import HuskyIcon from '../assets/tokens/HUSKY.png';
-import IceIcon from '../assets/tokens/ICE.png';
 import JoeIcon from '../assets/tokens/JOE.png';
 import KloIcon from '../assets/tokens/KLO.png';
 import LinkEIcon from '../assets/tokens/LINK.e.png';

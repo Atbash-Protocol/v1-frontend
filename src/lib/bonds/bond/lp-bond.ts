@@ -1,5 +1,4 @@
-import { JsonRpcSigner } from '@ethersproject/providers';
-import { Contract, ethers } from 'ethers';
+import { Contract, providers } from 'ethers';
 
 import { LpBondContract, LpReserveContract } from 'abi';
 import { BondAddresses } from 'helpers/bond/constants';
@@ -16,12 +15,12 @@ export class LPBond extends Bond {
         super(bondOptions);
     }
 
-    public initializeContracts({ bondAddress, reserveAddress }: BondAddresses, signer: JsonRpcSigner): void {
+    public initializeContracts({ bondAddress, reserveAddress }: BondAddresses, signer: providers.JsonRpcSigner): void {
         this.bondContract = new Contract(bondAddress, LpBondContract, signer);
         this.reserveContract = new Contract(reserveAddress, LpReserveContract, signer);
     }
 
-    public async getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string) {
+    public async getTreasuryBalance(bondCalculatorContract: Contract, treasuryAddress: string) {
         if (!this.reserveContract) throw new Error('Reserve contract is undefined');
 
         const tokenAmount = await this.reserveContract.balanceOf(treasuryAddress);

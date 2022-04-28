@@ -1,4 +1,4 @@
-import Davatar from '@davatar/react';
+// import Davatar from '@davatar/react';
 import AccountBalanceSharpIcon from '@mui/icons-material/AccountBalanceSharp';
 // Mint
 import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp';
@@ -144,7 +144,7 @@ function NavContent() {
                             width: '100%',
                         }}
                     >
-                        <Davatar size={20} address={address} generatedAvatarType="jazzicon" />
+                        {/* <Davatar size={20} address={address} generatedAvatarType="jazzicon" /> */}
                         <Link href={`https://etherscan.io/address/${address}`} target="_blank">
                             <Typography sx={{ ml: 1 }} variant="body1">
                                 {ensName || shorten(address)}

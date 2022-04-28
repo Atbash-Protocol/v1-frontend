@@ -1,7 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { constants, ethers } from 'ethers';
-import _, { sum } from 'lodash';
+import { sum, snakeCase } from 'lodash';
 
 import { BondingCalcContract } from 'abi';
 import { BONDS } from 'config/bonds';
@@ -43,7 +43,7 @@ export const initializeBonds = createAsyncThunk(
 
             return {
                 ...acc,
-                [_.snakeCase(bondConfig.name)]: {
+                [snakeCase(bondConfig.name)]: {
                     bondInstance,
                     metrics: initDefaultBondMetrics(),
                     terms: { vestingTerm: '' },

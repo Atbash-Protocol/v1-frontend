@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 
-import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
+import { providers } from 'ethers';
 import Core from 'web3modal';
 
 import { DEFAULT_NETWORK } from 'constants/blockchain';
@@ -8,7 +8,7 @@ import { getProviderURI } from 'contexts/web3/web3.utils';
 
 import { WEB3ContextAction, WEB3ActionTypesEnum } from './web3.types';
 
-export const subscribeSigner = async (web3provider: Web3Provider, dispatch: Dispatch<WEB3ContextAction>) => {
+export const subscribeSigner = async (web3provider: providers.Web3Provider, dispatch: Dispatch<WEB3ContextAction>) => {
     web3provider.on('networkChanged', async (networkId: number) => {
         dispatch({ type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer: web3provider.getSigner(), networkId } });
     });
@@ -21,7 +21,7 @@ export const subscribeSigner = async (web3provider: Web3Provider, dispatch: Disp
 export const createSigner = async (web3Modal: Core, dispatch: Dispatch<WEB3ContextAction>) => {
     const web3Provider = await web3Modal.connect();
 
-    const signer = new Web3Provider(web3Provider);
+    const signer = new providers.Web3Provider(web3Provider);
 
     subscribeSigner(signer, dispatch);
 
@@ -36,7 +36,7 @@ export const createSigner = async (web3Modal: Core, dispatch: Dispatch<WEB3Conte
 };
 
 export const subscribeProvider = async (dispatch: Dispatch<WEB3ContextAction>) => {
-    const provider = new JsonRpcProvider(getProviderURI(DEFAULT_NETWORK)).on('error', err => {
+    const provider = new providers.JsonRpcProvider(getProviderURI(DEFAULT_NETWORK)).on('error', err => {
         alert('provider error');
         console.error(err);
     });

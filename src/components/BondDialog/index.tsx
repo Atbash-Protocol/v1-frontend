@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { Box, Dialog, DialogContent, DialogTitle, Divider, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ import BondMetrics from 'views/Bond/BondMetrics';
 
 // Ajouter une surcouche qui gère le dialog + le chargement du bond avec le router
 
-export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
+const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -38,7 +38,7 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
     const bashPrice = useSelector(selectFormattedReservePrice);
 
     useEffect(() => {
-        if (_.isEmpty(bond.terms)) {
+        if (isEmpty(bond.terms)) {
             dispatch(getBondTerms(bond));
         }
     }, [bond.terms]);
@@ -97,3 +97,5 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
         </Dialog>
     );
 };
+
+export default BondDialog;

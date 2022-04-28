@@ -59,7 +59,10 @@ export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => 
         if (web3Modal) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             web3Modal.on('error', (err: any) => {
-                if (err && err?.message && err?.message === USER_REJECTED) alert('User rejected connection');
+                if (err && err?.message && err?.message === USER_REJECTED) {
+                    console.info('User rejected connection');
+                    subscribeProvider(dispatch); // init at the provider
+                }
             });
         }
 

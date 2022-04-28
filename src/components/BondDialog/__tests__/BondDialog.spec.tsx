@@ -6,7 +6,7 @@ import { BondOptions } from 'lib/bonds/bond/bond';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { BondProviderEnum } from 'lib/bonds/bonds.types';
 import { Provider } from 'react-redux';
-import { BondDialog } from '..';
+import BondDialog  from '..';
 import mainReducer from 'store/modules/app/app.slice';
 import marketReducer from 'store/modules/markets/markets.slice';
 import pendingTransactionsReducer from 'store/slices/pending-txns-slice';

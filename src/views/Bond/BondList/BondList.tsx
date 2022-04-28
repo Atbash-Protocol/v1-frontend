@@ -13,7 +13,7 @@ import { formatUSD } from 'helpers/price-units';
 import { useContractLoaded } from 'store/modules/app/app.selectors';
 import { selectAllBonds } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
-import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
+import { selectFormattedBashBalance, selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { IReduxState } from 'store/slices/state.interface';
 
 import { BondtListItem } from './BondListItem';
@@ -70,11 +70,12 @@ function BondList() {
 
     const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);
     const contractsLoaded = useSelector(useContractLoaded);
-    const marketPrice = useSelector<IReduxState, number | null>(selectMarketsLoading);
+    const marketsLoading = useSelector<IReduxState, boolean>(selectMarketsLoading);
+    const bashPrice = useSelector(selectFormattedBashBalance);
     const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
     const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
 
-    const isAppLoading = !marketPrice || !treasuryBalance;
+    const isAppLoading = !marketsLoading || !treasuryBalance;
 
     useEffect(() => {
         if (networkID && contractsLoaded && loadedBonds) {
@@ -100,7 +101,7 @@ function BondList() {
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric key={'BashPrice'} metricKey={t('BASHPrice')} value={marketPrice ? formatUSD(marketPrice, 2) : null} />
+                            <MenuMetric key={'BashPrice'} metricKey={t('BASHPrice')} value={bashPrice} />
                         </Grid>
                     </Grid>
                     <Grid container item>

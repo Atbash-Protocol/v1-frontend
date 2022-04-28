@@ -1,5 +1,4 @@
-import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
-import { utils } from 'ethers';
+import { providers, utils } from 'ethers';
 
 import { Networks } from 'constants/blockchain';
 
@@ -13,13 +12,13 @@ export const getProviderURL = (networkId: number): string => {
     return process.env.REACT_APP_INFURA_ENDPOINT_URL;
 };
 
-export const getGasPrice = async (provider: JsonRpcProvider) => {
+export const getGasPrice = async (provider: providers.JsonRpcProvider) => {
     const gasPrice = await provider.getGasPrice();
 
     return utils.formatUnits(gasPrice, 'gwei');
 };
 
-export const getSigner = async (provider: JsonRpcProvider | Web3Provider) => {
+export const getSigner = async (provider: providers.JsonRpcProvider | providers.Web3Provider) => {
     const { url } = provider.connection;
 
     if (['metamask'].includes(url)) return provider.getSigner();
