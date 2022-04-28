@@ -207,6 +207,8 @@ export const depositBond = createAsyncThunk(
         const gasPrice = await signer.getGasPrice();
 
         let bondTx;
+
+        console.log('here', valueInWei, maxPremium, address);
         try {
             bondTx = await bondContract.deposit(valueInWei, maxPremium, address, { gasPrice });
             dispatch(
@@ -225,7 +227,7 @@ export const depositBond = createAsyncThunk(
 
             dispatch(info({ text: messages.your_balance_updated }));
         } catch (err: unknown) {
-            console.error(err);
+            console.error('catching', err);
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (bondTx) {
