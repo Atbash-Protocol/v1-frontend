@@ -28,10 +28,17 @@ export interface BondItem {
     terms: BondTerms;
 }
 
+export interface BondQuote {
+    interestDue: number | null;
+    bondMaturationBlock: number | null;
+    pendingPayout: number | null;
+}
+
 export interface BondSlice {
     bonds: Record<string, BondItem>;
     bondCalculator: ethers.Contract | null;
     treasuryBalance: number | null;
     loading: boolean;
     bondQuoting: boolean;
+    bondQuote: BondQuote;
 }

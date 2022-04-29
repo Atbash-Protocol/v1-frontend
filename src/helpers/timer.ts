@@ -1,7 +1,10 @@
 import { DurationObjectUnits, DateTime } from 'luxon';
 
 export const getDateDiff = (startDate: number, endDate: number): DurationObjectUnits | null => {
-    const { ...units } = DateTime.fromSeconds(endDate).diff(DateTime.fromSeconds(startDate), ['days', 'hours', 'minute', 'seconds']);
+    console.log(DateTime.fromSeconds(endDate).diff(DateTime.fromSeconds(startDate), ['days', 'hours', 'minute', 'seconds']));
+    const { isValid, days, hours, minutes } = DateTime.fromSeconds(endDate).diff(DateTime.fromSeconds(startDate), ['days', 'hours', 'minute', 'seconds']);
 
-    return units;
+    if (!isValid) throw new Error('Invalid date');
+
+    return { days, hours, minutes };
 };

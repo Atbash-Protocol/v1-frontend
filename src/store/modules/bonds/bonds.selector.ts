@@ -1,3 +1,6 @@
+import { TFunction } from 'i18next';
+
+import { formatTimer } from 'helpers/prettify-seconds';
 import { formatUSD } from 'helpers/price-units';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
@@ -55,4 +58,20 @@ export const selectBondIsQuoting = (bonds: Record<string, BondItem>, bondID: str
     if (!bond) throw new Error('Unable to get bond');
 
     return bond.metrics.loading ?? false;
+};
+
+export const selectBondQuoteResult = (
+    {
+        bonds: { bondQuote },
+        main: {
+            blockchain: { timestamp },
+        },
+    }: RootState,
+    t: TFunction,
+) => {
+    return {
+        interestDue: bondQuote.interestDue,
+        vesting: timestamp === null || bondQuote.bondMaturationBlock === null ? null : formatTimer(timestamp ?? 0, bondQuote.bondMaturationBlock ?? 0, t),
+        pendingPayout: bondQuote.pendingPayout,
+    };
 };

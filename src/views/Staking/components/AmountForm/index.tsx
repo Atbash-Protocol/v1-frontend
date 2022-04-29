@@ -65,7 +65,7 @@ const AmountForm = (props: AmountFormProps) => {
                         borderRight: 'none',
                         width: '100%',
                     }}
-                    type="number"
+                    type="text"
                     placeholder={placeholder ?? t('Amount')}
                     value={value}
                     onChange={handleChange}

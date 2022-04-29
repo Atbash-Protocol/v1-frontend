@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
+import { createContext, useCallback, useContext, useLayoutEffect, useReducer } from 'react';
 
 import { initWeb3Modal } from 'contexts/web3/web3.utils';
 
@@ -54,7 +54,7 @@ export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => 
         [web3Modal],
     );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // happens when user reload when metamask popup appears
         if (web3Modal) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

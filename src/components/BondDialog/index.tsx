@@ -89,7 +89,7 @@ const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
                 {metrics.allowance !== null && (
                     <Box>
                         <BondPurchase bond={bond} />
-                        <Divider />
+                        <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
                         <BondMetrics bondMetrics={bond.metrics} />
                     </Box>
                 )}

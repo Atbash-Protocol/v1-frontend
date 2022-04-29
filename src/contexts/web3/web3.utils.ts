@@ -2,12 +2,21 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3Modal from 'web3modal';
 
 import { Networks } from 'constants/blockchain';
+import { theme } from 'constants/theme';
 import { getProviderURL } from 'lib/contracts/networks';
 
 export const initWeb3Modal = () =>
     new Web3Modal({
         network: '0x1',
         cacheProvider: true,
+        theme: {
+            background: theme.palette.cardBackground.main,
+            main: theme.palette.cardBackground.main,
+            secondary: theme.palette.grey[900],
+            hover: theme.palette.grey[800],
+            border: 'none',
+        },
+
         providerOptions: {
             walletconnect: {
                 package: WalletConnectProvider,

@@ -1,5 +1,6 @@
 {
     "PageNotFound": "Page not found",
+    "approximativaly": "Approx",
     "day_one": "{{count}} day",
     "day_other": "{{count}} days",
     "hour_one": "{{count}} hour",

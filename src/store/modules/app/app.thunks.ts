@@ -40,6 +40,7 @@ export const initializeProviderContracts = createAsyncThunk(
 
 export const getBlockchainData = createAsyncThunk('app/blockchain', async (provider: WEB3State['provider'] | WEB3State['signer']) => {
     if (!provider) throw new Error('Unable to find provider');
+
     const currentBlock = await provider.getBlockNumber();
     const { timestamp } = await provider.getBlock(currentBlock);
 

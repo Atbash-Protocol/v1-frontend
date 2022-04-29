@@ -1,18 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
+
 import { Web3Context } from 'contexts/web3/web3.context';
 import { BondType } from 'helpers/bond/constants';
+import * as BondHookModule from 'hooks/bonds';
 import { BondOptions } from 'lib/bonds/bond/bond';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { BondProviderEnum } from 'lib/bonds/bonds.types';
-import { Provider } from 'react-redux';
-import BondDialog  from '..';
 import mainReducer from 'store/modules/app/app.slice';
+import BondsReducer from 'store/modules/bonds/bonds.slice';
+import * as BondsReduxModule from 'store/modules/bonds/bonds.thunks';
 import marketReducer from 'store/modules/markets/markets.slice';
 import pendingTransactionsReducer from 'store/slices/pending-txns-slice';
 
-import * as BondHookModule from 'hooks/bonds';
-import * as BondsReduxModule from 'store/modules/bonds/bonds.thunks';
+import BondDialog from '..';
 
 function renderComponent(component: JSX.Element, contextState?: any) {
     return render(
@@ -23,7 +25,16 @@ function renderComponent(component: JSX.Element, contextState?: any) {
                         main: mainReducer,
                         markets: marketReducer,
                         pendingTransactions: pendingTransactionsReducer,
+                        bonds: BondsReducer,
                     },
+                    preloadedState: {
+                        bonds: {
+                            metrics: {},
+                            bondQuote: {
+                                interestDue: 123,
+                            },
+                        },
+                    } as any,
                 })}
             >
                 {component}
@@ -51,6 +62,9 @@ describe('BondDialog', () => {
             reserves: 0,
         },
         terms: {},
+        bonds: {
+            loading: false,
+        },
     };
 
     it('renders', () => {
@@ -59,7 +73,7 @@ describe('BondDialog', () => {
         expect(container).toMatchSnapshot();
     });
 
-    it('dispatches the actions ', () => {
+    it('dispatches the actions', () => {
         jest.spyOn(BondHookModule, 'useBondPurchaseReady').mockReturnValue(true);
         jest.spyOn(BondHookModule, 'selectBondReady').mockReturnValue(false);
         const getTermsSpy = jest.spyOn(BondsReduxModule, 'getBondTerms');
@@ -68,10 +82,8 @@ describe('BondDialog', () => {
 
         renderComponent(<BondDialog bond={testBond as any} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
 
-
         expect(getTermsSpy).toHaveBeenCalled();
         expect(calcBondDetailsSpy).toHaveBeenCalled();
         expect(loadBondBalancesAndAllowancesSpy).toHaveBeenCalled();
     });
-
 });

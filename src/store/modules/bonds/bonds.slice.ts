@@ -10,6 +10,11 @@ const initialState: BondSlice = {
     treasuryBalance: null,
     loading: true,
     bondQuoting: false,
+    bondQuote: {
+        interestDue: null,
+        bondMaturationBlock: null,
+        pendingPayout: null,
+    },
 };
 
 export const BondSlices = createSlice({
@@ -66,9 +71,15 @@ export const BondSlices = createSlice({
         });
 
         builder.addCase(calculateUserBondDetails.pending, (state, {}) => {
+            state.bondQuote = {
+                interestDue: null,
+                bondMaturationBlock: null,
+                pendingPayout: null,
+            };
             state.bondQuoting = true;
         });
-        builder.addCase(calculateUserBondDetails.fulfilled, (state, {}) => {
+        builder.addCase(calculateUserBondDetails.fulfilled, (state, { payload }) => {
+            state.bondQuote = payload;
             state.bondQuoting = false;
         });
     },
