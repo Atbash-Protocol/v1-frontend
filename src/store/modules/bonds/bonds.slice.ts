@@ -35,7 +35,8 @@ export const BondSlices = createSlice({
         });
 
         builder.addCase(calcBondDetails.pending, (state, { meta: { arg: bond } }) => {
-            state.bonds[bond.bond.ID].metrics.loading = true;
+            console.log('here2', bond.bond.ID);
+            // state.bonds[bond.bond.ID].metrics.loading = true;
         });
 
         builder.addCase(calcBondDetails.fulfilled, (state, { payload: { bondID, ...metrics } }) => {

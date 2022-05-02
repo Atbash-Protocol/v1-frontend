@@ -34,7 +34,7 @@
     "prettier",
     "jest"
   ],
-  "ignorePatterns": [ "**/*.spec.ts"], // because we don't care about test typings
+  "ignorePatterns": [ "*.test.ts", "**/*.spec.ts", "src/setupTests.js", "*.spec.tsx"], // because we don't care about test typings
   "rules": {
     "no-console": "off",
     "prettier/prettier": [

@@ -1,7 +1,5 @@
 import { Box } from '@mui/material';
 
-import { theme } from 'constants/theme';
-
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;

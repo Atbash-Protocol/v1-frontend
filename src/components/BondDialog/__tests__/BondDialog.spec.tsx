@@ -1,6 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import * as ReactReduxModule from 'react-redux';
+
 
 import { Web3Context } from 'contexts/web3/web3.context';
 import { BondType } from 'helpers/bond/constants';
@@ -74,16 +76,23 @@ describe('BondDialog', () => {
     });
 
     it('dispatches the actions', () => {
+
+        jest.spyOn(ReactReduxModule, 'useDispatch').mockReturnValue(jest.fn());
         jest.spyOn(BondHookModule, 'useBondPurchaseReady').mockReturnValue(true);
         jest.spyOn(BondHookModule, 'selectBondReady').mockReturnValue(false);
-        const getTermsSpy = jest.spyOn(BondsReduxModule, 'getBondTerms');
-        const calcBondDetailsSpy = jest.spyOn(BondsReduxModule, 'calcBondDetails');
-        const loadBondBalancesAndAllowancesSpy = jest.spyOn(BondsReduxModule, 'loadBondBalancesAndAllowances');
+        const getTermsSpy = jest.spyOn(BondsReduxModule, 'getBondTerms').mockReturnThis();
+        const calcBondDetailsSpy = jest.spyOn(BondsReduxModule, 'calcBondDetails').mockReturnThis();
+        const loadBondBalancesAndAllowancesSpy = jest.spyOn(BondsReduxModule, 'loadBondBalancesAndAllowances').mockReturnThis();
 
         renderComponent(<BondDialog bond={testBond as any} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
 
-        expect(getTermsSpy).toHaveBeenCalled();
-        expect(calcBondDetailsSpy).toHaveBeenCalled();
-        expect(loadBondBalancesAndAllowancesSpy).toHaveBeenCalled();
+        expect(getTermsSpy).toHaveBeenCalledTimes(1)
+        expect(getTermsSpy).toHaveBeenCalledWith(testBond)
+        expect(calcBondDetailsSpy).toHaveBeenCalledTimes(1)
+        expect(calcBondDetailsSpy).toHaveBeenCalledWith({bond: testBond.bondInstance, value: 0})
+        expect(loadBondBalancesAndAllowancesSpy).toHaveBeenCalledTimes(1)
+        expect(loadBondBalancesAndAllowancesSpy).toHaveBeenCalledWith({ address: 'signerAddress' });
     });
+
+ 
 });

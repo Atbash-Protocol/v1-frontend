@@ -18,7 +18,9 @@ export const swithNetwork = async () => {
     if (window.ethereum) {
         try {
             await switchRequest();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            //TODO: Better handling
             if (error.code === 4902) {
                 try {
                     await addChainRequest();
