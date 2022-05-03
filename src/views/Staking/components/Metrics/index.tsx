@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 
 import MenuMetric from 'components/Metrics/MenuMetric';
 import { formatAPY, formatUSD } from 'helpers/price-units';
-import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
+import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectStakingRewards, selectTVL } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
 
 function StakeMetrics() {
     const stakingMetrics = useSelector(selectStakingRewards);
     const TVL = useSelector(selectTVL);
-    const BASHPrice = useSelector(selectFormattedBashBalance);
+    const BASHPrice = useSelector(selectFormattedReservePrice);
     const currentIndex = useSelector(selectFormattedIndex);
 
     const { t } = useTranslation();

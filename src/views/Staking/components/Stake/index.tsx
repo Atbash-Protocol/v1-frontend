@@ -88,7 +88,7 @@ export default function BasicTabs() {
                     onApprove={handleApproveClick}
                     onAction={handleStakingClick}
                     approveLabel={t('stake:ApproveStaking')}
-                    actionLabel={t('stake:Staking')}
+                    actionLabel={t('stake:Stake')}
                 />
             </TabPanel>
             <TabPanel value={value} index={1}>
@@ -100,7 +100,7 @@ export default function BasicTabs() {
                     onApprove={handleApproveClick}
                     onAction={handleStakingClick}
                     approveLabel={t('stake:ApproveUnstaking')}
-                    actionLabel={t('stake:Unstaking')}
+                    actionLabel={t('stake:Unstake')}
                 />
             </TabPanel>
         </Box>
