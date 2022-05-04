@@ -12,12 +12,14 @@ export const selectStakingRewards = (state: RootState): StakingRewards | null =>
     if (!circSupply || !epoch) return null;
 
     const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
-    const stakingRebase = stakingReward / (circSupply * Math.pow(10, 9)); // rewardYield rate for this epoch
+
+    console.log('stakingReward', stakingReward);
+    const stakingRebase = (stakingReward ? stakingReward.toNumber() : 1) / (circSupply * Math.pow(10, 9)); // rewardYield rate for this epoch
 
     return {
         fiveDayRate: Math.pow(1 + stakingRebase, 5 * 3) - 1, // 3 epoch/day
         stakingAPY: Math.pow(1 + stakingRebase, 365 * 3) - 1 * 100,
-        stakingReward,
+        stakingReward: stakingReward.toNumber(),
         stakingRebase,
     };
 };
@@ -55,5 +57,5 @@ export const selectWSBASHPrice = (state: RootState): string | null => {
 
     if (!dai || !index) return null;
 
-    return formatUSD((index / 10 ** 9) * dai, 2);
+    return formatUSD((index.toNumber() / 10 ** 9) * dai, 2);
 };

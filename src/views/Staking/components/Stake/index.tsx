@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
-import { selectFormattedStakeBalance } from 'store/modules/account/account.selectors';
+import { selectBASHBalance, selectSBASHBalance } from 'store/modules/account/account.selectors';
 import { AccountSlice } from 'store/modules/account/account.types';
 import { approveContract, stakeAction } from 'store/modules/stake/stake.thunks';
 import { StakeActionEnum } from 'store/modules/stake/stake.types';
@@ -59,7 +59,8 @@ export default function BasicTabs() {
         setValue(newValue);
     };
 
-    const { balances } = useSelector(selectFormattedStakeBalance);
+    const BASHBalance = useSelector(selectBASHBalance);
+    const SBASHBalance = useSelector(selectSBASHBalance);
     const { stakingAllowance } = useSelector<IReduxState, Pick<AccountSlice, 'stakingAllowance'>>(state => state.accountNew, shallowEqual);
 
     const handleStakingClick = React.useCallback((amount: number) => {
@@ -82,7 +83,7 @@ export default function BasicTabs() {
             <TabPanel value={value} index={0}>
                 <AmountForm
                     initialValue={0}
-                    maxValue={balances.BASH}
+                    maxValue={BASHBalance}
                     transactionType={TransactionTypeEnum.BASH_APPROVAL}
                     approvesNeeded={stakingAllowance.BASH.eq(BigNumber.from(0))}
                     onApprove={handleApproveClick}
@@ -93,8 +94,8 @@ export default function BasicTabs() {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <AmountForm
-                    initialValue={balances.SBASH}
-                    maxValue={balances.SBASH}
+                    initialValue={SBASHBalance}
+                    maxValue={SBASHBalance}
                     transactionType={TransactionTypeEnum.SBASH_APPROVAL}
                     approvesNeeded={stakingAllowance.SBASH.eq(BigNumber.from(0))}
                     onApprove={handleApproveClick}

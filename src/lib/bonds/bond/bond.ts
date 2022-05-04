@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { snakeCase } from 'lodash';
 
 import { BondAddresses, BondProviderEnum, BondType } from '../bonds.types';
@@ -25,7 +25,7 @@ export abstract class Bond {
         this.ID = snakeCase(bondOptions.name);
     }
 
-    // Async method that returns a Promise
+    public abstract initializeContracts({ bondAddress, reserveAddress }: BondAddresses, signer: providers.JsonRpcSigner): void;
     public abstract getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string): Promise<number>;
     public abstract getTokenAmount(): Promise<number>;
     public abstract getSbAmount(BASH_ADDRESS: string): Promise<number>;
@@ -47,13 +47,13 @@ export abstract class Bond {
     }
 
     public getBondContract(): ethers.Contract {
-        if (this.bondContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name} is undefined`);
+        if (this.bondContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name}" is undefined`);
 
         return this.bondContract;
     }
 
     public getReserveContract(): ethers.Contract {
-        if (this.reserveContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name} is undefined`);
+        if (this.reserveContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name}" is undefined`);
 
         return this.reserveContract;
     }

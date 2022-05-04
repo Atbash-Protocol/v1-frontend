@@ -1,8 +1,13 @@
-import { ethers } from 'ethers';
+import { experimental_extendTheme } from '@mui/material';
+import { LpBondContract, LpReserveContract } from 'abi';
+import { Contract, ethers, providers } from 'ethers';
 
-import { BondProviderEnum, BondType } from 'lib/bonds/bonds.types';
+import { BondAddresses, BondProviderEnum, BondType } from 'lib/bonds/bonds.types';
 
 import { Bond, BondOptions } from '../bond';
+
+import * as ethers2 from '@ethersproject/address';
+import { JsonRpcSigner } from '@ethersproject/providers';
 
 class TestBond extends Bond {
     public getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string): Promise<number> {
@@ -15,6 +20,19 @@ class TestBond extends Bond {
 
     public getSbAmount(BASH_ADDRESS: string): Promise<number> {
         return Promise.resolve(0);
+    }
+
+    public getReserveContract(): ReturnType<Bond['getReserveContract']> {
+        return super.getReserveContract();
+    }
+
+    public getBondAddresses(): ReturnType<Bond['getBondAddresses']> {
+        return super.getBondAddresses();
+    }
+
+    public initializeContracts({ bondAddress, reserveAddress }: BondAddresses): void {
+        this.bondContract = new Contract(bondAddress, LpBondContract);
+        this.reserveContract = new Contract(reserveAddress, LpReserveContract);
     }
 }
 
@@ -64,6 +82,25 @@ describe('TestBond', () => {
             });
 
             expect(testBond.getLPProvider()).toEqual(`${BondProviderEnum.UNISWAP_V2}/bondAddress/reserveAddress`);
+        });
+    });
+
+    describe.only('#getBondContract', () => {
+        it('throws an error if the contract is not defined', () => {
+            expect(() => testBond.getBondContract()).toThrowError(`Bond contract for bond "bond" is undefined`);
+        });
+
+        it('returns the bondContract', () => {
+            const getAddressSpy = jest.spyOn(ethers2, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
+
+            testBond.initializeContracts({ bondAddress: '0xBondAddress', reserveAddress: '0xReserveAddress' });
+
+            expect(getAddressSpy).toHaveBeenCalled();
+            expect(getAddressSpy).toHaveBeenCalledTimes(2);
+            expect(getAddressSpy).toHaveBeenNthCalledWith(1, '0xBondAddress');
+            expect(getAddressSpy).toHaveBeenNthCalledWith(2, '0xReserveAddress');
+            expect(testBond.getBondContract()).toBeInstanceOf(Contract);
+            expect(testBond.getBondContract().address).toEqual('0xBondAddress');
         });
     });
 });

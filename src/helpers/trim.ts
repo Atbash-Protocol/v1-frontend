@@ -7,3 +7,7 @@ export const trim = (number = 0, precision?: number) => {
 
     return [exp, decimals.substring(0, precision)].join('.');
 };
+
+export const trimString = (numberInGWEI: string) => {
+    return Number(numberInGWEI).toFixed(2);
+};

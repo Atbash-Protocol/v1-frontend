@@ -1,6 +1,6 @@
 import { ReactElement, useMemo, forwardRef } from 'react';
 
-import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { ListItemButton, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
 import { theme } from 'constants/theme';

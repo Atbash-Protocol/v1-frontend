@@ -35,3 +35,5 @@ export const useNextRebase = (state: RootState): number | undefined => {
 export const useBlockchainInfos = (state: RootState): MainSliceState['blockchain'] => {
     return state.main.blockchain;
 };
+
+export const selectCirculatingSupply = (state: RootState) => state.main.metrics.circSupply;

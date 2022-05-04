@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { render } from "@testing-library/react";
-import { BondDialog } from "components/BondDialog";
 import { DEFAULT_NETWORK } from "constants/blockchain";
 import { Web3Context } from "contexts/web3/web3.context";
 import { BondType } from "helpers/bond/constants";

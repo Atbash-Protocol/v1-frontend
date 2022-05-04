@@ -8,7 +8,7 @@ exports[`NotFound renders 1`] = `
     <h1
       class="MuiTypography-root MuiTypography-h1 css-lt69zl-MuiTypography-root"
     >
-      Page not found
+      PageNotFound
     </h1>
   </div>
 </div>

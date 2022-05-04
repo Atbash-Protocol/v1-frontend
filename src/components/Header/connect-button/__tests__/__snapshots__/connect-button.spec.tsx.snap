@@ -10,7 +10,7 @@ exports[`ConnectMenu when user is disconnected triggers a connect on click if di
       tabindex="0"
       type="button"
     >
-      Connect Wallet
+      ConnectWallet
       <span
         class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
       />

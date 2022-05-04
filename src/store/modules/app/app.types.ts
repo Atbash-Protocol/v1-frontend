@@ -13,8 +13,9 @@ export enum ContractEnum {
 }
 
 export interface Epoch {
-    distribute: number;
+    distribute: ethers.BigNumber;
     endTime: number;
+    number: ethers.BigNumber;
 }
 
 export interface MainSliceState {
@@ -22,12 +23,13 @@ export interface MainSliceState {
     metrics: {
         totalSupply: number | null;
         circSupply: number | null;
+        rawCircSupply: ethers.BigNumber | null;
         reserves: ethers.BigNumber | null;
     };
     staking: {
         epoch: Epoch | null;
         secondsToNextEpoch: number | null;
-        index: number | null;
+        index: ethers.BigNumber | null;
     };
     blockchain: {
         currentBlock: number | null;

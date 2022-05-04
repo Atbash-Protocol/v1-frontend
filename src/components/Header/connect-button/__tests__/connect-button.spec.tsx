@@ -39,7 +39,7 @@ describe('ConnectMenu', () => {
             });
 
             const connectButton = container.querySelector('button');
-            expect(container.querySelector('button')?.textContent).toEqual('Connect Wallet');
+            expect(container.querySelector('button')?.textContent).toEqual('ConnectWallet');
 
             connectButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             expect(memoConnect).toHaveBeenCalledTimes(1);
@@ -59,7 +59,7 @@ describe('ConnectMenu', () => {
                 },
             });
 
-            expect(container.querySelector('button')?.textContent).toEqual('Wrong network');
+            expect(container.querySelector('button')?.textContent).toEqual('WrongNetwork');
         });
 
         it('triggers a connect on click if disconnected', () => {

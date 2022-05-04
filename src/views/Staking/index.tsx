@@ -100,7 +100,7 @@ function Staking() {
                         stakingRebase={stakingMetrics.stakingRebase}
                         daiPrice={daiPrice}
                         balances={balances}
-                        currentIndex={stakingIndex}
+                        currentIndex={stakingIndex ? stakingIndex.toNumber() : null}
                     />
                 </Box>
             </Zoom>

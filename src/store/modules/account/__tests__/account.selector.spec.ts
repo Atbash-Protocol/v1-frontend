@@ -24,9 +24,9 @@ describe('#selectFormattedStakeBalance', () => {
             } as any),
         ).toEqual({
             balances: {
-                BASH: 10,
-                SBASH: 20,
-                WSBASH: 0,
+                BASH: '10.00 BASH',
+                SBASH: '20.00 SBASH',
+                WSBASH: '0.00 WSBASH',
             },
         });
     });

@@ -20,6 +20,7 @@ const initialState: MainSliceState = {
     },
     metrics: {
         circSupply: null,
+        rawCircSupply: null,
         totalSupply: null,
         reserves: null,
     },

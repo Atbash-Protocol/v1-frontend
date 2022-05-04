@@ -1,26 +1,26 @@
-import { ethers } from 'ethers';
+import { utils } from 'ethers';
 
 import { RootState } from 'store/store';
 
-export const selectBASHBalance = (state: RootState): number | null => {
+export const selectBASHBalance = (state: RootState): number => {
     const BASHAmount = state.accountNew.balances.BASH; // 9 Decimals
 
     return BASHAmount.div(10 ** 9).toNumber();
 };
 
-export const selectSBASHBalance = (state: RootState): number | null => {
+export const selectSBASHBalance = (state: RootState): number => {
     const SBASHAmount = state.accountNew.balances.SBASH; // 9 Decimals
 
-    return Number(ethers.utils.formatUnits(SBASHAmount, 'gwei'));
+    return SBASHAmount.div(10 ** 9).toNumber();
 };
 
 export const selectFormattedStakeBalance = (
     state: RootState,
 ): {
     balances: {
-        BASH: number;
-        SBASH: number;
-        WSBASH: number;
+        BASH: string;
+        SBASH: string;
+        WSBASH: string;
     };
 } => {
     const {
@@ -30,14 +30,22 @@ export const selectFormattedStakeBalance = (
     return {
         balances: Object.entries(balances).reduce(
             (acc, [key, amount]) => {
-                return { ...acc, [key]: Number(ethers.utils.formatUnits(amount, 'gwei')) };
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return {
+                    ...acc,
+                    [key]: [Number(utils.formatUnits(amount, 'gwei')).toFixed(2), key.toLocaleUpperCase()].join(' '),
+                };
             },
             {
-                BASH: 0,
-                SBASH: 0,
-                WSBASH: 0,
+                BASH: '0.00 BASH',
+                SBASH: '0.00 SBASH',
+                WSBASH: '0.00 WSBASH',
             },
         ),
     };
+};
+
+export const selectFormattedBASHBalance = (state: RootState): string => {
+    const BASHAmount = state.accountNew.balances.BASH; // 9 Decimals
+
+    return [Number(utils.formatUnits(BASHAmount, 'gwei')).toFixed(2), 'BASH'].join(' ');
 };

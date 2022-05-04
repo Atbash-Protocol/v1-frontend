@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react"
 import RebaseTimer from ".."
 
-import mockStore from 'redux-mock-store'
 import { Provider } from "react-redux"
 import { configureStore } from "@reduxjs/toolkit"
 import { DateTime } from "luxon"
@@ -9,8 +8,7 @@ import { DateTime } from "luxon"
 
 import * as FormatTimeModule from 'helpers/prettify-seconds';
 import * as AppReduxSelectorModule from 'store/modules/app/app.selectors'
-import i18next from "i18next"
-import i18n from "i18n"
+
 
 function renderComponent(component: JSX.Element) {
 

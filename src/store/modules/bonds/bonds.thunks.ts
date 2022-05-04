@@ -11,7 +11,7 @@ import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
 import i18n from 'i18n';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
-import { createBond, getBondContracts } from 'lib/bonds/bonds.helper';
+import { createBond, getBondContractsAddresses } from 'lib/bonds/bonds.helper';
 import { error, info, success, warning } from 'store/slices/messages-slice';
 import { clearPendingTxn, fetchPendingTxns } from 'store/slices/pending-txns-slice';
 import { IReduxState } from 'store/slices/state.interface';
@@ -37,7 +37,7 @@ export const initializeBonds = createAsyncThunk(
         const bondstoOutput = BONDS.reduce((acc, bondConfig) => {
             const bondInstance = createBond({ ...bondConfig, networkID: chainID });
 
-            const contracts = getBondContracts(bondConfig, chainID);
+            const contracts = getBondContractsAddresses(bondConfig, chainID);
 
             bondInstance.initializeContracts(contracts, signer);
 
