@@ -1,13 +1,10 @@
-import { experimental_extendTheme } from '@mui/material';
-import { LpBondContract, LpReserveContract } from 'abi';
-import { Contract, ethers, providers } from 'ethers';
+import * as ethers2 from '@ethersproject/address';
+import { Contract, ethers } from 'ethers';
 
+import { LpBondContract, LpReserveContract } from 'abi';
 import { BondAddresses, BondProviderEnum, BondType } from 'lib/bonds/bonds.types';
 
 import { Bond, BondOptions } from '../bond';
-
-import * as ethers2 from '@ethersproject/address';
-import { JsonRpcSigner } from '@ethersproject/providers';
 
 class TestBond extends Bond {
     public getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string): Promise<number> {
@@ -48,7 +45,11 @@ describe('TestBond', () => {
         isActive: true,
     };
 
-    const testBond = new TestBond(bondOptions);
+    let testBond: TestBond;
+
+    beforeEach(() => {
+        testBond = new TestBond(bondOptions);
+    });
 
     describe('#isLP', () => {
         it('returns true if type of bond is LP', () => {
@@ -85,7 +86,7 @@ describe('TestBond', () => {
         });
     });
 
-    describe.only('#getBondContract', () => {
+    describe('#getBondContract', () => {
         it('throws an error if the contract is not defined', () => {
             expect(() => testBond.getBondContract()).toThrowError(`Bond contract for bond "bond" is undefined`);
         });
@@ -101,6 +102,50 @@ describe('TestBond', () => {
             expect(getAddressSpy).toHaveBeenNthCalledWith(2, '0xReserveAddress');
             expect(testBond.getBondContract()).toBeInstanceOf(Contract);
             expect(testBond.getBondContract().address).toEqual('0xBondAddress');
+        });
+    });
+
+    describe('#getReserveContract', () => {
+        it('throws an error if the contract is not defined', () => {
+            expect(() => testBond.getReserveContract()).toThrowError(`Reserve contract for bond "bond" is undefined`);
+        });
+
+        it('returns the bondContract', () => {
+            const getAddressSpy = jest.spyOn(ethers2, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
+
+            testBond.initializeContracts({ bondAddress: '0xBondAddress', reserveAddress: '0xReserveAddress' });
+
+            expect(testBond.getReserveContract()).toBeInstanceOf(Contract);
+            expect(testBond.getReserveContract().address).toEqual('0xReserveAddress');
+        });
+    });
+
+    describe('#getBondAddresses', () => {
+        it('throws an error if the contract is not defined', () => {
+            expect(() => testBond.getBondAddresses()).toThrowError('Unable to get the bonds contracts');
+        });
+
+        it('returns the bondContract', () => {
+            const getAddressSpy = jest.spyOn(ethers2, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
+
+            testBond.initializeContracts({ bondAddress: '0xBondAddress', reserveAddress: '0xReserveAddress' });
+
+            expect(testBond.getBondAddresses()).toEqual({
+                bondAddress: '0xBondAddress',
+                reserveAddress: '0xReserveAddress',
+            });
+        });
+    });
+
+    describe('#isCustomBond', () => {
+        it.each([
+            { type: BondType.CUSTOM, isCustom: true },
+            { type: BondType.LP, isCustom: false },
+            { type: BondType.StableAsset, isCustom: false },
+        ])('returns %d if type is $type', ({ type, isCustom }) => {
+            const bond = new TestBond({ ...bondOptions, type });
+
+            expect(bond.isCustomBond()).toBe(isCustom);
         });
     });
 });

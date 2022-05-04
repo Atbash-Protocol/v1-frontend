@@ -34,7 +34,6 @@
     "prettier",
     "jest"
   ],
-  "ignorePatterns": [ "*.test.ts", "**/*.spec.ts", "src/setupTests.js", "*.spec.tsx"], // because we don't care about test typings
   "rules": {
     "no-console": "off",
     "prettier/prettier": [
@@ -97,7 +96,9 @@
     {
       "files": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/tests/*"],
       "rules": {
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "import/no-extraneous-dependencies": "off",
       }
     }
   ]

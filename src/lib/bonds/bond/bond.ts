@@ -53,7 +53,7 @@ export abstract class Bond {
     }
 
     public getReserveContract(): ethers.Contract {
-        if (this.reserveContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name}" is undefined`);
+        if (this.reserveContract === undefined) throw new Error(`Reserve contract for bond "${this.bondOptions.name}" is undefined`);
 
         return this.reserveContract;
     }
