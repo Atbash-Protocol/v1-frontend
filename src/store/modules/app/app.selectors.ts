@@ -1,8 +1,13 @@
-import { ethers } from 'ethers';
+import Decimal from 'decimal.js';
+import { BigNumber, ethers } from 'ethers';
+import { pick } from 'lodash';
+import { createSelector } from 'reselect';
 
 import { formatUSD } from 'helpers/price-units';
+import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 
+import { calculateStakingRewards } from './app.helpers';
 import { MainSliceState } from './app.types';
 
 export const selectFormattedReservePrice = (state: RootState): string | null => {
@@ -37,3 +42,39 @@ export const useBlockchainInfos = (state: RootState): MainSliceState['blockchain
 };
 
 export const selectCirculatingSupply = (state: RootState) => state.main.metrics.circSupply;
+
+//TODO: Move inside staking thunk
+export const selectUserStakingInfos = createSelector(
+    [
+        (state: IReduxState) => {
+            return {
+                circSupply: state.main.metrics.circSupply,
+                ...pick(state.main.staking, ['epoch', 'index']),
+                ...pick(state.accountNew.balances, ['SBASH', 'WSBASH']),
+            };
+        },
+    ],
+    ({ index, epoch, circSupply, SBASH, WSBASH }) => {
+        let stakingRebase = new Decimal(0);
+
+        const SBASHBalance: Decimal = new Decimal(SBASH.div(10 ** 9).toHexString());
+        const WBASHBalance: Decimal = new Decimal(WSBASH.div(10 ** 9).toHexString());
+
+        if (epoch?.distribute && circSupply) stakingRebase = new Decimal(epoch.distribute.toHexString()).div(new Decimal(circSupply).mul(10 ** 9));
+
+        const nextRewardValue = stakingRebase.mul(SBASHBalance);
+        const { fiveDayRate } = calculateStakingRewards(epoch, circSupply || 0);
+
+        const effectiveNextRewardValue = nextRewardValue.add(stakingRebase.mul(WBASHBalance).mul((index ?? BigNumber.from(0)).toHexString()));
+        const wrappedTokenEquivalent = WBASHBalance.mul(index?.toHexString() || 0);
+
+        return {
+            fiveDayRate: `${fiveDayRate && fiveDayRate / 1000}  %`,
+            stakingRebasePercentage: `${stakingRebase.mul(100).toFixed(2)} %`,
+            nextRewardValue: `${nextRewardValue.toString()} BASH`,
+            effectiveNextRewardValue: effectiveNextRewardValue ? `effectiveNextRewardValue wsBASH` : null,
+            wrappedTokenEquivalent: `${wrappedTokenEquivalent?.toString() || 0} sBASH`,
+            optionalMetrics: WBASHBalance.gt(0),
+        };
+    },
+);
