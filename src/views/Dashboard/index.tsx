@@ -1,17 +1,21 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 
 import { Box, Grow } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from 'components/Loader';
 import { theme } from 'constants/theme';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { formatUSD, formatAPY } from 'helpers/price-units';
-import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
+import { selectFormattedReservePrice, useContractLoaded } from 'store/modules/app/app.selectors';
+import { selectTreasuryBalance } from 'store/modules/bonds/bonds.selector';
+import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
 import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
+import { IReduxState } from 'store/slices/state.interface';
 
 import './dashboard.scss';
 
@@ -19,15 +23,29 @@ const MenuMetric = lazy(() => import('components/Metrics/MenuMetric'));
 
 function Dashboard() {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    const {
+        state: { networkID },
+    } = useWeb3Context();
 
     const marketsLoading = useSelector(selectMarketsLoading);
-
     const bashPrice = useSelector(selectFormattedReservePrice);
     const wsPrice = useSelector(selectWSBASHPrice);
     const marketCap = useSelector(selectFormattedMarketCap);
     const stakingRewards = useSelector(selectStakingRewards);
     const TVL = useSelector(selectTVL);
     const currentIndex = useSelector(selectFormattedIndex);
+
+    const contractsLoaded = useSelector(useContractLoaded);
+    const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
+    const treasuryBalance = useSelector(selectTreasuryBalance);
+
+    useEffect(() => {
+        if (networkID && contractsLoaded && loadedBonds) {
+            dispatch(getTreasuryBalance(networkID));
+        }
+    }, [networkID, contractsLoaded, loadedBonds]);
 
     if (marketsLoading) return <Loading />;
 
@@ -43,11 +61,11 @@ function Dashboard() {
         { name: 'BashPrice', value: bashPrice },
         { name: 'MarketCap', value: marketCap },
         { name: 'TVL', value: formatUSD(TVL || 0, 2) },
+        { name: 'TreasuryBalance', value: treasuryBalance },
 
         ...APYMetrics,
         // { name: "RiskFreeValue", value: formatUSD(app.rfv) },
         // { name: "RiskFreeValuewsBASH", value: formatUSD(app.rfv * Number(app.currentIndex)) },
-        // { name: "treasuryBalance", value: formatUSD(app.treasuryBalance, 0) },
         // { name: "Runway", value: `${formatNumber(Number(app.runway), 1)} Days` },
     ];
 

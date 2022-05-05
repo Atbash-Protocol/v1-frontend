@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
-import { selectBASHBalance, selectSBASHBalance } from 'store/modules/account/account.selectors';
+import { selectBASHBalance, selectSBASHBalance, selectUserStakingAllowance } from 'store/modules/account/account.selectors';
 import { AccountSlice } from 'store/modules/account/account.types';
 import { approveContract, stakeAction } from 'store/modules/stake/stake.thunks';
 import { StakeActionEnum } from 'store/modules/stake/stake.types';
@@ -18,6 +18,10 @@ import { IReduxState } from 'store/slices/state.interface';
 
 import AmountForm from '../AmountForm';
 
+enum PanelEnum {
+    STAKE = 0,
+    UNSTAKE = 1,
+}
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -48,23 +52,31 @@ function a11yProps(index: number) {
     };
 }
 
-export default function BasicTabs() {
+export default function Stake() {
     const dispatch = useDispatch();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(PanelEnum.STAKE);
     const { t } = useTranslation();
 
     const { signer, signerAddress } = useSafeSigner();
 
+    const BASHBalance = useSelector(selectBASHBalance);
+    const SBASHBalance = useSelector(selectSBASHBalance);
+    const { BASHAllowanceNeeded, SBASHAllowanceNeeded } = useSelector(selectUserStakingAllowance);
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        event.preventDefault();
         setValue(newValue);
     };
 
-    const BASHBalance = useSelector(selectBASHBalance);
-    const SBASHBalance = useSelector(selectSBASHBalance);
-    const { stakingAllowance } = useSelector<IReduxState, Pick<AccountSlice, 'stakingAllowance'>>(state => state.accountNew, shallowEqual);
-
     const handleStakingClick = React.useCallback((amount: number) => {
-        dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount, signer, signerAddress }));
+        switch (value) {
+            case PanelEnum.STAKE:
+                return dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount, signer, signerAddress }));
+            case PanelEnum.UNSTAKE:
+                return dispatch(stakeAction({ action: StakeActionEnum.UNSTAKE, amount, signer, signerAddress }));
+            default:
+                throw new Error('This mode is not handlded');
+        }
     }, []);
 
     const handleApproveClick = React.useCallback(
@@ -74,6 +86,32 @@ export default function BasicTabs() {
         [signer],
     );
 
+    const StakeCard = (
+        <AmountForm
+            initialValue={0}
+            maxValue={BASHBalance}
+            transactionType={TransactionTypeEnum.BASH_APPROVAL}
+            approvesNeeded={BASHAllowanceNeeded}
+            onApprove={handleApproveClick}
+            onAction={handleStakingClick}
+            approveLabel={t('stake:ApproveStaking')}
+            actionLabel={t('stake:Stake')}
+        />
+    );
+
+    const UnstakeCard = (
+        <AmountForm
+            initialValue={SBASHBalance}
+            maxValue={SBASHBalance}
+            transactionType={TransactionTypeEnum.SBASH_APPROVAL}
+            approvesNeeded={SBASHAllowanceNeeded}
+            onApprove={handleApproveClick}
+            onAction={handleStakingClick}
+            approveLabel={t('stake:ApproveUnstaking')}
+            actionLabel={t('stake:Unstake')}
+        />
+    );
+
     return (
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs centered value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -81,28 +119,10 @@ export default function BasicTabs() {
                 <Tab label={<>{t('stake:Unstake')}</>} {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
-                <AmountForm
-                    initialValue={0}
-                    maxValue={BASHBalance}
-                    transactionType={TransactionTypeEnum.BASH_APPROVAL}
-                    approvesNeeded={stakingAllowance.BASH.eq(BigNumber.from(0))}
-                    onApprove={handleApproveClick}
-                    onAction={handleStakingClick}
-                    approveLabel={t('stake:ApproveStaking')}
-                    actionLabel={t('stake:Stake')}
-                />
+                {StakeCard}
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <AmountForm
-                    initialValue={SBASHBalance}
-                    maxValue={SBASHBalance}
-                    transactionType={TransactionTypeEnum.SBASH_APPROVAL}
-                    approvesNeeded={stakingAllowance.SBASH.eq(BigNumber.from(0))}
-                    onApprove={handleApproveClick}
-                    onAction={handleStakingClick}
-                    approveLabel={t('stake:ApproveUnstaking')}
-                    actionLabel={t('stake:Unstake')}
-                />
+                {UnstakeCard}
             </TabPanel>
         </Box>
     );

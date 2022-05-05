@@ -28,7 +28,7 @@ function Staking() {
 
     const daiPrice = useSelector<IReduxState, number | null>(state => state.markets.markets.dai);
     const contractsLoaded = useSelector(useContractLoaded);
-    const { loading, balances } = useSelector<IReduxState, AccountSlice>(state => state.accountNew, shallowEqual);
+    const { loading, balances } = useSelector<IReduxState, AccountSlice>(state => state.account, shallowEqual);
 
     const { index: stakingIndex } = useSelector<IReduxState, MainSliceState['staking']>(state => state.main.staking, shallowEqual);
 

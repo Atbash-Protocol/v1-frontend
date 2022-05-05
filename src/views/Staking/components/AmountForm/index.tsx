@@ -95,6 +95,8 @@ const AmountForm = (props: AmountFormProps) => {
     );
 };
 
+//TODO: Extract the button to another component
+// The goal is to listen to pending transactions in order to display a loader instead of the button
 const useAmountForm = (props: AmountFormProps) => useMemo(() => <AmountForm {...props} />, [props]);
 
 export default useAmountForm;

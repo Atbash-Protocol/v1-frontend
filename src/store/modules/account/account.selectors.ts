@@ -3,13 +3,13 @@ import { utils } from 'ethers';
 import { RootState } from 'store/store';
 
 export const selectBASHBalance = (state: RootState): number => {
-    const BASHAmount = state.accountNew.balances.BASH; // 9 Decimals
+    const BASHAmount = state.account.balances.BASH; // 9 Decimals
 
     return BASHAmount.div(10 ** 9).toNumber();
 };
 
 export const selectSBASHBalance = (state: RootState): number => {
-    const SBASHAmount = state.accountNew.balances.SBASH; // 9 Decimals
+    const SBASHAmount = state.account.balances.SBASH; // 9 Decimals
 
     return SBASHAmount.div(10 ** 9).toNumber();
 };
@@ -24,7 +24,7 @@ export const selectFormattedStakeBalance = (
     };
 } => {
     const {
-        accountNew: { balances },
+        account: { balances },
     } = state;
 
     return {
@@ -45,7 +45,16 @@ export const selectFormattedStakeBalance = (
 };
 
 export const selectFormattedBASHBalance = (state: RootState): string => {
-    const BASHAmount = state.accountNew.balances.BASH; // 9 Decimals
+    const BASHAmount = state.account.balances.BASH; // 9 Decimals
 
     return [Number(utils.formatUnits(BASHAmount, 'gwei')).toFixed(2), 'BASH'].join(' ');
+};
+
+export const selectUserStakingAllowance = (state: RootState) => {
+    const { BASH, SBASH } = state.account.stakingAllowance;
+
+    return {
+        BASHAllowanceNeeded: BASH.gt(0),
+        SBASHAllowanceNeeded: SBASH.gt(0),
+    };
 };

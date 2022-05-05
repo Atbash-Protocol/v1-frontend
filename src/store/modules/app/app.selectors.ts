@@ -43,14 +43,14 @@ export const useBlockchainInfos = (state: RootState): MainSliceState['blockchain
 
 export const selectCirculatingSupply = (state: RootState) => state.main.metrics.circSupply;
 
-//TODO: Move inside staking thunk
+//TODO: Move inside staking selectors
 export const selectUserStakingInfos = createSelector(
     [
         (state: IReduxState) => {
             return {
                 circSupply: state.main.metrics.circSupply,
                 ...pick(state.main.staking, ['epoch', 'index']),
-                ...pick(state.accountNew.balances, ['SBASH', 'WSBASH']),
+                ...pick(state.account.balances, ['SBASH', 'WSBASH']),
             };
         },
     ],

@@ -35,7 +35,7 @@ export const selectTVL = (state: RootState): number | null => {
 
 export const selectTotalBalance = (state: RootState): number | null => {
     const { dai } = state.markets.markets;
-    const balances = state.accountNew.balances;
+    const balances = state.account.balances;
 
     if (!dai) return null;
 

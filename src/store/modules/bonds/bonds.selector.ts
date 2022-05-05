@@ -75,3 +75,5 @@ export const selectBondQuoteResult = (
         pendingPayout: bondQuote.pendingPayout,
     };
 };
+
+export const selectTreasuryBalance = (state: RootState) => formatUSD(state.bonds.treasuryBalance || 0, 2);

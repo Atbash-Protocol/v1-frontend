@@ -11,6 +11,6 @@ export interface IReduxState {
     messages: MessagesState;
     main: MainSliceState;
     markets: MarketSlice;
-    accountNew: AccountSlice;
+    account: AccountSlice;
     bonds: BondSlice;
 }

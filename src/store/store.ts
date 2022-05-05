@@ -14,7 +14,7 @@ const store = configureStore({
         messages: messagesReducer,
         main: mainReducer,
         markets: marketReducer,
-        accountNew: newAccountReducer,
+        account: newAccountReducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });

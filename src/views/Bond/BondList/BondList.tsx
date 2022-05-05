@@ -69,10 +69,10 @@ function BondList() {
     const dispatch = useDispatch();
 
     const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);
-    const contractsLoaded = useSelector(useContractLoaded);
     const marketsLoading = useSelector<IReduxState, boolean>(selectMarketsLoading);
     const bashPrice = useSelector(selectFormattedBashBalance);
     const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
+    const contractsLoaded = useSelector(useContractLoaded);
     const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
 
     const isAppLoading = !marketsLoading || !treasuryBalance;
