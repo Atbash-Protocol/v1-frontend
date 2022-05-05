@@ -1,4 +1,5 @@
 import './i18n';
+
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
@@ -18,13 +19,12 @@ ReactDOM.render(
             <Web3ContextProvider>
                 <Provider store={store}>
                     <SnackbarProvider
-                        maxSnack={4}
-                        // anchorOrigin={{
-                        //     vertical: 'bottom',
-                        //     horizontal: 'right',
-                        // }}
-                        // content={(key, message: string) => <SnackMessage id={key} message={JSON.parse(message)} />}
-                        // autoHideDuration={5000}
+                        maxSnack={3}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        autoHideDuration={5000}
                     >
                         <Root />
                     </SnackbarProvider>

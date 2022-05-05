@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 
 import { DEFAULT_NETWORK } from 'constants/blockchain';
 import { Web3Context } from 'contexts/web3/web3.context';
-import { walletConnectWarning } from 'store/slices/messages-slice';
+import { walletConnectWarning } from 'store/modules/messages/messages.slice';
 
 export const useGoodNetworkCheck = () => {
     const {

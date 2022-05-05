@@ -1,6 +1,4 @@
-import { messages } from '../../constants/messages';
-import { error } from '../../store/slices/messages-slice';
-import store from '../../store/store';
+import { messages } from 'constants/messages';
 
 // List of error messages we wish to intercept
 const interceptedConsoleMessages = ['Wrong network, please switch to mainnet'];
@@ -8,7 +6,7 @@ const interceptedConsoleMessages = ['Wrong network, please switch to mainnet'];
 // Intercepts an error sent to console and dispatches it to the message framework.
 var consoleInterceptor = function (message) {
     if (interceptedConsoleMessages.includes(message)) {
-        store.dispatch(error({ text: messages.something_wrong, error: message }));
+        return dispatch(addNotification({ severity: 'error', description: messages.something_wrong, detailledDescription: message }));
     }
     console._error_old(message);
 };

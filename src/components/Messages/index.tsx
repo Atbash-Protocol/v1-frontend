@@ -1,25 +1,28 @@
-import './console-interceptor';
-
 import { useEffect } from 'react';
 
-import { useSnackbar } from 'notistack';
-import { useDispatch, useSelector } from 'react-redux';
+import { SnackbarKey, SnackbarMessage, useSnackbar } from 'notistack';
+import { useSelector } from 'react-redux';
 
-import { close, MessagesState } from 'store/slices/messages-slice';
+import { MessagesState } from 'store/modules/messages/messages.types';
 import { IReduxState } from 'store/slices/state.interface';
+
+import { BSnackBar } from './snackbar';
 
 // A component that displays error messages
 function Messages() {
     const { enqueueSnackbar } = useSnackbar();
-    const messages = useSelector<IReduxState, MessagesState>(state => state.messages);
-    const dispatch = useDispatch();
+    const notifications = useSelector<IReduxState, MessagesState['notifications']>(state => state.messages.notifications);
 
     useEffect(() => {
-        if (messages.message) {
-            enqueueSnackbar(JSON.stringify(messages.message));
-            dispatch(close());
+        if (notifications && notifications.length > 0) {
+            enqueueSnackbar('notif', {
+                variant: 'error',
+                content: (key: SnackbarKey, message: SnackbarMessage) => {
+                    return <BSnackBar key={key} description={notifications[0].description} severity={notifications[0].severity} />;
+                },
+            });
         }
-    }, [messages.message]);
+    }, [notifications]);
 
     return null;
 }

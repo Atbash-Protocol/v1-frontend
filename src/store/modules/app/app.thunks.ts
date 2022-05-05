@@ -12,7 +12,7 @@ import { ContractEnum } from './app.types';
 
 export const initializeProviderContracts = createAsyncThunk(
     'app/contracts',
-    async ({ provider, signer }: { provider?: WEB3State['provider']; signer?: WEB3State['signer'] }): Promise<{ [key in ContractEnum]: Contract }> => {
+    async ({ provider, signer }: { provider?: WEB3State['provider']; signer?: WEB3State['signer'] }, { dispatch }): Promise<{ [key in ContractEnum]: Contract }> => {
         if (!provider && !signer) throw new Error('No provider or signer');
 
         const chainID = (await (signer ?? provider)?.getNetwork())?.chainId;

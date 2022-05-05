@@ -12,7 +12,7 @@ import i18n from 'i18n';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { createBond, getBondContractsAddresses } from 'lib/bonds/bonds.helper';
-import { error, info, success, warning } from 'store/slices/messages-slice';
+import { addNotification, walletConnectWarning } from 'store/modules/messages/messages.slice';
 import { clearPendingTxn, fetchPendingTxns } from 'store/slices/pending-txns-slice';
 import { IReduxState } from 'store/slices/state.interface';
 
@@ -105,7 +105,7 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
         : await getTokenBondQuote(bond, bondAmountInWei, maxBondPrice);
 
     if (!!value && bondQuote > maxBondPrice) {
-        dispatch(error({ text: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
+        dispatch(addNotification({ severity: 'error', description: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
     }
 
     // let purchased = (await reverseContract.balanceOf(TREASURY_ADDRESS)).toNumber() as number;
@@ -136,7 +136,7 @@ export const getBondTerms = createAsyncThunk('bonds/terms', async (bond: BondIte
 
 export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, bond }: { signer: providers.Web3Provider; bond: BondItem }, { dispatch }) => {
     if (!signer) {
-        dispatch(warning({ text: messages.please_connect_wallet }));
+        dispatch(walletConnectWarning);
         return;
     }
 
@@ -155,7 +155,7 @@ export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, b
         );
         await approveTx.wait();
 
-        dispatch(success({ text: messages.tx_successfully_send }));
+        dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
     } catch (err) {
         console.error(err);
         metamaskErrorWrap(err, dispatch);
@@ -240,12 +240,12 @@ export const depositBond = createAsyncThunk(
             );
 
             await bondTx.wait();
-            dispatch(success({ text: messages.tx_successfully_send }));
-            dispatch(info({ text: messages.your_balance_update_soon }));
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
+            dispatch(addNotification({ severity: 'info', description: messages.your_balance_update_soon }));
 
             await dispatch(calculateUserBondDetails({ bond, signer, signerAddress }));
 
-            dispatch(info({ text: messages.your_balance_updated }));
+            dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
         } catch (err: unknown) {
             console.error('catching', err);
             return metamaskErrorWrap(err, dispatch);

@@ -3,7 +3,7 @@ import { constants, utils, providers } from 'ethers';
 
 import { messages } from 'constants/messages';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
-import { success, info } from 'store/slices/messages-slice';
+import { addNotification } from 'store/modules/messages/messages.slice';
 import { fetchPendingTxns, getStakingTypeText, clearPendingTxn, getPendingActionText } from 'store/slices/pending-txns-slice';
 import { IReduxState } from 'store/slices/state.interface';
 
@@ -33,7 +33,7 @@ export const stakeAction = createAsyncThunk(
 
             await transaction.wait();
 
-            dispatch(success({ text: messages.tx_successfully_send }));
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } catch (err: unknown) {
             return metamaskErrorWrap(err, dispatch);
         } finally {
@@ -42,11 +42,11 @@ export const stakeAction = createAsyncThunk(
             }
         }
 
-        dispatch(info({ text: messages.your_balance_update_soon }));
+        dispatch(addNotification({ severity: 'info', description: messages.your_balance_update_soon }));
 
         await dispatch(loadBalancesAndAllowances(signerAddress));
 
-        dispatch(info({ text: messages.your_balance_updated }));
+        dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
     },
 );
 
@@ -68,12 +68,12 @@ export const approveContract = createAsyncThunk(
             const approveTx = await BASH_CONTRACT.approve(signerAddress, constants.MaxUint256, { gasPrice });
             dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text: 'Approving', type: 'approve_staking' }));
             await approveTx.wait();
-            dispatch(success({ text: 'Success' }));
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } else if (target === 'SBASH_APPROVAL' && SBASH_CONTRACT) {
             const approveTx = await SBASH_CONTRACT.approve(signerAddress, constants.MaxUint256, { gasPrice });
             dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text: 'Approving', type: 'approve_staking' }));
             await approveTx.wait();
-            dispatch(success({ text: 'Success' }));
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } else {
         }
     },

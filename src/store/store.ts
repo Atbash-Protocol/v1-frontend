@@ -4,7 +4,7 @@ import newAccountReducer from './modules/account/account.slice';
 import mainReducer from './modules/app/app.slice';
 import boundReducer from './modules/bonds/bonds.slice';
 import marketReducer from './modules/markets/markets.slice';
-import messagesReducer from './slices/messages-slice';
+import messagesReducer from './modules/messages/messages.slice';
 import pendingTransactionsReducer from './slices/pending-txns-slice';
 
 const store = configureStore({
