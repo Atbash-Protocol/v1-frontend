@@ -1,4 +1,5 @@
-import { Contract, providers } from 'ethers';
+import { Decimal } from 'decimal.js';
+import { BigNumber, Contract, providers } from 'ethers';
 
 import { LpBondContract, LpReserveContract } from 'abi';
 import { BondAddresses } from 'helpers/bond/constants';
@@ -21,29 +22,28 @@ export class LPBond extends Bond {
     }
 
     public async getTreasuryBalance(bondCalculatorContract: Contract, treasuryAddress: string) {
-        if (!this.reserveContract) throw new Error('Reserve contract is undefined');
+        const reserveContract = this.getReserveContract();
 
-        const tokenAmount = await this.reserveContract.balanceOf(treasuryAddress);
+        const tokenAmount: BigNumber = await reserveContract.balanceOf(treasuryAddress);
+        const valuation: BigNumber = await bondCalculatorContract.valuation(reserveContract.address, tokenAmount);
+        const markdown: BigNumber = await bondCalculatorContract.markdown(reserveContract.address);
 
-        const valuation = await bondCalculatorContract.valuation(this.reserveContract.address, tokenAmount);
-        const markdown = await bondCalculatorContract.markdown(this.reserveContract.address);
-        const tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
+        // valuation * 10 ** 9 / markdown * 10 ** 18
+        const tokenUSD = new Decimal(valuation.toHexString()).div(10 ** 9).mul(new Decimal(markdown.toHexString()).div(10 ** 18));
 
-        return tokenUSD;
+        return tokenUSD.toNumber();
     }
 
-    public getTokenAmount() {
+    public async getTokenAmount() {
         return this.getReserves('', true);
     }
 
-    public getSbAmount(BASH_ADDRESS: string) {
+    public async getSbAmount(BASH_ADDRESS: string) {
         return this.getReserves(BASH_ADDRESS, false);
     }
 
     private async getReserves(BASH_ADDRESS: string, isToken: boolean): Promise<number> {
-        const token = this.reserveContract;
-
-        if (!token) throw new Error('Reserve contract is not defined');
+        const token = this.getReserveContract();
 
         const [reserve0, reserve1] = await token.getReserves();
         const token1: string = await token.token1();

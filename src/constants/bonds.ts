@@ -36,7 +36,7 @@ const StableDAI: BondConfig = {
     token: ActiveTokensEnum.DAI,
     iconPath: DAIIcon,
     lpProvider: BondProviderEnum.UNISWAP_V2, // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
-    type: BondType.StableAsset,
+    type: BondType.STABLE_ASSET,
     addresses: {
         [Networks.RINKEBY]: {
             bondAddress: '0xd0D5024c723c4F047C7626FBA18E7797A4E50a12',

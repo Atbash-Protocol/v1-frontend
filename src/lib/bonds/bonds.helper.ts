@@ -9,7 +9,7 @@ export const createBond = (bondConfig: BondOptions): LPBond | StableBond => {
     switch (bondConfig.type) {
         case BondType.LP:
             return new LPBond(bondConfig);
-        case BondType.StableAsset:
+        case BondType.STABLE_ASSET:
             return new StableBond(bondConfig);
 
         default:

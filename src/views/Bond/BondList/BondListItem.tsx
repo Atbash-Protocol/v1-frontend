@@ -60,8 +60,6 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
     const { bondPrice, bondDiscount, purchased } = selectBondMintingMetrics(bond.metrics);
     const bondSoldOut = (bond.metrics.bondDiscount ?? 0) * 100 < -30;
 
-    console.log(bond, bondPrice, bondDiscount, purchased);
-
     const metrics = [
         { metric: t('bond:Mint'), value: bondPrice },
         {

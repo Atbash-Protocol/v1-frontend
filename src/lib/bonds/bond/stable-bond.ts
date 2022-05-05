@@ -1,4 +1,5 @@
-import { Contract, providers } from 'ethers';
+import Decimal from 'decimal.js';
+import { BigNumber, Contract, providers } from 'ethers';
 
 import { LpBondContract, LpReserveContract } from 'abi';
 
@@ -12,11 +13,11 @@ export class StableBond extends Bond {
     }
 
     public async getTreasuryBalance(bondCalculatorContract: Contract, treasuryAddress: string) {
-        if (!this.reserveContract) throw new Error('Unable to get reserveContract');
+        const reserveContract = this.getReserveContract();
 
-        const tokenAmount = await this.reserveContract.balanceOf(treasuryAddress);
+        const tokenAmount: BigNumber = await reserveContract.balanceOf(treasuryAddress);
 
-        return tokenAmount / Math.pow(10, 18);
+        return new Decimal(tokenAmount.toHexString()).div(10 ** 18).toNumber();
     }
 
     public getTokenAmount() {

@@ -1,4 +1,4 @@
-import * as ethers2 from '@ethersproject/address';
+import * as ethersProjectModule from '@ethersproject/address';
 import { Contract, ethers } from 'ethers';
 
 import { LpBondContract, LpReserveContract } from 'abi';
@@ -92,7 +92,7 @@ describe('TestBond', () => {
         });
 
         it('returns the bondContract', () => {
-            const getAddressSpy = jest.spyOn(ethers2, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
+            const getAddressSpy = jest.spyOn(ethersProjectModule, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
 
             testBond.initializeContracts({ bondAddress: '0xBondAddress', reserveAddress: '0xReserveAddress' });
 
@@ -111,7 +111,7 @@ describe('TestBond', () => {
         });
 
         it('returns the bondContract', () => {
-            const getAddressSpy = jest.spyOn(ethers2, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
+            const getAddressSpy = jest.spyOn(ethersProjectModule, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
 
             testBond.initializeContracts({ bondAddress: '0xBondAddress', reserveAddress: '0xReserveAddress' });
 
@@ -126,7 +126,7 @@ describe('TestBond', () => {
         });
 
         it('returns the bondContract', () => {
-            const getAddressSpy = jest.spyOn(ethers2, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
+            const getAddressSpy = jest.spyOn(ethersProjectModule, 'getAddress').mockReturnValue('0x'); // mock ethers.Contract lib call
 
             testBond.initializeContracts({ bondAddress: '0xBondAddress', reserveAddress: '0xReserveAddress' });
 
@@ -141,7 +141,7 @@ describe('TestBond', () => {
         it.each([
             { type: BondType.CUSTOM, isCustom: true },
             { type: BondType.LP, isCustom: false },
-            { type: BondType.StableAsset, isCustom: false },
+            { type: BondType.STABLE_ASSET, isCustom: false },
         ])('returns %d if type is $type', ({ type, isCustom }) => {
             const bond = new TestBond({ ...bondOptions, type });
 

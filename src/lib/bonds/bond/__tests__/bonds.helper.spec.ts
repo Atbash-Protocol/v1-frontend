@@ -17,7 +17,7 @@ describe('#createBond', () => {
     });
 
     it('instanciates a Stable bond', () => {
-        const bond = createBond({ type: BondType.StableAsset } as BondOptions);
+        const bond = createBond({ type: BondType.STABLE_ASSET } as BondOptions);
 
         expect(bond).toBeInstanceOf(StableBond);
     });

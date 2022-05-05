@@ -1,7 +1,7 @@
 import { Networks } from '../../constants/blockchain';
 
 export enum BondType {
-    StableAsset,
+    STABLE_ASSET,
     LP,
 }
 

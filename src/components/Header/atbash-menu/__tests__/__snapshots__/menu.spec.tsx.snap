@@ -13,7 +13,7 @@ exports[`AtbashMenu renders 1`] = `
       <p
         class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
       >
-        Buy BASH
+        BuyBASH
       </p>
       <span
         class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
