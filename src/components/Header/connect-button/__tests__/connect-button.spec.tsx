@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import { Web3Context } from 'contexts/web3/web3.context';
 import * as WEB3HookModules from 'contexts/web3/web3.hooks';
-import pendingTransactionsReducer from 'store/slices/pending-txns-slice';
+import transactionReducer from 'store/modules/transactions/transactions.slice';
 
 import ConnectMenu from '../index';
 
@@ -14,7 +14,7 @@ function renderComponent(component: JSX.Element, contextState?: any) {
             <Provider
                 store={configureStore({
                     reducer: {
-                        pendingTransactions: pendingTransactionsReducer,
+                        transactions: transactionReducer,
                     },
                 })}
             >
@@ -44,7 +44,7 @@ describe('ConnectMenu', () => {
             connectButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             expect(memoConnect).toHaveBeenCalledTimes(1);
 
-            expect(container).toMatchSnapshot()
+            expect(container).toMatchSnapshot();
         });
     });
 

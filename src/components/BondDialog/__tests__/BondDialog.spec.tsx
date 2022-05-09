@@ -3,7 +3,6 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import * as ReactReduxModule from 'react-redux';
 
-
 import { Web3Context } from 'contexts/web3/web3.context';
 import { BondType } from 'helpers/bond/constants';
 import * as BondHookModule from 'hooks/bonds';
@@ -14,7 +13,7 @@ import mainReducer from 'store/modules/app/app.slice';
 import BondsReducer from 'store/modules/bonds/bonds.slice';
 import * as BondsReduxModule from 'store/modules/bonds/bonds.thunks';
 import marketReducer from 'store/modules/markets/markets.slice';
-import pendingTransactionsReducer from 'store/slices/pending-txns-slice';
+import transactionReducer from 'store/modules/transactions/transactions.slice';
 
 import BondDialog from '..';
 
@@ -26,8 +25,8 @@ function renderComponent(component: JSX.Element, contextState?: any) {
                     reducer: {
                         main: mainReducer,
                         markets: marketReducer,
-                        pendingTransactions: pendingTransactionsReducer,
                         bonds: BondsReducer,
+                        transactions: transactionReducer,
                     },
                     preloadedState: {
                         bonds: {
@@ -76,7 +75,6 @@ describe('BondDialog', () => {
     });
 
     it('dispatches the actions', () => {
-
         jest.spyOn(ReactReduxModule, 'useDispatch').mockReturnValue(jest.fn());
         jest.spyOn(BondHookModule, 'useBondPurchaseReady').mockReturnValue(true);
         jest.spyOn(BondHookModule, 'selectBondReady').mockReturnValue(false);
@@ -86,13 +84,11 @@ describe('BondDialog', () => {
 
         renderComponent(<BondDialog bond={testBond as any} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
 
-        expect(getTermsSpy).toHaveBeenCalledTimes(1)
-        expect(getTermsSpy).toHaveBeenCalledWith(testBond)
-        expect(calcBondDetailsSpy).toHaveBeenCalledTimes(1)
-        expect(calcBondDetailsSpy).toHaveBeenCalledWith({bond: testBond.bondInstance, value: 0})
-        expect(loadBondBalancesAndAllowancesSpy).toHaveBeenCalledTimes(1)
+        expect(getTermsSpy).toHaveBeenCalledTimes(1);
+        expect(getTermsSpy).toHaveBeenCalledWith(testBond);
+        expect(calcBondDetailsSpy).toHaveBeenCalledTimes(1);
+        expect(calcBondDetailsSpy).toHaveBeenCalledWith({ bond: testBond.bondInstance, value: 0 });
+        expect(loadBondBalancesAndAllowancesSpy).toHaveBeenCalledTimes(1);
         expect(loadBondBalancesAndAllowancesSpy).toHaveBeenCalledWith({ address: 'signerAddress' });
     });
-
- 
 });

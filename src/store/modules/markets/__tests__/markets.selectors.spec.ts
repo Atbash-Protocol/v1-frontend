@@ -7,18 +7,6 @@ import { RootState } from 'store/store';
 import { selectFormattedBashBalance, selectMarketsLoading } from '../markets.selectors';
 
 describe('#selectFormattedBashBalance', () => {
-    it.each([
-        { balance: null, dai: 1 },
-        { balance: 2, dai: null },
-        { balance: null, dai: null },
-    ])('returns null when balance is $balance and DAI price is $dai', ({ balance, dai }) => {
-        jest.spyOn(AccountModuleSelectors, 'selectBASHBalance').mockReturnValue(balance);
-
-        const state = { markets: { markets: { dai } } };
-
-        expect(selectFormattedBashBalance(state as IReduxState)).toBeNull();
-    });
-
     it('returns the formatted balance', () => {
         jest.spyOn(AccountModuleSelectors, 'selectBASHBalance').mockReturnValue(12);
 

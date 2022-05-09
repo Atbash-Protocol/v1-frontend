@@ -13,10 +13,11 @@ import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { createBond, getBondContractsAddresses } from 'lib/bonds/bonds.helper';
 import { addNotification, walletConnectWarning } from 'store/modules/messages/messages.slice';
-import { clearPendingTxn, fetchPendingTxns } from 'store/slices/pending-txns-slice';
 import { IReduxState } from 'store/slices/state.interface';
 
 import { getBlockchainData } from '../app/app.thunks';
+import { addPendingTransaction, clearPendingTransaction } from '../transactions/transactions.slice';
+import { TransactionTypeEnum } from '../transactions/transactions.type';
 import { initDefaultBondMetrics } from './bonds.helper';
 import { BondItem, BondSlice } from './bonds.types';
 import { getLPBondQuote, getLPPurchasedBonds, getTokenBondQuote, getTokenPurchaseBonds } from './bonds.utils';
@@ -147,10 +148,9 @@ export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, b
     const approveTx = await bond.bondInstance.getReserveContract().approve(bondAddress, constants.MaxUint256, { gasPrice });
     try {
         dispatch(
-            fetchPendingTxns({
-                txnHash: approveTx.hash,
-                text: i18n.t('bond:ApprovingBond', { bond: bond.bondInstance.bondOptions.displayName }),
-                type: 'approve_' + bond.bondInstance.bondOptions.displayName,
+            addPendingTransaction({
+                hash: approveTx.hash,
+                type: TransactionTypeEnum.APPROVE_CONTRACT,
             }),
         );
         await approveTx.wait();
@@ -161,7 +161,7 @@ export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, b
         metamaskErrorWrap(err, dispatch);
     } finally {
         if (approveTx) {
-            dispatch(clearPendingTxn(approveTx.hash));
+            dispatch(clearPendingTransaction(TransactionTypeEnum.APPROVE_CONTRACT));
         }
     }
 
@@ -232,10 +232,9 @@ export const depositBond = createAsyncThunk(
 
             bondTx = await bondContract.deposit(valueInWei, premium, address, { gasPrice, gasLimit: gasEstimation });
             dispatch(
-                fetchPendingTxns({
-                    txnHash: bondTx.hash,
-                    text: i18n.t('bond:BondingBond', { bond: bond.bondInstance.bondOptions.displayName }),
-                    type: 'bond_' + bond.bondInstance.bondOptions.name,
+                addPendingTransaction({
+                    hash: bondTx.hash,
+                    type: TransactionTypeEnum.BONDING,
                 }),
             );
 
@@ -251,7 +250,7 @@ export const depositBond = createAsyncThunk(
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (bondTx) {
-                dispatch(clearPendingTxn(bondTx.hash));
+                dispatch(clearPendingTransaction(TransactionTypeEnum.BONDING));
             }
         }
     },

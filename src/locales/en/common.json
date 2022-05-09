@@ -76,6 +76,7 @@
         "UserDeniedSignature": "User denied transaction signature"
     },
     "errors": {
-        "critical": "Critical error"
+        "critical": "Critical error",
+        "network": "This is due to a badly initialized app. Please change network and refresh the page"
     }
 }

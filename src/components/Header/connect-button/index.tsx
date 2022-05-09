@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { theme } from 'constants/theme';
 import { Web3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected, useGoodNetworkCheck } from 'contexts/web3/web3.hooks';
-import { IReduxState } from 'store/slices/state.interface';
+import { selectTransactionPending } from 'store/modules/transactions/transactions.selectors';
 
 function ConnectMenu() {
     const { t } = useTranslation();
@@ -17,7 +17,7 @@ function ConnectMenu() {
 
     const isUserOnGoodNetwork = useGoodNetworkCheck();
 
-    const isOneTransactionPending = useSelector<IReduxState, boolean>(rState => rState.pendingTransactions.length > 0);
+    const isOneTransactionPending = useSelector(selectTransactionPending);
 
     const handleButtonClick = useCallback(() => {
         return isUserSigned ? memoDisconnect(state.signer) : memoConnect();

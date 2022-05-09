@@ -9,8 +9,12 @@ import { getProviderURI } from 'contexts/web3/web3.utils';
 import { WEB3ContextAction, WEB3ActionTypesEnum } from './web3.types';
 
 export const subscribeSigner = async (web3provider: providers.Web3Provider, dispatch: Dispatch<WEB3ContextAction>) => {
+    console.log('provider', web3provider);
+
     web3provider.on('networkChanged', async (networkId: number) => {
-        dispatch({ type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer: web3provider.getSigner(), networkId } });
+        const signer = new providers.Web3Provider(web3provider as any);
+
+        dispatch({ type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer, networkId } });
     });
 
     web3provider.once('close', () => {
@@ -23,7 +27,7 @@ export const createSigner = async (web3Modal: Core, dispatch: Dispatch<WEB3Conte
 
     const signer = new providers.Web3Provider(web3Provider);
 
-    subscribeSigner(signer, dispatch);
+    subscribeSigner(web3Provider, dispatch);
 
     try {
         const [{ chainId }, address] = await Promise.all([signer.getNetwork(), signer.getSigner().getAddress()]);

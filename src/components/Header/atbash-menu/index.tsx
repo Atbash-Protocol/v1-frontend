@@ -10,7 +10,7 @@ import { useWeb3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected } from 'contexts/web3/web3.hooks';
 import { getBuyLink } from 'lib/uniswap/link';
 
-import { getAddresses, TOKEN_DECIMALS } from '../../../constants';
+import { DEFAULT_NETWORK, getAddresses, TOKEN_DECIMALS } from '../../../constants';
 
 const addTokenToWallet = (tokenSymbol: string, tokenAddress: string, tokenImagePath: string) => async () => {
     if (window.ethereum) {
@@ -39,7 +39,7 @@ function AtbashMenu() {
         state: { networkID },
     } = useWeb3Context();
 
-    if (!networkID) return null;
+    if (!networkID || networkID !== DEFAULT_NETWORK) return null;
 
     const addresses = getAddresses(networkID);
 

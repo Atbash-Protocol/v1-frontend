@@ -3,11 +3,10 @@ import { MainSliceState } from 'store/modules/app/app.types';
 import { BondSlice } from 'store/modules/bonds/bonds.types';
 import { MarketSlice } from 'store/modules/markets/markets.type';
 import { MessagesState } from 'store/modules/messages/messages.types';
-
-import { IPendingTxn } from './pending-txns-slice';
+import { Transaction } from 'store/modules/transactions/transactions.type';
 
 export interface IReduxState {
-    pendingTransactions: IPendingTxn[];
+    transactions: Transaction[];
     messages: MessagesState;
     main: MainSliceState;
     markets: MarketSlice;

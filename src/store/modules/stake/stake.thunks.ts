@@ -4,10 +4,12 @@ import { constants, utils, providers } from 'ethers';
 import { messages } from 'constants/messages';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
 import { addNotification } from 'store/modules/messages/messages.slice';
-import { fetchPendingTxns, getStakingTypeText, clearPendingTxn, getPendingActionText } from 'store/slices/pending-txns-slice';
+// import { fetchPendingTxns, getStakingTypeText, clearPendingTxn, getPendingActionText } from 'store/slices/pending-txns-slice';
 import { IReduxState } from 'store/slices/state.interface';
 
 import { loadBalancesAndAllowances } from '../account/account.thunks';
+import { addPendingTransaction, clearPendingTransaction } from '../transactions/transactions.slice';
+import { TransactionTypeEnum } from '../transactions/transactions.type';
 import { ChangeStakeOptions } from './stake.types';
 
 export const stakeAction = createAsyncThunk(
@@ -29,7 +31,7 @@ export const stakeAction = createAsyncThunk(
                 : await STAKING_CONTRACT.unstake(utils.parseUnits(amount.toString(), 'gwei'), true, { gasPrice });
 
         try {
-            dispatch(fetchPendingTxns({ txnHash: transaction.hash, text: getStakingTypeText(action), type: getPendingActionText(action) }));
+            dispatch(addPendingTransaction({ type: TransactionTypeEnum.STAKING_PENDING, hash: transaction.hash }));
 
             await transaction.wait();
 
@@ -38,7 +40,7 @@ export const stakeAction = createAsyncThunk(
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (transaction) {
-                dispatch(clearPendingTxn(transaction.hash));
+                dispatch(clearPendingTransaction(TransactionTypeEnum.STAKING_PENDING));
             }
         }
 
@@ -66,12 +68,12 @@ export const approveContract = createAsyncThunk(
 
         if (target === 'BASH_APPROVAL' && BASH_CONTRACT) {
             const approveTx = await BASH_CONTRACT.approve(signerAddress, constants.MaxUint256, { gasPrice });
-            dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text: 'Approving', type: 'approve_staking' }));
+            dispatch(addPendingTransaction({ type: TransactionTypeEnum.BASH_APPROVAL, hash: approveTx.hash }));
             await approveTx.wait();
             dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } else if (target === 'SBASH_APPROVAL' && SBASH_CONTRACT) {
             const approveTx = await SBASH_CONTRACT.approve(signerAddress, constants.MaxUint256, { gasPrice });
-            dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text: 'Approving', type: 'approve_staking' }));
+            dispatch(addPendingTransaction({ type: TransactionTypeEnum.SBASH_APPROVAL, hash: approveTx.hash }));
             await approveTx.wait();
             dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } else {

@@ -1,16 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { render } from "@testing-library/react";
-import { DEFAULT_NETWORK } from "constants/blockchain";
-import { Web3Context } from "contexts/web3/web3.context";
-import { BondType } from "helpers/bond/constants";
-import { BondOptions } from "lib/bonds/bond/bond";
-import { LPBond } from "lib/bonds/bond/lp-bond";
-import { BondProviderEnum } from "lib/bonds/bonds.types";
-import { Provider } from "react-redux";
-import pendingTransactionsReducer from 'store/slices/pending-txns-slice';
+import { configureStore } from '@reduxjs/toolkit';
+import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
-import Header from "../index";
+import { DEFAULT_NETWORK } from 'constants/blockchain';
+import { Web3Context } from 'contexts/web3/web3.context';
+import { BondType } from 'helpers/bond/constants';
+import { BondOptions } from 'lib/bonds/bond/bond';
+import { LPBond } from 'lib/bonds/bond/lp-bond';
+import { BondProviderEnum } from 'lib/bonds/bonds.types';
+import transactionReducer from 'store/modules/transactions/transactions.slice';
 
+import Header from '../index';
 
 function renderComponent(component: JSX.Element, contextState?: any) {
     return render(
@@ -18,7 +18,7 @@ function renderComponent(component: JSX.Element, contextState?: any) {
             <Provider
                 store={configureStore({
                     reducer: {
-                        pendingTransactions: pendingTransactionsReducer,
+                        transactions: transactionReducer,
                     },
                 })}
             >
@@ -28,7 +28,6 @@ function renderComponent(component: JSX.Element, contextState?: any) {
         </Web3Context.Provider>,
     );
 }
-
 
 describe('BondDialog', () => {
     const bondOptions: BondOptions = {
@@ -53,13 +52,11 @@ describe('BondDialog', () => {
     it('renders', () => {
         const { container } = renderComponent(<Header handleDrawerToggle={() => {}} isSmallScreen={false} />, {
             state: {
-              networkID: DEFAULT_NETWORK
+                networkID: DEFAULT_NETWORK,
             },
             memoConnect: jest.fn(),
             memoDisconnect: jest.fn(),
         });
         expect(container).toMatchSnapshot();
     });
-
-
-  })
+});

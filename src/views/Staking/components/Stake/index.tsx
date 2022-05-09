@@ -4,17 +4,14 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { BigNumber } from 'ethers';
 import { useTranslation } from 'react-i18next';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { selectBASHBalance, selectSBASHBalance, selectUserStakingAllowance } from 'store/modules/account/account.selectors';
-import { AccountSlice } from 'store/modules/account/account.types';
 import { approveContract, stakeAction } from 'store/modules/stake/stake.thunks';
 import { StakeActionEnum } from 'store/modules/stake/stake.types';
-import { TransactionTypeEnum } from 'store/slices/pending-txns-slice';
-import { IReduxState } from 'store/slices/state.interface';
+import { TransactionTypeEnum } from 'store/modules/transactions/transactions.type';
 
 import AmountForm from '../AmountForm';
 

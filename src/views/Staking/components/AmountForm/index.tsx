@@ -5,14 +5,15 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { theme } from 'constants/theme';
-import { selectIsPendingTransactionType, TransactionType } from 'store/slices/pending-txns-slice';
+import { selectPendingTx } from 'store/modules/transactions/transactions.selectors';
+import { TransactionType } from 'store/modules/transactions/transactions.type';
 import { IReduxState } from 'store/slices/state.interface';
 
 interface AmountFormProps {
     initialValue: number;
     placeholder?: string;
     maxValue: number;
-    transactionType: TransactionType; // TODO: transaction types
+    transactionType: TransactionType;
     approvesNeeded: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onApprove: any;
@@ -27,7 +28,7 @@ const AmountForm = (props: AmountFormProps) => {
     const { initialValue, placeholder, maxValue, transactionType, approvesNeeded, onApprove, onAction, approveLabel, actionLabel } = props;
 
     const [value, setValue] = useState(initialValue);
-    const selectPendingTransaction = useSelector<IReduxState, boolean>(state => selectIsPendingTransactionType(state, transactionType));
+    const selectPendingTransaction = useSelector<IReduxState, boolean>(state => selectPendingTx(state, transactionType));
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(Number(e.target.value));

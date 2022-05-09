@@ -1,7 +1,12 @@
 import { AlertColor } from '@mui/material';
 
 export interface MessagesState {
-    notifications: Message[];
+    notifications: NotificationMessage[];
+}
+
+export interface NotificationMessage extends Message {
+    id: string;
+    display: boolean;
 }
 
 export interface Message {

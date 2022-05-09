@@ -11,8 +11,8 @@ export const initWeb3Modal = () =>
         cacheProvider: true,
         theme: {
             background: theme.palette.cardBackground.main,
-            main: theme.palette.cardBackground.main,
-            secondary: theme.palette.grey[900],
+            main: theme.palette.primary.light,
+            secondary: theme.palette.primary.light,
             hover: theme.palette.grey[800],
             border: 'none',
         },

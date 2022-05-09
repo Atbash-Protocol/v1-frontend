@@ -6,6 +6,7 @@ import { RootState } from 'store/store';
 import { StakingRewards } from './metrics.types';
 
 export const selectStakingRewards = (state: RootState): StakingRewards | null => {
+    console.log('s', state);
     const { epoch } = state.main.staking;
     const { circSupply } = state.main.metrics;
 
@@ -13,7 +14,6 @@ export const selectStakingRewards = (state: RootState): StakingRewards | null =>
 
     const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
 
-    console.log('stakingReward', stakingReward);
     const stakingRebase = (stakingReward ? stakingReward.toNumber() : 1) / (circSupply * Math.pow(10, 9)); // rewardYield rate for this epoch
 
     return {

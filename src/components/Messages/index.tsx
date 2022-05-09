@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { SnackbarKey, SnackbarMessage, useSnackbar } from 'notistack';
+import { SnackbarKey, useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 
 import { MessagesState } from 'store/modules/messages/messages.types';
@@ -17,7 +17,7 @@ function Messages() {
         if (notifications && notifications.length > 0) {
             enqueueSnackbar('notif', {
                 variant: 'error',
-                content: (key: SnackbarKey, message: SnackbarMessage) => {
+                content: (key: SnackbarKey) => {
                     return <BSnackBar key={key} description={notifications[0].description} severity={notifications[0].severity} />;
                 },
             });

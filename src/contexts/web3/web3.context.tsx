@@ -25,7 +25,7 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
         case WEB3ActionTypesEnum.CLOSE:
             return { ...state, signer: null, web3Modal: initWeb3Modal() };
         case WEB3ActionTypesEnum.NETWORK_CHANGED:
-            return { ...state, networkID: Number(action.payload) };
+            return { ...state, networkID: Number(action.payload.networkID) };
         case WEB3ActionTypesEnum.SET_SIGNER:
             return { ...state, signer: action.payload.signer, signerAddress: action.payload.address, networkID: action.payload.chainId };
         case WEB3ActionTypesEnum.SET_PROVIDER:
@@ -37,7 +37,7 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
 
 export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => {
     const {
-        state: { web3Modal, signer, provider },
+        state: { web3Modal, signer, provider, networkID },
     } = useContext(Web3Context);
     const [state, dispatch] = useReducer(WEB3Reducer, initialState);
 
