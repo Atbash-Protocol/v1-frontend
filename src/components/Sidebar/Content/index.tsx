@@ -1,4 +1,6 @@
 // import Davatar from '@davatar/react';
+import { useMemo } from 'react';
+
 import AccountBalanceSharpIcon from '@mui/icons-material/AccountBalanceSharp';
 // Mint
 import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp';
@@ -94,7 +96,10 @@ function NavContent() {
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
-    const menuItems = getMenuItems(signerConnected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
+    const menuItems = useMemo(
+        () => getMenuItems(signerConnected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />),
+        [signerConnected],
+    );
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
 
     const bondItems = (bonds?.bonds ?? [])

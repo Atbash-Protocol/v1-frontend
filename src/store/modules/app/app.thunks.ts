@@ -85,7 +85,6 @@ export const getStakingMetrics = createAsyncThunk('app/stakingMetrics', async (_
     const secondsToNextEpoch = 0; // TODO: Number(await STAKING_CONTRACT!.secondsToNextEpoch()); not working on staking contract
     const index = await STAKING_CONTRACT.index();
 
-    console.log(epoch, index);
     return {
         epoch: {
             distribute: epoch.distribute,

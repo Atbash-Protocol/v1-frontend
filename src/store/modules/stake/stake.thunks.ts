@@ -9,7 +9,7 @@ import { IReduxState } from 'store/slices/state.interface';
 
 import { loadBalancesAndAllowances } from '../account/account.thunks';
 import { addPendingTransaction, clearPendingTransaction } from '../transactions/transactions.slice';
-import { TransactionTypeEnum } from '../transactions/transactions.type';
+import { TransactionType, TransactionTypeEnum } from '../transactions/transactions.type';
 import { ChangeStakeOptions } from './stake.types';
 
 export const stakeAction = createAsyncThunk(
@@ -24,24 +24,29 @@ export const stakeAction = createAsyncThunk(
         const gasPrice = await signer.getGasPrice();
 
         if (!STAKING_CONTRACT || !STAKING_HELPER_ADDRESS) throw new Error('Unable to get contracts');
-
-        const transaction =
-            action === 'STAKE'
-                ? await STAKING_HELPER_ADDRESS.stake(utils.parseUnits(amount.toString(), 'gwei'), signerAddress, { gasPrice })
-                : await STAKING_CONTRACT.unstake(utils.parseUnits(amount.toString(), 'gwei'), true, { gasPrice });
+        let transaction = undefined;
 
         try {
+            transaction =
+                action === 'STAKE'
+                    ? await STAKING_HELPER_ADDRESS.stake(utils.parseUnits(amount.toString(), 'gwei'), signerAddress, { gasPrice })
+                    : await STAKING_CONTRACT.unstake(utils.parseUnits(amount.toString(), 'gwei'), true, { gasPrice });
+
             dispatch(addPendingTransaction({ type: TransactionTypeEnum.STAKING_PENDING, hash: transaction.hash }));
 
             await transaction.wait();
 
             dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } catch (err: unknown) {
+            // RPC Errors are typed any
+            const RPCErr = err as any;
+            if (RPCErr.code) {
+                console.log('catched', err);
+            }
+
             return metamaskErrorWrap(err, dispatch);
         } finally {
-            if (transaction) {
-                dispatch(clearPendingTransaction(TransactionTypeEnum.STAKING_PENDING));
-            }
+            dispatch(clearPendingTransaction(TransactionTypeEnum.STAKING_PENDING));
         }
 
         dispatch(addNotification({ severity: 'info', description: messages.your_balance_update_soon }));
@@ -54,29 +59,28 @@ export const stakeAction = createAsyncThunk(
 
 export const approveContract = createAsyncThunk(
     'staking/approve',
-    async ({ signer, signerAddress, target }: { signer: providers.Web3Provider; signerAddress: string; target: string }, { getState, dispatch }) => {
+    async ({ signer, signerAddress, transactionType }: { signer: providers.Web3Provider; signerAddress: string; transactionType: TransactionType }, { getState, dispatch }) => {
         const {
             main: {
                 contracts: { BASH_CONTRACT, SBASH_CONTRACT },
             },
         } = getState() as IReduxState;
 
-        if (!BASH_CONTRACT) {
+        if (!BASH_CONTRACT || !SBASH_CONTRACT) {
             throw new Error('Contract not set');
         }
         const gasPrice = await signer.getGasPrice();
 
-        if (target === 'BASH_APPROVAL' && BASH_CONTRACT) {
-            const approveTx = await BASH_CONTRACT.approve(signerAddress, constants.MaxUint256, { gasPrice });
-            dispatch(addPendingTransaction({ type: TransactionTypeEnum.BASH_APPROVAL, hash: approveTx.hash }));
+        try {
+            const targetContract = transactionType === 'BASH_APPROVAL' ? BASH_CONTRACT : SBASH_CONTRACT;
+
+            const approveTx = await targetContract.approve(signerAddress, constants.MaxUint256, { gasPrice });
+            dispatch(addPendingTransaction({ type: transactionType, hash: approveTx.hash }));
             await approveTx.wait();
-            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
-        } else if (target === 'SBASH_APPROVAL' && SBASH_CONTRACT) {
-            const approveTx = await SBASH_CONTRACT.approve(signerAddress, constants.MaxUint256, { gasPrice });
-            dispatch(addPendingTransaction({ type: TransactionTypeEnum.SBASH_APPROVAL, hash: approveTx.hash }));
-            await approveTx.wait();
-            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
-        } else {
+        } catch (err) {
+            dispatch(addNotification({ severity: 'error', description: messages.tx_successfully_send, detailledDescription: JSON.stringify(err) }));
+        } finally {
+            dispatch(clearPendingTransaction(transactionType));
         }
     },
 );

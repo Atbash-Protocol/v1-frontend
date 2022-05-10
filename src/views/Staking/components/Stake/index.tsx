@@ -11,7 +11,8 @@ import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { selectBASHBalance, selectSBASHBalance, selectUserStakingAllowance } from 'store/modules/account/account.selectors';
 import { approveContract, stakeAction } from 'store/modules/stake/stake.thunks';
 import { StakeActionEnum } from 'store/modules/stake/stake.types';
-import { TransactionTypeEnum } from 'store/modules/transactions/transactions.type';
+import { selectStakingPending } from 'store/modules/transactions/transactions.selectors';
+import { TransactionType, TransactionTypeEnum } from 'store/modules/transactions/transactions.type';
 
 import AmountForm from '../AmountForm';
 
@@ -30,11 +31,7 @@ function TabPanel(props: TabPanelProps) {
 
     return (
         <div role="tabpanel" hidden={value !== index} id={`stake-tabpanel-${index}`} aria-labelledby={`stake-tab-${index}`} {...other}>
-            {value === index && (
-                <Box sx={{ p: 3, color: 'red' }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
+            <Box sx={{ p: 3, color: 'red' }}>{children}</Box>
         </div>
     );
 }
@@ -58,11 +55,12 @@ export default function Stake() {
 
     const BASHBalance = useSelector(selectBASHBalance);
     const SBASHBalance = useSelector(selectSBASHBalance);
+    const translactionPending = useSelector(selectStakingPending);
     const { BASHAllowanceNeeded, SBASHAllowanceNeeded } = useSelector(selectUserStakingAllowance);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         event.preventDefault();
-        setValue(newValue);
+        setValue(newValue || 0);
     };
 
     const handleStakingClick = React.useCallback((amount: number) => {
@@ -77,43 +75,51 @@ export default function Stake() {
     }, []);
 
     const handleApproveClick = React.useCallback(
-        (target: string) => {
-            dispatch(approveContract({ signer, signerAddress, target }));
+        (transactionType: TransactionType) => {
+            dispatch(approveContract({ signer, signerAddress, transactionType }));
         },
         [signer],
     );
 
-    const StakeCard = (
-        <AmountForm
-            initialValue={0}
-            maxValue={BASHBalance}
-            transactionType={TransactionTypeEnum.BASH_APPROVAL}
-            approvesNeeded={BASHAllowanceNeeded}
-            onApprove={handleApproveClick}
-            onAction={handleStakingClick}
-            approveLabel={t('stake:ApproveStaking')}
-            actionLabel={t('stake:Stake')}
-        />
+    const StakeCard = React.useMemo(
+        () => (
+            <AmountForm
+                initialValue={0}
+                maxValue={BASHBalance}
+                transactionType={TransactionTypeEnum.BASH_APPROVAL}
+                approvesNeeded={BASHAllowanceNeeded}
+                onApprove={handleApproveClick}
+                onAction={handleStakingClick}
+                approveLabel={t('stake:ApproveStaking')}
+                actionLabel={t('stake:Stake')}
+                isLoading={translactionPending}
+            />
+        ),
+        [BASHBalance, BASHAllowanceNeeded, translactionPending],
     );
 
-    const UnstakeCard = (
-        <AmountForm
-            initialValue={SBASHBalance}
-            maxValue={SBASHBalance}
-            transactionType={TransactionTypeEnum.SBASH_APPROVAL}
-            approvesNeeded={SBASHAllowanceNeeded}
-            onApprove={handleApproveClick}
-            onAction={handleStakingClick}
-            approveLabel={t('stake:ApproveUnstaking')}
-            actionLabel={t('stake:Unstake')}
-        />
+    const UnstakeCard = React.useMemo(
+        () => (
+            <AmountForm
+                initialValue={SBASHBalance}
+                maxValue={SBASHBalance}
+                transactionType={TransactionTypeEnum.SBASH_APPROVAL}
+                approvesNeeded={SBASHAllowanceNeeded}
+                onApprove={handleApproveClick}
+                onAction={handleStakingClick}
+                approveLabel={t('stake:ApproveUnstaking')}
+                actionLabel={t('stake:Unstake')}
+                isLoading={translactionPending}
+            />
+        ),
+        [SBASHBalance, SBASHAllowanceNeeded, translactionPending],
     );
 
     return (
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs centered value={value} onChange={handleChange} aria-label="basic tabs example">
-                <Tab label={<>{t('stake:Stake')}</>} {...a11yProps(0)} />
-                <Tab label={<>{t('stake:Unstake')}</>} {...a11yProps(1)} />
+                <Tab value={0} label={<>{t('stake:Stake')}</>} {...a11yProps(0)} />
+                <Tab value={1} label={<>{t('stake:Unstake')}</>} {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 {StakeCard}

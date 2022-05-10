@@ -9,8 +9,6 @@ import { getProviderURI } from 'contexts/web3/web3.utils';
 import { WEB3ContextAction, WEB3ActionTypesEnum } from './web3.types';
 
 export const subscribeSigner = async (web3provider: providers.Web3Provider, dispatch: Dispatch<WEB3ContextAction>) => {
-    console.log('provider', web3provider);
-
     web3provider.on('networkChanged', async (networkId: number) => {
         const signer = new providers.Web3Provider(web3provider as any);
 

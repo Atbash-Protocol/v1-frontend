@@ -1,15 +1,16 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { sum } from 'lodash';
 
 import { formatUSD } from 'helpers/price-units';
+import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 
 import { StakingRewards } from './metrics.types';
 
-export const selectStakingRewards = (state: RootState): StakingRewards | null => {
-    console.log('s', state);
-    const { epoch } = state.main.staking;
-    const { circSupply } = state.main.metrics;
+const selectEpoch = (state: IReduxState) => state.main.staking.epoch;
+const selectCircSupply = (state: IReduxState) => state.main.metrics.circSupply;
 
+export const selectStakingRewards = createSelector([selectEpoch, selectCircSupply], (epoch, circSupply) => {
     if (!circSupply || !epoch) return null;
 
     const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
@@ -22,7 +23,7 @@ export const selectStakingRewards = (state: RootState): StakingRewards | null =>
         stakingReward: stakingReward.toNumber(),
         stakingRebase,
     };
-};
+});
 
 export const selectTVL = (state: RootState): number | null => {
     const { circSupply } = state.main.metrics;
@@ -59,3 +60,6 @@ export const selectWSBASHPrice = (state: RootState): string | null => {
 
     return formatUSD((index.toNumber() / 10 ** 9) * dai, 2);
 };
+function createSelectorCreator(defaultMemoize: any, isEqual: any) {
+    throw new Error('Function not implemented.');
+}

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { theme } from 'constants/theme';
 import { Web3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected, useGoodNetworkCheck } from 'contexts/web3/web3.hooks';
-import { selectTransactionPending } from 'store/modules/transactions/transactions.selectors';
+import { selectPendingTransactions } from 'store/modules/transactions/transactions.selectors';
 
 function ConnectMenu() {
     const { t } = useTranslation();
@@ -17,7 +17,7 @@ function ConnectMenu() {
 
     const isUserOnGoodNetwork = useGoodNetworkCheck();
 
-    const isOneTransactionPending = useSelector(selectTransactionPending);
+    const pendingTransactions = useSelector(selectPendingTransactions);
 
     const handleButtonClick = useCallback(() => {
         return isUserSigned ? memoDisconnect(state.signer) : memoConnect();
@@ -29,13 +29,13 @@ function ConnectMenu() {
         if (isUserSigned) {
             if (!isUserOnGoodNetwork) {
                 setButtonText(t('WrongNetwork'));
-            } else if (isOneTransactionPending) {
-                setButtonText(t('CountPending', { count: 1 })); // Ususally user can't have more than 1
+            } else if (pendingTransactions.length > 0) {
+                setButtonText(t('CountPending', { count: pendingTransactions.length })); // Ususally user can't have more than 1
             } else {
                 setButtonText(t('Disconnect'));
             }
         }
-    }, [isUserSigned, isOneTransactionPending, isUserOnGoodNetwork]);
+    }, [isUserSigned, pendingTransactions, isUserOnGoodNetwork]);
 
     return (
         <Box>

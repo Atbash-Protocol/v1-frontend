@@ -54,7 +54,7 @@ export const selectUserStakingAllowance = (state: RootState) => {
     const { BASH, SBASH } = state.account.stakingAllowance;
 
     return {
-        BASHAllowanceNeeded: BASH.gt(0),
-        SBASHAllowanceNeeded: SBASH.gt(0),
+        BASHAllowanceNeeded: BASH.eq(0),
+        SBASHAllowanceNeeded: SBASH.eq(0),
     };
 };

@@ -1,10 +1,12 @@
 import { useCallback, useMemo, useState, MouseEvent, ChangeEvent } from 'react';
 
-import { Box, Button, Grid, InputAdornment, OutlinedInput, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, InputAdornment, OutlinedInput, Typography } from '@mui/material';
+import { debounce, isNumber } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { theme } from 'constants/theme';
+import { addNotification } from 'store/modules/messages/messages.slice';
 import { selectPendingTx } from 'store/modules/transactions/transactions.selectors';
 import { TransactionType } from 'store/modules/transactions/transactions.type';
 import { IReduxState } from 'store/slices/state.interface';
@@ -21,21 +23,23 @@ interface AmountFormProps {
     onAction: any;
     approveLabel: string;
     actionLabel: string;
+    isLoading?: boolean;
 }
 
 const AmountForm = (props: AmountFormProps) => {
     const { t } = useTranslation();
-    const { initialValue, placeholder, maxValue, transactionType, approvesNeeded, onApprove, onAction, approveLabel, actionLabel } = props;
+    const dispatch = useDispatch();
+    const { initialValue, placeholder, maxValue, transactionType, approvesNeeded, onApprove, onAction, approveLabel, actionLabel, isLoading } = props;
 
-    const [value, setValue] = useState(initialValue);
+    const [value, setValue] = useState<string>('');
     const selectPendingTransaction = useSelector<IReduxState, boolean>(state => selectPendingTx(state, transactionType));
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(Number(e.target.value));
+        setValue(e.target.value);
     };
 
     const handleClickMaxValue = () => {
-        setValue(maxValue);
+        setValue(maxValue.toString());
     };
 
     const handleActionClick = useCallback(
@@ -46,6 +50,10 @@ const AmountForm = (props: AmountFormProps) => {
 
             if (approvesNeeded) {
                 return onApprove(transactionType);
+            }
+
+            if (value === '0') {
+                return dispatch(addNotification({ severity: 'warning', description: 'Please provide an amount' }));
             }
 
             return onAction(value);
@@ -66,10 +74,11 @@ const AmountForm = (props: AmountFormProps) => {
                         borderRight: 'none',
                         width: '100%',
                     }}
-                    type="text"
-                    placeholder={placeholder ?? t('Amount')}
+                    type="number"
+                    placeholder={initialValue.toString()}
                     value={value}
                     onChange={handleChange}
+                    inputProps={{ inputMode: 'numeric', pattern: '^[0-9]*[.,]?[0-9]*$' }}
                     endAdornment={
                         <InputAdornment position="end">
                             <Box sx={{ color: theme.palette.primary.main, textTransform: 'uppercase', cursor: 'pointer' }} onClick={handleClickMaxValue}>
@@ -87,17 +96,16 @@ const AmountForm = (props: AmountFormProps) => {
                         padding: 0,
                         color: theme.palette.primary.main,
                     }}
+                    disabled={isLoading}
                     onClick={handleActionClick}
                 >
-                    <Typography variant="body1"> {approvesNeeded ? approveLabel : actionLabel}</Typography>
+                    {isLoading && <CircularProgress color="secondary" />}
+
+                    {!isLoading && <Typography variant="body1"> {approvesNeeded ? approveLabel : actionLabel}</Typography>}
                 </Button>
             </Grid>
         </Grid>
     );
 };
 
-//TODO: Extract the button to another component
-// The goal is to listen to pending transactions in order to display a loader instead of the button
-const useAmountForm = (props: AmountFormProps) => useMemo(() => <AmountForm {...props} />, [props]);
-
-export default useAmountForm;
+export default AmountForm;

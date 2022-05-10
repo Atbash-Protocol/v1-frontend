@@ -24,7 +24,7 @@ function StakeMetrics() {
         { key: 'CurrentIndex', value: currentIndex },
         { key: 'BASHPrice', value: BASHPrice },
     ].map(({ key, value }) => (
-        <Grid key={key} xs={6} sm={4} md={4} lg={3} mt={2}>
+        <Grid item key={key} xs={6} sm={4} md={4} lg={3} mt={2}>
             <MenuMetric metricKey={t(key)} value={value} />
         </Grid>
     ));
