@@ -5,8 +5,6 @@ import { formatUSD } from 'helpers/price-units';
 import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 
-import { StakingRewards } from './metrics.types';
-
 const selectEpoch = (state: IReduxState) => state.main.staking.epoch;
 const selectCircSupply = (state: IReduxState) => state.main.metrics.circSupply;
 
@@ -60,6 +58,3 @@ export const selectWSBASHPrice = (state: RootState): string | null => {
 
     return formatUSD((index.toNumber() / 10 ** 9) * dai, 2);
 };
-function createSelectorCreator(defaultMemoize: any, isEqual: any) {
-    throw new Error('Function not implemented.');
-}

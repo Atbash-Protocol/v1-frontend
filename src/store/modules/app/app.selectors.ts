@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { pick } from 'lodash';
 import { createSelector } from 'reselect';
 
@@ -16,7 +16,7 @@ export const selectFormattedReservePrice = (state: RootState): string | null => 
 
     if (!reserves || !dai) return null;
 
-    const reservePrice = Number(ethers.utils.formatUnits(reserves, 'gwei')) * dai;
+    const reservePrice = Number(utils.formatUnits(reserves, 'gwei')) * dai;
 
     return formatUSD(reservePrice, 2);
 };
@@ -37,9 +37,7 @@ export const useNextRebase = (state: RootState): number | undefined => {
     return epoch?.endTime;
 };
 
-export const useBlockchainInfos = (state: RootState): MainSliceState['blockchain'] => {
-    return state.main.blockchain;
-};
+export const useBlockchainInfos = (state: RootState) => state.main.blockchain;
 
 export const selectCirculatingSupply = (state: RootState) => state.main.metrics.circSupply;
 
