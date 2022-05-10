@@ -1,5 +1,3 @@
-import _, { pick } from 'lodash';
-
 import { IReduxState } from 'store/slices/state.interface';
 
 import { TransactionType, TransactionTypeEnum } from './transactions.type';

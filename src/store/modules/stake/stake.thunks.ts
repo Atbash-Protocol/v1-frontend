@@ -38,13 +38,7 @@ export const stakeAction = createAsyncThunk(
 
             dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } catch (err: unknown) {
-            // RPC Errors are typed any
-            const RPCErr = err as any;
-            if (RPCErr.code) {
-                console.log('catched', err);
-            }
-
-            return metamaskErrorWrap(err, dispatch);
+            metamaskErrorWrap(err, dispatch);
         } finally {
             dispatch(clearPendingTransaction(TransactionTypeEnum.STAKING_PENDING));
         }

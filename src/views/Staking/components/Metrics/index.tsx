@@ -1,4 +1,4 @@
-import { Grid, Skeleton } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 

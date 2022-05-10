@@ -6,7 +6,7 @@ import { Box, Snackbar, Alert, Accordion, AccordionDetails, AccordionSummary, Ty
 import { theme } from 'constants/theme';
 import { Message } from 'store/modules/messages/messages.types';
 
-export const BSnackBar = forwardRef<RefObject<HTMLDivElement>, Message>(({ description, detailledDescription, severity }, ref) => {
+export const BSnackBar = forwardRef<RefObject<HTMLDivElement>, Message>(({ severity }, ref) => {
     const [snackbarOpen, setSnackbarOpen] = useState(true);
 
     const handleClose = () => {

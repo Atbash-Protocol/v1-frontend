@@ -37,7 +37,7 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
 
 export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => {
     const {
-        state: { web3Modal, signer, provider, networkID },
+        state: { web3Modal, signer, provider },
     } = useContext(Web3Context);
     const [state, dispatch] = useReducer(WEB3Reducer, initialState);
 

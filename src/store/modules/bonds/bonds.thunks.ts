@@ -8,7 +8,6 @@ import { getAddresses } from 'constants/addresses';
 import { messages } from 'constants/messages';
 import { WEB3State } from 'contexts/web3/web3.types';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
-import i18n from 'i18n';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { createBond, getBondContractsAddresses } from 'lib/bonds/bonds.helper';

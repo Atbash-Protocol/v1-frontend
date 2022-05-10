@@ -15,7 +15,6 @@ import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
 import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
-import { IReduxState } from 'store/slices/state.interface';
 
 import './dashboard.scss';
 
