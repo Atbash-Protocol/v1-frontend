@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 
 import { DEFAULT_NETWORK } from 'constants/blockchain';
 import { Web3Context } from 'contexts/web3/web3.context';
@@ -10,12 +10,18 @@ function renderComponent(component: JSX.Element, contextState?: any) {
 }
 
 describe('AtbashMenu', () => {
-    it('renders', () => {
+    it('renders', async () => {
         const { container } = renderComponent(<AtbashMenu />, {
             state: { signer: 'signer', signerAddress: 'signerAddress', networkID: DEFAULT_NETWORK },
         });
 
         expect(container).toMatchSnapshot();
         expect(container.querySelector('button')?.textContent).toBe('BuyBASH');
+
+        const btn = container.querySelector('button');
+        console.log(screen.getByText(/BuyBASH/i).parentElement?.parentElement?.innerHTML);
+        fireEvent.click(screen.getByText(/BuyBASH/i));
+
+        expect(container).toMatchSnapshot();
     });
 });

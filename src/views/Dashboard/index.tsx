@@ -10,7 +10,7 @@ import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
 import { formatUSD, formatAPY } from 'helpers/price-units';
 import { selectFormattedReservePrice, useContractLoaded } from 'store/modules/app/app.selectors';
-import { selectTreasuryBalance } from 'store/modules/bonds/bonds.selector';
+import { isAtLeastOneActive, selectTreasuryBalance } from 'store/modules/bonds/bonds.selector';
 import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
 import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
@@ -38,7 +38,7 @@ function Dashboard() {
     const currentIndex = useSelector(selectFormattedIndex);
 
     const contractsLoaded = useSelector(useContractLoaded);
-    const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
+    const loadedBonds = useSelector(isAtLeastOneActive);
     const treasuryBalance = useSelector(selectTreasuryBalance);
 
     useEffect(() => {

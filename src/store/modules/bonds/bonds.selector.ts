@@ -77,3 +77,5 @@ export const selectBondQuoteResult = (
 };
 
 export const selectTreasuryBalance = (state: RootState) => formatUSD(state.bonds.treasuryBalance || 0, 2);
+
+export const isAtLeastOneActive = (state: RootState) => Object.values(state.bonds.bonds).length > 0;

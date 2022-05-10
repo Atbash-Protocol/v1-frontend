@@ -16,11 +16,9 @@ function StakeMetrics() {
 
     const { t } = useTranslation();
 
-    if (!stakingMetrics || !TVL) return <Skeleton />;
-
     const metrics = [
-        { key: 'APY', value: `${formatAPY(stakingMetrics.stakingAPY.toString())} %` },
-        { key: 'TVL', value: formatUSD(TVL) },
+        { key: 'APY', value: stakingMetrics?.stakingAPY ? `${formatAPY(stakingMetrics.stakingAPY.toString())} %` : null },
+        { key: 'TVL', value: TVL ? formatUSD(TVL) : null },
         { key: 'CurrentIndex', value: currentIndex },
         { key: 'BASHPrice', value: BASHPrice },
     ].map(({ key, value }) => (

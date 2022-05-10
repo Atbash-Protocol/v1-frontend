@@ -8,7 +8,6 @@ import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 
 import { calculateStakingRewards } from './app.helpers';
-import { MainSliceState } from './app.types';
 
 export const selectFormattedReservePrice = (state: RootState): string | null => {
     const { reserves } = state.main.metrics;

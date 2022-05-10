@@ -55,8 +55,8 @@ function AtbashMenu() {
     const id = open ? 'menu-popover' : undefined;
 
     return (
-        <Box mr={1} onClick={e => handleClick(e)}>
-            <Button sx={{ padding: theme.spacing(1) }} aria-describedby={id}>
+        <Box mr={1}>
+            <Button sx={{ padding: theme.spacing(1) }} aria-describedby={id} onClick={e => handleClick(e)}>
                 <Typography>
                     <>{t('BuyBASH')}</>
                 </Typography>

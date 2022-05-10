@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#AmountForm renders 1`] = `
+<Context.Provider
+  value={Object {}}
+>
+  <Provider
+    store={
+      Object {
+        "@@observable": [Function],
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  >
+    <AmountForm
+      actionLabel="actionLabel"
+      approveLabel="approveLabel"
+      approvesNeeded={true}
+      initialValue={0}
+      isLoading={true}
+      maxValue={10}
+      onAction={[MockFunction]}
+      onApprove={[MockFunction]}
+      transactionType="APPROVE_CONTRACT"
+    />
+  </Provider>
+</Context.Provider>
+`;

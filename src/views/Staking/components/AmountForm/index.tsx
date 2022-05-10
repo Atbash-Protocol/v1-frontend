@@ -1,7 +1,6 @@
-import { useCallback, useMemo, useState, MouseEvent, ChangeEvent } from 'react';
+import { useCallback, useState, MouseEvent, ChangeEvent } from 'react';
 
 import { Box, Button, CircularProgress, Grid, InputAdornment, OutlinedInput, Typography } from '@mui/material';
-import { debounce, isNumber } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,7 +12,6 @@ import { IReduxState } from 'store/slices/state.interface';
 
 interface AmountFormProps {
     initialValue: number;
-    placeholder?: string;
     maxValue: number;
     transactionType: TransactionType;
     approvesNeeded: boolean;
@@ -29,7 +27,7 @@ interface AmountFormProps {
 const AmountForm = (props: AmountFormProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { initialValue, placeholder, maxValue, transactionType, approvesNeeded, onApprove, onAction, approveLabel, actionLabel, isLoading } = props;
+    const { initialValue, maxValue, transactionType, approvesNeeded, onApprove, onAction, approveLabel, actionLabel, isLoading } = props;
 
     const [value, setValue] = useState<string>('');
     const selectPendingTransaction = useSelector<IReduxState, boolean>(state => selectPendingTx(state, transactionType));
