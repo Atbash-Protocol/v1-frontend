@@ -32,5 +32,6 @@ module.exports = {
       '!<rootDir>/src/index.{js,ts,jsx,tsx}',
       '!<rootDir>/scripts/*',
       '!<rootDir>/src/config/*',
+      '!<rootDir>/src/store/store.ts',
     ],
   }; 

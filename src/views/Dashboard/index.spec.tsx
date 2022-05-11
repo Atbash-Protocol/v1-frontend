@@ -60,18 +60,20 @@ describe('NotFound', () => {
         expect(comp).toMatchSnapshot();
     });
 
-    // it('renders with values', () => {
-    //     jest.spyOn(redux, 'useSelector').mockReturnValue({
-    //         markets: {
-    //             loading: false,
-    //             marketPrice: 0,
-    //             reserves: 0,
-    //             epoch: 0,
-    //         },
-    //     });
+    it('renders with values', () => {
+        jest.spyOn(MarketSelectorsModule, 'selectMarketsLoading').mockReturnValue(false);
+        jest.spyOn(AppSelectorsModule, 'selectFormattedReservePrice').mockReturnValue('$20.0');
+        jest.spyOn(AppSelectorsModule, 'useContractLoaded').mockReturnValue(true);
+        jest.spyOn(MetricsSelectorsModule, 'selectWSBASHPrice').mockReturnValue('$10.0');
+        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(10000);
+        jest.spyOn(MetricsSelectorsModule, 'selectStakingRewards').mockReturnValue(null);
+        jest.spyOn(MetricsSelectorsModule, 'selectFormattedMarketCap').mockReturnValue('$200');
+        jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('$200');
+        jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
+        jest.spyOn(BondSelectorsModule, 'selectTreasuryBalance').mockReturnValue('$200 000');
 
-    //     act(() => {
-    //         ReactDOM.render(withProvider(<Dashboard />, store), container);
-    //     });
-    // });
+        const comp = renderComponent(<Dashboard />);
+
+        expect(comp).toMatchSnapshot();
+    });
 });
