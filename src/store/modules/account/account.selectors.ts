@@ -1,6 +1,10 @@
+import Decimal from 'decimal.js';
 import { utils } from 'ethers';
+import { createSelector } from 'reselect';
 
 import { RootState } from 'store/store';
+
+import { selectDaiPrice } from '../markets/markets.selectors';
 
 export const selectBASHBalance = (state: RootState): number => {
     const BASHAmount = state.account.balances.BASH; // 9 Decimals
@@ -12,6 +16,10 @@ export const selectSBASHBalance = (state: RootState): number => {
     const SBASHAmount = state.account.balances.SBASH; // 9 Decimals
 
     return SBASHAmount.div(10 ** 9).toNumber();
+};
+
+export const selectWSBASHBalance = (state: RootState): Decimal => {
+    return new Decimal(state.account.balances.WSBASH.toString()).div(10 ** 9); // 9 Decimals
 };
 
 export const selectFormattedStakeBalance = (

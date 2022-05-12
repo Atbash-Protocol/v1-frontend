@@ -15,10 +15,12 @@ export const selectFormattedReservePrice = (state: RootState): string | null => 
 
     if (!reserves || !dai) return null;
 
-    const reservePrice = Number(utils.formatUnits(reserves, 'gwei')) * dai;
+    const reservePrice = Number(utils.formatUnits(reserves.toString(), 'gwei')) * dai;
 
     return formatUSD(reservePrice, 2);
 };
+
+export const selectReserve = (state: RootState): Decimal => new Decimal(state.main.metrics.reserves?.toString() ?? 0);
 
 export const useContractLoaded = (state: RootState): boolean => {
     const { contracts } = state.main;

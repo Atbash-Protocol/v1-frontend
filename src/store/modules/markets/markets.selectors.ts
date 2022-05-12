@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+
 import { formatUSD } from 'helpers/price-units';
 import { RootState } from 'store/store';
 
@@ -16,4 +18,8 @@ export const selectMarketsLoading = (state: RootState): boolean => {
     const { loading } = state.markets;
 
     return loading;
+};
+
+export const selectDaiPrice = (state: RootState): Decimal => {
+    return new Decimal(state.markets.markets.dai ?? 0);
 };

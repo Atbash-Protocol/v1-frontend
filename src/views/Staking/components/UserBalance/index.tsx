@@ -6,7 +6,8 @@ import MemoInlineMetric from 'components/Metrics/InlineMetric';
 import { formatNumber, formatUSD } from 'helpers/price-units';
 import { AccountSlice } from 'store/modules/account/account.types';
 import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
-import { selectTotalBalance } from 'store/modules/metrics/metrics.selectors';
+import { selectTotalBalance, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
+import { selectStakingBalance } from 'store/modules/stake/stake.selectors';
 import { IReduxState } from 'store/slices/state.interface';
 
 interface UserBalanceProps {
@@ -17,16 +18,12 @@ interface UserBalanceProps {
     currentIndex: number | null;
 }
 
-const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: UserBalanceProps) => {
+const UserBalance = () => {
     const { t } = useTranslation();
 
-    const daiPrice = useSelector<IReduxState, number>(state => state.markets.markets.dai || 0);
-
     const totalBalance = useSelector(selectTotalBalance);
-
-    const nextRewardValue = stakingRebase * balances.SBASH.toNumber();
-    const wrappedTokenEquivalent = balances.SBASH.toNumber() * Number(currentIndex);
-    const effectiveNextRewardValue = (nextRewardValue + stakingRebase) * wrappedTokenEquivalent * daiPrice;
+    const stakingBalanceMetrics = useSelector(selectStakingBalance);
+    const WSBashBalance = useSelector(selectWSBASHPrice);
     const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [
@@ -36,19 +33,19 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
         },
         {
             key: 'stake:ValueOfYourStakedBASH',
-            value: formatUSD(balances.WSBASH.toNumber() * daiPrice),
+            value: WSBashBalance,
         },
         {
             key: 'stake:ValueOfYourNextRewardAmount',
-            value: formatUSD(balances.SBASH.toNumber() * stakingAPY),
+            value: stakingBalanceMetrics.nextRewardValue,
         },
         {
             key: 'stake:ValueOfYourEffectiveNextRewardAmount',
-            value: formatNumber(effectiveNextRewardValue, 2),
+            value: stakingBalanceMetrics.effectiveNextRewardValue,
         },
         {
             key: 'stake:ValueOfYourWrappedStakedSB',
-            value: formatNumber(balances.SBASH.toNumber() * daiPrice * Number(currentIndex)),
+            value: stakingBalanceMetrics.wrappedTokenValue,
         },
     ];
 
@@ -61,7 +58,7 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
                     <>{t('YourBalance')}</>
                 </Typography>
                 <Typography>
-                    <> {totalBalance === null ? <Skeleton /> : formatUSD(totalBalance, 2)}</>
+                    <> {totalBalance === null ? <Skeleton /> : totalBalance}</>
                 </Typography>
             </Box>
 

@@ -26,11 +26,8 @@ function Staking() {
     const dispatch = useDispatch();
     const { signerAddress } = useSafeSigner();
 
-    const daiPrice = useSelector<IReduxState, number | null>(state => state.markets.markets.dai);
     const contractsLoaded = useSelector(useContractLoaded);
-    const { loading, balances } = useSelector<IReduxState, AccountSlice>(state => state.account, shallowEqual);
-
-    const { index: stakingIndex } = useSelector<IReduxState, MainSliceState['staking']>(state => state.main.staking, shallowEqual);
+    const { loading } = useSelector<IReduxState, AccountSlice>(state => state.account, shallowEqual);
 
     const stakingMetrics = useSelector(selectStakingRewards);
 
@@ -95,13 +92,7 @@ function Staking() {
                         p: 4,
                     }}
                 >
-                    <UserBalance
-                        stakingAPY={stakingMetrics.stakingAPY}
-                        stakingRebase={stakingMetrics.stakingRebase}
-                        daiPrice={daiPrice}
-                        balances={balances}
-                        currentIndex={stakingIndex ? stakingIndex.toNumber() : null}
-                    />
+                    <UserBalance />
                 </Box>
             </Zoom>
         </Box>
