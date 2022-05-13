@@ -100,8 +100,8 @@ export default function Stake() {
     const UnstakeCard = React.useMemo(
         () => (
             <AmountForm
-                initialValue={SBASHBalance}
-                maxValue={SBASHBalance}
+                initialValue={SBASHBalance.toNumber()}
+                maxValue={SBASHBalance.toNumber()}
                 transactionType={TransactionTypeEnum.SBASH_APPROVAL}
                 approvesNeeded={SBASHAllowanceNeeded}
                 onApprove={handleApproveClick}

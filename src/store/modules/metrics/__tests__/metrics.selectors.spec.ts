@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import { BigNumber, ethers } from 'ethers';
 import { DateTime } from 'luxon';
 
@@ -24,10 +25,10 @@ describe('#selectStakingRewards', () => {
         const circSupply = 120000;
 
         expect(selectStakingRewards({ main: { staking: { epoch }, metrics: { circSupply } } } as any)).toEqual({
-            fiveDayRate: 0.000001250000729369205,
-            stakingAPY: -98.99990874584039,
-            stakingRebase: 8.333333333333334e-8,
-            stakingReward: 10000000,
+            fiveDayRate: 0.0000015000010624999,
+            stakingAPY: 0.0000912541596054194,
+            stakingRebase: new Decimal('8.3333333333333333333e-8'),
+            stakingReward: 8.333333333333334e-8,
         });
     });
 });

@@ -66,5 +66,3 @@ describe('#selectCirculatingSupply', () => {
         expect(selectCirculatingSupply(state as any)).toEqual(circSupply);
     });
 });
-
-// describe('#selectUserStakingInfos', () => {});

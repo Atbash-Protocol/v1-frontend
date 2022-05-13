@@ -3,27 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
-import { formatNumber, formatUSD } from 'helpers/price-units';
-import { AccountSlice } from 'store/modules/account/account.types';
+import { selectFormattedStakeBalance } from 'store/modules/account/account.selectors';
 import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
-import { selectTotalBalance, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
+import { selectTotalBalance } from 'store/modules/metrics/metrics.selectors';
 import { selectStakingBalance } from 'store/modules/stake/stake.selectors';
-import { IReduxState } from 'store/slices/state.interface';
-
-interface UserBalanceProps {
-    stakingAPY: number;
-    stakingRebase: number;
-    daiPrice: number | null;
-    balances: AccountSlice['balances'];
-    currentIndex: number | null;
-}
 
 const UserBalance = () => {
     const { t } = useTranslation();
 
     const totalBalance = useSelector(selectTotalBalance);
     const stakingBalanceMetrics = useSelector(selectStakingBalance);
-    const WSBashBalance = useSelector(selectWSBASHPrice);
+    const { SBASH: SBashBalance, WSBASH: WSBashBalance } = useSelector(selectFormattedStakeBalance);
     const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [
@@ -32,11 +22,19 @@ const UserBalance = () => {
             value: BASHPrice,
         },
         {
-            key: 'stake:ValueOfYourStakedBASH',
+            key: 'stake:YourStakedBalance',
+            value: SBashBalance,
+        },
+        {
+            key: 'stake:YourWrappedStakedBalance',
             value: WSBashBalance,
         },
         {
-            key: 'stake:ValueOfYourNextRewardAmount',
+            key: 'stake:WrappedTokenEquivalent',
+            value: stakingBalanceMetrics.wrappedTokenValue,
+        },
+        {
+            key: 'stake:NextRewardAmount',
             value: stakingBalanceMetrics.nextRewardValue,
         },
         {
@@ -57,7 +55,7 @@ const UserBalance = () => {
                 <Typography variant="h4">
                     <>{t('YourBalance')}</>
                 </Typography>
-                <Typography>
+                <Typography variant="h4">
                     <> {totalBalance === null ? <Skeleton /> : totalBalance}</>
                 </Typography>
             </Box>

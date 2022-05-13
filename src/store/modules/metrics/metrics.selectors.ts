@@ -1,6 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
 import Decimal from 'decimal.js';
-import { sum } from 'lodash';
 
 import { formatUSD, formatUSDFromDecimal } from 'helpers/price-units';
 import { IReduxState } from 'store/slices/state.interface';

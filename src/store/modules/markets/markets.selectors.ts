@@ -1,9 +1,11 @@
 import Decimal from 'decimal.js';
+import { createSelector } from 'reselect';
 
 import { formatUSD } from 'helpers/price-units';
 import { RootState } from 'store/store';
 
 import { selectBASHBalance } from '../account/account.selectors';
+import { selectReserve } from '../app/app.selectors';
 
 export const selectFormattedBashBalance = (state: RootState): string | null => {
     const { dai } = state.markets.markets;
@@ -23,3 +25,5 @@ export const selectMarketsLoading = (state: RootState): boolean => {
 export const selectDaiPrice = (state: RootState): Decimal => {
     return new Decimal(state.markets.markets.dai ?? 0);
 };
+
+export const selectMarketPrice = createSelector([selectReserve, selectDaiPrice], (reserve, dai) => reserve.mul(dai));

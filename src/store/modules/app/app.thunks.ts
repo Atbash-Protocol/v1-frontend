@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import Decimal from 'decimal.js';
 import { Contract, ethers } from 'ethers';
 
 import { LpReserveContract, MemoTokenContract, RedeemContract, StakingContract, StakingHelperContract, TimeTokenContract, ZapinContract } from 'abi';
