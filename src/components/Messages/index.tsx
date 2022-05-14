@@ -3,26 +3,32 @@ import { useEffect } from 'react';
 import { SnackbarKey, useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 
-import { MessagesState } from 'store/modules/messages/messages.types';
-import { IReduxState } from 'store/slices/state.interface';
+import { selectLastNotification } from 'store/modules/messages/messages.selectors';
 
 import { BSnackBar } from './snackbar';
 
 // A component that displays error messages
 function Messages() {
     const { enqueueSnackbar } = useSnackbar();
-    const notifications = useSelector<IReduxState, MessagesState['notifications']>(state => state.messages.notifications);
+    const lastNotification = useSelector(selectLastNotification);
 
     useEffect(() => {
-        if (notifications && notifications.length > 0) {
-            enqueueSnackbar('notif', {
-                variant: 'error',
+        if (lastNotification) {
+            enqueueSnackbar('notification', {
+                variant: lastNotification.severity,
                 content: (key: SnackbarKey) => {
-                    return <BSnackBar key={key} description={notifications[0].description} severity={notifications[0].severity} />;
+                    return (
+                        <BSnackBar
+                            key={key}
+                            description={lastNotification.description}
+                            severity={lastNotification.severity}
+                            detailledDescription={JSON.stringify(lastNotification.detailledDescription)}
+                        />
+                    );
                 },
             });
         }
-    }, [notifications]);
+    }, [lastNotification]);
 
     return null;
 }

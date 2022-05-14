@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#Messages calls enqueueSnackBar on notification 1`] = `
+<Context.Provider
+  value={Object {}}
+>
+  <Provider
+    store={Object {}}
+  >
+    <Messages />
+  </Provider>
+</Context.Provider>
+`;

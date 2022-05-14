@@ -36,7 +36,7 @@ export const stakeAction = createAsyncThunk(
 
             await transaction.wait();
 
-            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send, detailledDescription: 'test' }));
         } catch (err: unknown) {
             metamaskErrorWrap(err, dispatch);
         } finally {

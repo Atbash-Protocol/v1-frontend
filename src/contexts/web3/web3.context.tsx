@@ -25,7 +25,7 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
         case WEB3ActionTypesEnum.CLOSE:
             return { ...state, signer: null, web3Modal: initWeb3Modal() };
         case WEB3ActionTypesEnum.NETWORK_CHANGED:
-            return { ...state, networkID: Number(action.payload.networkID) };
+            return { ...state, networkID: Number(action.payload.networkId) };
         case WEB3ActionTypesEnum.SET_SIGNER:
             return { ...state, signer: action.payload.signer, signerAddress: action.payload.address, networkID: action.payload.chainId };
         case WEB3ActionTypesEnum.SET_PROVIDER:

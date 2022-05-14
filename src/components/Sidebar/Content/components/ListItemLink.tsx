@@ -19,7 +19,7 @@ export const ListItemLink = ({ icon, primary, extra, to, disabled = false, rende
     const renderLink = useMemo(
         () =>
             forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'to'>>(function Link(itemProps, ref) {
-                return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} onClick={() => null} />;
+                return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} onClick={() => null} />; // overrides routerOnClick to avoid redirection
             }),
         [to],
     );

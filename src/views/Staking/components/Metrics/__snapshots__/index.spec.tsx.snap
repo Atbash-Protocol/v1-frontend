@@ -22,7 +22,7 @@ Object {
             <p
               class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
             >
-              1000000 %
+              1000000
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ Object {
           <p
             class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
           >
-            1000000 %
+            1000000
           </p>
         </div>
       </div>

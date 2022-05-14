@@ -25,7 +25,9 @@ Object {
           <p
             class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
           >
-            1 BASH
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+            />
           </p>
         </div>
         <div
@@ -39,7 +41,9 @@ Object {
           <p
             class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
           >
-            0 SBASH
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+            />
           </p>
         </div>
         <div
@@ -53,7 +57,9 @@ Object {
           <p
             class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
           >
-            1 WBASH
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+            />
           </p>
         </div>
         <div
@@ -136,7 +142,9 @@ Object {
         <p
           class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
         >
-          1 BASH
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
         </p>
       </div>
       <div
@@ -150,7 +158,9 @@ Object {
         <p
           class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
         >
-          0 SBASH
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
         </p>
       </div>
       <div
@@ -164,7 +174,9 @@ Object {
         <p
           class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
         >
-          1 WBASH
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
         </p>
       </div>
       <div
@@ -304,7 +316,9 @@ Object {
           <p
             class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
           >
-            1 BASH
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+            />
           </p>
         </div>
         <div
@@ -318,7 +332,9 @@ Object {
           <p
             class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
           >
-            0 SBASH
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+            />
           </p>
         </div>
         <div
@@ -332,7 +348,9 @@ Object {
           <p
             class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
           >
-            1 WBASH
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+            />
           </p>
         </div>
         <div
@@ -429,7 +447,9 @@ Object {
         <p
           class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
         >
-          1 BASH
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
         </p>
       </div>
       <div
@@ -443,7 +463,9 @@ Object {
         <p
           class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
         >
-          0 SBASH
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
         </p>
       </div>
       <div
@@ -457,7 +479,9 @@ Object {
         <p
           class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
         >
-          1 WBASH
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
         </p>
       </div>
       <div

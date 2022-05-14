@@ -10,13 +10,13 @@ import { selectUserStakingInfos } from 'store/modules/app/app.selectors';
 const UserStakeMetrics = () => {
     const { t } = useTranslation();
 
-    const { balances } = useSelector(selectFormattedStakeBalance);
+    const { BASH, SBASH, WSBASH } = useSelector(selectFormattedStakeBalance);
     const userStakingMetrics = useSelector(selectUserStakingInfos);
 
     const keyMetrics = [
-        { key: 'YourBalance', value: balances.BASH },
-        { key: 'stake:YourStakedBalance', value: balances.SBASH },
-        { key: 'stake:YourWrappedStakedBalance', value: balances.WSBASH },
+        { key: 'YourBalance', value: BASH },
+        { key: 'stake:YourStakedBalance', value: SBASH },
+        { key: 'stake:YourWrappedStakedBalance', value: WSBASH },
         { key: 'stake:WrappedTokenEquivalent', value: userStakingMetrics.wrappedTokenEquivalent },
         { key: 'stake:NextRewardAmount', value: userStakingMetrics.nextRewardValue },
         { key: 'stake:NextRewardYield', value: userStakingMetrics.stakingRebasePercentage },

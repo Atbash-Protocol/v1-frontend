@@ -8,6 +8,8 @@ import { addNotification } from 'store/modules/messages/messages.slice';
 export const metamaskErrorWrap = (err: any, dispatch: Dispatch) => {
     let text = messages.something_wrong;
 
+    const reason = err.reason ?? 'Internal error';
+
     if (err.code && err.code === -32603) {
         if (err.message.indexOf('ds-math-sub-underflow') >= 0) {
             text = i18n.t('messages.BondMoreThanYourBalance') + ' Error code: 32603. Message: ds-math-sub-underflow';
@@ -32,5 +34,5 @@ export const metamaskErrorWrap = (err: any, dispatch: Dispatch) => {
         }
     }
 
-    return dispatch(addNotification({ severity: 'error', description: text, detailledDescription: err }));
+    return dispatch(addNotification({ severity: 'error', description: text, detailledDescription: reason }));
 };

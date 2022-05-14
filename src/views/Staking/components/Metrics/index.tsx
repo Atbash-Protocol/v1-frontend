@@ -17,7 +17,7 @@ function StakeMetrics() {
     const { t } = useTranslation();
 
     const metrics = [
-        { key: 'APY', value: stakingMetrics?.stakingAPY ? `${formatAPY(stakingMetrics.stakingAPY.toString())} %` : null },
+        { key: 'APY', value: stakingMetrics?.stakingAPY ? `${formatAPY(stakingMetrics.stakingAPY.toString())}` : null },
         { key: 'TVL', value: TVL ? formatUSD(TVL) : null },
         { key: 'CurrentIndex', value: currentIndex },
         { key: 'BASHPrice', value: BASHPrice },

@@ -1,4 +1,5 @@
 import { TFunction } from 'i18next';
+import { createSelector } from 'reselect';
 
 import { formatTimer } from 'helpers/prettify-seconds';
 import { formatUSD } from 'helpers/price-units';
@@ -79,3 +80,15 @@ export const selectBondQuoteResult = (
 export const selectTreasuryBalance = (state: RootState) => formatUSD(state.bonds.treasuryBalance || 0, 2);
 
 export const isAtLeastOneActive = (state: RootState) => Object.values(state.bonds.bonds).length > 0;
+
+const selectBonds = (state: RootState) => Object.values(state.bonds.bonds);
+
+export const selectMostProfitableBonds = createSelector([selectBonds], bonds => {
+    const orderedBonds = bonds.sort((bond1, bond2): number => {
+        if (bond1.metrics.bondDiscount === null || bond2.metrics.bondDiscount === null) return 0;
+
+        return bond1.metrics.bondDiscount > bond2.metrics.bondDiscount ? 0 : 1;
+    });
+
+    return orderedBonds;
+});

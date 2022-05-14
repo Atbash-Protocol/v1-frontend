@@ -16,6 +16,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import { Avatar, Box, Link, List, Divider, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import AtbashICON from 'assets/icons/bash-compress.svg';
 import { getAddresses } from 'constants/addresses';
@@ -23,9 +24,9 @@ import { DEFAULT_NETWORK } from 'constants/blockchain';
 import { theme } from 'constants/theme';
 import { useSignerAddress, useSignerConnected } from 'contexts/web3/web3.hooks';
 import { shorten } from 'helpers/shorten';
-import useBonds from 'hooks/bonds';
 import useENS from 'hooks/useENS';
 import { getBuyLink } from 'lib/uniswap/link';
+import { selectMostProfitableBonds } from 'store/modules/bonds/bonds.selector';
 
 import { ListItemLink } from './components/ListItemLink';
 import Social from './components/Social';
@@ -88,8 +89,8 @@ function NavContent() {
     const { t } = useTranslation();
 
     const address = useSignerAddress();
-    const bonds = useBonds();
     const signerConnected = useSignerConnected();
+    const bonds = useSelector(selectMostProfitableBonds);
     const { ensName } = useENS();
 
     const addresses = getAddresses(DEFAULT_NETWORK);
@@ -102,7 +103,7 @@ function NavContent() {
     );
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
 
-    const bondItems = (bonds?.bonds ?? [])
+    const bondItems = bonds
         .filter(bond => bond.bondInstance.bondOptions.isActive)
         .map(bond => (
             <ListItemLink

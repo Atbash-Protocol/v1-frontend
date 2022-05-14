@@ -6,6 +6,7 @@ import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
+import { BSnackBar } from 'components/Messages/snackbar';
 import { theme } from 'constants/theme';
 import { Web3ContextProvider } from 'contexts/web3/web3.context';
 
@@ -25,6 +26,11 @@ ReactDOM.render(
                             horizontal: 'left',
                         }}
                         autoHideDuration={5000}
+                        content={(key, ...args) => {
+                            console.log('content', key, args);
+
+                            return <BSnackBar severity="info" description="test" />;
+                        }}
                     >
                         <Root />
                     </SnackbarProvider>
