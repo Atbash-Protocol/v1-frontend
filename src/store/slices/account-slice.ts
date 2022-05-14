@@ -155,16 +155,16 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
 });
 
 export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
-    // console.warn("disabled: calculateUserTokenDetails");
-    // return new Promise<any>(resevle => {
-    //     resevle({
-    //         token: "",
-    //         address: "",
-    //         img: "",
-    //         allowance: 0,
-    //         balance: 0,
-    //     });
-    // });
+    console.warn("disabled: calculateUserTokenDetails");
+    return new Promise<any>(resevle => {
+        resevle({
+            token: "",
+            address: "",
+            img: "",
+            allowance: 0,
+            balance: 0,
+        });
+    });
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({
