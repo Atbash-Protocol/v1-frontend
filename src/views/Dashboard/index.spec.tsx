@@ -53,7 +53,7 @@ describe('NotFound', () => {
         jest.spyOn(MetricsSelectorsModule, 'selectFormattedMarketCap').mockReturnValue('$200');
         jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('$200');
         jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
-        jest.spyOn(BondSelectorsModule, 'selectTreasuryBalance').mockReturnValue('$200 000');
+        jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
 
         const comp = renderComponent(<Dashboard />);
 
@@ -70,7 +70,7 @@ describe('NotFound', () => {
         jest.spyOn(MetricsSelectorsModule, 'selectFormattedMarketCap').mockReturnValue('$200');
         jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('$200');
         jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
-        jest.spyOn(BondSelectorsModule, 'selectTreasuryBalance').mockReturnValue('$200 000');
+        jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
 
         const comp = renderComponent(<Dashboard />);
 

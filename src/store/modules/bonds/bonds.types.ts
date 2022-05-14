@@ -16,6 +16,7 @@ export interface BondMetrics {
     allowance: number | null;
     balance: number | null;
     loading?: boolean;
+    terms?: string;
 }
 
 export interface BondTerms {
@@ -25,7 +26,7 @@ export interface BondTerms {
 export interface BondItem {
     bondInstance: LPBond | StableBond;
     metrics: BondMetrics;
-    terms: BondTerms;
+    // terms: BondTerms;
 }
 
 export interface BondQuote {
@@ -36,7 +37,9 @@ export interface BondQuote {
 
 export interface BondSlice {
     bonds: Record<string, BondItem>;
-    bondCalculator: ethers.Contract | null;
+    bondInstances: Record<string, LPBond | StableBond>;
+    bondMetrics: Record<string, BondMetrics>;
+    bondCalculator: any | null;
     treasuryBalance: number | null;
     loading: boolean;
     bondQuoting: boolean;

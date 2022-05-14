@@ -10,6 +10,7 @@ import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { loadBalancesAndAllowances } from 'store/modules/account/account.thunks';
 import { AccountSlice } from 'store/modules/account/account.types';
 import { useContractLoaded } from 'store/modules/app/app.selectors';
+import { getStakingMetrics } from 'store/modules/app/app.thunks';
 import { selectStakingRewards } from 'store/modules/metrics/metrics.selectors';
 import { IReduxState } from 'store/slices/state.interface';
 
@@ -29,6 +30,8 @@ function Staking() {
     const { loading } = useSelector<IReduxState, AccountSlice>(state => state.account, shallowEqual);
 
     const stakingMetrics = useSelector(selectStakingRewards);
+
+    console.log('loading', loading, stakingMetrics);
 
     useEffect(() => {
         if (signerAddress && contractsLoaded) {

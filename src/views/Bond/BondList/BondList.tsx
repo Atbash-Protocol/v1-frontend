@@ -1,17 +1,16 @@
 import './bondlist.scss';
-import { useEffect } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 
 import { Box, Typography, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { batch, useDispatch, useSelector } from 'react-redux';
 
 import { BCard } from 'components/BCard';
 import { MenuMetric } from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
-import { formatUSD } from 'helpers/price-units';
-import { useContractLoaded } from 'store/modules/app/app.selectors';
-import { selectAllBonds } from 'store/modules/bonds/bonds.selector';
+import { selectReserveLoading, useContractLoaded } from 'store/modules/app/app.selectors';
+import { selectAllBonds, selectBondCalcDetailsReady, selectBondsReady, selectFormattedTreasuryBalance } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
 import { selectFormattedBashBalance, selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { IReduxState } from 'store/slices/state.interface';
@@ -69,27 +68,27 @@ function BondList() {
     const dispatch = useDispatch();
 
     const { activeBonds, inactiveBonds } = useSelector(selectAllBonds);
-    const marketsLoading = useSelector<IReduxState, boolean>(selectMarketsLoading);
     const bashPrice = useSelector(selectFormattedBashBalance);
-    const treasuryBalance = useSelector<IReduxState, number | null>(state => state.bonds.treasuryBalance);
-    const contractsLoaded = useSelector(useContractLoaded);
-    const loadedBonds = useSelector<IReduxState, boolean>(state => Object.values(state.bonds.bonds).length > 0);
-
-    const isAppLoading = !marketsLoading || !treasuryBalance;
+    const treasuryBalance = useSelector(selectFormattedTreasuryBalance);
+    const bondsReady = useSelector(selectBondsReady);
 
     useEffect(() => {
-        if (networkID && contractsLoaded && loadedBonds) {
-            dispatch(getTreasuryBalance(networkID));
+        if (networkID && bondsReady) {
+            dispatch(getTreasuryBalance({ networkID }));
         }
-    }, [networkID, contractsLoaded, loadedBonds]);
+    }, [networkID, bondsReady]);
 
-    useEffect(() => {
-        if (!isAppLoading) {
-            [...activeBonds, ...inactiveBonds].map(bond => {
-                dispatch(calcBondDetails({ bond, value: 0 }));
-            });
+    const ActiveBondList = useMemo(() => {
+        {
+            return activeBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />);
         }
-    }, [isAppLoading]);
+    }, [activeBonds]);
+
+    const InactiveBondList = useMemo(() => {
+        {
+            return inactiveBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />);
+        }
+    }, [inactiveBonds]);
 
     return (
         <>
@@ -97,7 +96,7 @@ function BondList() {
                 <Box>
                     <Grid container item xs={12} spacing={2} mb={4}>
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={treasuryBalance ? formatUSD(treasuryBalance) : null} />
+                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={treasuryBalance} />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
@@ -107,9 +106,7 @@ function BondList() {
                     <Grid container item>
                         <BondHeader />
 
-                        {activeBonds.map(bond => (
-                            <BondtListItem key={bond.ID} bondID={bond.ID} />
-                        ))}
+                        {ActiveBondList}
                     </Grid>
                 </Box>
             </BCard>
@@ -118,9 +115,7 @@ function BondList() {
                 <Box>
                     <Grid container item>
                         <BondHeader />
-                        {inactiveBonds.map(bond => (
-                            <BondtListItem key={bond.ID} bondID={bond.ID} />
-                        ))}
+                        {InactiveBondList}
                     </Grid>
                 </Box>
             </BCard>

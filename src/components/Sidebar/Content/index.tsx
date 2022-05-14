@@ -26,7 +26,7 @@ import { useSignerAddress, useSignerConnected } from 'contexts/web3/web3.hooks';
 import { shorten } from 'helpers/shorten';
 import useENS from 'hooks/useENS';
 import { getBuyLink } from 'lib/uniswap/link';
-import { selectMostProfitableBonds } from 'store/modules/bonds/bonds.selector';
+import { selectBondInstances, selectMostProfitableBonds } from 'store/modules/bonds/bonds.selector';
 
 import { ListItemLink } from './components/ListItemLink';
 import Social from './components/Social';
@@ -91,6 +91,7 @@ function NavContent() {
     const address = useSignerAddress();
     const signerConnected = useSignerConnected();
     const bonds = useSelector(selectMostProfitableBonds);
+    const bondInstances = useSelector(selectBondInstances);
     const { ensName } = useENS();
 
     const addresses = getAddresses(DEFAULT_NETWORK);
@@ -103,25 +104,18 @@ function NavContent() {
     );
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
 
-    const bondItems = bonds
-        .filter(bond => bond.bondInstance.bondOptions.isActive)
-        .map(bond => (
-            <ListItemLink
-                key={`mint-bond-${bond.bondInstance.ID}`}
-                to={`/mints/${bond.bondInstance.ID}`}
-                primary={bond.bondInstance.bondOptions.displayName}
-                extra={<>{bond.metrics.bondDiscount} %</>}
-            />
-        ));
+    const bondItems = bondInstances
+        .filter(bond => bond.bondOptions.isActive)
+        .map((bond, i) => <ListItemLink key={`mint-bond-${bond.ID}`} to={`/mints/${bond.ID}`} primary={bond.bondOptions.displayName} extra={<>{bonds[i].bondDiscount} %</>} />);
 
     return (
         <Box
             sx={{
-                padding: '1rem',
+                padding: '2rem',
                 flexDirection: 'column',
                 alignItems: 'center',
                 minWidth: '10rem',
-                overflowY: 'scroll',
+                overflowY: 'hidden',
                 backgroundColor: theme.palette.cardBackground.light,
                 backdropFilter: 'blur(100px)',
                 color: theme.palette.primary.main,

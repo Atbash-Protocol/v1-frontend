@@ -34,4 +34,11 @@ module.exports = {
       '!<rootDir>/src/config/*',
       '!<rootDir>/src/store/store.ts',
     ],
+
+    globals: {
+      'REACT_APP_DEFAULT_NEWORK_ID': '1'
+    }
   }; 
+
+
+

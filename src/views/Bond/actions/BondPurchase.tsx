@@ -7,18 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
 import { theme } from 'constants/theme';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
-import { selectBondQuoteResult } from 'store/modules/bonds/bonds.selector';
+import { selectBondInstance, selectBondMetrics, selectBondQuoteResult } from 'store/modules/bonds/bonds.selector';
 import { approveBonds, calculateUserBondDetails, depositBond } from 'store/modules/bonds/bonds.thunks';
 import { BondItem } from 'store/modules/bonds/bonds.types';
 import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 import AmountForm from 'views/Staking/components/AmountForm';
 
-interface BondPurchaseProps {
-    bond: BondItem;
-}
-
-const BondPurchase = ({ bond }: BondPurchaseProps) => {
+const BondPurchase = ({ bondID }: { bondID: string }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const { signer, signerAddress } = useSafeSigner();
@@ -26,22 +22,24 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
     const bondIsLoading = useSelector<IReduxState, boolean>(state => state.bonds.loading);
     const bondIsQuoting = useSelector<IReduxState, boolean>(state => state.bonds.bondQuoting);
     const bondQuoteResult = useSelector(state => selectBondQuoteResult(state as RootState, t));
+    const bondMetrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
+    const bondInstance = useSelector((state: RootState) => selectBondInstance(state, bondID));
 
     const [quantity, setQuantity] = useState('');
 
     const depositBondAction = () => {
-        dispatch(depositBond({ amount: Number(quantity), signer, signerAddress, bond }));
+        // dispatch(depositBond({ amount: Number(quantity), signer, signerAddress, bond }));
     };
 
     const handleApproveClick = () => {
-        dispatch(approveBonds({ signer, bond }));
+        dispatch(approveBonds({ signer, bondID }));
     };
 
     const handleBondQuote = (amount: number) => {
         if (amount > 0) {
             setQuantity(amount.toString());
             console.log(quantity.length > 0);
-            dispatch(calculateUserBondDetails({ signer, signerAddress, bond }));
+            dispatch(calculateUserBondDetails({ signer, signerAddress, bondID }));
         }
     };
 
@@ -53,12 +51,12 @@ const BondPurchase = ({ bond }: BondPurchaseProps) => {
                 <Grid item xs={12}>
                     <AmountForm
                         initialValue={0}
-                        maxValue={bond.metrics.balance || 0}
+                        maxValue={bondMetrics?.balance || 0}
                         transactionType={'BASH_APPROVAL'}
-                        approvesNeeded={!bond.metrics.allowance}
+                        approvesNeeded={!bondMetrics?.allowance}
                         onApprove={handleApproveClick}
                         onAction={handleBondQuote}
-                        approveLabel={t('bond:ZapinApproveToken', { token: bond.bondInstance.bondOptions.displayName })}
+                        approveLabel={t('bond:ZapinApproveToken', { token: bondInstance ? bondInstance.bondOptions.displayName : '' })}
                         actionLabel={t('bond:Quote')}
                     />
                 </Grid>

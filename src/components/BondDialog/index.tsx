@@ -11,51 +11,56 @@ import Loader from 'components/Loader';
 import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
-import { useBondPurchaseReady, selectBondReady } from 'hooks/bonds';
+import { formatUSD } from 'helpers/price-units';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
-import { calcBondDetails, getBondTerms, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
-import { BondItem } from 'store/modules/bonds/bonds.types';
+import { selectBondInstance, selectBondMetrics } from 'store/modules/bonds/bonds.selector';
+import { calcBondDetails, getBondTerms, getTreasuryBalance, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
+import { RootState } from 'store/store';
 import BondPurchase from 'views/Bond/actions/BondPurchase';
+import { BondTest } from 'views/Bond/BondList/BondTest';
 import BondMetrics from 'views/Bond/BondMetrics';
 
-// Ajouter une surcouche qui gère le dialog + le chargement du bond avec le router
-
-const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
+const BondDialog = ({ open, bondID }: { open: boolean; bondID: string }) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
     const {
-        state: { signer, signerAddress },
+        state: { signer, signerAddress, networkID },
     } = useWeb3Context();
 
     const onBackdropClick = () => history.goBack();
 
-    const metrics = selectBondMintingMetrics(bond.metrics);
-    const bondIsReady = selectBondReady(bond);
-    const selectAppReadyForBondCalculation = useBondPurchaseReady();
+    const metrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
+    const bond = useSelector((state: RootState) => selectBondInstance(state, bondID));
 
     const bashPrice = useSelector(selectFormattedReservePrice);
 
     useEffect(() => {
-        if (isEmpty(bond.terms)) {
-            dispatch(getBondTerms(bond));
+        if (isEmpty(metrics?.terms)) {
+            dispatch(getBondTerms(bondID));
         }
-    }, [bond.terms]);
+    }, [metrics?.terms]);
 
     useEffect(() => {
-        if (!bondIsReady && selectAppReadyForBondCalculation) {
-            dispatch(calcBondDetails({ bond: bond.bondInstance, value: 0 }));
+        console.log('signer', signer, signerAddress);
+        dispatch(loadBondBalancesAndAllowances({ address: signerAddress || '', bondID }));
+        if (!bond) {
+            dispatch(calcBondDetails({ bondID, value: 0 }));
 
             if (signer && signerAddress) {
-                dispatch(loadBondBalancesAndAllowances({ address: signerAddress }));
             }
         }
-    }, [bondIsReady, signer, signerAddress, selectAppReadyForBondCalculation]);
+    }, [bond, signer, signerAddress]);
+
+    useEffect(() => {
+        if (networkID) {
+            dispatch(getTreasuryBalance({ networkID }));
+        }
+    }, [networkID]);
 
     //TODO: Add the custom settings : Slippage & Recipient address
 
-    if (!bondIsReady || !selectAppReadyForBondCalculation) return <Loader />;
+    if (!bond || !metrics) return <Loader />;
 
     return (
         <Dialog
@@ -69,15 +74,15 @@ const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
             sx={{ p: 2, backdropFilter: 'blur(10px)' }}
         >
             <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: theme.spacing(1) }}>
-                <BondLogo bondLogoPath={bond.bondInstance.bondOptions.iconPath} isLP={bond.bondInstance.isLP()} />
+                <BondLogo bondLogoPath={bond.bondOptions.iconPath} isLP={bond.isLP()} />
 
-                <Typography variant="body1">{bond.bondInstance.bondOptions.displayName}</Typography>
+                <Typography variant="body1">{bond.bondOptions.displayName}</Typography>
             </DialogTitle>
             <DialogContent>
                 <Box>
                     <Grid container item xs={12} mb={4}>
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={metrics.bondPrice} />
+                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={formatUSD(metrics.treasuryBalance || 0, 2)} />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
@@ -86,11 +91,12 @@ const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
                     </Grid>
                 </Box>
 
-                {metrics.allowance !== null && (
+                {metrics?.allowance !== null && (
                     <Box>
-                        <BondPurchase bond={bond} />
+                        <BondPurchase bondID={bondID} />
                         <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
-                        <BondMetrics bondMetrics={bond.metrics} />
+                        <BondTest />
+                        <BondMetrics bondMetrics={metrics} />
                     </Box>
                 )}
             </DialogContent>

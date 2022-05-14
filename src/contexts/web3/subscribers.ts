@@ -10,7 +10,6 @@ import { WEB3ContextAction, WEB3ActionTypesEnum } from './web3.types';
 
 export const subscribeSigner = async (web3provider: providers.Web3Provider, dispatch: Dispatch<WEB3ContextAction>) => {
     web3provider.on('networkChanged', async (networkId: number) => {
-        console.log('sub', networkId);
         const signer = new providers.Web3Provider(web3provider as unknown as providers.ExternalProvider);
 
         dispatch({ type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer, networkId } });

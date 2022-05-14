@@ -1,4 +1,5 @@
 import { TFunction } from 'i18next';
+import { sum } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { formatTimer } from 'helpers/prettify-seconds';
@@ -7,13 +8,15 @@ import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { RootState } from 'store/store';
 
+import { selectReserveLoading, useContractLoaded } from '../app/app.selectors';
+import { selectMarketsLoading } from '../markets/markets.selectors';
 import { BondItem, BondMetrics } from './bonds.types';
 
 export const selectAllBonds = (state: RootState) => {
-    const { bonds } = state.bonds;
+    const { bondInstances } = state.bonds;
 
-    return Object.values(bonds).reduce(
-        (acc, { bondInstance }) => {
+    return Object.values(bondInstances).reduce(
+        (acc, bondInstance) => {
             if (bondInstance.bondOptions.isActive === true) {
                 return {
                     ...acc,
@@ -77,18 +80,64 @@ export const selectBondQuoteResult = (
     };
 };
 
-export const selectTreasuryBalance = (state: RootState) => formatUSD(state.bonds.treasuryBalance || 0, 2);
+export const selectTreasuryBalanceLoading = (state: RootState) => state.bonds.treasuryBalance === null;
 
 export const isAtLeastOneActive = (state: RootState) => Object.values(state.bonds.bonds).length > 0;
 
-export const selectBonds = (state: RootState) => Object.values(state.bonds.bonds);
+export const selectBonds = (state: RootState) => Object.values(state.bonds.bondMetrics);
+
+export const selectBondInstances = (state: RootState) => Object.values(state.bonds.bondInstances);
 
 export const selectMostProfitableBonds = createSelector([selectBonds], bonds => {
     const orderedBonds = bonds.sort((bond1, bond2): number => {
-        if (bond1.metrics.bondDiscount === null || bond2.metrics.bondDiscount === null) return 0;
+        if (bond1.bondDiscount === null || bond2.bondDiscount === null) return 0;
 
-        return bond1.metrics.bondDiscount > bond2.metrics.bondDiscount ? 0 : 1;
+        return bond1.bondDiscount > bond2.bondDiscount ? 0 : 1;
     });
 
     return orderedBonds;
+});
+
+export const selectBondsReady = createSelector([selectBonds, useContractLoaded], (bonds, contractLoaded) => {
+    return bonds.length > 0 && contractLoaded;
+});
+
+const selectBondCalculatorLoading = (state: RootState) => state.bonds.bondCalculator === null;
+
+export const selectBondCalcDetailsReady = createSelector(
+    [selectReserveLoading, selectMarketsLoading, selectBondCalculatorLoading],
+    (reserveLoading, marketLoading, calcLoading) => {
+        return !reserveLoading && !marketLoading && !calcLoading;
+    },
+);
+
+// refactor
+
+export const selectBondInstance = (state: RootState, bondId: string) => {
+    const bond = state.bonds.bondInstances[bondId];
+
+    if (!bond) return null;
+
+    return bond;
+};
+
+export const selectBondMetrics = (state: RootState, bondId: string) => {
+    const bond = state.bonds.bondMetrics[bondId];
+
+    if (!bond) return null;
+
+    return bond;
+};
+
+export const selectAllBondMetrics = (state: RootState) => state.bonds.bondMetrics;
+
+export const selectFormattedTreasuryBalance = createSelector([selectAllBondMetrics], metrics => {
+    console.log('dashboard', metrics);
+    const total = sum(
+        Object.values(metrics)
+            .map(m => m.treasuryBalance)
+            .filter(Number),
+    );
+
+    return formatUSD(total, 2);
 });

@@ -1,12 +1,16 @@
+import { useEffect } from 'react';
+
 import { Box, Button, Grid, Link, Skeleton, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import BondLogo from 'components/BondLogo';
+import Loader from 'components/Loader';
 import { theme } from 'constants/theme';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
-import { selectBondInfos, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
+import { selectBondInfos, selectBondInstance, selectBondMetrics, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
+import { calcBondDetails } from 'store/modules/bonds/bonds.thunks';
 import { BondItem } from 'store/modules/bonds/bonds.types';
 import { IReduxState } from 'store/slices/state.interface';
 
@@ -50,15 +54,24 @@ const BondMintMetric = ({ metric, value }: { metric: string; value: string | nul
 
 export const BondtListItem = ({ bondID }: IBondProps) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const { signer } = useSafeSigner();
 
-    const bond = useSelector<IReduxState, BondItem | null>(state => selectBondInfos(state.bonds.bonds, bondID)) as BondItem | null;
+    const bond = useSelector((state: IReduxState) => selectBondInstance(state, bondID));
+    const bondMetrics = useSelector((state: IReduxState) => selectBondMetrics(state, bondID));
 
-    if (!bond) return <>"Loading";</>;
+    useEffect(() => {
+        if (bond && bondMetrics) {
+            dispatch(calcBondDetails({ bondID, value: 0 }));
+        }
+    }, [!bond || !bondMetrics]);
 
-    const { bondPrice, bondDiscount, purchased } = selectBondMintingMetrics(bond.metrics);
-    const bondSoldOut = (bond.metrics.bondDiscount ?? 0) * 100 < -30;
+    if (!bond || !bondMetrics) return <Loader />;
+
+    const { bondPrice, bondDiscount, purchased } = selectBondMintingMetrics(bondMetrics);
+    const bondSoldOut = (bondMetrics.bondDiscount ?? 0) * 100 < -30;
+    console.log('BondListItem', bond, purchased);
 
     const metrics = [
         { metric: t('bond:Mint'), value: bondPrice },
@@ -86,10 +99,10 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
             }}
         >
             <Grid item sm={1} xs={4}>
-                <BondLogo bondLogoPath={bond.bondInstance.bondOptions.iconPath} isLP={bond.bondInstance.isLP()} />
+                <BondLogo bondLogoPath={bond.bondOptions.iconPath} isLP={bond.isLP()} />
             </Grid>
             <Grid item sm={2} xs={8}>
-                <Typography variant="body1">{bond.bondInstance.bondOptions.displayName}</Typography>
+                <Typography variant="body1">{bond.bondOptions.displayName}</Typography>
             </Grid>
             {metrics}
 
@@ -104,10 +117,10 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
                 }}
             >
                 {signer && (
-                    <Button disabled={!bond.bondInstance.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}`, cursor: 'pointer' }}>
-                        <Link component={NavLink} to={`/mints/${bond.bondInstance.ID}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
+                    <Button disabled={!bond.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}`, cursor: 'pointer' }}>
+                        <Link component={NavLink} to={`/mints/${bond.ID}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
                             <Typography>
-                                <>{bond.bondInstance.bondOptions.isActive ? t('bond:Mint') : t('bond:Redeem')}</>
+                                <>{bond.bondOptions.isActive ? t('bond:Mint') : t('bond:Redeem')}</>
                             </Typography>
                         </Link>
                     </Button>

@@ -9,6 +9,7 @@ export const selectCircSupply = (state: IReduxState) => state.main.metrics.circS
 export const selectStakingReward = (state: IReduxState) => state.main.staking.epoch?.distribute || null;
 
 export const selectStakingRebaseAmount = createSelector([selectStakingReward, selectCircSupply], (stakingReward, circSupply) => {
+    console.log('here', stakingReward, circSupply);
     if (!circSupply || !stakingReward) return null;
 
     return new Decimal(stakingReward.toString()).div(new Decimal(circSupply).mul(10 ** 9)); // rewardYield rate for this epoch

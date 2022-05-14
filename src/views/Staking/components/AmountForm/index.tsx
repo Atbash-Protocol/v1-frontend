@@ -33,6 +33,7 @@ const AmountForm = (props: AmountFormProps) => {
     const selectPendingTransaction = useSelector<IReduxState, boolean>(state => selectPendingTx(state, transactionType));
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
         setValue(e.target.value);
     };
 

@@ -27,8 +27,6 @@ ReactDOM.render(
                         }}
                         autoHideDuration={5000}
                         content={(key, ...args) => {
-                            console.log('content', key, args);
-
                             return <BSnackBar severity="info" description="test" />;
                         }}
                     >

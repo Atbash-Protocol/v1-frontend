@@ -20,22 +20,25 @@ export interface Epoch {
 
 export interface MainSliceState {
     contracts: { [key in ContractEnum]: Contract | null };
+    contractsLoaded: boolean;
     metrics: {
         totalSupply: number | null;
         circSupply: number | null;
         rawCircSupply: ethers.BigNumber | null;
         reserves: ethers.BigNumber | null;
+        loading: boolean;
     };
     staking: {
         epoch: Epoch | null;
         secondsToNextEpoch: number | null;
         index: ethers.BigNumber | null;
+        loading: boolean;
     };
     blockchain: {
         currentBlock: number | null;
         timestamp: number | null;
+        loading: boolean;
     };
     errorEncountered: boolean; // Flag to prevent page loading
     loading: boolean;
-    contractsLoaded: boolean;
 }

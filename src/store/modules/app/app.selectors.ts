@@ -21,12 +21,25 @@ export const selectFormattedReservePrice = (state: RootState): string | null => 
 };
 
 export const selectReserve = (state: RootState): Decimal => new Decimal(state.main.metrics.reserves?.toString() ?? 0);
+export const selectReserveLoading = (state: RootState): boolean => state.main.metrics.reserves === null;
+
+export const selectBlockchainLoading = (state: RootState) => state.main.blockchain.loading === true;
+export const selectMetricsLoading = (state: RootState) => state.main.metrics.loading === true;
+export const selectStakingLoading = (state: RootState) => state.main.staking.loading === true;
+export const selectContractsLoading = (state: RootState) => Object.values(state.main.contracts).some(contract => contract === null);
 
 export const useContractLoaded = (state: RootState): boolean => {
     const { contracts } = state.main;
 
     return Object.values(contracts).every(contract => contract !== null);
 };
+
+export const selectAppLoading = createSelector(
+    [selectReserveLoading, selectBlockchainLoading, selectMetricsLoading, selectBlockchainLoading, selectContractsLoading],
+    (...conditions) => {
+        return conditions.some(condition => condition === true);
+    },
+);
 
 export const useNextRebase = (state: RootState): number | undefined => {
     const {
