@@ -1,15 +1,16 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import { isNull } from 'lodash';
 import { Dispatch } from 'redux';
 
 import { DEFAULT_NETWORK } from 'constants/blockchain';
-import { Web3Context } from 'contexts/web3/web3.context';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { walletConnectWarning } from 'store/modules/messages/messages.slice';
 
 export const useGoodNetworkCheck = () => {
     const {
         state: { networkID },
-    } = useContext(Web3Context);
+    } = useWeb3Context();
 
     const [isNetworkOk, setIsNetworkOk] = useState(false);
 
@@ -23,7 +24,7 @@ export const useGoodNetworkCheck = () => {
 export const useSignerConnected = () => {
     const {
         state: { signer, networkID },
-    } = useContext(Web3Context);
+    } = useWeb3Context();
 
     const [isConnected, setIsConnected] = useState(signer !== null);
 
@@ -39,9 +40,9 @@ export const useSignerConnected = () => {
 export const useWeb3ContextInitialized = () => {
     const {
         state: { signer, networkID, provider },
-    } = useContext(Web3Context);
+    } = useWeb3Context();
 
-    const [isContextInitialized, setIsContextInitialized] = useState([provider, signer, networkID].some(e => e !== null));
+    const [isContextInitialized, setIsContextInitialized] = useState(!isNull(provider) || (!isNull(signer) && !isNull(networkID)));
 
     useEffect(() => {
         if (provider || signer) {
@@ -55,7 +56,7 @@ export const useWeb3ContextInitialized = () => {
 export const useSignerAddress = () => {
     const {
         state: { signerAddress },
-    } = useContext(Web3Context);
+    } = useWeb3Context();
 
     const [signer, setSigner] = useState(signerAddress);
 
@@ -71,7 +72,7 @@ export const useSignerAddress = () => {
 export const useProvider = () => {
     const {
         state: { provider },
-    } = useContext(Web3Context);
+    } = useWeb3Context();
 
     return provider;
 };
@@ -79,7 +80,7 @@ export const useProvider = () => {
 export const useSafeSigner = (dispatch?: Dispatch) => {
     const {
         state: { signer, signerAddress },
-    } = useContext(Web3Context);
+    } = useWeb3Context();
 
     const memoSigner = useMemo(() => {
         if (!signer || !signerAddress) {

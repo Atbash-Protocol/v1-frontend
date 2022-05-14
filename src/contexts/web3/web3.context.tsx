@@ -35,10 +35,14 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
     }
 };
 
+export const useWeb3Context = () => {
+    return useContext(Web3Context);
+};
+
 export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => {
     const {
         state: { web3Modal, signer, provider },
-    } = useContext(Web3Context);
+    } = useWeb3Context();
     const [state, dispatch] = useReducer(WEB3Reducer, initialState);
 
     const memoConnect = useCallback(async () => {
@@ -76,13 +80,6 @@ export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => 
         }
     }, [web3Modal]);
 
-    // useEffect(() => {
-    //     if (!signer && !provider) {
-    //         console.log("Reaching this context");
-    //         subscribeProvider(dispatch); // init at the provider
-    //     }
-    // }, [provider, signer]);
-
     return (
         <Web3Context.Provider
             value={{
@@ -94,8 +91,4 @@ export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => 
             {children}
         </Web3Context.Provider>
     );
-};
-
-export const useWeb3Context = () => {
-    return useContext(Web3Context);
 };

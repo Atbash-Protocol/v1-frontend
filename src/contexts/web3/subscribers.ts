@@ -10,6 +10,7 @@ import { WEB3ContextAction, WEB3ActionTypesEnum } from './web3.types';
 
 export const subscribeSigner = async (web3provider: providers.Web3Provider, dispatch: Dispatch<WEB3ContextAction>) => {
     web3provider.on('networkChanged', async (networkId: number) => {
+        console.log('sub', networkId);
         const signer = new providers.Web3Provider(web3provider as unknown as providers.ExternalProvider);
 
         dispatch({ type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer, networkId } });
@@ -38,23 +39,20 @@ export const createSigner = async (web3Modal: Core, dispatch: Dispatch<WEB3Conte
 };
 
 export const subscribeProvider = async (dispatch: Dispatch<WEB3ContextAction>) => {
-    const provider = new providers.JsonRpcProvider(getProviderURI(DEFAULT_NETWORK)).on('error', err => {
+    const provider = new providers.JsonRpcProvider(getProviderURI(DEFAULT_NETWORK));
+    provider.on('error', err => {
         alert('provider error');
         console.error(err);
     });
 
-    try {
-        const { chainId } = await provider.ready;
+    const { chainId } = await provider.ready;
 
-        if (!chainId) throw new Error('Impossible to connect to the given provider');
+    if (!chainId) throw new Error('Impossible to connect to the given provider');
 
-        dispatch({ type: WEB3ActionTypesEnum.SET_PROVIDER, payload: { chainId, provider } });
-    } catch (err) {
-        console.error('Provider error');
-    }
+    dispatch({ type: WEB3ActionTypesEnum.SET_PROVIDER, payload: { chainId, provider } });
 };
 
-export const resetWeb3Signer = async (dispatch: Dispatch<WEB3ContextAction>, web3Modal: Core): Promise<void> => {
+export const resetWeb3Signer = (dispatch: Dispatch<WEB3ContextAction>, web3Modal: Core): void => {
     web3Modal.clearCachedProvider();
     localStorage.setItem('WEB3_CONNECT_CACHED_PROVIDER', '');
     dispatch({ type: WEB3ActionTypesEnum.CLOSE, payload: null });
