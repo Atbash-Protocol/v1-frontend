@@ -14,6 +14,8 @@ import BASHFLOOFIcon from "../../assets/tokens/BASH-FLOOF.png";
 
 import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract } from "../../abi";
 
+import { BashDaiLpAddress, BashDaiBondAddress, DaiAddress, DaiBondAddress } from "constants/addresses";
+
 export const dai = new StableBond({
     name: "DAI",
     displayName: "DAI",
@@ -27,15 +29,17 @@ export const dai = new StableBond({
             reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB", // DAI
         },
         [Networks.LOCAL]: {
-            bondAddress: "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
-            reserveAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9", // DAI
+            // bondAddress: "0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690",
+            // reserveAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // DAI
+            bondAddress: DaiBondAddress,
+            reserveAddress: DaiAddress,
         },
         [Networks.MAINNET]: {
             bondAddress: "",
             reserveAddress: "",
         },
     },
-    isActive: false,
+    isActive: true,
 });
 
 export const wavax = new CustomBond({
@@ -94,16 +98,18 @@ export const BASHDAI = new LPBond({
             reserveAddress: "",
         },
         [Networks.LOCAL]: {
-            bondAddress: "0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650",
-            reserveAddress: "0x908B40ED87FCA620B101B3Cba2B4C640D11eF016",
+            // bondAddress: "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1",
+            // reserveAddress: "0xA0F6F4656267ad7537232E8E050f9944fA5F7C5F",
+            bondAddress: BashDaiBondAddress,
+            reserveAddress: BashDaiLpAddress,
         },
         [Networks.RINKEBY]: {
-            bondAddress: "0xcE24D6A45D5c59D31D05c8C278cA3455dD6a43DA",
+            bondAddress: "0x87a4F79a4F856736070795f888f94C71C39B1cE1",
             reserveAddress: "0x26DF06b47412dA76061ddA1fD9fe688A497FB88b", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
         },
     },
     lpUrl: "https://app.uniswap.org/#/add/v2/0x95627E5C843bc050491132a5E34a64a19471a4CE/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB?chain=rinkeby", // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
-    isActive: false,
+    isActive: true,
 });
 
 // export const avaxUsdce = new CustomLPBond({

@@ -257,49 +257,48 @@ const accountSlice = createSlice({
             .addCase(loadAccountDetails.fulfilled, (state, action) => {
                 setAll(state, action.payload);
                 state.loading = false;
+            })
+            .addCase(loadAccountDetails.rejected, (state, { error }) => {
+                state.loading = false;
+                console.log(error);
+            })
+            .addCase(getBalances.pending, state => {
+                state.loading = true;
+            })
+            .addCase(getBalances.fulfilled, (state, action) => {
+                setAll(state, action.payload);
+                state.loading = false;
+            })
+            .addCase(getBalances.rejected, (state, { error }) => {
+                state.loading = false;
+                console.log(error);
+            })
+            .addCase(calculateUserBondDetails.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(calculateUserBondDetails.fulfilled, (state, action) => {
+                if (!action.payload) return;
+                const bond = action.payload.bond;
+                state.bonds[bond] = action.payload;
+                state.loading = false;
+            })
+            .addCase(calculateUserBondDetails.rejected, (state, { error }) => {
+                state.loading = false;
+                console.log(error);
+            })
+            .addCase(calculateUserTokenDetails.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(calculateUserTokenDetails.fulfilled, (state, action) => {
+                if (!action.payload) return;
+                const token = action.payload.token;
+                state.tokens[token] = action.payload;
+                state.loading = false;
+            })
+            .addCase(calculateUserTokenDetails.rejected, (state, { error }) => {
+                state.loading = false;
+                console.log(error);
             });
-
-        // .addCase(loadAccountDetails.rejected, (state, { error }) => {
-        //     state.loading = false;
-        //     console.log(error);
-        // })
-        // .addCase(getBalances.pending, state => {
-        //     state.loading = true;
-        // })
-        // .addCase(getBalances.fulfilled, (state, action) => {
-        //     setAll(state, action.payload);
-        //     state.loading = false;
-        // })
-        // .addCase(getBalances.rejected, (state, { error }) => {
-        //     state.loading = false;
-        //     console.log(error);
-        // })
-        // .addCase(calculateUserBondDetails.pending, (state, action) => {
-        //     state.loading = true;
-        // })
-        // .addCase(calculateUserBondDetails.fulfilled, (state, action) => {
-        //     if (!action.payload) return;
-        //     const bond = action.payload.bond;
-        //     state.bonds[bond] = action.payload;
-        //     state.loading = false;
-        // })
-        // .addCase(calculateUserBondDetails.rejected, (state, { error }) => {
-        //     state.loading = false;
-        //     console.log(error);
-        // })
-        // .addCase(calculateUserTokenDetails.pending, (state, action) => {
-        //     state.loading = true;
-        // })
-        // .addCase(calculateUserTokenDetails.fulfilled, (state, action) => {
-        //     if (!action.payload) return;
-        //     const token = action.payload.token;
-        //     state.tokens[token] = action.payload;
-        //     state.loading = false;
-        // })
-        // .addCase(calculateUserTokenDetails.rejected, (state, { error }) => {
-        //     state.loading = false;
-        //     console.log(error);
-        // });
     },
 });
 
