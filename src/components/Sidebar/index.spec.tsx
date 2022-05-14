@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import * as UseAppReadyHook from 'hooks/useAppReady';
+import * as useWeb3ContextInitialized from 'contexts/web3/web3.hooks';
 
 import { SideBar } from '.';
 
@@ -11,7 +11,7 @@ jest.mock('./Content/index.tsx', () => () => {
 
 describe('Sidebar', () => {
     it('renders without content', () => {
-        jest.spyOn(UseAppReadyHook, 'useAppReady').mockReturnValue(false);
+        jest.spyOn(useWeb3ContextInitialized, 'useWeb3ContextInitialized').mockReturnValue(false);
 
         const component = render(<SideBar isSidebarOpen isSmallScreen handleDrawerToggle={() => {}} />);
 
@@ -19,7 +19,7 @@ describe('Sidebar', () => {
     });
 
     it('renders with content', () => {
-        jest.spyOn(UseAppReadyHook, 'useAppReady').mockReturnValue(true);
+        jest.spyOn(useWeb3ContextInitialized, 'useWeb3ContextInitialized').mockReturnValue(true);
 
         const component = render(<SideBar isSidebarOpen isSmallScreen handleDrawerToggle={() => {}} />);
 

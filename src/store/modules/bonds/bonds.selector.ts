@@ -81,7 +81,7 @@ export const selectTreasuryBalance = (state: RootState) => formatUSD(state.bonds
 
 export const isAtLeastOneActive = (state: RootState) => Object.values(state.bonds.bonds).length > 0;
 
-const selectBonds = (state: RootState) => Object.values(state.bonds.bonds);
+export const selectBonds = (state: RootState) => Object.values(state.bonds.bonds);
 
 export const selectMostProfitableBonds = createSelector([selectBonds], bonds => {
     const orderedBonds = bonds.sort((bond1, bond2): number => {

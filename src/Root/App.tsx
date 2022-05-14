@@ -7,9 +7,9 @@ import { Route, Switch } from 'react-router-dom';
 import Loader from 'components/Loader';
 import { Web3Context } from 'contexts/web3/web3.context';
 import { useProvider, useSignerConnected } from 'contexts/web3/web3.hooks';
-import useBonds from 'hooks/bonds';
 import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
 import { MainSliceState } from 'store/modules/app/app.types';
+import { selectBonds } from 'store/modules/bonds/bonds.selector';
 import { initializeBonds } from 'store/modules/bonds/bonds.thunks';
 import { getMarketPrices } from 'store/modules/markets/markets.thunks';
 import { IReduxState } from 'store/slices/state.interface';
@@ -23,7 +23,6 @@ const BondDialog = lazy(() => import('../components/BondDialog'));
 
 function App(): JSX.Element {
     const dispatch = useDispatch();
-    const bonds = useBonds();
 
     const {
         state: { signer, networkID },
@@ -32,6 +31,7 @@ function App(): JSX.Element {
     const provider = useProvider();
     const isSignerConnected = useSignerConnected();
 
+    const bonds = useSelector(selectBonds);
     const { errorEncountered, contracts, contractsLoaded } = useSelector<IReduxState, MainSliceState>(state => state.main, shallowEqual);
 
     // TODO: Create a subscription on signer change
@@ -96,7 +96,7 @@ function App(): JSX.Element {
                         <Redeem />
                     </Route>
 
-                    {bonds.mostProfitableBonds.map((bond, key) => (
+                    {bonds.map((bond, key) => (
                         <Route key={key} path={`/mints/${bond.bondInstance.ID}`}>
                             <Suspense fallback={<Loader />}>
                                 <BondDialog key={bond.bondInstance.bondOptions.displayName} open={true} bond={bond} />

@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { DateTime } from 'luxon';
 
-import { selectCirculatingSupply, selectFormattedReservePrice, useBlockchainInfos, useContractLoaded, useNextRebase } from '../app.selectors';
+import { selectCirculatingSupply, selectFormattedReservePrice, selectReserve, useBlockchainInfos, useContractLoaded, useNextRebase } from '../app.selectors';
 
 describe('#selectFormattedReservePrice', () => {
     it.each([

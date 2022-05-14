@@ -1,7 +1,7 @@
 import { Drawer } from '@mui/material';
 
 import { theme } from 'constants/theme';
-import { useAppReady } from 'hooks/useAppReady';
+import { useWeb3ContextInitialized } from 'contexts/web3/web3.hooks';
 
 import Content from './Content';
 
@@ -12,7 +12,7 @@ interface INavDrawer {
 }
 
 const SideBar = ({ isSidebarOpen, isSmallScreen, handleDrawerToggle }: INavDrawer) => {
-    const isAppReady = useAppReady();
+    const isAppReady = useWeb3ContextInitialized();
 
     const variant = isSmallScreen ? (isSidebarOpen ? 'permanent' : 'temporary') : 'permanent';
 

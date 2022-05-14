@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
-import * as Notistack from 'notistack';
+import * as NotistackModule from 'notistack';
 import { Provider } from 'react-redux';
 
-import * as BSnackBarComponent from 'components/Messages/snackbar';
 import * as SelectMessagesModule from 'store/modules/messages/messages.selectors';
 import messagesReducer from 'store/modules/messages/messages.slice';
 import { NotificationMessage } from 'store/modules/messages/messages.types';
@@ -35,7 +34,7 @@ describe('#Messages', () => {
         const enqueueSnackBarSpy = jest.fn();
         const notification: NotificationMessage = { id: 'id', display: true, severity: 'info', description: 'description', detailledDescription: 'detailled' };
 
-        jest.spyOn(Notistack, 'useSnackbar').mockReturnValue({
+        jest.spyOn(NotistackModule, 'useSnackbar').mockReturnValue({
             enqueueSnackbar: enqueueSnackBarSpy,
         } as any);
         jest.spyOn(SelectMessagesModule, 'selectLastNotification').mockReturnValue(notification);
