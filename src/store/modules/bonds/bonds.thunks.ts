@@ -145,11 +145,13 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
 });
 
 export const getBondTerms = createAsyncThunk('bonds/terms', async (bondID: string, { getState }) => {
-    const { bonds } = getState() as RootState;
+    const {
+        bonds: { bondInstances },
+    } = getState() as RootState;
 
-    if (bonds.bondInstances[bondID] === undefined) throw new Error('Bond not found');
+    if (bondInstances[bondID] === undefined) throw new Error('Bond not found');
 
-    const terms = await bonds.bondInstances[bondID].getBondContract().terms();
+    const terms = await bondInstances[bondID].getBondContract().terms();
 
     return { terms };
 });

@@ -12,15 +12,18 @@ import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
 import { formatUSD } from 'helpers/price-units';
+import { LPBond } from 'lib/bonds/bond/lp-bond';
+import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectBondInstance, selectBondMetrics } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails, getBondTerms, getTreasuryBalance, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
+import { BondMetrics } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 import BondPurchase from 'views/Bond/actions/BondPurchase';
 import { BondTest } from 'views/Bond/BondList/BondTest';
-import BondMetrics from 'views/Bond/BondMetrics';
+import BondDetailsMetrics from 'views/Bond/BondMetrics';
 
-const BondDialog = ({ open, bondID }: { open: boolean; bondID: string }) => {
+const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: string; bond: LPBond | StableBond; metrics: BondMetrics }) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -30,27 +33,23 @@ const BondDialog = ({ open, bondID }: { open: boolean; bondID: string }) => {
 
     const onBackdropClick = () => history.goBack();
 
-    const metrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
-    const bond = useSelector((state: RootState) => selectBondInstance(state, bondID));
-
     const bashPrice = useSelector(selectFormattedReservePrice);
 
     useEffect(() => {
         if (isEmpty(metrics?.terms)) {
             dispatch(getBondTerms(bondID));
         }
-    }, [metrics?.terms]);
+    }, [metrics.terms]);
 
     useEffect(() => {
-        console.log('signer', signer, signerAddress);
-        dispatch(loadBondBalancesAndAllowances({ address: signerAddress || '', bondID }));
-        if (!bond) {
+        if (bondID) {
             dispatch(calcBondDetails({ bondID, value: 0 }));
 
             if (signer && signerAddress) {
+                dispatch(loadBondBalancesAndAllowances({ address: signerAddress || '', bondID }));
             }
         }
-    }, [bond, signer, signerAddress]);
+    }, [bondID, signer, signerAddress]);
 
     useEffect(() => {
         if (networkID) {
@@ -59,8 +58,6 @@ const BondDialog = ({ open, bondID }: { open: boolean; bondID: string }) => {
     }, [networkID]);
 
     //TODO: Add the custom settings : Slippage & Recipient address
-
-    if (!bond || !metrics) return <Loader />;
 
     return (
         <Dialog
@@ -91,12 +88,12 @@ const BondDialog = ({ open, bondID }: { open: boolean; bondID: string }) => {
                     </Grid>
                 </Box>
 
-                {metrics?.allowance !== null && (
+                {metrics.allowance !== null && (
                     <Box>
                         <BondPurchase bondID={bondID} />
                         <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
                         <BondTest />
-                        <BondMetrics bondMetrics={metrics} />
+                        <BondDetailsMetrics bondMetrics={metrics} />
                     </Box>
                 )}
             </DialogContent>
@@ -104,4 +101,13 @@ const BondDialog = ({ open, bondID }: { open: boolean; bondID: string }) => {
     );
 };
 
-export default BondDialog;
+const BondDialogLoader = ({ open, bondID }: { open: boolean; bondID: string }) => {
+    const metrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
+    const bond = useSelector((state: RootState) => selectBondInstance(state, bondID));
+
+    if (!metrics || !bond) return <Loader />;
+
+    return <BondDetails open={open} bondID={bondID} bond={bond} metrics={metrics} />;
+};
+
+export default BondDialogLoader;

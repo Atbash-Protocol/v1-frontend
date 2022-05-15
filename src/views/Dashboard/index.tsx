@@ -36,8 +36,6 @@ function Dashboard() {
     const TVL = useSelector(selectTVL);
     const currentIndex = useSelector(selectFormattedIndex);
 
-    const contractsLoaded = useSelector(useContractLoaded);
-    const loadedBonds = useSelector(isAtLeastOneActive);
     const treasuryBalance = useSelector(selectFormattedTreasuryBalance);
     const appIsLoading = useSelector(selectAppLoading);
 

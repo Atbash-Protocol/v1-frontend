@@ -13,18 +13,6 @@ import * as StakeSelectorsModule from 'store/modules/stake/stake.selectors';
 
 import Dashboard from '.';
 
-// jest.mock('react-i18next', () => ({
-//     // this mock makes sure any components using the translate hook can use it without a warning being shown
-//     useTranslation: () => {
-//         return {
-//             t: (str: string) => str,
-//             i18n: {
-//                 changeLanguage: () => new Promise(() => {}),
-//             },
-//         };
-//     },
-// }));
-
 const store = {
     subscribe: jest.fn(),
     dispatch: jest.fn(),
@@ -47,6 +35,7 @@ describe('NotFound', () => {
         jest.spyOn(MarketSelectorsModule, 'selectMarketsLoading').mockReturnValue(true);
         jest.spyOn(AppSelectorsModule, 'selectFormattedReservePrice').mockReturnValue('$20.0');
         jest.spyOn(AppSelectorsModule, 'useContractLoaded').mockReturnValue(true);
+        jest.spyOn(AppSelectorsModule, 'selectAppLoading').mockReturnValue(true);
         jest.spyOn(MetricsSelectorsModule, 'selectWSBASHPrice').mockReturnValue('$10.0');
         jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(10000);
         jest.spyOn(MetricsSelectorsModule, 'selectStakingRewards').mockReturnValue(null);
