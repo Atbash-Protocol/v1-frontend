@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { providers, constants, ethers, Contract, BigNumber } from 'ethers';
-import { sum, snakeCase } from 'lodash';
+import { providers, constants, ethers } from 'ethers';
+import { snakeCase } from 'lodash';
 
 import { BondingCalcContract } from 'abi';
 import { BONDS } from 'config/bonds';
@@ -8,8 +8,6 @@ import { getAddresses } from 'constants/addresses';
 import { messages } from 'constants/messages';
 import { WEB3State } from 'contexts/web3/web3.types';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
-import { LPBond } from 'lib/bonds/bond/lp-bond';
-import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { createBond, getBondContractsAddresses } from 'lib/bonds/bonds.helper';
 import { addNotification, walletConnectWarning } from 'store/modules/messages/messages.slice';
 import { IReduxState } from 'store/slices/state.interface';
@@ -19,7 +17,6 @@ import { getBlockchainData } from '../app/app.thunks';
 import { addPendingTransaction, clearPendingTransaction } from '../transactions/transactions.slice';
 import { TransactionTypeEnum } from '../transactions/transactions.type';
 import { initDefaultBondMetrics } from './bonds.helper';
-import { BondItem, BondMetrics, BondSlice } from './bonds.types';
 import { getLPBondQuote, getLPPurchasedBonds, getTokenBondQuote, getTokenPurchaseBonds } from './bonds.utils';
 
 export const initializeBonds = createAsyncThunk('app/bonds', async (provider: WEB3State['provider'] | WEB3State['signer']) => {

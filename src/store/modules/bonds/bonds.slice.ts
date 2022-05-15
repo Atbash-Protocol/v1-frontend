@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Contract } from 'ethers';
 
 import { isActionRejected } from 'store/utils/action';
 
@@ -41,8 +40,6 @@ export const BondSlices = createSlice({
                 state.bondMetrics[bondID].treasuryBalance = treasury as number;
             }
         });
-
-        builder.addCase(getTreasuryBalance.rejected, (state, action) => {});
 
         builder.addCase(
             calcBondDetails.pending,

@@ -9,9 +9,8 @@ import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import { theme } from 'constants/theme';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
-import { selectBondInfos, selectBondInstance, selectBondMetrics, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
+import { selectBondInstance, selectBondMetrics, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails } from 'store/modules/bonds/bonds.thunks';
-import { BondItem } from 'store/modules/bonds/bonds.types';
 import { IReduxState } from 'store/slices/state.interface';
 
 interface IBondProps {

@@ -8,11 +8,11 @@ import Loader from 'components/Loader';
 import { Web3Context } from 'contexts/web3/web3.context';
 import { useProvider, useSignerConnected } from 'contexts/web3/web3.hooks';
 import { loadBalancesAndAllowances } from 'store/modules/account/account.thunks';
-import { selectAppLoading, selectBlockchainLoading, selectMetricsLoading } from 'store/modules/app/app.selectors';
+import { selectAppLoading } from 'store/modules/app/app.selectors';
 import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
 import { MainSliceState } from 'store/modules/app/app.types';
-import { selectBondInstances, selectBonds } from 'store/modules/bonds/bonds.selector';
-import { getTreasuryBalance, initializeBonds } from 'store/modules/bonds/bonds.thunks';
+import { selectBondInstances } from 'store/modules/bonds/bonds.selector';
+import { initializeBonds } from 'store/modules/bonds/bonds.thunks';
 import { getMarketPrices } from 'store/modules/markets/markets.thunks';
 import { IReduxState } from 'store/slices/state.interface';
 

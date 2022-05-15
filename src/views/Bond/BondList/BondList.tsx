@@ -1,19 +1,17 @@
 import './bondlist.scss';
-import { memo, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { Box, Typography, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { batch, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { BCard } from 'components/BCard';
 import { MenuMetric } from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
-import { selectReserveLoading, useContractLoaded } from 'store/modules/app/app.selectors';
-import { selectAllBonds, selectBondCalcDetailsReady, selectBondsReady, selectFormattedTreasuryBalance } from 'store/modules/bonds/bonds.selector';
-import { calcBondDetails, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
-import { selectFormattedBashBalance, selectMarketsLoading } from 'store/modules/markets/markets.selectors';
-import { IReduxState } from 'store/slices/state.interface';
+import { selectAllBonds, selectBondsReady, selectFormattedTreasuryBalance } from 'store/modules/bonds/bonds.selector';
+import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
+import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
 
 import { BondtListItem } from './BondListItem';
 
