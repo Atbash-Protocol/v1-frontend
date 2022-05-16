@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { providers, constants, ethers } from 'ethers';
+import { providers, constants, Contract, utils, BigNumber } from 'ethers';
 import { snakeCase } from 'lodash';
 
 import { BondingCalcContract } from 'abi';
@@ -28,7 +28,7 @@ export const initializeBonds = createAsyncThunk('app/bonds', async (provider: WE
     // init bond calculator
     const { BASH_BONDING_CALC_ADDRESS } = getAddresses(chainID);
 
-    const bondCalculator = new ethers.Contract(BASH_BONDING_CALC_ADDRESS, BondingCalcContract, signer);
+    const bondCalculator = new Contract(BASH_BONDING_CALC_ADDRESS, BondingCalcContract, signer);
 
     const bondstoOutput = BONDS.reduce(
         (acc, bondConfig) => {
@@ -94,7 +94,7 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
 
     const terms = await bondInstance.getBondContract().terms();
     const maxBondPrice = await bondInstance.getBondContract().maxPayout();
-    const bondAmountInWei = ethers.utils.parseEther(value.toString());
+    const bondAmountInWei = utils.parseEther(value.toString());
 
     const reserves = main.metrics.reserves;
     const { bondCalculator } = bonds;
@@ -103,7 +103,7 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
     if (!reserves || !daiPrice || !bondCalculator) throw new Error('No Reserves ');
 
     const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
-    const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as ethers.BigNumber;
+    const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as BigNumber;
     const bondPrice = bondInstance.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
 
     // = (reserve - bondPrice) / bondPrice
@@ -220,7 +220,7 @@ export const calculateUserBondDetails = createAsyncThunk(
         const bondMaturationBlock = Number(vesting) + Number(lastTime);
         const pendingPayout = await bondContract.pendingPayoutFor(userAddress);
 
-        const pendingPayoutVal = ethers.utils.formatUnits(pendingPayout, 'gwei');
+        const pendingPayoutVal = utils.formatUnits(pendingPayout, 'gwei');
 
         return {
             interestDue,
@@ -247,7 +247,7 @@ export const depositBond = createAsyncThunk(
         const address = signerAddress;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const acceptedSlippage = (slippage ?? 0.5) / 100 || 0.005;
-        const valueInWei = ethers.utils.parseUnits(amount.toString(), 'ether');
+        const valueInWei = utils.parseUnits(amount.toString(), 'ether');
         const bondContract = bondInstance.getBondContract();
 
         if (!bondMetrics.bondPrice) throw new Error('Unable to get bondPrice');

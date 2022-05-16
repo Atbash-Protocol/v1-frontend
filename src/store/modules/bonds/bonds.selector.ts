@@ -132,7 +132,6 @@ export const selectBondMetrics = (state: RootState, bondId: string) => {
 export const selectAllBondMetrics = (state: RootState) => state.bonds.bondMetrics;
 
 export const selectFormattedTreasuryBalance = createSelector([selectAllBondMetrics], metrics => {
-    console.log('dashboard', metrics);
     const total = sum(
         Object.values(metrics)
             .map(m => m.treasuryBalance)

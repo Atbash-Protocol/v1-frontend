@@ -57,7 +57,7 @@ export const getCoreMetrics = createAsyncThunk('app/coreMetrics', async (_, { ge
         },
     } = getState() as RootState;
 
-    if (!BASH_CONTRACT || !SBASH_CONTRACT || !INITIAL_PAIR_ADDRESS) throw new Error('Unable to get coreMetrics ');
+    if (!BASH_CONTRACT || !SBASH_CONTRACT || !INITIAL_PAIR_ADDRESS) throw new Error('Unable to get coreMetrics');
 
     const rawCircSupply = await SBASH_CONTRACT.circulatingSupply();
     const totalSupply = (await BASH_CONTRACT.totalSupply()) / 10 ** ERC20_DECIMALS;
@@ -79,7 +79,7 @@ export const getStakingMetrics = createAsyncThunk('app/stakingMetrics', async (_
         },
     } = getState() as IReduxState;
 
-    if (!STAKING_CONTRACT) throw new Error('Unable to get staking address is this point');
+    if (!STAKING_CONTRACT) throw new Error('Unable to get staking contract');
 
     const epoch = await STAKING_CONTRACT.epoch();
     const secondsToNextEpoch = 0; // TODO: Number(await STAKING_CONTRACT!.secondsToNextEpoch()); not working on staking contract
