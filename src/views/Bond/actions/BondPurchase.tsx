@@ -37,7 +37,6 @@ const BondPurchase = ({ bondID }: { bondID: string }) => {
     const handleBondQuote = (amount: number) => {
         if (amount > 0) {
             setQuantity(amount.toString());
-            console.log(quantity.length > 0);
             dispatch(calculateUserBondDetails({ signer, signerAddress, bondID }));
         }
     };

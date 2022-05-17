@@ -87,7 +87,6 @@ function BondList() {
             return inactiveBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />);
         }
     }, [inactiveBonds]);
-
     return (
         <>
             <BCard title={t('bond:MintTitle')} zoom={true}>

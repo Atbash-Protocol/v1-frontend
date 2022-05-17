@@ -256,13 +256,6 @@ export const depositBond = createAsyncThunk(
 
         let bondTx;
 
-        console.log('Deposit', valueInWei, address, gasPrice);
-        console.log('Contract', bondContract.address);
-
-        bondContract.on('error', err => {
-            console.log('Here the error', JSON.stringify(err));
-        });
-
         try {
             const bondPremium = await bondInstance.getBondContract().bondPrice();
             const premium = Math.round(bondPremium.toNumber()); // TODO: use acceptedSlippage

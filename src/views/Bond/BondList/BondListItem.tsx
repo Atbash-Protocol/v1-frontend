@@ -70,7 +70,6 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
 
     const { bondPrice, bondDiscount, purchased } = selectBondMintingMetrics(bondMetrics);
     const bondSoldOut = (bondMetrics.bondDiscount ?? 0) * 100 < -30;
-    console.log('BondListItem', bond, purchased);
 
     const metrics = [
         { metric: t('bond:Mint'), value: bondPrice },
@@ -116,8 +115,8 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
                 }}
             >
                 {signer && (
-                    <Button disabled={!bond.bondOptions.isActive} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}`, cursor: 'pointer' }}>
-                        <Link component={NavLink} to={`/mints/${bond.ID}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
+                    <Button disabled={false} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}`, cursor: 'pointer' }}>
+                        <Link component={NavLink} to={`/stake`} sx={{ color: 'inherit', textDecoration: 'none' }}>
                             <Typography>
                                 <>{bond.bondOptions.isActive ? t('bond:Mint') : t('bond:Redeem')}</>
                             </Typography>

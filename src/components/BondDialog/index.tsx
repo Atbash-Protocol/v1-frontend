@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { Box, Dialog, DialogContent, DialogTitle, Divider, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
-import { isEmpty } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -20,7 +19,6 @@ import { calcBondDetails, getBondTerms, getTreasuryBalance, loadBondBalancesAndA
 import { BondMetrics } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 import BondPurchase from 'views/Bond/actions/BondPurchase';
-import { BondTest } from 'views/Bond/BondList/BondTest';
 import BondDetailsMetrics from 'views/Bond/BondMetrics';
 
 const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: string; bond: LPBond | StableBond; metrics: BondMetrics }) => {
@@ -34,12 +32,16 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
     const onBackdropClick = () => history.goBack();
 
     const bashPrice = useSelector(selectFormattedReservePrice);
+    console.log('here', dispatch);
 
     useEffect(() => {
-        if (isEmpty(metrics?.terms)) {
+        if (!metrics?.terms) {
+            console.log('here2');
             dispatch(getBondTerms(bondID));
         }
-    }, [metrics.terms]);
+    }, [metrics?.terms]);
+
+    console.log('bdetails', dispatch, calcBondDetails);
 
     useEffect(() => {
         if (bondID) {
@@ -68,7 +70,13 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
                 fullWidth: true,
                 PaperProps: { sx: { background: theme.palette.cardBackground.light, color: theme.palette.primary.dark } },
             }}
-            sx={{ p: 2, backdropFilter: 'blur(10px)' }}
+            sx={{
+                p: 2,
+                [theme.breakpoints.up('xs')]: {
+                    p: 0,
+                },
+                backdropFilter: 'blur(10px)',
+            }}
         >
             <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: theme.spacing(1) }}>
                 <BondLogo bondLogoPath={bond.bondOptions.iconPath} isLP={bond.isLP()} />
@@ -92,7 +100,6 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
                     <Box>
                         <BondPurchase bondID={bondID} />
                         <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
-                        <BondTest />
                         <BondDetailsMetrics bondMetrics={metrics} />
                     </Box>
                 )}
@@ -106,6 +113,8 @@ const BondDialogLoader = ({ open, bondID }: { open: boolean; bondID: string }) =
     const bond = useSelector((state: RootState) => selectBondInstance(state, bondID));
 
     if (!metrics || !bond) return <Loader />;
+
+    console.log('bond dialog', metrics, bond);
 
     return <BondDetails open={open} bondID={bondID} bond={bond} metrics={metrics} />;
 };

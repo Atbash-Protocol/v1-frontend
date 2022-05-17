@@ -30,8 +30,6 @@ function Staking() {
 
     const stakingMetrics = useSelector(selectStakingRewards);
 
-    console.log('loading', loading, stakingMetrics);
-
     useEffect(() => {
         if (signerAddress && contractsLoaded) {
             dispatch(loadBalancesAndAllowances(signerAddress));

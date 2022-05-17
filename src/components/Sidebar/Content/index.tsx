@@ -106,7 +106,7 @@ function NavContent() {
 
     const bondItems = bondInstances
         .filter(bond => bond.bondOptions.isActive)
-        .map((bond, i) => <ListItemLink key={`mint-bond-${bond.ID}`} to={`/mints/${bond.ID}`} primary={bond.bondOptions.displayName} extra={<>{bonds[i].bondDiscount} %</>} />);
+        .map((bond, i) => <ListItemLink key={`mint-bond-${bond.ID}`} to={`/bond/${bond.ID}`} primary={bond.bondOptions.displayName} extra={<>{bonds[i].bondDiscount} %</>} />);
 
     return (
         <Box

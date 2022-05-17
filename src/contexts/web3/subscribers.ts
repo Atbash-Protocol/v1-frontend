@@ -13,6 +13,7 @@ export const subscribeSigner = async (web3provider: providers.Web3Provider, disp
         const signer = new providers.Web3Provider(web3provider as unknown as providers.ExternalProvider);
 
         dispatch({ type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer, networkId } });
+        window.location.reload();
     });
 
     web3provider.once('close', () => {

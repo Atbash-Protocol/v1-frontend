@@ -17,8 +17,6 @@ const CBondMetrics = ({ bondMetrics }: { bondMetrics: BondMetrics }) => {
 
     const { maxBondPrice, bondDiscount, vestingTerm } = metrics;
 
-    console.log('metrics', metrics);
-
     const metrics2 = [
         { value: maxBondPrice ? formatUSD(maxBondPrice, 2).toString() : null, metricKey: t('bond:MaxYouCanBuy') },
         {

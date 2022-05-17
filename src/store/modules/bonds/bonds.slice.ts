@@ -51,8 +51,6 @@ export const BondSlices = createSlice({
                     },
                 },
             ) => {
-                // console.log('here2', bond.bond.ID);
-                // state
                 state.bondMetrics[bondID].loading = true;
             },
         );
@@ -60,17 +58,12 @@ export const BondSlices = createSlice({
         builder.addCase(calcBondDetails.fulfilled, (state, { payload: { bondID, ...metrics } }) => {
             // state.bonds[bondID].metrics = { ...state.bonds[bondID].metrics, ...metrics };
 
-            console.log('details', metrics, state.bondMetrics[bondID]);
             state.bondMetrics[bondID] = {
                 ...state.bondMetrics[bondID],
                 ...metrics,
                 loading: false,
             };
             // return state;
-        });
-
-        builder.addCase(calcBondDetails.rejected, (state, action) => {
-            console.log('here', action, state);
         });
 
         builder.addCase(getBondTerms.fulfilled, (state, { payload, meta: { arg: bondID } }) => {
@@ -92,17 +85,12 @@ export const BondSlices = createSlice({
                     },
                 },
             ) => {
-                console.log('here the slice', payload);
                 state.bondMetrics[bondID].allowance = payload.allowance;
                 state.bondMetrics[bondID].balance = payload.balance;
 
                 // return state;
             },
         );
-
-        builder.addCase(loadBondBalancesAndAllowances.rejected, (_, action) => {
-            console.log('action', action);
-        });
 
         builder.addCase(calculateUserBondDetails.pending, (state, {}) => {
             state.bondQuote = {

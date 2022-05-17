@@ -81,41 +81,37 @@ function App(): JSX.Element {
                 </Suspense>
             </Route>
 
-            {
-                <>
-                    <Route path="/stake">
-                        <Suspense fallback={<Loader />}>
-                            <Stake />
-                        </Suspense>
-                    </Route>
+            <Route path="/stake">
+                <Suspense fallback={<Loader />}>
+                    <Stake />
+                </Suspense>
+            </Route>
 
-                    <Route path="/bonds">
-                        <Suspense fallback={<Loader />}>
-                            <BondList />
-                        </Suspense>
-                    </Route>
+            <Route path="/bonds">
+                <Suspense fallback={<Loader />}>
+                    <BondList />
+                </Suspense>
+            </Route>
 
-                    <Route path="/forecast">
-                        <Forecast />
-                    </Route>
+            <Route path="/forecast">
+                <Forecast />
+            </Route>
 
-                    <Route path="/wrap">
-                        <Wrap />
-                    </Route>
+            <Route path="/wrap">
+                <Wrap />
+            </Route>
 
-                    <Route path="/redeem">
-                        <Redeem />
-                    </Route>
+            <Route path="/redeem">
+                <Redeem />
+            </Route>
 
-                    {bondInstances.map((bond, key) => (
-                        <Route key={key} path={`/mints/${bond.ID}`}>
-                            <Suspense fallback={<Loader />}>
-                                <BondDialog key={bond.bondOptions.displayName} open={true} bondID={bond.ID} />
-                            </Suspense>
-                        </Route>
-                    ))}
-                </>
-            }
+            {bondInstances.map((bond, key) => (
+                <Route key={key} path={`/bond/${bond.ID}`}>
+                    <Suspense fallback={<Loader />}>
+                        <BondDialog key={bond.bondOptions.displayName} open={true} bondID={bond.ID} />
+                    </Suspense>
+                </Route>
+            ))}
             <Route component={NotFound} />
         </Switch>
     );
