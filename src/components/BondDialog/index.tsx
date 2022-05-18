@@ -32,16 +32,12 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
     const onBackdropClick = () => history.goBack();
 
     const bashPrice = useSelector(selectFormattedReservePrice);
-    console.log('here', dispatch);
 
     useEffect(() => {
         if (!metrics?.terms) {
-            console.log('here2');
             dispatch(getBondTerms(bondID));
         }
     }, [metrics?.terms]);
-
-    console.log('bdetails', dispatch, calcBondDetails);
 
     useEffect(() => {
         if (bondID) {
@@ -113,8 +109,6 @@ const BondDialogLoader = ({ open, bondID }: { open: boolean; bondID: string }) =
     const bond = useSelector((state: RootState) => selectBondInstance(state, bondID));
 
     if (!metrics || !bond) return <Loader />;
-
-    console.log('bond dialog', metrics, bond);
 
     return <BondDetails open={open} bondID={bondID} bond={bond} metrics={metrics} />;
 };

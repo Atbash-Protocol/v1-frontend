@@ -1,47 +1,22 @@
-import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import * as ReduxModule from 'react-redux';
+import * as ReactReduxModule from 'react-redux';
+import createMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import { Web3Context } from 'contexts/web3/web3.context';
 import { BondType } from 'helpers/bond/constants';
 import { BondOptions } from 'lib/bonds/bond/bond';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { BondProviderEnum } from 'lib/bonds/bonds.types';
-import mainReducer from 'store/modules/app/app.slice';
 import * as BondsSeletorModule from 'store/modules/bonds/bonds.selector';
-import BondsReducer from 'store/modules/bonds/bonds.slice';
-import * as BondThunksModule from 'store/modules/bonds/bonds.thunks';
-import marketReducer from 'store/modules/markets/markets.slice';
-import transactionReducer from 'store/modules/transactions/transactions.slice';
+import store from 'store/store';
 
 import BondDialog from '..';
 
 function renderComponent(component: JSX.Element, contextState?: any) {
     return render(
         <Web3Context.Provider value={contextState}>
-            <Provider
-                store={configureStore({
-                    reducer: {
-                        main: mainReducer,
-                        markets: marketReducer,
-                        bonds: BondsReducer,
-                        transactions: transactionReducer,
-                    },
-                    preloadedState: {
-                        bonds: {
-                            bondMetrics: {},
-                            bondInstances: {},
-                            bondQuote: {
-                                interestDue: 123,
-                            },
-                        },
-                    } as any,
-                })}
-            >
-                {component}
-            </Provider>
-            ,
+            <ReactReduxModule.Provider store={store}>{component}</ReactReduxModule.Provider>,
         </Web3Context.Provider>,
     );
 }
@@ -69,25 +44,62 @@ describe('BondDialog', () => {
         },
     };
 
-    beforeAll(() => {});
+    it('should render AccessUnavailablePanel', () => {
+        const middlewares = [thunk];
 
-    it('renders', () => {
-        jest.spyOn(ReduxModule, 'useDispatch').mockReturnValue(jest.fn());
-        jest.spyOn(BondsSeletorModule, 'selectBondMetrics').mockReturnValue({ terms: null } as any);
-        jest.spyOn(BondsSeletorModule, 'selectBondInstance').mockReturnValue({ bondOptions: { iconPath: 'http://iconpath' }, isLP: () => false } as any);
+        const mockStore = createMockStore(middlewares);
 
-        const { container } = renderComponent(<BondDialog bondID={testBond.bondInstance.ID} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
+        const state = {
+            bonds: {
+                bondMetrics: {
+                    dai: {
+                        metric1: 'ok',
+                    },
+                },
+                bondInstances: {
+                    dai: new LPBond(bondOptions),
+                },
+                bondQuote: {
+                    interestDue: null,
+                    bondMaturationBlock: null,
+                    pendingPayout: null,
+                },
+            },
+            main: {
+                metrics: {
+                    reserves: 10000,
+                },
+                blockchain: {
+                    timestamp: 10000,
+                },
+            },
+            markets: {
+                markets: {
+                    dai: 1.01,
+                },
+            },
+            transactions: [],
+        };
 
-        expect(container).toMatchSnapshot();
+        const testStore = mockStore(state);
+        const providerValue = { state: { signer: 'signer', signerAddress: 'signerAddress', networkID: 2 } };
+        render(<BondDialog open={true} bondID={'dai'} />, {
+            wrapper: ({ children }) => (
+                <Web3Context.Provider value={providerValue as any}>
+                    <ReactReduxModule.Provider store={testStore}>{children}</ReactReduxModule.Provider>
+                </Web3Context.Provider>
+            ),
+        });
+        // expect(screen.getAllByText('AccessUnavailablePanel')).toBeTruthy();
+        expect(testStore.getActions()).toHaveLength(4);
     });
 
-    it('dispatches the actions', () => {
-        const getTermsSpy = jest.spyOn(BondThunksModule, 'getBondTerms').mockReturnThis();
-        const calcBondDetailsSpy = jest.spyOn(BondThunksModule, 'calcBondDetails');
-        const loadBondBalancesAndAllowancesSpy = jest.spyOn(BondThunksModule, 'loadBondBalancesAndAllowances').mockReturnThis();
+    it('renders the loader', () => {
+        jest.spyOn(BondsSeletorModule, 'selectBondMetrics').mockReturnValue(null);
+        jest.spyOn(BondsSeletorModule, 'selectBondInstance').mockReturnValue({ bondOptions: { iconPath: 'http://iconpath' }, isLP: () => false } as any);
 
-        const comp = renderComponent(<BondDialog bondID={testBond.bondInstance.ID} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
+        const container = renderComponent(<BondDialog bondID={testBond.bondInstance.ID} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
 
-        expect(comp).toMatchSnapshot();
+        expect(container.container.getElementsByClassName('MuiCircularProgress-root')).toHaveLength(1);
     });
 });
