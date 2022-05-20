@@ -16,7 +16,6 @@ import { RootState } from 'store/store';
 import { getBlockchainData } from '../app/app.thunks';
 import { addPendingTransaction, clearPendingTransaction } from '../transactions/transactions.slice';
 import { TransactionTypeEnum } from '../transactions/transactions.type';
-import { initDefaultBondMetrics } from './bonds.helper';
 import { getLPBondQuote, getLPPurchasedBonds, getTokenBondQuote, getTokenPurchaseBonds } from './bonds.utils';
 
 export const initializeBonds = createAsyncThunk('app/bonds', async (provider: WEB3State['provider'] | WEB3State['signer']) => {
@@ -47,7 +46,19 @@ export const initializeBonds = createAsyncThunk('app/bonds', async (provider: WE
                 },
                 bondMetrics: {
                     ...acc.bondMetrics,
-                    [bondName]: initDefaultBondMetrics(),
+                    [bondName]: {
+                        treasuryBalance: null,
+                        bondDiscount: null,
+                        bondQuote: null,
+                        purchased: null,
+                        vestingTerm: null,
+                        maxBondPrice: null,
+                        bondPrice: null,
+                        marketPrice: null,
+                        maxBondPriceToken: null,
+                        allowance: null,
+                        balance: null,
+                    },
                 },
             };
         },
