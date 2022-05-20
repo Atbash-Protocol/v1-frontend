@@ -9,12 +9,17 @@ import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import { theme } from 'constants/theme';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
+import { LPBond } from 'lib/bonds/bond/lp-bond';
+import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { selectBondInstance, selectBondMetrics, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails } from 'store/modules/bonds/bonds.thunks';
+import { BondMetrics } from 'store/modules/bonds/bonds.types';
 import { IReduxState } from 'store/slices/state.interface';
 
 interface IBondProps {
     bondID: string;
+    metrics: BondMetrics;
+    bond: LPBond | StableBond;
 }
 
 const BondMintMetric = ({ metric, value }: { metric: string; value: string | null }) => {
@@ -51,27 +56,24 @@ const BondMintMetric = ({ metric, value }: { metric: string; value: string | nul
     );
 };
 
-export const BondtListItem = ({ bondID }: IBondProps) => {
+const BondtListItem = ({ bondID, bond, metrics }: IBondProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const { signer } = useSafeSigner();
 
-    const bond = useSelector((state: IReduxState) => selectBondInstance(state, bondID));
-    const bondMetrics = useSelector((state: IReduxState) => selectBondMetrics(state, bondID));
-
     useEffect(() => {
-        if (bond && bondMetrics) {
+        if (bond && metrics) {
             dispatch(calcBondDetails({ bondID, value: 0 }));
         }
-    }, [!bond || !bondMetrics]);
+    }, [!bond || !metrics]);
 
-    if (!bond || !bondMetrics) return <Loader />;
+    if (!bond || !metrics) return <Loader />;
 
-    const { bondPrice, bondDiscount, purchased } = selectBondMintingMetrics(bondMetrics);
-    const bondSoldOut = (bondMetrics.bondDiscount ?? 0) * 100 < -30;
+    const { bondPrice, bondDiscount, purchased } = selectBondMintingMetrics(metrics);
+    const bondSoldOut = (metrics.bondDiscount ?? 0) * 100 < -30;
 
-    const metrics = [
+    const bondMetrics = [
         { metric: t('bond:Mint'), value: bondPrice },
         {
             metric: t('Price'),
@@ -102,7 +104,7 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
             <Grid item sm={2} xs={8}>
                 <Typography variant="body1">{bond.bondOptions.displayName}</Typography>
             </Grid>
-            {metrics}
+            {bondMetrics}
 
             <Grid
                 item
@@ -127,3 +129,14 @@ export const BondtListItem = ({ bondID }: IBondProps) => {
         </Grid>
     );
 };
+
+const BondListItemLoader = ({ bondID }: { bondID: string }) => {
+    const bond = useSelector((state: IReduxState) => selectBondInstance(state, bondID));
+    const metrics = useSelector((state: IReduxState) => selectBondMetrics(state, bondID));
+
+    if (!metrics || !bond) return <Loader />;
+
+    return <BondtListItem bondID={bondID} bond={bond} metrics={metrics} />;
+};
+
+export default BondListItemLoader;

@@ -19,7 +19,6 @@ describe('AtbashMenu', () => {
         expect(container.querySelector('button')?.textContent).toBe('BuyBASH');
 
         const btn = container.querySelector('button');
-        console.log(screen.getByText(/BuyBASH/i).parentElement?.parentElement?.innerHTML);
         fireEvent.click(screen.getByText(/BuyBASH/i));
 
         expect(container).toMatchSnapshot();

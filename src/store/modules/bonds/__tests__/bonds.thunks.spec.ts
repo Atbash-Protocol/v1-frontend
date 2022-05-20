@@ -1,4 +1,4 @@
-import { getTreasuryBalance, initializeBonds } from '../bonds.thunks';
+import { calcBondDetails, getTreasuryBalance, initializeBonds } from '../bonds.thunks';
 
 // mock the enums since they cant be used inside jest.mock
 jest.mock('config/bonds', () => ({
@@ -126,5 +126,27 @@ describe('#getTreasuryBalance', () => {
         const { payload } = await action(dispatch, getState, undefined);
 
         expect(payload).toEqual({ dai: 10000 });
+    });
+});
+
+describe('#calcBondDetails', () => {
+    const dispatch = jest.fn();
+
+    it('catches an error if the bond is not defined', async () => {
+        const getState = jest.fn().mockReturnValue({
+            bonds: {
+                bondInstances: {
+                    dai: {},
+                },
+                bondMetrics: {},
+            },
+            main: {},
+            markets: {},
+        });
+
+        const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+        const res = await action(dispatch, getState, undefined);
+
+        expect((res as any).error.message).toEqual('Unable to get bondInfos');
     });
 });

@@ -90,7 +90,7 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
     const bondInstance = bonds.bondInstances[bondID];
     const bondMetrics = bonds.bondMetrics[bondID];
 
-    if (!bondInstance || !bondMetrics || !bondInstance.getBondContract()) throw new Error('error init');
+    if (!bondInstance || !bondMetrics || !bondInstance.getBondContract()) throw new Error('Unable to get bondInfos');
 
     const terms = await bondInstance.getBondContract().terms();
     const maxBondPrice = await bondInstance.getBondContract().maxPayout();

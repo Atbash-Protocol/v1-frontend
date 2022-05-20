@@ -8,7 +8,7 @@ import MemoInlineMetric from 'components/Metrics/InlineMetric';
 import { theme } from 'constants/theme';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
 import { selectBondInstance, selectBondMetrics, selectBondQuoteResult } from 'store/modules/bonds/bonds.selector';
-import { approveBonds, calculateUserBondDetails } from 'store/modules/bonds/bonds.thunks';
+import { approveBonds, calculateUserBondDetails, depositBond } from 'store/modules/bonds/bonds.thunks';
 import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 import AmountForm from 'views/Staking/components/AmountForm';
@@ -27,7 +27,7 @@ const BondPurchase = ({ bondID }: { bondID: string }) => {
     const [quantity, setQuantity] = useState('');
 
     const depositBondAction = () => {
-        // dispatch(depositBond({ amount: Number(quantity), signer, signerAddress, bond }));
+        dispatch(depositBond({ amount: Number(quantity), signer, signerAddress, bondID }));
     };
 
     const handleApproveClick = () => {

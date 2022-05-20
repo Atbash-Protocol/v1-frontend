@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { Contract, ethers } from 'ethers';
 
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
@@ -39,7 +39,7 @@ export interface BondSlice {
     bonds: Record<string, BondItem>;
     bondInstances: Record<string, LPBond | StableBond>;
     bondMetrics: Record<string, BondMetrics>;
-    bondCalculator: any | null;
+    bondCalculator: Contract | null;
     treasuryBalance: number | null;
     loading: boolean;
     bondQuoting: boolean;

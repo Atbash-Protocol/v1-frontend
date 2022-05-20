@@ -90,7 +90,6 @@ describe('BondDialog', () => {
                 </Web3Context.Provider>
             ),
         });
-        // expect(screen.getAllByText('AccessUnavailablePanel')).toBeTruthy();
         expect(testStore.getActions()).toHaveLength(4);
     });
 

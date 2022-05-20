@@ -13,7 +13,7 @@ import { selectAllBonds, selectBondsReady, selectFormattedTreasuryBalance } from
 import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
 import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
 
-import { BondtListItem } from './BondListItem';
+import BondtListItem from './BondListItem';
 
 const BondHeader = () => {
     const { t } = useTranslation();
@@ -87,6 +87,7 @@ function BondList() {
             return inactiveBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />);
         }
     }, [inactiveBonds]);
+
     return (
         <>
             <BCard title={t('bond:MintTitle')} zoom={true}>

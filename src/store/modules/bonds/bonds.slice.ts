@@ -29,7 +29,8 @@ export const BondSlices = createSlice({
         builder.addCase(initializeBonds.fulfilled, (state, { payload: { bondCalculator, bondMetrics, bondInstances } }) => {
             return {
                 ...state,
-                bondCalculator,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                bondCalculator: bondCalculator as any,
                 bondInstances,
                 bondMetrics,
             };
