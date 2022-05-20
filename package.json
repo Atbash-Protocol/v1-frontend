@@ -65,6 +65,7 @@
     "@testing-library/react": "^12.1.4",
     "@typechain/hardhat": "^5.0.0",
     "@types/chai": "^4.3.0",
+    "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.14.172",
     "@types/node": "^14.18.12",
     "@types/numeral": "^2.0.2",
@@ -85,6 +86,8 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "ethers": "^5.0.0",
+    "file-system": "^2.2.2",
+    "fs-extra": "^10.1.0",
     "hardhat": "^2.9.1",
     "hardhat-contract-sizer": "^2.5.0",
     "hardhat-gas-reporter": "^1.0.8",
@@ -102,6 +105,7 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "lint": "npx eslint src/ --ext .ts,.js,.tsx,.jsx",
-    "lint-fix": "npx eslint src/ --ext .ts,.js,.tsx,.jsx --fix"
+    "lint-fix": "npx eslint src/ --ext .ts,.js,.tsx,.jsx --fix",
+    "import-deployments": "node ./scripts/import-deployments"
   }
 }

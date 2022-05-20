@@ -31,7 +31,7 @@ export const changeApproval = createAsyncThunk("bonding/changeApproval", async (
         return;
     }
 
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address);
     const reserveContract = bond.getContractForReserve(networkID, signer);
 
     let approveTx;
@@ -210,7 +210,7 @@ export const bondAsset = createAsyncThunk("bonding/bondAsset", async ({ value, a
     const depositorAddress = address;
     const acceptedSlippage = slippage / 100 || 0.005;
     const valueInWei = ethers.utils.parseUnits(value, "ether");
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address);
     const bondContract = bond.getContractForBond(networkID, signer);
 
     const calculatePremium = await bondContract.bondPrice();
@@ -262,7 +262,7 @@ export const redeemBond = createAsyncThunk("bonding/redeemBond", async ({ addres
         return;
     }
 
-    const signer = provider.getSigner();
+    const signer = provider.getSigner(address);
     const bondContract = bond.getContractForBond(networkID, signer);
 
     let redeemTx;
