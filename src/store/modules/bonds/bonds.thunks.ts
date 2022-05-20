@@ -92,15 +92,15 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
 
     if (!bondInstance || !bondMetrics || !bondInstance.getBondContract()) throw new Error('Unable to get bondInfos');
 
-    const terms = await bondInstance.getBondContract().terms();
-    const maxBondPrice = await bondInstance.getBondContract().maxPayout();
-    const bondAmountInWei = utils.parseEther(value.toString());
-
     const reserves = main.metrics.reserves;
     const { bondCalculator } = bonds;
     const daiPrice = markets.markets.dai;
 
-    if (!reserves || !daiPrice || !bondCalculator) throw new Error('No Reserves ');
+    if (!reserves || !daiPrice || !bondCalculator) throw new Error('State is not setup for bonds');
+
+    const terms = await bondInstance.getBondContract().terms();
+    const maxBondPrice = await bondInstance.getBondContract().maxPayout();
+    const bondAmountInWei = utils.parseEther(value.toString());
 
     const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
     const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as BigNumber;
@@ -121,7 +121,7 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
         dispatch(addNotification({ severity: 'error', description: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
     }
 
-    // let purchased = (await reverseContract.balanceOf(TREASURY_ADDRESS)).toNumber() as number;
+    //TODO: let purchased = (await reverseContract.balanceOf(TREASURY_ADDRESS)).toNumber() as number;
     const initialPurchased = 0;
 
     const { purchased } = bondInstance.isLP()

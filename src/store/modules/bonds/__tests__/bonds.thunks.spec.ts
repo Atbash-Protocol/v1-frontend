@@ -1,4 +1,8 @@
-import { calcBondDetails, getTreasuryBalance, initializeBonds } from '../bonds.thunks';
+import { BigNumber, ethers } from 'ethers';
+
+import * as BondUtilsModule from 'store/modules/bonds/bonds.utils';
+
+import { calcBondDetails, getBondTerms, getTreasuryBalance, initializeBonds } from '../bonds.thunks';
 
 // mock the enums since they cant be used inside jest.mock
 jest.mock('config/bonds', () => ({
@@ -148,5 +152,221 @@ describe('#calcBondDetails', () => {
         const res = await action(dispatch, getState, undefined);
 
         expect((res as any).error.message).toEqual('Unable to get bondInfos');
+    });
+
+    it('catches an error if the state is not setted', async () => {
+        const getState = jest.fn().mockReturnValue({
+            bonds: {
+                bondInstances: {
+                    dai: {
+                        getBondContract: jest.fn().mockReturnValue({}),
+                    },
+                },
+                bondMetrics: {
+                    dai: {
+                        metrics: 1,
+                    },
+                },
+            },
+            main: {
+                metrics: {
+                    reserves: null,
+                },
+            },
+            markets: { markets: { dai: null } },
+        });
+
+        const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+        const res = await action(dispatch, getState, undefined);
+
+        expect((res as any).error.message).toEqual('State is not setup for bonds');
+    });
+
+    describe('When the bondtype is LP', () => {
+        let state: any;
+
+        beforeEach(() => {
+            state = {
+                main: {
+                    metrics: {
+                        reserves: BigNumber.from('0xf'),
+                    },
+                },
+                markets: {
+                    markets: {
+                        dai: 1.01,
+                    },
+                },
+                bonds: {
+                    bondCalculator: jest.fn(),
+                },
+            };
+
+            jest.spyOn(BondUtilsModule, 'getLPBondQuote').mockResolvedValue({
+                bondQuote: 20,
+                maxBondPriceToken: 30,
+            });
+
+            jest.spyOn(BondUtilsModule, 'getLPPurchasedBonds').mockResolvedValue({
+                purchased: 20,
+            });
+        });
+
+        it('returns the bond details', async () => {
+            const getState = jest.fn().mockReturnValue({
+                ...state,
+                bonds: {
+                    ...state.bonds,
+                    bondInstances: {
+                        dai: {
+                            getBondContract: jest.fn().mockReturnValue({
+                                terms: jest.fn().mockReturnValue({
+                                    vestingTerm: 1,
+                                }),
+                                maxPayout: jest.fn().mockReturnValue(ethers.BigNumber.from('0xff')),
+                                bondPriceInUSD: jest.fn().mockReturnValue(BigNumber.from('0xf1')),
+                            }),
+                            isCustomBond: () => false,
+                            isLP: () => true,
+                        },
+                    },
+                    bondMetrics: {
+                        dai: {
+                            treasuryBalance: 0,
+                        },
+                    },
+                },
+            });
+
+            const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+            const { payload } = await action(dispatch, getState, undefined);
+
+            expect(payload).toEqual({
+                bondDiscount: 62240662,
+                bondID: 'dai',
+                bondPrice: BigNumber.from('0xf1'),
+                bondQuote: 20,
+                marketPrice: 0,
+                maxBondPrice: 2.55e-7,
+                maxBondPriceToken: 30,
+                purchased: 20,
+                vestingTerm: 1,
+            });
+        });
+    });
+
+    describe('When the bondtype is not LP', () => {
+        let state: any;
+
+        beforeEach(() => {
+            state = {
+                main: {
+                    metrics: {
+                        reserves: BigNumber.from('0xf'),
+                    },
+                },
+                markets: {
+                    markets: {
+                        dai: 1.01,
+                    },
+                },
+                bonds: {
+                    bondCalculator: jest.fn(),
+                },
+            };
+
+            jest.spyOn(BondUtilsModule, 'getTokenBondQuote').mockResolvedValue({
+                bondQuote: 20,
+                maxBondPriceToken: 30,
+            });
+
+            jest.spyOn(BondUtilsModule, 'getTokenPurchaseBonds').mockResolvedValue({
+                purchased: 20,
+            });
+        });
+
+        it('returns the bond details', async () => {
+            const getState = jest.fn().mockReturnValue({
+                ...state,
+                bonds: {
+                    ...state.bonds,
+                    bondInstances: {
+                        dai: {
+                            getBondContract: jest.fn().mockReturnValue({
+                                terms: jest.fn().mockReturnValue({
+                                    vestingTerm: 1,
+                                }),
+                                maxPayout: jest.fn().mockReturnValue(ethers.BigNumber.from('0xff')),
+                                bondPriceInUSD: jest.fn().mockReturnValue(BigNumber.from('0xf1')),
+                            }),
+                            isCustomBond: () => false,
+                            isLP: () => false,
+                        },
+                    },
+                    bondMetrics: {
+                        dai: {
+                            treasuryBalance: 0,
+                        },
+                    },
+                },
+            });
+
+            const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+            const { payload } = await action(dispatch, getState, undefined);
+
+            expect(payload).toEqual({
+                bondDiscount: 62240662,
+                bondID: 'dai',
+                bondPrice: BigNumber.from('0xf1'),
+                bondQuote: 20,
+                marketPrice: 0,
+                maxBondPrice: 2.55e-7,
+                maxBondPriceToken: 30,
+                purchased: 20,
+                vestingTerm: 1,
+            });
+        });
+    });
+});
+
+describe('#getBondTerms', () => {
+    const dispatch = jest.fn();
+
+    it('catches an error when terms are not defined', async () => {
+        const getState = jest.fn().mockReturnValue({
+            bonds: {
+                bondInstances: {},
+                bondMetrics: {},
+            },
+            main: {},
+            markets: {},
+        });
+
+        const action = await getBondTerms('dai');
+        const res = await action(dispatch, getState, undefined);
+
+        expect((res as any).error.message).toEqual('Bond not found');
+    });
+
+    it('returns the terms', async () => {
+        const getState = jest.fn().mockReturnValue({
+            bonds: {
+                bondInstances: {
+                    dai: {
+                        getBondContract: jest.fn().mockReturnValue({
+                            terms: jest.fn().mockReturnValue('terms'),
+                        }),
+                    },
+                },
+                bondMetrics: {},
+            },
+            main: {},
+            markets: {},
+        });
+
+        const action = await getBondTerms('dai');
+        const { payload } = await action(dispatch, getState, undefined);
+
+        expect(payload).toEqual({ terms: 'terms' });
     });
 });
