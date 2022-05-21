@@ -52,3 +52,5 @@ export const selectUserStakingAllowance = (state: RootState) => {
         SBASHAllowanceNeeded: SBASH.eq(0),
     };
 };
+
+export const selectAccountLoading = (state: RootState): boolean => state.account.loading;

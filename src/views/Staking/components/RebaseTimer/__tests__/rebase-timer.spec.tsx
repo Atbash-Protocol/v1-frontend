@@ -18,7 +18,7 @@ describe('RebaseTimer', () => {
 
     it('renders the loader', () => {
         jest.spyOn(AppReduxSelectorModule, 'useNextRebase').mockReturnValue(undefined);
-        jest.spyOn(AppReduxSelectorModule, 'useBlockchainInfos').mockReturnValue({ timestamp: null, currentBlock: null });
+        jest.spyOn(AppReduxSelectorModule, 'useBlockchainInfos').mockReturnValue({ timestamp: null, currentBlock: null } as any);
 
         const rebaseTimer = renderComponent(<RebaseTimer />);
 
@@ -30,7 +30,7 @@ describe('RebaseTimer', () => {
         const nextRebase = DateTime.utc().minus({ hour: 2 }).toMillis();
 
         jest.spyOn(AppReduxSelectorModule, 'useNextRebase').mockReturnValue(nextRebase);
-        jest.spyOn(AppReduxSelectorModule, 'useBlockchainInfos').mockReturnValue({ timestamp: currentBlockTime, currentBlock: null });
+        jest.spyOn(AppReduxSelectorModule, 'useBlockchainInfos').mockReturnValue({ timestamp: currentBlockTime, currentBlock: null } as any);
 
         const rebaseTimer = renderComponent(<RebaseTimer />);
 
@@ -43,7 +43,7 @@ describe('RebaseTimer', () => {
         const nextRebase = DateTime.utc().plus({ hour: 2 }).toMillis();
 
         jest.spyOn(AppReduxSelectorModule, 'useNextRebase').mockReturnValue(nextRebase);
-        jest.spyOn(AppReduxSelectorModule, 'useBlockchainInfos').mockReturnValue({ timestamp: currentBlockTime, currentBlock: 1 });
+        jest.spyOn(AppReduxSelectorModule, 'useBlockchainInfos').mockReturnValue({ timestamp: currentBlockTime, currentBlock: 1 } as any);
 
         const rebaseTimer = renderComponent(<RebaseTimer />);
 

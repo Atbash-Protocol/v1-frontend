@@ -1,4 +1,4 @@
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -17,34 +17,13 @@ const UserBalance = () => {
     const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [
-        {
-            key: 'stake:ValueOfYourBASH',
-            value: BASHPrice,
-        },
-        {
-            key: 'stake:YourStakedBalance',
-            value: SBashBalance,
-        },
-        {
-            key: 'stake:YourWrappedStakedBalance',
-            value: WSBashBalance,
-        },
-        {
-            key: 'stake:WrappedTokenEquivalent',
-            value: stakingBalanceMetrics.wrappedTokenValue,
-        },
-        {
-            key: 'stake:NextRewardAmount',
-            value: stakingBalanceMetrics.nextRewardValue,
-        },
-        {
-            key: 'stake:ValueOfYourEffectiveNextRewardAmount',
-            value: stakingBalanceMetrics.effectiveNextRewardValue,
-        },
-        {
-            key: 'stake:ValueOfYourWrappedStakedSB',
-            value: stakingBalanceMetrics.wrappedTokenValue,
-        },
+        { key: 'stake:ValueOfYourBASH', value: BASHPrice },
+        { key: 'stake:YourStakedBalance', value: SBashBalance },
+        { key: 'stake:YourWrappedStakedBalance', value: WSBashBalance },
+        { key: 'stake:WrappedTokenEquivalent', value: stakingBalanceMetrics.wrappedTokenValue },
+        { key: 'stake:NextRewardAmount', value: stakingBalanceMetrics.nextRewardValue },
+        { key: 'stake:ValueOfYourEffectiveNextRewardAmount', value: stakingBalanceMetrics.effectiveNextRewardValue },
+        { key: 'stake:ValueOfYourWrappedStakedSB', value: stakingBalanceMetrics.wrappedTokenValue },
     ];
 
     const balanceItems = userBalances.map(({ key, value }) => <MemoInlineMetric key={key} metricKey={key} value={value} />);
@@ -56,7 +35,7 @@ const UserBalance = () => {
                     <>{t('YourBalance')}</>
                 </Typography>
                 <Typography variant="h4">
-                    <> {totalBalance === null ? <Skeleton /> : totalBalance}</>
+                    <> {totalBalance}</>
                 </Typography>
             </Box>
 
