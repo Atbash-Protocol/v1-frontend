@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js';
 import { createSelector } from 'reselect';
 
-import { formatUSD } from 'helpers/price-units';
+import { formatUSDFromDecimal } from 'helpers/price-units';
 import { RootState } from 'store/store';
 
 import { selectBASHBalance } from '../account/account.selectors';
@@ -13,7 +13,7 @@ export const selectFormattedBashBalance = (state: RootState): string | null => {
 
     if (!dai) return null;
 
-    return formatUSD(balance * dai, 2);
+    return formatUSDFromDecimal(balance.mul(dai), 2);
 };
 
 export const selectMarketsLoading = (state: RootState): boolean => {

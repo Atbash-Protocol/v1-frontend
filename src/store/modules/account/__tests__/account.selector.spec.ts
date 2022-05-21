@@ -8,7 +8,7 @@ import * as AccountModuleSelector from '../account.selectors';
 
 describe('#selectBASHBalance', () => {
     it('returns a formatted balance', () => {
-        expect(selectBASHBalance({ account: { balances: { BASH: ethers.BigNumber.from(10000000000) } } } as RootState)).toEqual(10);
+        expect(selectBASHBalance({ account: { balances: { BASH: ethers.BigNumber.from(10000000000) } } } as RootState)).toEqual(expect.any(Decimal));
     });
 });
 

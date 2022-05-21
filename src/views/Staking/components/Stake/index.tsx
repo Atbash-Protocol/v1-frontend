@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { ReactNode, useState, SyntheticEvent, useCallback, useMemo } from 'react';
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -20,7 +20,7 @@ enum PanelEnum {
     UNSTAKE = 1,
 }
 interface TabPanelProps {
-    children?: React.ReactNode;
+    children?: ReactNode;
     index: number;
     value: number;
 }
@@ -47,7 +47,7 @@ function a11yProps(index: number) {
 
 export default function Stake() {
     const dispatch = useDispatch();
-    const [value, setValue] = React.useState(PanelEnum.STAKE);
+    const [value, setValue] = useState(PanelEnum.STAKE);
     const { t } = useTranslation();
 
     const { signer, signerAddress } = useSafeSigner();
@@ -57,34 +57,31 @@ export default function Stake() {
     const translactionPending = useSelector(selectStakingPending);
     const { BASHAllowanceNeeded, SBASHAllowanceNeeded } = useSelector(selectUserStakingAllowance);
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChange = (event: SyntheticEvent, newValue: number) => {
         event.preventDefault();
         setValue(newValue || 0);
     };
 
-    const handleStakingClick = React.useCallback((amount: number) => {
-        switch (value) {
-            case PanelEnum.STAKE:
-                return dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount, signer, signerAddress }));
-            case PanelEnum.UNSTAKE:
-                return dispatch(stakeAction({ action: StakeActionEnum.UNSTAKE, amount, signer, signerAddress }));
-            default:
-                throw new Error('This mode is not handlded');
-        }
+    const handleStakingClick = useCallback((amount: number) => {
+        return dispatch(stakeAction({ action: StakeActionEnum.STAKE, amount, signer, signerAddress }));
     }, []);
 
-    const handleApproveClick = React.useCallback(
+    const handleUnstakingClick = useCallback((amount: number) => {
+        return dispatch(stakeAction({ action: StakeActionEnum.UNSTAKE, amount, signer, signerAddress }));
+    }, []);
+
+    const handleApproveClick = useCallback(
         (transactionType: TransactionType) => {
             dispatch(approveContract({ signer, signerAddress, transactionType }));
         },
         [signer],
     );
 
-    const StakeCard = React.useMemo(
+    const StakeCard = useMemo(
         () => (
             <AmountForm
                 initialValue={0}
-                maxValue={BASHBalance}
+                maxValue={BASHBalance.toNumber()}
                 transactionType={TransactionTypeEnum.BASH_APPROVAL}
                 approvesNeeded={BASHAllowanceNeeded}
                 onApprove={handleApproveClick}
@@ -97,7 +94,7 @@ export default function Stake() {
         [BASHBalance, BASHAllowanceNeeded, translactionPending],
     );
 
-    const UnstakeCard = React.useMemo(
+    const UnstakeCard = useMemo(
         () => (
             <AmountForm
                 initialValue={SBASHBalance.toNumber()}
@@ -105,7 +102,7 @@ export default function Stake() {
                 transactionType={TransactionTypeEnum.SBASH_APPROVAL}
                 approvesNeeded={SBASHAllowanceNeeded}
                 onApprove={handleApproveClick}
-                onAction={handleStakingClick}
+                onAction={handleUnstakingClick}
                 approveLabel={t('stake:ApproveUnstaking')}
                 actionLabel={t('stake:Unstake')}
                 isLoading={translactionPending}

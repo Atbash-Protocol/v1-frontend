@@ -4,10 +4,10 @@ import { createSelector } from 'reselect';
 
 import { RootState } from 'store/store';
 
-export const selectBASHBalance = (state: RootState): number => {
+export const selectBASHBalance = (state: RootState): Decimal => {
     const BASHAmount = state.account.balances.BASH; // 9 Decimals
 
-    return BASHAmount.div(10 ** 9).toNumber();
+    return new Decimal(BASHAmount.toString()).div(10 ** 9);
 };
 
 export const selectSBASHBalance = (state: RootState): Decimal => {

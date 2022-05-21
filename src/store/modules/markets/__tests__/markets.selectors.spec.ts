@@ -9,7 +9,7 @@ import { selectDaiPrice, selectFormattedBashBalance, selectMarketsLoading } from
 
 describe('#selectFormattedBashBalance', () => {
     it('returns the formatted balance', () => {
-        jest.spyOn(AccountModuleSelectors, 'selectBASHBalance').mockReturnValue(12);
+        jest.spyOn(AccountModuleSelectors, 'selectBASHBalance').mockReturnValue(new Decimal(12));
 
         const dai = 1.01;
         const state = { markets: { markets: { dai } } };
@@ -18,7 +18,7 @@ describe('#selectFormattedBashBalance', () => {
     });
 
     it.each([{ dai: null, balance: 0 }])('returns null if dai or balance is null', ({ dai, balance }) => {
-        jest.spyOn(AccountModuleSelectors, 'selectBASHBalance').mockReturnValue(balance);
+        jest.spyOn(AccountModuleSelectors, 'selectBASHBalance').mockReturnValue(new Decimal(balance));
         const state = { markets: { markets: { dai } } };
 
         expect(selectFormattedBashBalance(state as IReduxState)).toEqual(null);
