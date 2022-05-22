@@ -1,94 +1,65 @@
-import { render } from '@testing-library/react';
-import { ethers } from 'ethers';
-import { DateTime } from 'luxon';
+import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import createMockStore, { MockStoreEnhanced } from 'redux-mock-store';
+import { BrowserRouter } from 'react-router-dom';
+import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { Web3Context } from 'contexts/web3/web3.context';
-import { BondType } from 'helpers/bond/constants';
-import { BondOptions } from 'lib/bonds/bond/bond';
-import { LPBond } from 'lib/bonds/bond/lp-bond';
-import { BondProviderEnum } from 'lib/bonds/bonds.types';
 import * as BondSelectorModule from 'store/modules/bonds/bonds.selector';
-import * as MarketSelectorModule from 'store/modules/markets/markets.selectors';
+import * as MarketsSelectorModule from 'store/modules/markets/markets.selectors';
+
+jest.mock('./BondListItem', () => (bond: any) => {
+    return <p> {bond.ID} </p>;
+});
 
 import BondList from './BondList';
 
-describe('BondList', () => {
-    const middlewares = [thunk];
-    const mockStore = createMockStore(middlewares);
-    const bondOptions: BondOptions = {
-        name: 'bond',
-        displayName: 'bondToDisplay',
-        token: 'token',
-        iconPath: 'path',
-        lpProvider: BondProviderEnum.UNISWAP_V2,
-        type: BondType.LP,
-        networkID: 2,
-        isActive: true,
+const renderComponent = (state: any, providerValue: any) => {
+    const mockStore = createMockStore([thunk]);
+    const store = mockStore(state);
+
+    const component = render(
+        <BrowserRouter>
+            <Web3Context.Provider value={providerValue as any}>
+                <Provider store={store}>
+                    <BondList />
+                </Provider>
+            </Web3Context.Provider>
+        </BrowserRouter>,
+    );
+
+    return {
+        component,
+        store,
     };
+};
 
-    let store: MockStoreEnhanced<unknown, any>;
-
-    beforeEach(() => {
-        const state = {
-            bonds: {
-                loading: false,
-                bondQuote: {
-                    interestDue: null,
-                    bondMaturationBlock: null,
-                    pendingPayout: null,
-                },
-                bondInstances: {
-                    dai: new LPBond(bondOptions),
-                },
-                bondMetrics: {
-                    dai: {
-                        allowance: 0,
-                    },
-                },
-            },
-            main: {
-                blockchain: {
-                    timestamp: DateTime.utc().toMillis(),
-                },
-                contracts: {},
-            },
-            markets: {
-                markets: {
-                    dai: 'dai',
-                },
-            },
-            account: {
-                balances: {
-                    BASH: ethers.BigNumber.from('0x2'),
-                },
-            },
-            transactions: [],
-        };
-
-        jest.spyOn(BondSelectorModule, 'selectAllBonds').mockReturnValue({
-            activeBonds: [],
-            inactiveBonds: [],
+describe('BondList', () => {
+    describe('When state is ready', () => {
+        beforeEach(() => {
+            jest.spyOn(BondSelectorModule, 'selectAllBonds').mockReturnValue({ activeBonds: [{ ID: 'DAI' }], inactiveBonds: [{ ID: 'DAI-inactive' }] } as any);
+            jest.spyOn(BondSelectorModule, 'selectBondsReady').mockReturnValue(true);
+            jest.spyOn(BondSelectorModule, 'selectFormattedTreasuryBalance').mockReturnValue('$20.00');
+            jest.spyOn(MarketsSelectorModule, 'selectFormattedBashBalance').mockReturnValue('$2.00');
         });
 
-        jest.spyOn(BondSelectorModule, 'selectFormattedTreasuryBalance').mockReturnValue('$25.00');
-        jest.spyOn(BondSelectorModule, 'selectBondsReady').mockReturnValue(true);
-        jest.spyOn(MarketSelectorModule, 'selectFormattedBashBalance').mockReturnValue('$10.00');
-        store = mockStore(state);
-        const providerValue = { state: { signer: 'signer', signerAddress: 'signerAddress', networkID: 1 } };
+        it('dispatchs the details if metrics and bond are set', () => {
+            const { store } = renderComponent({}, { state: { networkID: 2 } });
 
-        render(<BondList />, {
-            wrapper: ({ children }) => (
-                <Web3Context.Provider value={providerValue as any}>
-                    <Provider store={store}>{children}</Provider>
-                </Web3Context.Provider>
-            ),
+            expect(store.getActions()).toHaveLength(1);
+            expect(store.getActions()[0]).toEqual(
+                expect.objectContaining({
+                    payload: undefined,
+                    type: 'bonds/bonds-treasury/pending',
+                }),
+            );
         });
-    });
 
-    it('renders', () => {
-        expect(store.getActions()).toHaveLength(2);
+        it('displays inactive and active bonds', () => {
+            renderComponent({}, { state: { networkID: 2 } });
+
+            expect(screen.findAllByText('DAI')).toBeDefined();
+            expect(screen.findAllByText('DAI-inactive')).toBeDefined();
+        });
     });
 });

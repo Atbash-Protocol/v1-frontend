@@ -8,7 +8,6 @@ import { Web3Context } from 'contexts/web3/web3.context';
 import { TransactionTypeEnum } from 'store/modules/transactions/transactions.type';
 
 import AmountForm from '..';
-import Stake from '../../Stake';
 
 const renderComponent = (props: any, state: any) => {
     const mockStore = createMockStore([thunk]);

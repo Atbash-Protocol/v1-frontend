@@ -1,7 +1,6 @@
 import { ethers } from 'ethers';
 
 import { selectAllBonds, selectBondInfos, selectBondMintingMetrics } from '../bonds.selector';
-import { BondMetrics } from '../bonds.types';
 
 describe('selectAllBonds', () => {
     it('returns the active and inactiveBonds', () => {
@@ -53,6 +52,7 @@ describe('selectBondMintingMetrics', () => {
             maxBondPrice: 30,
             purchased: '$20',
             vestingTerm: null,
+            bondSoldOut: false,
         });
     });
 });

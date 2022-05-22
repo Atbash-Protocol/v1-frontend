@@ -25,15 +25,16 @@ module.exports = {
     // Module file extensions for importing
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
     collectCoverage: true,
-    collectCoverageFrom: [
-      '<rootDir>/src/**/*.{js,ts,jsx,tsx}',
-      '!<rootDir>/src/**/*.d.{js,ts,jsx,tsx}',
-      '!<rootDir>/src/locales/*.{js,ts,jsx,tsx}',
-      '!<rootDir>/src/index.{js,ts,jsx,tsx}',
-      '!<rootDir>/scripts/*',
-      '!<rootDir>/src/config/*',
-      '!<rootDir>/src/store/store.ts',
-    ],
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.{js,ts,jsx,tsx}",
+      "!<rootDir>/src/**/*.d.{js,ts,jsx,tsx}",
+      "!<rootDir>/src/locales/*.{js,ts,jsx,tsx}",
+      "!<rootDir>/src/index.{js,ts,jsx,tsx}",
+      "!<rootDir>/scripts/*",
+      "!<rootDir>/src/config/*",
+      "!<rootDir>/src/store/store.ts",
+      "!<rootDir>/src/tests/utils.tsx"
+  ]
 
     globals: {
       'REACT_APP_DEFAULT_NEWORK_ID': '1'

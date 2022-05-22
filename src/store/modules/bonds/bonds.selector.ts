@@ -53,6 +53,7 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
         vestingTerm: metrics.vestingTerm,
         bondDiscount: metrics.bondDiscount !== null ? `${metrics.bondDiscount * 100} %` : null,
         purchased: metrics.purchased !== null ? formatUSD(metrics.purchased) : null,
+        bondSoldOut: (metrics.bondDiscount ?? 0) * 100 < -30,
     };
 };
 

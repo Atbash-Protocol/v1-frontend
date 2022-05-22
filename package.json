@@ -95,5 +95,17 @@
         "lint": "npx eslint src/ --ext .ts,.js,.tsx,.jsx",
         "lint-fix": "npx eslint src/ --ext .ts,.js,.tsx,.jsx --fix",
         "prettier": "npx prettier --write 'src/**/*.{ts,tsx,js,jsx}'"
+    },
+    "jest": {
+        "collectCoverageFrom": [
+            "<rootDir>/src/**/*.{js,ts,jsx,tsx}",
+            "!<rootDir>/src/**/*.d.{js,ts,jsx,tsx}",
+            "!<rootDir>/src/locales/*.{js,ts,jsx,tsx}",
+            "!<rootDir>/src/index.{js,ts,jsx,tsx}",
+            "!<rootDir>/scripts/*",
+            "!<rootDir>/src/config/*",
+            "!<rootDir>/src/store/store.ts",
+            "!<rootDir>/src/tests/utils.tsx"
+        ]
     }
 }

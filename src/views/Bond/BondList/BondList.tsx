@@ -76,17 +76,8 @@ function BondList() {
         }
     }, [networkID, bondsReady]);
 
-    const ActiveBondList = useMemo(() => {
-        {
-            return activeBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />);
-        }
-    }, [activeBonds]);
-
-    const InactiveBondList = useMemo(() => {
-        {
-            return inactiveBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />);
-        }
-    }, [inactiveBonds]);
+    const ActiveBondList = useMemo(() => activeBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />), [activeBonds]);
+    const InactiveBondList = useMemo(() => inactiveBonds.map(bond => <BondtListItem key={bond.ID} bondID={bond.ID} />), [inactiveBonds]);
 
     return (
         <>
