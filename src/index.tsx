@@ -1,12 +1,14 @@
 import './i18n';
+
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
+import { BSnackBar } from 'components/Messages/snackbar';
 import { theme } from 'constants/theme';
-import { NewWeb3ContextProvider } from 'contexts/web3/web3.context';
+import { Web3ContextProvider } from 'contexts/web3/web3.context';
 
 import Root from './Root';
 import store from './store/store';
@@ -15,21 +17,23 @@ ReactDOM.render(
     <>
         <CssBaseline />
         <ThemeProvider theme={theme}>
-            <NewWeb3ContextProvider>
+            <Web3ContextProvider>
                 <Provider store={store}>
                     <SnackbarProvider
-                        maxSnack={4}
-                        // anchorOrigin={{
-                        //     vertical: 'bottom',
-                        //     horizontal: 'right',
-                        // }}
-                        // content={(key, message: string) => <SnackMessage id={key} message={JSON.parse(message)} />}
-                        // autoHideDuration={5000}
+                        maxSnack={3}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        autoHideDuration={5000}
+                        content={() => {
+                            return <BSnackBar severity="info" description="test" />;
+                        }}
                     >
                         <Root />
                     </SnackbarProvider>
                 </Provider>
-            </NewWeb3ContextProvider>
+            </Web3ContextProvider>
         </ThemeProvider>
     </>,
     document.getElementById('root'),

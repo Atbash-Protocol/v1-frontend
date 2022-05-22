@@ -2,27 +2,23 @@ import { useState, useEffect } from 'react';
 
 import { Box, Skeleton, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { theme } from 'constants/theme';
 import { formatTimer } from 'helpers/prettify-seconds';
-import { IReduxState } from 'store/slices/state.interface';
+import { useBlockchainInfos, useNextRebase } from 'store/modules/app/app.selectors';
 
 const RebaseTimer = () => {
     const { t } = useTranslation();
 
-    const nextRebase = useSelector<IReduxState, number | undefined>(state => {
-        if (state.main.staking.epoch) {
-            return state.main.staking.epoch.endTime;
-        }
-    }, shallowEqual);
-    const currentBlockTime = useSelector<IReduxState, number | null>(state => state.main.blockchain.timestamp);
+    const nextRebase = useSelector(useNextRebase);
+    const { timestamp: currentBlockTime } = useSelector(useBlockchainInfos);
 
     const [timeUntilRebase, setTimeUntilRebase] = useState<string | null>(null);
 
     useEffect(() => {
         if (currentBlockTime && nextRebase) {
-            if (currentBlockTime > nextRebase) {
+            if (currentBlockTime < nextRebase) {
                 setTimeUntilRebase(formatTimer(currentBlockTime, nextRebase, t));
             }
         }

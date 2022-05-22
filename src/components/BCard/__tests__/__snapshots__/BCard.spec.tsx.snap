@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BCard renders 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-8fs7kz"
+  >
+    <div
+      class="MuiBox-root css-19na2ny"
+    >
+      <h4
+        class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
+      >
+        title
+      </h4>
+    </div>
+    <div
+      id="child"
+    >
+      child
+    </div>
+  </div>
+</div>
+`;

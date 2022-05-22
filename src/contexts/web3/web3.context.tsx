@@ -1,10 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
+import { createContext, useCallback, useContext, useLayoutEffect, useReducer } from 'react';
 
 import { initWeb3Modal } from 'contexts/web3/web3.utils';
 
 import { USER_REJECTED } from './constants';
 import { subscribeProvider, createSigner, resetWeb3Signer } from './subscribers';
-import { WEB3ActionTypesEnum, Web3Context, WEB3ContextAction, WEB3State } from './web3.types';
+import { WEB3ActionTypesEnum, IWeb3Context, WEB3ContextAction, WEB3State } from './web3.types';
 
 export const initialState: WEB3State = {
     provider: null,
@@ -14,7 +14,7 @@ export const initialState: WEB3State = {
     web3Modal: initWeb3Modal(),
 };
 
-export const PWeb3Context = createContext<Web3Context>({
+export const Web3Context = createContext<IWeb3Context>({
     state: initialState,
     memoConnect: Promise.reject,
     memoDisconnect: Promise.reject,
@@ -25,7 +25,7 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
         case WEB3ActionTypesEnum.CLOSE:
             return { ...state, signer: null, web3Modal: initWeb3Modal() };
         case WEB3ActionTypesEnum.NETWORK_CHANGED:
-            return { ...state, networkID: Number(action.payload) };
+            return { ...state, networkID: Number(action.payload.networkId) };
         case WEB3ActionTypesEnum.SET_SIGNER:
             return { ...state, signer: action.payload.signer, signerAddress: action.payload.address, networkID: action.payload.chainId };
         case WEB3ActionTypesEnum.SET_PROVIDER:
@@ -35,10 +35,14 @@ export const WEB3Reducer = (state: WEB3State, action: WEB3ContextAction) => {
     }
 };
 
-export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) => {
+export const useWeb3Context = () => {
+    return useContext(Web3Context);
+};
+
+export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => {
     const {
         state: { web3Modal, signer, provider },
-    } = useContext(PWeb3Context);
+    } = useWeb3Context();
     const [state, dispatch] = useReducer(WEB3Reducer, initialState);
 
     const memoConnect = useCallback(async () => {
@@ -54,12 +58,15 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
         [web3Modal],
     );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // happens when user reload when metamask popup appears
         if (web3Modal) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             web3Modal.on('error', (err: any) => {
-                if (err && err?.message && err?.message === USER_REJECTED) alert('User rejected connection');
+                if (err && err?.message && err?.message === USER_REJECTED) {
+                    console.info('User rejected connection');
+                    subscribeProvider(dispatch); // init at the provider
+                }
             });
         }
 
@@ -73,15 +80,8 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
         }
     }, [web3Modal]);
 
-    // useEffect(() => {
-    //     if (!signer && !provider) {
-    //         console.log("Reaching this context");
-    //         subscribeProvider(dispatch); // init at the provider
-    //     }
-    // }, [provider, signer]);
-
     return (
-        <PWeb3Context.Provider
+        <Web3Context.Provider
             value={{
                 state,
                 memoConnect,
@@ -89,10 +89,6 @@ export const NewWeb3ContextProvider = ({ children }: { children: JSX.Element }) 
             }}
         >
             {children}
-        </PWeb3Context.Provider>
+        </Web3Context.Provider>
     );
-};
-
-export const usePWeb3Context = () => {
-    return useContext(PWeb3Context);
 };

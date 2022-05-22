@@ -41,6 +41,15 @@ export const theme = createTheme({
                 },
             },
         },
+        MuiSkeleton: {
+            styleOverrides: {
+                root: {
+                    '&.MuiSkeleton-root': {
+                        background: '#2d2f3ac2',
+                    },
+                },
+            },
+        },
         MuiTab: {
             styleOverrides: {
                 root: {

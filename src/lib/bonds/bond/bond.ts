@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { snakeCase } from 'lodash';
 
 import { BondAddresses, BondProviderEnum, BondType } from '../bonds.types';
@@ -25,7 +25,7 @@ export abstract class Bond {
         this.ID = snakeCase(bondOptions.name);
     }
 
-    // Async method that returns a Promise
+    public abstract initializeContracts({ bondAddress, reserveAddress }: BondAddresses, signer: providers.JsonRpcSigner): void;
     public abstract getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string): Promise<number>;
     public abstract getTokenAmount(): Promise<number>;
     public abstract getSbAmount(BASH_ADDRESS: string): Promise<number>;
@@ -41,25 +41,29 @@ export abstract class Bond {
             case BondProviderEnum.UNISWAP_V2: {
                 return [BondProviderEnum.UNISWAP_V2, bondAddress, reserveAddress].join('/');
             }
+            default:
+                throw new Error(`This LP Provider is not handled : "${this.bondOptions.lpProvider}"`);
         }
     }
 
     public getBondContract(): ethers.Contract {
-        if (this.bondContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name} is undefined`);
+        if (this.bondContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name}" is undefined`);
 
         return this.bondContract;
     }
 
     public getReserveContract(): ethers.Contract {
-        if (this.reserveContract === undefined) throw new Error(`Bond contract for bond "${this.bondOptions.name} is undefined`);
+        if (this.reserveContract === undefined) throw new Error(`Reserve contract for bond "${this.bondOptions.name}" is undefined`);
 
         return this.reserveContract;
     }
 
     public getBondAddresses(): BondAddresses {
+        if (!this.reserveContract || !this.bondContract) throw new Error('Unable to get the bonds contracts');
+
         return {
-            bondAddress: '0xcE24D6A45D5c59D31D05c8C278cA3455dD6a43DA',
-            reserveAddress: '0x26DF06b47412dA76061ddA1fD9fe688A497FB88b',
+            bondAddress: this.bondContract.address,
+            reserveAddress: this.reserveContract.address,
         };
     }
 

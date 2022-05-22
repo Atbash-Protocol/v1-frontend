@@ -1,26 +1,31 @@
-import { sum } from 'lodash';
+import { createSelector } from '@reduxjs/toolkit';
+import Decimal from 'decimal.js';
 
-import { formatUSD } from 'helpers/price-units';
+import { formatUSD, formatUSDFromDecimal } from 'helpers/price-units';
+import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 
-import { StakingRewards } from './metrics.types';
+export const selectCircSupply = (state: IReduxState) => state.main.metrics.circSupply;
+export const selectStakingReward = (state: IReduxState) => state.main.staking.epoch?.distribute || null;
 
-export const selectStakingRewards = (state: RootState): StakingRewards | null => {
-    const { epoch } = state.main.staking;
-    const { circSupply } = state.main.metrics;
+export const selectStakingRebaseAmount = createSelector([selectStakingReward, selectCircSupply], (stakingReward, circSupply) => {
+    if (!circSupply || !stakingReward) return null;
 
-    if (!circSupply || !epoch) return null;
+    return new Decimal(stakingReward.toString()).div(new Decimal(circSupply).mul(10 ** 9)); // rewardYield rate for this epoch
+});
 
-    const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
-    const stakingRebase = stakingReward / (circSupply * Math.pow(10, 9)); // rewardYield rate for this epoch
+export const selectStakingRewards = createSelector([selectStakingRebaseAmount], stakingRebase => {
+    if (stakingRebase === null) return null;
 
     return {
-        fiveDayRate: Math.pow(1 + stakingRebase, 5 * 3) - 1, // 3 epoch/day
-        stakingAPY: Math.pow(1 + stakingRebase, 365 * 3) - 1 * 100,
-        stakingReward,
+        fiveDayRate: Decimal.pow(stakingRebase.add(1), 18).minus(1).toNumber(), // 3 epoch/day
+        stakingAPY: Decimal.pow(stakingRebase.add(1), 365 * 3)
+            .minus(1)
+            .toNumber(),
+        stakingReward: stakingRebase.toNumber(),
         stakingRebase,
     };
-};
+});
 
 export const selectTVL = (state: RootState): number | null => {
     const { circSupply } = state.main.metrics;
@@ -31,13 +36,20 @@ export const selectTVL = (state: RootState): number | null => {
     return circSupply * dai;
 };
 
-export const selectTotalBalance = (state: RootState): number | null => {
+export const selectTotalBalance = (state: RootState): string => {
     const { dai } = state.markets.markets;
-    const balances = state.accountNew.balances;
+    const balances = state.account.balances;
 
-    if (!dai) return null;
+    const total = Decimal.sum(
+        ...Object.values(balances).map(balance =>
+            new Decimal(balance.toString())
+                .div(10 ** 9)
+                .mul(dai ?? 0)
+                .toNumber(),
+        ),
+    );
 
-    return sum(Object.values(balances).map(balance => balance.div(10 ** 9).toNumber())) * dai;
+    return formatUSDFromDecimal(total, 2);
 };
 
 export const selectFormattedMarketCap = (state: RootState): string | null => {
@@ -55,5 +67,5 @@ export const selectWSBASHPrice = (state: RootState): string | null => {
 
     if (!dai || !index) return null;
 
-    return formatUSD((index / 10 ** 9) * dai, 2);
+    return formatUSD((index.toNumber() / 10 ** 9) * dai, 2);
 };

@@ -1,26 +1,34 @@
+import { lazy, Suspense, useEffect } from 'react';
+
 import { Box, Grow } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from 'components/Loader';
-import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { formatUSD, formatAPY } from 'helpers/price-units';
-import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectDAIPrice } from 'store/modules/markets/markets.selectors';
+import { selectAppLoading, selectFormattedReservePrice } from 'store/modules/app/app.selectors';
+import { selectFormattedTreasuryBalance } from 'store/modules/bonds/bonds.selector';
+import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
+import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
-import { IReduxState } from 'store/slices/state.interface';
 
 import './dashboard.scss';
 
+const MenuMetric = lazy(() => import('components/Metrics/MenuMetric'));
+
 function Dashboard() {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
-    const marketPrice = useSelector(selectDAIPrice);
-    const loading = useSelector<IReduxState, boolean>(state => state.markets.loading, shallowEqual);
+    const {
+        state: { networkID },
+    } = useWeb3Context();
 
+    const marketsLoading = useSelector(selectMarketsLoading);
     const bashPrice = useSelector(selectFormattedReservePrice);
     const wsPrice = useSelector(selectWSBASHPrice);
     const marketCap = useSelector(selectFormattedMarketCap);
@@ -28,7 +36,16 @@ function Dashboard() {
     const TVL = useSelector(selectTVL);
     const currentIndex = useSelector(selectFormattedIndex);
 
-    if (!marketPrice || loading) return <Loading />;
+    const treasuryBalance = useSelector(selectFormattedTreasuryBalance);
+    const appIsLoading = useSelector(selectAppLoading);
+
+    useEffect(() => {
+        if (!appIsLoading && networkID) {
+            dispatch(getTreasuryBalance({ networkID }));
+        }
+    }, [networkID, appIsLoading]);
+
+    if (appIsLoading) return <Loading />;
 
     const APYMetrics = stakingRewards
         ? [
@@ -42,11 +59,11 @@ function Dashboard() {
         { name: 'BashPrice', value: bashPrice },
         { name: 'MarketCap', value: marketCap },
         { name: 'TVL', value: formatUSD(TVL || 0, 2) },
+        { name: 'TreasuryBalance', value: treasuryBalance },
 
         ...APYMetrics,
         // { name: "RiskFreeValue", value: formatUSD(app.rfv) },
         // { name: "RiskFreeValuewsBASH", value: formatUSD(app.rfv * Number(app.currentIndex)) },
-        // { name: "treasuryBalance", value: formatUSD(app.treasuryBalance, 0) },
         // { name: "Runway", value: `${formatNumber(Number(app.runway), 1)} Days` },
     ];
 
@@ -54,7 +71,7 @@ function Dashboard() {
         <Box>
             <Grid container spacing={6} sx={{ p: 2 }} justifyContent="space-around">
                 {DashboardItems.map(metric => (
-                    <Grow in={!loading} {...(!loading ? { timeout: 1000 } : {})} key={`dashboard-item-${metric.name}`}>
+                    <Grow in={!marketsLoading} {...(!marketsLoading ? { timeout: 1000 } : {})} key={`dashboard-item-${metric.name}`}>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <Box
                                 className="Dashboard__box__item"
@@ -75,7 +92,9 @@ function Dashboard() {
                                     height: '100%',
                                 }}
                             >
-                                <MenuMetric metricKey={t(metric.name)} value={metric.value} />
+                                <Suspense fallback={<Loading />}>
+                                    <MenuMetric metricKey={t(metric.name)} value={metric.value} />
+                                </Suspense>
                             </Box>
                         </Grid>
                     </Grow>

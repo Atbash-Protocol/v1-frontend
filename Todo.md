@@ -1,18 +1,15 @@
 Todo - 
+- Fix selector in UserMetrics
+
+ 
+Clean the i18 locales
+Move the App/Staking slice to staking 
+Use the react-modal for the connetor 
+- Add a tooltip to disabled menu ("Coming soon")
+- Add memo to menu items 
+- Add transition to menu
 
 
-Refacto :
-- Routing 
-- Home
-- Connect modal
-- Cleanup material
-
-
-- Contracts
-- Staking
-- Bonding 
-
-
-- Web3Provider : 
-  Distringuing Signer to Provider (signer = connected wallet and provider = Infura provider)
-
+Bonus : 
+- Implement the switch network possibility
+- Custom slippage

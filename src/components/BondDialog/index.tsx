@@ -9,52 +9,53 @@ import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
-import { usePWeb3Context } from 'contexts/web3/web3.context';
-import { useBondPurchaseReady, selectBondReady } from 'hooks/bonds';
+import { useWeb3Context } from 'contexts/web3/web3.context';
+import { formatUSD } from 'helpers/price-units';
+import { LPBond } from 'lib/bonds/bond/lp-bond';
+import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
-import { calcBondDetails, getBondTerms, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
-import { BondItem } from 'store/modules/bonds/bonds.types';
+import { selectBondInstance, selectBondMetrics } from 'store/modules/bonds/bonds.selector';
+import { calcBondDetails, getBondTerms, getTreasuryBalance, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
+import { BondMetrics } from 'store/modules/bonds/bonds.types';
+import { RootState } from 'store/store';
 import BondPurchase from 'views/Bond/actions/BondPurchase';
-import BondMetrics from 'views/Bond/BondMetrics';
+import BondDetailsMetrics from 'views/Bond/BondMetrics';
 
-// Ajouter une surcouche qui gère le dialog + le chargement du bond avec le router
-
-export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) => {
+const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: string; bond: LPBond | StableBond; metrics: BondMetrics }) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
     const {
-        state: { signer, signerAddress },
-    } = usePWeb3Context();
+        state: { signer, signerAddress, networkID },
+    } = useWeb3Context();
 
     const onBackdropClick = () => history.goBack();
-
-    const metrics = selectBondMintingMetrics(bond.metrics);
-    const bondIsReady = selectBondReady(bond);
-    const selectAppReadyForBondCalculation = useBondPurchaseReady();
 
     const bashPrice = useSelector(selectFormattedReservePrice);
 
     useEffect(() => {
-        if (!bond.terms) {
-            dispatch(getBondTerms(bond));
+        if (!metrics?.terms) {
+            dispatch(getBondTerms(bondID));
         }
-    }, [bond.terms]);
+    }, [metrics?.terms]);
 
     useEffect(() => {
-        if (!bondIsReady && selectAppReadyForBondCalculation) {
-            dispatch(calcBondDetails({ bond: bond.bondInstance, value: 0 }));
+        if (bondID) {
+            dispatch(calcBondDetails({ bondID, value: 0 }));
 
             if (signer && signerAddress) {
-                dispatch(loadBondBalancesAndAllowances({ address: signerAddress }));
+                dispatch(loadBondBalancesAndAllowances({ address: signerAddress || '', bondID }));
             }
         }
-    }, [bondIsReady, signer, signerAddress, selectAppReadyForBondCalculation]);
+    }, [bondID, signer, signerAddress]);
+
+    useEffect(() => {
+        if (networkID) {
+            dispatch(getTreasuryBalance({ networkID }));
+        }
+    }, [networkID]);
 
     //TODO: Add the custom settings : Slippage & Recipient address
-
-    if (!bondIsReady || !selectAppReadyForBondCalculation) return <Loader />;
 
     return (
         <Dialog
@@ -65,18 +66,24 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
                 fullWidth: true,
                 PaperProps: { sx: { background: theme.palette.cardBackground.light, color: theme.palette.primary.dark } },
             }}
-            sx={{ p: 2, backdropFilter: 'blur(10px)' }}
+            sx={{
+                p: 2,
+                [theme.breakpoints.up('xs')]: {
+                    p: 0,
+                },
+                backdropFilter: 'blur(10px)',
+            }}
         >
             <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: theme.spacing(1) }}>
-                <BondLogo bondLogoPath={bond.bondInstance.bondOptions.iconPath} isLP={bond.bondInstance.isLP()} />
+                <BondLogo bondLogoPath={bond.bondOptions.iconPath} isLP={bond.isLP()} />
 
-                <Typography variant="body1">{bond.bondInstance.bondOptions.displayName}</Typography>
+                <Typography variant="body1">{bond.bondOptions.displayName}</Typography>
             </DialogTitle>
             <DialogContent>
                 <Box>
                     <Grid container item xs={12} mb={4}>
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={metrics.bondPrice} />
+                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={formatUSD(metrics.treasuryBalance || 0, 2)} />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
@@ -87,12 +94,23 @@ export const BondDialog = ({ open, bond }: { open: boolean; bond: BondItem }) =>
 
                 {metrics.allowance !== null && (
                     <Box>
-                        <BondPurchase bond={bond} />
-                        <Divider />
-                        <BondMetrics bondMetrics={bond.metrics} />
+                        <BondPurchase bondID={bondID} />
+                        <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
+                        <BondDetailsMetrics bondMetrics={metrics} />
                     </Box>
                 )}
             </DialogContent>
         </Dialog>
     );
 };
+
+const BondDialogLoader = ({ open, bondID }: { open: boolean; bondID: string }) => {
+    const metrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
+    const bond = useSelector((state: RootState) => selectBondInstance(state, bondID));
+
+    if (!metrics || !bond) return <Loader />;
+
+    return <BondDetails open={open} bondID={bondID} bond={bond} metrics={metrics} />;
+};
+
+export default BondDialogLoader;

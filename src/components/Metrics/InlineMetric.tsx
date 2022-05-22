@@ -1,11 +1,15 @@
 import { useMemo } from 'react';
 
 import { Box, Skeleton, Typography } from '@mui/material';
+import { isNil } from 'lodash';
 import { useTranslation } from 'react-i18next';
+
+import { theme } from 'constants/theme';
 
 const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null | undefined }) => {
     const { t } = useTranslation();
 
+    //TODO: Could use Grid instead
     return (
         <Box
             key={metricKey}
@@ -19,10 +23,20 @@ const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown 
                 },
             }}
         >
-            <Typography variant="body1">
+            <Typography
+                variant="body1"
+                sx={{
+                    width: '40%',
+                    [theme.breakpoints.up('xs')]: {
+                        fontSize: '.8rem',
+                    },
+                }}
+            >
                 <>{t(metricKey)}</>
             </Typography>
-            <Typography variant="body2">{value === undefined ? <Skeleton sx={{ width: '100%' }} /> : <>{value}</>}</Typography>
+            <Typography variant="body2" sx={{ width: '60%', textAlign: 'right' }}>
+                {isNil(value) ? <Skeleton sx={{ width: '100%' }} /> : <>{value}</>}
+            </Typography>
         </Box>
     );
 };

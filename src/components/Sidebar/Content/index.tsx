@@ -1,4 +1,6 @@
-import Davatar from '@davatar/react';
+// import Davatar from '@davatar/react';
+import { useMemo } from 'react';
+
 import AccountBalanceSharpIcon from '@mui/icons-material/AccountBalanceSharp';
 // Mint
 import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp';
@@ -14,6 +16,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import { Avatar, Box, Link, List, Divider, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import AtbashICON from 'assets/icons/bash-compress.svg';
 import { getAddresses } from 'constants/addresses';
@@ -21,9 +24,9 @@ import { DEFAULT_NETWORK } from 'constants/blockchain';
 import { theme } from 'constants/theme';
 import { useSignerAddress, useSignerConnected } from 'contexts/web3/web3.hooks';
 import { shorten } from 'helpers/shorten';
-import useBonds from 'hooks/bonds';
 import useENS from 'hooks/useENS';
 import { getBuyLink } from 'lib/uniswap/link';
+import { selectBondInstances, selectMostProfitableBonds } from 'store/modules/bonds/bonds.selector';
 
 import { ListItemLink } from './components/ListItemLink';
 import Social from './components/Social';
@@ -86,36 +89,33 @@ function NavContent() {
     const { t } = useTranslation();
 
     const address = useSignerAddress();
-    const bonds = useBonds();
     const signerConnected = useSignerConnected();
+    const bonds = useSelector(selectMostProfitableBonds);
+    const bondInstances = useSelector(selectBondInstances);
     const { ensName } = useENS();
 
     const addresses = getAddresses(DEFAULT_NETWORK);
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
-    const menuItems = getMenuItems(signerConnected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
+    const menuItems = useMemo(
+        () => getMenuItems(signerConnected).map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />),
+        [signerConnected],
+    );
     const comingSoonItems = cominSoonMenu.map(({ path, key, ...props }) => <ListItemLink key={key} to={path} primary={t(key)} {...props} />);
 
-    const bondItems = (bonds?.bonds ?? [])
-        .filter(bond => bond.bondInstance.bondOptions.isActive)
-        .map(bond => (
-            <ListItemLink
-                key={`mint-bond-${bond.bondInstance.ID}`}
-                to={`/mints/${bond.bondInstance.ID}`}
-                primary={bond.bondInstance.bondOptions.displayName}
-                extra={<>{bond.metrics.bondDiscount} %</>}
-            />
-        ));
+    const bondItems = bondInstances
+        .filter(bond => bond.bondOptions.isActive)
+        .map((bond, i) => <ListItemLink key={`mint-bond-${bond.ID}`} to={`/bond/${bond.ID}`} primary={bond.bondOptions.displayName} extra={<>{bonds[i].bondDiscount} %</>} />);
 
     return (
         <Box
             sx={{
-                padding: '1rem',
+                padding: '2rem',
                 flexDirection: 'column',
                 alignItems: 'center',
                 minWidth: '10rem',
-                overflowY: 'scroll',
+                overflowY: 'hidden',
                 backgroundColor: theme.palette.cardBackground.light,
                 backdropFilter: 'blur(100px)',
                 color: theme.palette.primary.main,
@@ -144,7 +144,7 @@ function NavContent() {
                             width: '100%',
                         }}
                     >
-                        <Davatar size={20} address={address} generatedAvatarType="jazzicon" />
+                        {/* <Davatar size={20} address={address} generatedAvatarType="jazzicon" /> */}
                         <Link href={`https://etherscan.io/address/${address}`} target="_blank">
                             <Typography sx={{ ml: 1 }} variant="body1">
                                 {ensName || shorten(address)}

@@ -3,17 +3,16 @@ import React, { useState } from 'react';
 import { Box, Button, Divider, Link, Fade, Popper, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
+import BASH_IMG from 'assets/tokens/bash.png';
+import SBASH_IMG from 'assets/tokens/sBASH.png';
 import { theme } from 'constants/theme';
-import { usePWeb3Context } from 'contexts/web3/web3.context';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected } from 'contexts/web3/web3.hooks';
 import { getBuyLink } from 'lib/uniswap/link';
 
-import { getAddresses, TOKEN_DECIMALS } from '../../../constants';
+import { DEFAULT_NETWORK, getAddresses, TOKEN_DECIMALS } from '../../../constants';
 
-const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async () => {
-    // const tokenImage = getTokenUrl(tokenSymbol.toLowerCase());
-    const tokenImage = '';
-
+const addTokenToWallet = (tokenSymbol: string, tokenAddress: string, tokenImagePath: string) => async () => {
     if (window.ethereum) {
         await window.ethereum.request({
             method: 'wallet_watchAsset',
@@ -23,7 +22,7 @@ const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async ()
                     address: tokenAddress,
                     symbol: tokenSymbol,
                     decimals: TOKEN_DECIMALS,
-                    image: tokenImage,
+                    image: [window.location.origin, tokenImagePath].join('/'),
                 },
             },
         });
@@ -38,9 +37,9 @@ function AtbashMenu() {
 
     const {
         state: { networkID },
-    } = usePWeb3Context();
+    } = useWeb3Context();
 
-    if (!networkID) return null;
+    if (!networkID || networkID !== DEFAULT_NETWORK) return null;
 
     const addresses = getAddresses(networkID);
 
@@ -56,8 +55,8 @@ function AtbashMenu() {
     const id = open ? 'menu-popover' : undefined;
 
     return (
-        <Box mr={1} onClick={e => handleClick(e)}>
-            <Button sx={{ padding: theme.spacing(1) }} aria-describedby={id}>
+        <Box mr={1}>
+            <Button sx={{ padding: theme.spacing(1) }} aria-describedby={id} onClick={e => handleClick(e)}>
                 <Typography>
                     <>{t('BuyBASH')}</>
                 </Typography>
@@ -77,10 +76,10 @@ function AtbashMenu() {
                                         <>{t('AddTokenToWallet')}</>
                                     </Typography>
                                     <Divider />
-                                    <Typography sx={{ cursor: 'pointer' }} onClick={addTokenToWallet('BASH', BASH_ADDRESS)}>
+                                    <Typography sx={{ cursor: 'pointer' }} onClick={addTokenToWallet('BASH', BASH_ADDRESS, BASH_IMG)}>
                                         ↑ BASH
                                     </Typography>
-                                    <Typography sx={{ cursor: 'pointer' }} onClick={() => addTokenToWallet('sBASH', SBASH_ADDRESS)}>
+                                    <Typography sx={{ cursor: 'pointer' }} onClick={() => addTokenToWallet('sBASH', SBASH_ADDRESS, SBASH_IMG)}>
                                         ↑ sBASH
                                     </Typography>
                                 </Box>
