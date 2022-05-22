@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import { theme } from 'constants/theme';
-import { useSafeSigner, useSignerConnected } from 'contexts/web3/web3.hooks';
+import { useSignerConnected } from 'contexts/web3/web3.hooks';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { selectBondInstance, selectBondMetrics, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
@@ -97,7 +97,7 @@ const BondtListItem = ({ bondID, bond, metrics }: IBondProps) => {
             >
                 {signerConnected && (
                     <Button disabled={false} sx={{ padding: `${theme.spacing(1)} ${theme.spacing(3)}`, cursor: 'pointer' }}>
-                        <Link component={NavLink} to={`/mint/${bondID}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Link component={NavLink} to={`/bond/${bondID}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
                             <Typography>
                                 <>{bond.bondOptions.isActive ? t('bond:MintBond', { bond: bondID }) : t('bond:RedeemBond', { bond: bondID })}</>
                             </Typography>

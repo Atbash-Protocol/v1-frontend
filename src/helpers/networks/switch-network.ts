@@ -1,5 +1,3 @@
-import { ethereumMainetInfos } from 'helpers/networks/ethereum-mainnet';
-
 const switchRequest = () => {
     return window.ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -10,7 +8,19 @@ const switchRequest = () => {
 const addChainRequest = () => {
     return window.ethereum.request({
         method: 'wallet_addEthereumChain',
-        params: [ethereumMainetInfos],
+        params: [
+            {
+                chaindId: 1,
+                chainName: 'Ethereum',
+                rpcUrls: ['https://rpc.ankr.com/eth'],
+                blockExplorerUrls: ['https://etherscan.io'],
+                nativeCurrency: {
+                    name: 'ETH',
+                    symbol: 'ETH',
+                    decimals: 18,
+                },
+            },
+        ],
     });
 };
 
