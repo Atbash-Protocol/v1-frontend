@@ -11,7 +11,7 @@ export const getDateDiff = (startDate: number, endDate: number): DurationObjectU
 export const formatTimer = (startDate: number, endDate: number, translator: TFunction): string | null => {
     if (startDate > endDate) return null;
 
-    const { days, hours, minutes, seconds } = DateTime.fromSeconds(endDate).diff(DateTime.fromSeconds(startDate), ['days', 'hours', 'minute', 'seconds']);
+    const { days, hours, minutes } = DateTime.fromSeconds(endDate).diff(DateTime.fromSeconds(startDate), ['days', 'hours', 'minute']);
 
     const translations = [];
 
@@ -20,5 +20,5 @@ export const formatTimer = (startDate: number, endDate: number, translator: TFun
     translations.push(translator('hour', { count: hours }));
     translations.push(translator('min', { count: minutes }));
 
-    return [...translations, `${seconds} s`].join(' ');
+    return [translator('approximativaly'), ...translations].join(' ');
 };

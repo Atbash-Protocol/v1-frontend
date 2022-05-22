@@ -7,7 +7,7 @@ import Messages from 'components/Messages';
 import { SideBar } from 'components/Sidebar';
 import { theme } from 'constants/theme';
 
-import BackgroundImage from '../../assets/background.png';
+import BackgroundImage from '../../assets/background.webp';
 
 interface IViewBaseProps {
     children: React.ReactNode;

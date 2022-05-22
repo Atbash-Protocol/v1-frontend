@@ -5,19 +5,19 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { theme } from 'constants/theme';
-import { PWeb3Context } from 'contexts/web3/web3.context';
+import { Web3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected, useGoodNetworkCheck } from 'contexts/web3/web3.hooks';
-import { IReduxState } from 'store/slices/state.interface';
+import { selectPendingTransactions } from 'store/modules/transactions/transactions.selectors';
 
 function ConnectMenu() {
     const { t } = useTranslation();
-    const { memoConnect, memoDisconnect, state } = useContext(PWeb3Context);
+    const { memoConnect, memoDisconnect, state } = useContext(Web3Context);
 
     const isUserSigned = useSignerConnected();
 
     const isUserOnGoodNetwork = useGoodNetworkCheck();
 
-    const isOneTransactionPending = useSelector<IReduxState, boolean>(rState => rState.pendingTransactions.length > 0);
+    const pendingTransactions = useSelector(selectPendingTransactions);
 
     const handleButtonClick = useCallback(() => {
         return isUserSigned ? memoDisconnect(state.signer) : memoConnect();
@@ -29,13 +29,13 @@ function ConnectMenu() {
         if (isUserSigned) {
             if (!isUserOnGoodNetwork) {
                 setButtonText(t('WrongNetwork'));
-            } else if (isOneTransactionPending) {
-                setButtonText(t('CountPending', { count: 1 })); // Ususally user can't have more than 1
+            } else if (pendingTransactions.length > 0) {
+                setButtonText(t('CountPending', { count: pendingTransactions.length })); // Ususally user can't have more than 1
             } else {
                 setButtonText(t('Disconnect'));
             }
         }
-    }, [isUserSigned, isOneTransactionPending, isUserOnGoodNetwork]);
+    }, [isUserSigned, pendingTransactions, isUserOnGoodNetwork]);
 
     return (
         <Box>

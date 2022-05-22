@@ -1,15 +1,15 @@
-import { ethers } from 'ethers';
+import { providers } from 'ethers';
 import Web3Modal from 'web3modal';
 
 export interface WEB3State {
     networkID: number | null;
-    provider: ethers.providers.JsonRpcProvider | null;
-    signer: ethers.providers.Web3Provider | null;
+    provider: providers.JsonRpcProvider | null;
+    signer: providers.Web3Provider | null;
     signerAddress: string | null;
     web3Modal: Web3Modal;
 }
 
-export interface Web3Context {
+export interface IWeb3Context {
     state: WEB3State;
     memoConnect: () => void;
     memoDisconnect: (currentSigner: WEB3State['signer']) => Promise<void>;

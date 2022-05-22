@@ -1,20 +1,17 @@
+import { configureStore } from '@reduxjs/toolkit';
+import { render } from '@testing-library/react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import * as redux from 'react-redux';
+import { Provider } from 'react-redux';
+
+import * as AppSelectorsModule from 'store/modules/app/app.selectors';
+import * as BondSelectorsModule from 'store/modules/bonds/bonds.selector';
+import * as MarketSelectorsModule from 'store/modules/markets/markets.selectors';
+import * as MetricsSelectorsModule from 'store/modules/metrics/metrics.selectors';
+import * as StakeSelectorsModule from 'store/modules/stake/stake.selectors';
 
 import Dashboard from '.';
-
-jest.mock('react-i18next', () => ({
-    // this mock makes sure any components using the translate hook can use it without a warning being shown
-    useTranslation: () => {
-        return {
-            t: (str: string) => str,
-            i18n: {
-                changeLanguage: () => new Promise(() => {}),
-            },
-        };
-    },
-}));
 
 const store = {
     subscribe: jest.fn(),
@@ -22,7 +19,9 @@ const store = {
     getState: jest.fn(),
 };
 
-const withProvider = (component: JSX.Element, storeProvider: any) => <redux.Provider store={storeProvider}>{component}</redux.Provider>;
+function renderComponent(component: JSX.Element) {
+    return render(<Provider store={configureStore({ reducer: jest.fn() })}>{component}</Provider>);
+}
 
 describe('NotFound', () => {
     let container: HTMLDivElement;
@@ -33,24 +32,37 @@ describe('NotFound', () => {
     });
 
     it('renders with loading', () => {
-        jest.spyOn(redux, 'useSelector').mockReturnValue({ markets: {} });
-        act(() => {
-            ReactDOM.render(withProvider(<Dashboard />, store), container);
-        });
+        jest.spyOn(MarketSelectorsModule, 'selectMarketsLoading').mockReturnValue(true);
+        jest.spyOn(AppSelectorsModule, 'selectFormattedReservePrice').mockReturnValue('$20.0');
+        jest.spyOn(AppSelectorsModule, 'useContractLoaded').mockReturnValue(true);
+        jest.spyOn(AppSelectorsModule, 'selectAppLoading').mockReturnValue(true);
+        jest.spyOn(MetricsSelectorsModule, 'selectWSBASHPrice').mockReturnValue('$10.0');
+        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(10000);
+        jest.spyOn(MetricsSelectorsModule, 'selectStakingRewards').mockReturnValue(null);
+        jest.spyOn(MetricsSelectorsModule, 'selectFormattedMarketCap').mockReturnValue('$200');
+        jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('$200');
+        jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
+        jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
+
+        const comp = renderComponent(<Dashboard />);
+
+        expect(comp).toMatchSnapshot();
     });
 
     it('renders with values', () => {
-        jest.spyOn(redux, 'useSelector').mockReturnValue({
-            markets: {
-                loading: false,
-                marketPrice: 0,
-                reserves: 0,
-                epoch: 0,
-            },
-        });
+        jest.spyOn(MarketSelectorsModule, 'selectMarketsLoading').mockReturnValue(false);
+        jest.spyOn(AppSelectorsModule, 'selectFormattedReservePrice').mockReturnValue('$20.0');
+        jest.spyOn(AppSelectorsModule, 'useContractLoaded').mockReturnValue(true);
+        jest.spyOn(MetricsSelectorsModule, 'selectWSBASHPrice').mockReturnValue('$10.0');
+        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(10000);
+        jest.spyOn(MetricsSelectorsModule, 'selectStakingRewards').mockReturnValue(null);
+        jest.spyOn(MetricsSelectorsModule, 'selectFormattedMarketCap').mockReturnValue('$200');
+        jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('$200');
+        jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
+        jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
 
-        act(() => {
-            ReactDOM.render(withProvider(<Dashboard />, store), container);
-        });
+        const comp = renderComponent(<Dashboard />);
+
+        expect(comp).toMatchSnapshot();
     });
 });

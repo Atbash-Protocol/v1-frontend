@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { Contract, ethers } from 'ethers';
 
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
@@ -16,6 +16,7 @@ export interface BondMetrics {
     allowance: number | null;
     balance: number | null;
     loading?: boolean;
+    terms?: string;
 }
 
 export interface BondTerms {
@@ -25,13 +26,22 @@ export interface BondTerms {
 export interface BondItem {
     bondInstance: LPBond | StableBond;
     metrics: BondMetrics;
-    terms: BondTerms;
+    // terms: BondTerms;
+}
+
+export interface BondQuote {
+    interestDue: number | null;
+    bondMaturationBlock: number | null;
+    pendingPayout: number | null;
 }
 
 export interface BondSlice {
     bonds: Record<string, BondItem>;
-    bondCalculator: ethers.Contract | null;
+    bondInstances: Record<string, LPBond | StableBond>;
+    bondMetrics: Record<string, BondMetrics>;
+    bondCalculator: Contract | null;
     treasuryBalance: number | null;
     loading: boolean;
     bondQuoting: boolean;
+    bondQuote: BondQuote;
 }

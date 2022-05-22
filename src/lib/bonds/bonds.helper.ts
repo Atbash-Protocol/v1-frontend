@@ -9,15 +9,15 @@ export const createBond = (bondConfig: BondOptions): LPBond | StableBond => {
     switch (bondConfig.type) {
         case BondType.LP:
             return new LPBond(bondConfig);
-        case BondType.StableAsset:
+        case BondType.STABLE_ASSET:
             return new StableBond(bondConfig);
 
         default:
-            throw new Error('Unedefined bond type');
+            throw new Error('Undefined bond type');
     }
 };
 
-export const getBondContracts = (bondConfig: BondConfig, networkID: Networks): BondAddresses => {
+export const getBondContractsAddresses = (bondConfig: BondConfig, networkID: Networks): BondAddresses => {
     const addresses = bondConfig.addresses[networkID];
 
     if (!addresses || !addresses.bondAddress || !addresses.reserveAddress) throw new Error('Unable to get bond addresses');

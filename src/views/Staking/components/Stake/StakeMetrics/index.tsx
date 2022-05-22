@@ -1,51 +1,38 @@
 import { Typography, Box } from '@mui/material';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
 import { theme } from 'constants/theme';
-import { formatNumber } from 'helpers/price-units';
-import { trim } from 'helpers/trim';
-import { selectBASHBalance } from 'store/modules/account/account.selectors';
-import { AccountSlice } from 'store/modules/account/account.types';
-import { calculateStakingRewards } from 'store/modules/app/app.helpers';
-import { MainSliceState } from 'store/modules/app/app.types';
-import { IReduxState } from 'store/slices/state.interface';
+import { selectFormattedStakeBalance } from 'store/modules/account/account.selectors';
+import { selectUserStakingInfos } from 'store/modules/app/app.selectors';
 
 const UserStakeMetrics = () => {
-    const { balances } = useSelector<IReduxState, AccountSlice>(state => state.accountNew, shallowEqual);
+    const { t } = useTranslation();
 
-    const BASHBalance = useSelector(selectBASHBalance);
-
-    const circSupply = useSelector<IReduxState, number>(state => state.main.metrics.circSupply ?? 0);
-    const { index: stakingIndex, epoch } = useSelector<IReduxState, MainSliceState['staking']>(state => state.main.staking, shallowEqual);
-
-    const { fiveDayRate } = calculateStakingRewards(epoch, circSupply);
-
-    const stakingRebase = (epoch?.distribute ?? 0) / (circSupply * Math.pow(10, 9));
-    const stakingRebasePercentage = stakingRebase * 100;
-    const nextRewardValue = (Number(stakingRebasePercentage) / 100) * balances.SBASH.toNumber();
-    const effectiveNextRewardValue = trim(nextRewardValue + (stakingRebasePercentage / 100) * balances.WSBASH.toNumber() * (stakingIndex || 0), 6);
+    const { BASH, SBASH, WSBASH } = useSelector(selectFormattedStakeBalance);
+    const userStakingMetrics = useSelector(selectUserStakingInfos);
 
     const keyMetrics = [
-        { key: 'YourBalance', value: `${trim(BASHBalance || 0, 4)} BASH` },
-        { key: 'stake:YourStakedBalance', value: `${trim(Number(balances.SBASH), 4)} sBASH` },
-        { key: 'stake:YourWrappedStakedBalance', value: `${balances.WSBASH} wsBASH` },
-        { key: 'stake:WrappedTokenEquivalent', value: `${trim(balances.WSBASH.toNumber() * (stakingIndex ?? 0), 6)} sBASH` },
-        { key: 'stake:NextRewardAmount', value: `${trim(nextRewardValue, 6)} BASH` },
-        { key: 'stake:NextRewardYield', value: `${formatNumber(stakingRebasePercentage, 2)} %` },
-        { key: 'stake:ROIFiveDayRate', value: `${trim(Number(fiveDayRate) * 100, 4)} %` },
+        { key: 'YourBalance', value: BASH },
+        { key: 'stake:YourStakedBalance', value: SBASH },
+        { key: 'stake:YourWrappedStakedBalance', value: WSBASH },
+        { key: 'stake:WrappedTokenEquivalent', value: userStakingMetrics.wrappedTokenEquivalent },
+        { key: 'stake:NextRewardAmount', value: userStakingMetrics.nextRewardValue },
+        { key: 'stake:NextRewardYield', value: userStakingMetrics.stakingRebasePercentage },
+        { key: 'stake:ROIFiveDayRate', value: userStakingMetrics.fiveDayRate },
     ];
 
-    const optionalMetrics = [{ key: 'stake:EffectiveNextRewardAmount', value: `${effectiveNextRewardValue} wsBASH` }];
+    const optionalMetrics = [{ key: 'stake:EffectiveNextRewardAmount', value: userStakingMetrics.effectiveNextRewardValue }];
 
-    const metrics = [...keyMetrics, ...(balances.WSBASH.toNumber() > 0 ? optionalMetrics : [])].map(({ key: metricKey, value }, i) => (
+    const metrics = [...keyMetrics, ...(userStakingMetrics.optionalMetrics ? optionalMetrics : [])].map(({ key: metricKey, value }, i) => (
         <MemoInlineMetric key={`metric-${i}`} {...{ metricKey, value }} />
     ));
 
     return (
         <Box>
             <Typography variant="h4" sx={{ color: theme.palette.primary.main }}>
-                Staking metrics
+                <>{t('stake:StakingMetrics')} </>
             </Typography>
 
             {metrics}

@@ -3,10 +3,12 @@ import { Dispatch } from 'redux';
 
 import { messages } from 'constants/messages';
 import i18n from 'i18n';
-import { error } from 'store/slices/messages-slice';
+import { addNotification } from 'store/modules/messages/messages.slice';
 
 export const metamaskErrorWrap = (err: any, dispatch: Dispatch) => {
     let text = messages.something_wrong;
+
+    const reason = err.reason ?? 'Internal error';
 
     if (err.code && err.code === -32603) {
         if (err.message.indexOf('ds-math-sub-underflow') >= 0) {
@@ -32,5 +34,5 @@ export const metamaskErrorWrap = (err: any, dispatch: Dispatch) => {
         }
     }
 
-    return dispatch(error({ text, error: err }));
+    return dispatch(addNotification({ severity: 'error', description: text, detailledDescription: reason }));
 };

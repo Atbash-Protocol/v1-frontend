@@ -1,55 +1,29 @@
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
-import { formatNumber, formatUSD } from 'helpers/price-units';
-import { AccountSlice } from 'store/modules/account/account.types';
+import { selectFormattedStakeBalance } from 'store/modules/account/account.selectors';
 import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
 import { selectTotalBalance } from 'store/modules/metrics/metrics.selectors';
-import { IReduxState } from 'store/slices/state.interface';
+import { selectStakingBalance } from 'store/modules/stake/stake.selectors';
 
-interface UserBalanceProps {
-    stakingAPY: number;
-    stakingRebase: number;
-    daiPrice: number | null;
-    balances: AccountSlice['balances'];
-    currentIndex: number | null;
-}
-
-const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: UserBalanceProps) => {
+const UserBalance = () => {
     const { t } = useTranslation();
 
-    const daiPrice = useSelector<IReduxState, number>(state => state.markets.markets.dai || 0);
-
     const totalBalance = useSelector(selectTotalBalance);
-
-    const nextRewardValue = stakingRebase * balances.SBASH.toNumber();
-    const wrappedTokenEquivalent = balances.SBASH.toNumber() * Number(currentIndex);
-    const effectiveNextRewardValue = (nextRewardValue + stakingRebase) * wrappedTokenEquivalent * daiPrice;
+    const stakingBalanceMetrics = useSelector(selectStakingBalance);
+    const { SBASH: SBashBalance, WSBASH: WSBashBalance } = useSelector(selectFormattedStakeBalance);
     const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [
-        {
-            key: 'stake:ValueOfYourBASH',
-            value: BASHPrice,
-        },
-        {
-            key: 'stake:ValueOfYourStakedBASH',
-            value: formatUSD(balances.WSBASH.toNumber() * daiPrice),
-        },
-        {
-            key: 'stake:ValueOfYourNextRewardAmount',
-            value: formatUSD(balances.SBASH.toNumber() * stakingAPY),
-        },
-        {
-            key: 'stake:ValueOfYourEffectiveNextRewardAmount',
-            value: formatNumber(effectiveNextRewardValue, 2),
-        },
-        {
-            key: 'stake:ValueOfYourWrappedStakedSB',
-            value: formatNumber(balances.SBASH.toNumber() * daiPrice * Number(currentIndex)),
-        },
+        { key: 'stake:ValueOfYourBASH', value: BASHPrice },
+        { key: 'stake:YourStakedBalance', value: SBashBalance },
+        { key: 'stake:YourWrappedStakedBalance', value: WSBashBalance },
+        { key: 'stake:WrappedTokenEquivalent', value: stakingBalanceMetrics.wrappedTokenValue },
+        { key: 'stake:NextRewardAmount', value: stakingBalanceMetrics.nextRewardValue },
+        { key: 'stake:ValueOfYourEffectiveNextRewardAmount', value: stakingBalanceMetrics.effectiveNextRewardValue },
+        { key: 'stake:ValueOfYourWrappedStakedSB', value: stakingBalanceMetrics.wrappedTokenValue },
     ];
 
     const balanceItems = userBalances.map(({ key, value }) => <MemoInlineMetric key={key} metricKey={key} value={value} />);
@@ -60,8 +34,8 @@ const UserBalance = ({ stakingAPY, stakingRebase, balances, currentIndex }: User
                 <Typography variant="h4">
                     <>{t('YourBalance')}</>
                 </Typography>
-                <Typography>
-                    <> {totalBalance === null ? <Skeleton /> : formatUSD(totalBalance, 2)}</>
+                <Typography variant="h4">
+                    <> {totalBalance}</>
                 </Typography>
             </Box>
 

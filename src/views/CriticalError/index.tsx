@@ -1,15 +1,17 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+
+import { BCard } from 'components/BCard';
 
 const CritialError = () => {
     const { t } = useTranslation('common');
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography variant="h1">
-                <>{t('errors.critical')}</>
+        <BCard title={t('errors.critical')} zoom>
+            <Typography variant="body1">
+                <>{t('errors.network')}</>
             </Typography>
-        </Box>
+        </BCard>
     );
 };
 

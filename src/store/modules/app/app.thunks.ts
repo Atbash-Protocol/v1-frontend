@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, Contract, ethers } from 'ethers';
+import { Contract, ethers } from 'ethers';
 
 import { LpReserveContract, MemoTokenContract, RedeemContract, StakingContract, StakingHelperContract, TimeTokenContract, ZapinContract } from 'abi';
 import { getAddresses } from 'constants/addresses';
@@ -25,7 +25,7 @@ export const initializeProviderContracts = createAsyncThunk(
         if (!contractSignerOrProvider) throw new Error('Unable to get a contract signer or provider');
 
         return {
-            [ContractEnum.STAKING_ADDRESS]: new Contract(addresses.STAKING_ADDRESS, StakingContract, contractSignerOrProvider),
+            [ContractEnum.STAKING_CONTRACT]: new Contract(addresses.STAKING_CONTRACT, StakingContract, contractSignerOrProvider),
             [ContractEnum.STAKING_HELPER_ADDRESS]: new Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, contractSignerOrProvider),
             [ContractEnum.INITIAL_PAIR_ADDRESS]: new Contract(addresses.INITIAL_PAIR_ADDRESS, LpReserveContract, contractSignerOrProvider),
             [ContractEnum.REDEEM_ADDRESS]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, contractSignerOrProvider),
@@ -40,6 +40,7 @@ export const initializeProviderContracts = createAsyncThunk(
 
 export const getBlockchainData = createAsyncThunk('app/blockchain', async (provider: WEB3State['provider'] | WEB3State['signer']) => {
     if (!provider) throw new Error('Unable to find provider');
+
     const currentBlock = await provider.getBlockNumber();
     const { timestamp } = await provider.getBlock(currentBlock);
 
@@ -56,15 +57,17 @@ export const getCoreMetrics = createAsyncThunk('app/coreMetrics', async (_, { ge
         },
     } = getState() as RootState;
 
-    if (!BASH_CONTRACT || !SBASH_CONTRACT || !INITIAL_PAIR_ADDRESS) throw new Error('Unable to get coreMetrics ');
+    if (!BASH_CONTRACT || !SBASH_CONTRACT || !INITIAL_PAIR_ADDRESS) throw new Error('Unable to get coreMetrics');
 
+    const rawCircSupply = await SBASH_CONTRACT.circulatingSupply();
     const totalSupply = (await BASH_CONTRACT.totalSupply()) / 10 ** ERC20_DECIMALS;
-    const circSupply = (await SBASH_CONTRACT.circulatingSupply()) / Math.pow(10, ERC20_DECIMALS);
+    const circSupply = rawCircSupply / Math.pow(10, ERC20_DECIMALS);
     const [reserve1, reserve2]: ethers.BigNumber[] = await INITIAL_PAIR_ADDRESS.getReserves();
 
     return {
         totalSupply,
         circSupply,
+        rawCircSupply,
         reserves: reserve2.div(reserve1),
     };
 });
@@ -72,22 +75,23 @@ export const getCoreMetrics = createAsyncThunk('app/coreMetrics', async (_, { ge
 export const getStakingMetrics = createAsyncThunk('app/stakingMetrics', async (_, { getState }) => {
     const {
         main: {
-            contracts: { STAKING_ADDRESS },
+            contracts: { STAKING_CONTRACT },
         },
     } = getState() as IReduxState;
 
-    if (!STAKING_ADDRESS) throw new Error('Unable to get staking address is this point');
+    if (!STAKING_CONTRACT) throw new Error('Unable to get staking contract');
 
-    const epoch = await STAKING_ADDRESS.epoch();
-    const secondsToNextEpoch = 0; // TODO: Number(await STAKING_ADDRESS!.secondsToNextEpoch()); not working on staking contract
-    const index = await STAKING_ADDRESS.index();
+    const epoch = await STAKING_CONTRACT.epoch();
+    const secondsToNextEpoch = 0; // TODO: Number(await STAKING_CONTRACT!.secondsToNextEpoch()); not working on staking contract
+    const index = await STAKING_CONTRACT.index();
 
     return {
         epoch: {
-            distribute: epoch.distribute.toNumber(),
+            distribute: epoch.distribute,
             endTime: epoch.endTime,
+            number: epoch.number,
         },
-        index: BigNumber.from(index).toNumber(),
+        index,
         secondsToNextEpoch,
     };
 });

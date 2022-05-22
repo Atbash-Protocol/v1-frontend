@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import fromExponential from 'from-exponential';
 
 export const formatUSD = (value: number, digits = 0): string => {
@@ -7,6 +8,15 @@ export const formatUSD = (value: number, digits = 0): string => {
         maximumFractionDigits: digits,
         minimumFractionDigits: digits,
     }).format(value);
+};
+
+export const formatUSDFromDecimal = (value: Decimal, digits = 0): string => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: digits,
+        minimumFractionDigits: digits,
+    }).format(value.toNumber());
 };
 
 export const formatNumber = (number = 0, precision?: number) => {

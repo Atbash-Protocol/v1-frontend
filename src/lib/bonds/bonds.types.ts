@@ -3,7 +3,7 @@ import { Networks } from 'constants/blockchain';
 import { BondOptions } from './bond/bond';
 
 export enum BondType {
-    StableAsset,
+    STABLE_ASSET,
     LP,
     CUSTOM,
 }
