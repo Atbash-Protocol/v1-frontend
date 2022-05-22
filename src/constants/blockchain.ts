@@ -6,6 +6,14 @@ export enum Networks {
     LOCAL = 1337,
 }
 
-// export const DEFAULT_NETWORK = Networks.LOCAL;
-export const DEFAULT_NETWORK = Networks.RINKEBY;
-console.log("DEFAULT_NETWORK: ", DEFAULT_NETWORK);
+export function getDefaultNetwork(): Networks {
+    const networkId: string | undefined = process.env.REACT_APP_DEFAULT_NETWORK_ID;
+
+    if (!networkId) {
+        throw new Error('Network ID not defined');
+    }
+
+    return parseInt(networkId);
+}
+
+export const DEFAULT_NETWORK = getDefaultNetwork();

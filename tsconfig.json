@@ -1,32 +1,21 @@
 {
-  "ts-node": {
-    // It is faster to skip typechecking.
-    // Remove if you want ts-node to do typechecking.
-    "transpileOnly": true,
-
-    "files": true,
-
-    "compilerOptions": {
-      // compilerOptions specified here will override those declared below,
-      // but *only* in ts-node.  Useful if you want ts-node and tsc to use
-      // different options with a single tsconfig.json.
-      "module": "CommonJS"
-    },
-    
-  },
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
-    "module": "esnext",
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": true,
     "target": "es5",
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "skipLibCheck": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -34,10 +23,16 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "noEmit": true,
-    "noFallthroughCasesInSwitch": true, 
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["./index.d.ts", "src", "babel.config.js", "netlify", "scripts"],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "node_modules", "vendor", "public"],
-  "files": ["./hardhat.config.ts"],
+  "include": [
+    "./*.d.ts",
+    "src/**/*",
+    "babel.config.js",
+    "src/types/react-app-env.d.ts",
+    "src/types/react-i18next.d.ts",
+    "src/types/theme.d.ts",
+    "./src/types"
+  ],
   "compileOnSave": false
 }
