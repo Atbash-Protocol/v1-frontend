@@ -1,25 +1,36 @@
-import { useDispatch, useSelector } from "react-redux";
-import { close } from "../../store/slices/messages-slice";
-import "./console-interceptor";
-import { MessagesState } from "../../store/slices/messages-slice";
-import { IReduxState } from "../../store/slices/state.interface";
-import React, { useEffect } from "react";
-import { useSnackbar } from "notistack";
+import { useEffect } from 'react';
+
+import { SnackbarKey, useSnackbar } from 'notistack';
+import { useSelector } from 'react-redux';
+
+import { selectLastNotification } from 'store/modules/messages/messages.selectors';
+
+import { BSnackBar } from './snackbar';
 
 // A component that displays error messages
 function Messages() {
     const { enqueueSnackbar } = useSnackbar();
-    const messages = useSelector<IReduxState, MessagesState>(state => state.messages);
-    const dispatch = useDispatch();
+    const lastNotification = useSelector(selectLastNotification);
 
     useEffect(() => {
-        if (messages.message) {
-            enqueueSnackbar(JSON.stringify(messages.message));
-            dispatch(close());
+        if (lastNotification) {
+            enqueueSnackbar('notification', {
+                variant: lastNotification.severity,
+                content: (key: SnackbarKey) => {
+                    return (
+                        <BSnackBar
+                            key={key}
+                            description={lastNotification.description}
+                            severity={lastNotification.severity}
+                            detailledDescription={JSON.stringify(lastNotification.detailledDescription)}
+                        />
+                    );
+                },
+            });
         }
-    }, [messages.message]);
+    }, [lastNotification]);
 
-    return <div></div>;
+    return null;
 }
 
 export default Messages;
