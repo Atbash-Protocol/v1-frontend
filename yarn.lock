@@ -14328,9 +14328,9 @@ web3-provider-engine@16.0.1:
     xhr "^2.2.0"
     xtend "^4.0.1"
 
-"web3modal@https://github.com/drtex0/web3modal-optimized":
+"web3modal@https://github.com/red-dread-redemption/web3modal-optimized":
   version "1.9.7"
-  resolved "https://github.com/drtex0/web3modal-optimized#7dd3da81987c18b5da50bdda48c3bb8de27a4b43"
+  resolved "https://github.com/red-dread-redemption/web3modal-optimized#eff2cdcf1c05f08bce9ff18dfb92fadcc35cb1b1"
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

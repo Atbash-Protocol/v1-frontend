@@ -1,20 +1,60 @@
+export { address as BashAddress } from '../deployments/localhost/BASHERC20Token.json';
+export { address as DaiAddress } from '../deployments/localhost/DAI.json';
+export { address as SBashAddress } from '../deployments/localhost/sBASH.json';
+export { address as WSBashAddress } from '../deployments/localhost/wsBASH.json';
+export { address as BashDaiBondingCalculatorAddress } from '../deployments/localhost/bashDaiBondingCalculator.json';
+export { address as TreasuryAddress } from '../deployments/localhost/BashTreasury.json';
+export { address as StakingAddress } from '../deployments/localhost/ATBASHStaking.json';
+export { address as StakingHelperAddress } from '../deployments/localhost/StakingHelper.json';
+export { address as PresaleAddress } from '../deployments/localhost/Presale.json';
+export { address as DaiBondAddress } from '../deployments/localhost/atbashBondDepository.json';
+export { address as BashDaiBondAddress } from '../deployments/localhost/bashDaiBondDepository.json';
+export { address as BashDaiLpAddress } from '../deployments/localhost/BashDaiUniswapPairV2.json';
+
+import {
+    BashAddress,
+    DaiAddress,
+    SBashAddress,
+    WSBashAddress,
+    BashDaiBondingCalculatorAddress,
+    TreasuryAddress,
+    StakingAddress,
+    StakingHelperAddress,
+    PresaleAddress,
+} from './addresses';
 import { Networks } from './blockchain';
 
 const LOCAL = {
-    DAI_ADDRESS: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-    BASH_ADDRESS: '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853',
-    SBASH_ADDRESS: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
-    WSBASH_ADDRESS: '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318',
-    BASH_BONDING_CALC_ADDRESS: '0x7969c5eD335650692Bc04293B07F5BF2e7A673C0', // todo: bondingCalculator? fuckit.js:60
-    TREASURY_ADDRESS: '0x610178dA211FEF7D417bC0e6FeD39F05609AD788',
-    STAKING_CONTRACT: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0',
-    STAKING_HELPER_ADDRESS: '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82',
+    DAI_ADDRESS: DaiAddress, // "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    BASH_ADDRESS: BashAddress, // "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    SBASH_ADDRESS: SBashAddress, // "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    WSBASH_ADDRESS: WSBashAddress, // "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+    BASH_BONDING_CALC_ADDRESS: BashDaiBondingCalculatorAddress, // "0x7969c5eD335650692Bc04293B07F5BF2e7A673C0", // todo: bondingCalculator? fuckit.js:60
+    TREASURY_ADDRESS: TreasuryAddress, // "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+    STAKING_CONTRACT: StakingAddress, // "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+    STAKING_HELPER_ADDRESS: StakingHelperAddress, // "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
     DAO_ADDRESS: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', // "0x000000000000000000000000000000000000dead",
+    ATBASH_PRESALE_ADDRESS: PresaleAddress, // "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    INITIAL_PAIR_ADDRESS: '0x26DF06b47412dA76061ddA1fD9fe688A497FB88b', //Pool
     ZAPIN_ADDRESS: '',
     REDEEM_ADDRESS: '', // SnowbankFinalRedistribution - https://docs.snowbank.finance/events/final-redistribution -
-    INITIAL_PAIR_ADDRESS: '', //Pool
-    ATBASH_PRESALE_ADDRESS: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 };
+
+// const LOCAL = {
+//     DAI_ADDRESS: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+//     BASH_ADDRESS: '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853',
+//     SBASH_ADDRESS: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
+//     WSBASH_ADDRESS: '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318',
+//     BASH_BONDING_CALC_ADDRESS: '0x7969c5eD335650692Bc04293B07F5BF2e7A673C0', // todo: bondingCalculator? fuckit.js:60
+//     TREASURY_ADDRESS: '0x610178dA211FEF7D417bC0e6FeD39F05609AD788',
+//     STAKING_CONTRACT: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0',
+//     STAKING_HELPER_ADDRESS: '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82',
+//     DAO_ADDRESS: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', // "0x000000000000000000000000000000000000dead",
+//     ZAPIN_ADDRESS: '',
+//     REDEEM_ADDRESS: '', // SnowbankFinalRedistribution - https://docs.snowbank.finance/events/final-redistribution -
+//     INITIAL_PAIR_ADDRESS: '', //Pool
+//     ATBASH_PRESALE_ADDRESS: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+// };
 
 const MAINNET = {
     DAO_ADDRESS: '0x31940eE01803476a970ec6DF1094a53F80e6827b',
