@@ -1,5 +1,6 @@
 import MimIcon from 'assets/tokens/BASH-DAI.png';
 import DAIIcon from 'assets/tokens/DAI.e.png';
+import { BashDaiLpAddress, BashDaiBondAddress, DaiAddress, DaiBondAddress } from 'constants/addresses';
 import { Networks } from 'constants/blockchain';
 import { BondType } from 'helpers/bond/constants';
 import { BondConfig, BondProviderEnum } from 'lib/bonds/bonds.types';
@@ -19,8 +20,10 @@ const BASH_DAI: BondConfig = {
             reserveAddress: '',
         },
         [Networks.LOCAL]: {
-            bondAddress: '0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650',
-            reserveAddress: '0x908B40ED87FCA620B101B3Cba2B4C640D11eF016',
+            // bondAddress: '0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650',
+            // reserveAddress: '0x908B40ED87FCA620B101B3Cba2B4C640D11eF016',
+            bondAddress: BashDaiBondAddress,
+            reserveAddress: BashDaiLpAddress,
         },
         [Networks.RINKEBY]: {
             bondAddress: '0xcE24D6A45D5c59D31D05c8C278cA3455dD6a43DA',
@@ -43,8 +46,10 @@ const StableDAI: BondConfig = {
             reserveAddress: '0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB', // DAI
         },
         [Networks.LOCAL]: {
-            bondAddress: '0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1',
-            reserveAddress: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // DAI
+            // bondAddress: '0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1',
+            // reserveAddress: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // DAI
+            bondAddress: DaiBondAddress,
+            reserveAddress: DaiAddress,
         },
         [Networks.MAINNET]: {
             bondAddress: '',
