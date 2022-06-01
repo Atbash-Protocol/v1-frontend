@@ -24,7 +24,7 @@ const initialState: MainSliceState = {
         circSupply: null,
         rawCircSupply: null,
         totalSupply: null,
-        reserves: null,
+        bashMarketValue: null,
         loading: true,
     },
     staking: {

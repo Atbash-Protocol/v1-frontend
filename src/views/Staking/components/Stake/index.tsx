@@ -72,7 +72,7 @@ export default function Stake() {
 
     const handleApproveClick = useCallback(
         (transactionType: TransactionType) => {
-            dispatch(approveContract({ signer, signerAddress, transactionType }));
+            dispatch(approveContract({ signer, transactionType }));
         },
         [signer],
     );

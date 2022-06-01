@@ -27,7 +27,6 @@ export const useSignerConnected = () => {
     } = useWeb3Context();
 
     const [isConnected, setIsConnected] = useState(signer !== null);
-
     useEffect(() => {
         if (signer && networkID) {
             setIsConnected(true);

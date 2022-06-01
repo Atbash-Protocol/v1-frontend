@@ -10,18 +10,18 @@ import { RootState } from 'store/store';
 import { calculateStakingRewards } from './app.helpers';
 
 export const selectFormattedReservePrice = (state: RootState): string | null => {
-    const { reserves } = state.main.metrics;
+    const { bashMarketValue } = state.main.metrics;
     const { dai } = state.markets.markets;
 
-    if (!reserves || !dai) return null;
+    if (!bashMarketValue || !dai) return null;
 
-    const reservePrice = Number(utils.formatUnits(reserves.toString(), 'gwei')) * dai;
+    const reservePrice = Number(utils.formatUnits(bashMarketValue.toString(), 'gwei')) * dai;
 
     return formatUSD(reservePrice, 2);
 };
 
-export const selectReserve = (state: RootState): Decimal => new Decimal(state.main.metrics.reserves?.toString() ?? 0);
-export const selectReserveLoading = (state: RootState): boolean => state.main.metrics.reserves === null;
+export const selectReserve = (state: RootState): Decimal => new Decimal(state.main.metrics.bashMarketValue?.toString() ?? 0);
+export const selectReserveLoading = (state: RootState): boolean => state.main.metrics.bashMarketValue === null;
 
 export const selectBlockchainLoading = (state: RootState) => state.main.blockchain.loading === true;
 export const selectMetricsLoading = (state: RootState) => state.main.metrics.loading === true;

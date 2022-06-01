@@ -103,7 +103,7 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
 
     if (!bondInstance || !bondMetrics || !bondInstance.getBondContract()) throw new Error('Unable to get bondInfos');
 
-    const reserves = main.metrics.reserves;
+    const reserves = main.metrics.bashMarketValue;
     const { bondCalculator } = bonds;
     const daiPrice = markets.markets.dai;
 

@@ -25,7 +25,7 @@ export interface MainSliceState {
         totalSupply: number | null;
         circSupply: number | null;
         rawCircSupply: ethers.BigNumber | null;
-        reserves: ethers.BigNumber | null;
+        bashMarketValue: ethers.BigNumber | null;
         loading: boolean;
     };
     staking: {

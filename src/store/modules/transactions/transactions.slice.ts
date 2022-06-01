@@ -15,6 +15,7 @@ const pendingTxnsSlice = createSlice({
             const target = state.find(x => x.type === action.payload);
             if (target) {
                 target.status = 'DONE';
+                state.splice(state.indexOf(target), 1); // todo: ?
             }
         },
     },

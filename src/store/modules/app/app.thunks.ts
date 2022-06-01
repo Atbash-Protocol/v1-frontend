@@ -68,7 +68,7 @@ export const getCoreMetrics = createAsyncThunk('app/coreMetrics', async (_, { ge
         totalSupply,
         circSupply,
         rawCircSupply,
-        reserves: reserve2.div(reserve1),
+        bashMarketValue: reserve1.div(reserve2),
     };
 });
 

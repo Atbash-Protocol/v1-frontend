@@ -53,24 +53,25 @@ export const stakeAction = createAsyncThunk(
 
 export const approveContract = createAsyncThunk(
     'staking/approve',
-    async ({ signer, signerAddress, transactionType }: { signer: providers.Web3Provider; signerAddress: string; transactionType: TransactionType }, { getState, dispatch }) => {
+    async ({ signer, transactionType }: { signer: providers.Web3Provider; transactionType: TransactionType }, { getState, dispatch }) => {
         const {
             main: {
-                contracts: { BASH_CONTRACT, SBASH_CONTRACT },
+                contracts: { BASH_CONTRACT, SBASH_CONTRACT, STAKING_CONTRACT, STAKING_HELPER_ADDRESS },
             },
         } = getState() as IReduxState;
 
-        if (!BASH_CONTRACT || !SBASH_CONTRACT) {
+        if (!BASH_CONTRACT || !SBASH_CONTRACT || !STAKING_CONTRACT || !STAKING_HELPER_ADDRESS) {
             throw new Error('Contract not set');
         }
         const gasPrice = await signer.getGasPrice();
 
         try {
             const targetContract = transactionType === 'BASH_APPROVAL' ? BASH_CONTRACT : SBASH_CONTRACT;
-
-            const approveTx = await targetContract.approve(signerAddress, constants.MaxUint256, { gasPrice });
+            const targetAddressToApprove = transactionType == 'BASH_APPROVAL' ? STAKING_HELPER_ADDRESS : STAKING_CONTRACT;
+            const approveTx = await targetContract.approve(targetAddressToApprove.address, constants.MaxUint256, { gasPrice });
             dispatch(addPendingTransaction({ type: transactionType, hash: approveTx.hash }));
             await approveTx.wait();
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } catch (err) {
             dispatch(addNotification({ severity: 'error', description: messages.tx_successfully_send, detailledDescription: JSON.stringify(err) }));
         } finally {

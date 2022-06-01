@@ -9,7 +9,7 @@ export const selectCircSupply = (state: IReduxState) => state.main.metrics.circS
 export const selectStakingReward = (state: IReduxState) => state.main.staking.epoch?.distribute || null;
 
 export const selectStakingRebaseAmount = createSelector([selectStakingReward, selectCircSupply], (stakingReward, circSupply) => {
-    if (!circSupply || !stakingReward) return null;
+    if (circSupply == null || !stakingReward) return null;
 
     return new Decimal(stakingReward.toString()).div(new Decimal(circSupply).mul(10 ** 9)); // rewardYield rate for this epoch
 });
@@ -55,10 +55,14 @@ export const selectTotalBalance = (state: RootState): string => {
 export const selectFormattedMarketCap = (state: RootState): string | null => {
     const { totalSupply } = state.main.metrics;
     const { dai } = state.markets.markets;
+    const { bashMarketValue } = state.main.metrics;
 
-    if (!totalSupply || !dai) return null;
-
-    return formatUSD(totalSupply * dai, 2);
+    if (!dai || !totalSupply || !bashMarketValue) return null;
+    //const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * daiPrice;
+    //const marketCap = totalSupply * marketPrice;
+    const marketPrice = Number(bashMarketValue.div(10 ** 9)) * dai;
+    const marketCap = totalSupply * marketPrice;
+    return formatUSD(marketCap, 2);
 };
 
 export const selectWSBASHPrice = (state: RootState): string | null => {
