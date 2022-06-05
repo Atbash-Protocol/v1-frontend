@@ -4,7 +4,7 @@ export { address as BashAddress } from "../deployments/localhost/BASHERC20Token.
 export { address as DaiAddress } from "../deployments/localhost/DAI.json";
 export { address as SBashAddress } from "../deployments/localhost/sBASH.json";
 export { address as WSBashAddress } from "../deployments/localhost/wsBASH.json";
-export { address as BashDaiBondingCalculatorAddress } from "../deployments/localhost/bashDaiBondingCalculator.json";
+export { address as BondingCalculatorAddress } from "../deployments/localhost/ATBASHBondingCalculator.json";
 export { address as TreasuryAddress } from "../deployments/localhost/BashTreasury.json";
 export { address as StakingAddress } from "../deployments/localhost/ATBASHStaking.json";
 export { address as StakingHelperAddress } from "../deployments/localhost/StakingHelper.json";
@@ -13,24 +13,14 @@ export { address as DaiBondAddress } from "../deployments/localhost/atbashBondDe
 export { address as BashDaiBondAddress } from "../deployments/localhost/bashDaiBondDepository.json";
 export { address as BashDaiLpAddress } from "../deployments/localhost/BashDaiUniswapPairV2.json";
 
-import {
-    BashAddress,
-    DaiAddress,
-    SBashAddress,
-    WSBashAddress,
-    BashDaiBondingCalculatorAddress,
-    TreasuryAddress,
-    StakingAddress,
-    StakingHelperAddress,
-    PresaleAddress,
-} from "./addresses";
+import { BashAddress, DaiAddress, SBashAddress, WSBashAddress, BondingCalculatorAddress, TreasuryAddress, StakingAddress, StakingHelperAddress, PresaleAddress } from "./addresses";
 
 const LOCAL = {
     DAI_ADDRESS: DaiAddress, // "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
     BASH_ADDRESS: BashAddress, // "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     SBASH_ADDRESS: SBashAddress, // "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
     WSBASH_ADDRESS: WSBashAddress, // "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-    BASH_BONDING_CALC_ADDRESS: BashDaiBondingCalculatorAddress, // "0x7969c5eD335650692Bc04293B07F5BF2e7A673C0", // todo: bondingCalculator? fuckit.js:60
+    BASH_BONDING_CALC_ADDRESS: BondingCalculatorAddress, // "0x7969c5eD335650692Bc04293B07F5BF2e7A673C0", // todo: bondingCalculator? fuckit.js:60
     TREASURY_ADDRESS: TreasuryAddress, // "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
     STAKING_ADDRESS: StakingAddress, // "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
     STAKING_HELPER_ADDRESS: StakingHelperAddress, // "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
@@ -79,4 +69,8 @@ export const getAddresses = (networkID: number) => {
         default:
             throw Error("Network don't support");
     }
+};
+
+export const getAddressesAsync = async (networkID: number) => {
+    return new Promise(resolve => resolve(getAddresses(networkID)));
 };
