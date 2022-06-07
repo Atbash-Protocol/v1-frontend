@@ -14,7 +14,7 @@ import BASHFLOOFIcon from "../../assets/tokens/BASH-FLOOF.png";
 
 import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract } from "../../abi";
 
-import { BashDaiLpAddress, BashDaiBondAddress, DaiAddress, DaiBondAddress } from "constants/addresses";
+import { BashDaiLpAddress, BashDaiBondAddress, DaiAddress, DaiBondAddress, BashAddress } from "constants/addresses";
 
 export const dai = new StableBond({
     name: "DAI",
@@ -25,8 +25,8 @@ export const dai = new StableBond({
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.RINKEBY]: {
-            bondAddress: "0xd0D5024c723c4F047C7626FBA18E7797A4E50a12",
-            reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB", // DAI
+            bondAddress: "0xA7362d19C099FF7c933528E2cB6859004276c1f0",
+            reserveAddress: "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735", // DAI
         },
         [Networks.LOCAL]: {
             // bondAddress: "0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690",
@@ -104,11 +104,11 @@ export const BASHDAI = new LPBond({
             reserveAddress: BashDaiLpAddress,
         },
         [Networks.RINKEBY]: {
-            bondAddress: "0x87a4F79a4F856736070795f888f94C71C39B1cE1",
-            reserveAddress: "0x26DF06b47412dA76061ddA1fD9fe688A497FB88b", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
+            bondAddress: "0xD47142787C29231a13dFe884D21139148d54292c",
+            reserveAddress: "0x04f5Cf4b35D7aEd8435336567939Df0E0e7164F9", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
         },
     },
-    lpUrl: "https://app.uniswap.org/#/add/v2/0x95627E5C843bc050491132a5E34a64a19471a4CE/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB?chain=rinkeby", // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
+    lpUrl: `https://app.uniswap.org/#/add/v2/0xb9c20Db8649D5d9D0649031a52C39fa2bD6c4e97/0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735?chain=rinkeby`, // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
     isActive: true,
 });
 
