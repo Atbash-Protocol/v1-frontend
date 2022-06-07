@@ -1,24 +1,6 @@
 # [Atbash Frontend](https://atbash.finance/)
 This is the front-end repo for Atbash Protocol. 
 
-## Config 
-Fill the required variables from env file
-
-```bash 
-cp .env.template .env 
-```
-## Changelog
-- Fix testnet connection
-
-
-## TODO  
-- Real computations
-- Mobile rendering
-- Tests
-- Create comparaison between user tokens and active bonds 
-- Sidebar needs to remove the items not available if not connected
-
-
 ##  🔧 Setting up Local Development
 
 Required: 
@@ -47,13 +29,3 @@ We keep an updated list of bugs/feature requests in [Github Issues](https://gith
 Once you submit a PR, our CI will generate a temporary testing URL where you can validate your changes. Tag any of the gatekeepers on the review to merge them into master. 
 
 *__NOTE__*: For big changes associated with feature releases/milestones, they will be merged onto the `develop` branch for more thorough QA before a final merge to `main`
-
-# Atbash
-## local network w/ hardhat
-```
-atbash-main: npx hardhat run
-
-presale: npx hardhat run .\scripts\deploy.ts --network localhost
-
-atbash-main: npx hardhat run .\scripts\fuckit.js --network localhost
-```

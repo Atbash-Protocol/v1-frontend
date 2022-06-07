@@ -1,119 +1,151 @@
-import './style.scss';
-import { lazy, Suspense, useContext, useEffect, useLayoutEffect } from 'react';
+import { useEffect, useState, useCallback } from "react";
+import { Route, Redirect, Switch } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useAddress, useWeb3Context } from "../hooks";
+import { calcBondDetails } from "../store/slices/bond-slice";
+import { loadAppDetails } from "../store/slices/app-slice";
+import { loadAccountDetails, calculateUserBondDetails, calculateUserTokenDetails } from "../store/slices/account-slice";
+import { IReduxState } from "../store/slices/state.interface";
+import Loading from "../components/Loader";
+import useBonds from "../hooks/bonds";
+import ViewBase from "../components/ViewBase";
+import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } from "../views";
 
-import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import "./style.scss";
+import useTokens from "../hooks/tokens";
 
-import Loader from 'components/Loader';
-import { Web3Context } from 'contexts/web3/web3.context';
-import { useProvider, useSignerConnected } from 'contexts/web3/web3.hooks';
-import { loadBalancesAndAllowances } from 'store/modules/account/account.thunks';
-import { selectAppLoading } from 'store/modules/app/app.selectors';
-import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
-import { MainSliceState } from 'store/modules/app/app.types';
-import { selectBondInstances } from 'store/modules/bonds/bonds.selector';
-import { initializeBonds } from 'store/modules/bonds/bonds.thunks';
-import { getMarketPrices } from 'store/modules/markets/markets.thunks';
-import { IReduxState } from 'store/slices/state.interface';
-
-import { CritialError, NotFound, Wrap, Forecast, Redeem } from '../views';
-
-const Dashboard = lazy(() => import('views/Dashboard'));
-const Stake = lazy(() => import('views/Staking'));
-const BondList = lazy(() => import('views/Bond/BondList/BondList'));
-const BondDialog = lazy(() => import('../components/BondDialog'));
-
-function App(): JSX.Element {
+function App() {
     const dispatch = useDispatch();
 
-    const {
-        state: { signer, signerAddress, networkID },
-    } = useContext(Web3Context);
+    const { connect, provider, hasCachedProvider, chainID, connected } = useWeb3Context();
+    const address = useAddress();
 
-    const provider = useProvider();
-    const isSignerConnected = useSignerConnected();
+    const [walletChecked, setWalletChecked] = useState(false);
 
-    const bondInstances = useSelector(selectBondInstances);
-    const { errorEncountered, contractsLoaded } = useSelector<IReduxState, MainSliceState>(state => state.main, shallowEqual);
-    const appIsLoading = useSelector(selectAppLoading);
+    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
+    const isAppLoaded = useSelector<IReduxState, boolean>(state => !Boolean(state.app.marketPrice));
 
-    // // TODO: Create a subscription on signer change
-    // // TODO: Create a networkID management per provider + signer
-    useLayoutEffect(() => {
-        if (networkID)
-            if (isSignerConnected) {
-                dispatch(initializeProviderContracts({ signer }));
-            } else if (!isSignerConnected && provider && !contractsLoaded) {
-                dispatch(initializeProviderContracts({ provider }));
-            }
-    }, [isSignerConnected, provider, networkID]);
+    const { bonds } = useBonds();
+    const { tokens } = useTokens();
 
-    useEffect(() => {
-        if ((provider || signer) && contractsLoaded && networkID) {
-            batch(() => {
-                dispatch(getBlockchainData(signer || provider));
-                dispatch(getCoreMetrics());
-                dispatch(getStakingMetrics());
-                dispatch(getMarketPrices());
+    async function loadDetails(whichDetails: string) {
+        let loadProvider = provider;
 
-                dispatch(initializeBonds(signer || provider));
+        if (whichDetails === "app") {
+            loadApp(loadProvider);
+        }
+
+        if (whichDetails === "account" && address && connected) {
+            loadAccount(loadProvider);
+            if (isAppLoaded) return;
+
+            loadApp(loadProvider);
+        }
+
+        if (whichDetails === "userBonds" && address && connected) {
+            bonds.map(bond => {
+                dispatch(calculateUserBondDetails({ address, bond, provider, networkID: chainID }));
             });
         }
-    }, [provider, signer, contractsLoaded]);
 
-    useEffect(() => {
-        if (signerAddress && contractsLoaded) {
-            dispatch(loadBalancesAndAllowances(signerAddress));
+        if (whichDetails === "userTokens" && address && connected) {
+            tokens.map(token => {
+                dispatch(calculateUserTokenDetails({ address, token, provider, networkID: chainID }));
+            });
         }
-    }, [signerAddress, contractsLoaded]);
-
-    if (errorEncountered) return <CritialError />;
-
-    if (appIsLoading) {
-        return <Loader />;
     }
 
+    const loadApp = useCallback(
+        loadProvider => {
+            dispatch(loadAppDetails({ networkID: chainID, provider: loadProvider }));
+            bonds.map(bond => {
+                dispatch(calcBondDetails({ bond, value: null, provider: loadProvider, networkID: chainID }));
+            });
+            tokens.map(token => {
+                dispatch(calculateUserTokenDetails({ address: "", token, provider, networkID: chainID }));
+            });
+        },
+        [connected],
+    );
+
+    const loadAccount = useCallback(
+        loadProvider => {
+            dispatch(loadAccountDetails({ networkID: chainID, address, provider: loadProvider }));
+        },
+        [connected],
+    );
+
+    useEffect(() => {
+        if (hasCachedProvider()) {
+            connect().then(() => {
+                setWalletChecked(true);
+            });
+        } else {
+            setWalletChecked(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (walletChecked) {
+            loadDetails("app");
+            loadDetails("account");
+            loadDetails("userBonds");
+            loadDetails("userTokens");
+        }
+    }, [walletChecked]);
+
+    useEffect(() => {
+        if (connected) {
+            loadDetails("app");
+            loadDetails("account");
+            loadDetails("userBonds");
+            loadDetails("userTokens");
+        }
+    }, [connected]);
+
+    if (isAppLoading) return <Loading />;
+
     return (
-        <Switch>
-            <Route exact path="/">
-                <Suspense fallback={<Loader />}>
+        <ViewBase>
+            <Switch>
+                <Route exact path="/dashboard">
                     <Dashboard />
-                </Suspense>
-            </Route>
-
-            <Route path="/stake">
-                <Suspense fallback={<Loader />}>
-                    <Stake />
-                </Suspense>
-            </Route>
-
-            <Route path="/bonds">
-                <Suspense fallback={<Loader />}>
-                    <BondList />
-                </Suspense>
-            </Route>
-
-            <Route path="/forecast">
-                <Forecast />
-            </Route>
-
-            <Route path="/wrap">
-                <Wrap />
-            </Route>
-
-            <Route path="/redeem">
-                <Redeem />
-            </Route>
-
-            {bondInstances.map((bond, key) => (
-                <Route key={key} path={`/bond/${bond.ID}`}>
-                    <Suspense fallback={<Loader />}>
-                        <BondDialog key={bond.bondOptions.displayName} open={true} bondID={bond.ID} />
-                    </Suspense>
                 </Route>
-            ))}
-            <Route component={NotFound} />
-        </Switch>
+
+                <Route exact path="/">
+                    <Redirect to="/stake" />
+                </Route>
+
+                <Route path="/stake">
+                    <Stake />
+                </Route>
+
+                <Route path="/wrap">
+                    <Wrap />
+                </Route>
+
+                <Route path="/redeem">
+                    <Redeem />
+                </Route>
+
+                <Route path="/Forecast">
+                    <Forecast />
+                </Route>
+
+                <Route path="/mints">
+                    {bonds.map(bond => {
+                        return (
+                            <Route exact key={bond.name} path={`/mints/${bond.name}`}>
+                                <Bond bond={bond} />
+                            </Route>
+                        );
+                    })}
+                    <ChooseBond />
+                </Route>
+
+                <Route component={NotFound} />
+            </Switch>
+        </ViewBase>
     );
 }
 

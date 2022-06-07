@@ -1,7 +1,7 @@
-import { Networks } from '../../constants/blockchain';
+import { Networks } from "../../constants/blockchain";
 
 export enum BondType {
-    STABLE_ASSET,
+    StableAsset,
     LP,
 }
 
@@ -13,5 +13,4 @@ export interface BondAddresses {
 export interface NetworkAddresses {
     [Networks.MAINNET]: BondAddresses;
     [Networks.RINKEBY]: BondAddresses;
-    [Networks.LOCAL]: BondAddresses;
 }

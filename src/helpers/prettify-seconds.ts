@@ -1,24 +1,21 @@
-import { TFunction } from 'i18next';
-import { DurationObjectUnits, DateTime } from 'luxon';
+import i18n from "../i18n";
 
-export const getDateDiff = (startDate: number, endDate: number): DurationObjectUnits | null => {
-    const { isValid, ...units } = DateTime.fromSeconds(endDate).diff(DateTime.fromSeconds(startDate), ['days', 'hours', 'minute', 'seconds']);
+export const prettifySeconds = (seconds?: number, resolution?: string) => {
+    if (seconds !== 0 && !seconds) {
+        return "";
+    }
 
-    if (!isValid) return null;
+    const d = Math.floor(seconds / (3600 * 24));
+    const h = Math.floor((seconds % (3600 * 24)) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
 
-    return units;
-};
-export const formatTimer = (startDate: number, endDate: number, translator: TFunction): string | null => {
-    if (startDate > endDate) return null;
+    if (resolution === "day") {
+        return d + ` ${i18n.t("day", { count: d })}`;
+    }
 
-    const { days, hours, minutes } = DateTime.fromSeconds(endDate).diff(DateTime.fromSeconds(startDate), ['days', 'hours', 'minute']);
+    const dDisplay = d > 0 ? d + ` ${i18n.t("day", { count: d })}, ` : "";
+    const hDisplay = h > 0 ? h + ` ${i18n.t("hour", { count: h })}, ` : "";
+    const mDisplay = m > 0 ? m + ` ${i18n.t("min", { count: m })}` : "";
 
-    const translations = [];
-
-    if (days) translations.push(translator('day', { count: days }));
-
-    translations.push(translator('hour', { count: hours }));
-    translations.push(translator('min', { count: minutes }));
-
-    return [translator('approximativaly'), ...translations].join(' ');
+    return dDisplay + hDisplay + mDisplay;
 };
