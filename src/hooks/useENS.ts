@@ -1,25 +1,19 @@
-import { useEffect, useState } from 'react';
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 
-import { utils } from 'ethers';
-
-import { useWeb3Context } from 'contexts/web3/web3.context';
-
-const useENS = () => {
+const useENS = (address: string) => {
     const [ensName, setENSName] = useState<string | null>(null);
-
-    const {
-        state: { provider, signerAddress },
-    } = useWeb3Context();
 
     useEffect(() => {
         const resolveENS = async () => {
-            if (signerAddress && provider && utils.isAddress(signerAddress)) {
-                const name = await provider.lookupAddress(signerAddress);
-                setENSName(name);
+            if (ethers.utils.isAddress(address)) {
+                const provider = new ethers.providers.JsonRpcProvider("https://rinkeby.infura.io/v3/254fc898c6c24be99475e8ec90ced016");
+                const ensName = await provider.lookupAddress(address);
+                setENSName(ensName);
             }
         };
         resolveENS();
-    }, [provider, signerAddress]);
+    }, [address]);
 
     return { ensName };
 };
