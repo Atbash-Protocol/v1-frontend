@@ -3,6 +3,9 @@ This is the front-end repo for Atbash Protocol.
 
 ## Config 
 Fill the required variables from env file
+Import deployments from the Atbash contract repo to configure the contract addresses.
+Requires them to be in the same parent directory as this repo otherwise modify the script.
+`yarn import-deployments`
 
 ```bash 
 cp .env.template .env 
