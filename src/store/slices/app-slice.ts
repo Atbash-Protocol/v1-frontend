@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { getAddresses } from "../../constants";
+import { getAddressesAsync } from "../../constants";
 import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract } from "../../abi";
 import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
@@ -14,7 +14,8 @@ interface ILoadAppDetails {
 
 export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ networkID, provider }: ILoadAppDetails) => {
     const daiPrice = getTokenPrice("DAI");
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
     // const ohmPrice = getTokenPrice("OHM");
     // const ohmAmount = 1512.12854088 * ohmPrice;

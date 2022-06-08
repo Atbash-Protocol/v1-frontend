@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { getAddresses } from "../../constants";
+import { getAddressesAsync } from "../../constants";
 import { TimeTokenContract as BashTokenContract, MemoTokenContract as SBashTokenContract, MimTokenContract } from "../../abi";
 import { setAll } from "../../helpers";
 
@@ -17,7 +17,8 @@ import {
 } from "../account/account.types";
 
 export const getBalances = createAsyncThunk("account/getBalances", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
     const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, provider);
     const wsBASHContract = new ethers.Contract(addresses.WSBASH_ADDRESS, SBashTokenContract, provider);
@@ -44,7 +45,8 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     let wrapAllowance = 0;
     let redeemAllowance = 0;
 
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
     if (addresses.BASH_ADDRESS) {
         const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, provider);
@@ -118,8 +120,8 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
         });
     }
 
-    const bondContract = bond.getContractForBond(networkID, provider);
-    const reserveContract = bond.getContractForReserve(networkID, provider);
+    const bondContract = await bond.getContractForBond(networkID, provider);
+    const reserveContract = await bond.getContractForReserve(networkID, provider);
 
     let interestDue, pendingPayout, bondMaturationBlock;
 
@@ -189,25 +191,27 @@ export const calculateUserTokenDetails = createAsyncThunk("account/calculateUser
         };
     }
 
-    const addresses = getAddresses(networkID);
+    // disabled: ZAPIN not supported
+    // const addresses = getAddresses(networkID);
+    // const addresses = await getAddressesAsync(networkID);
 
-    const tokenContract = new ethers.Contract(token.address, MimTokenContract, provider);
+    // const tokenContract = new ethers.Contract(token.address, MimTokenContract, provider);
 
-    let allowance,
-        balance = "0";
+    // let allowance,
+    //     balance = "0";
 
-    allowance = await tokenContract.allowance(address, addresses.ZAPIN_ADDRESS);
-    balance = await tokenContract.balanceOf(address);
+    // allowance = await tokenContract.allowance(address, addresses.ZAPIN_ADDRESS);
+    // balance = await tokenContract.balanceOf(address);
 
-    const balanceVal = Number(balance) / Math.pow(10, token.decimals);
+    // const balanceVal = Number(balance) / Math.pow(10, token.decimals);
 
-    return {
-        token: token.name,
-        address: token.address,
-        img: token.img,
-        allowance: Number(allowance),
-        balance: Number(balanceVal),
-    };
+    // return {
+    //     token: token.name,
+    //     address: token.address,
+    //     img: token.img,
+    //     allowance: Number(allowance),
+    //     balance: Number(balanceVal),
+    // };
 });
 
 export interface IAccountSlice {

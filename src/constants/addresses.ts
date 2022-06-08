@@ -14,6 +14,7 @@ export { address as BashDaiBondAddress } from "../deployments/localhost/bashDaiB
 export { address as BashDaiLpAddress } from "../deployments/localhost/BashDaiUniswapPairV2.json";
 
 import { BashAddress, DaiAddress, SBashAddress, WSBashAddress, BondingCalculatorAddress, TreasuryAddress, StakingAddress, StakingHelperAddress, PresaleAddress } from "./addresses";
+import { readFile } from "fs/promises";
 
 const LOCAL = {
     DAI_ADDRESS: DaiAddress, // "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
@@ -58,7 +59,24 @@ const RINKEBY = {
     REDEEM_ADDRESS: "",
 };
 
+export interface IAddresses {
+    DAO_ADDRESS: string;
+    SBASH_ADDRESS: string;
+    WSBASH_ADDRESS: string;
+    BASH_ADDRESS: string;
+    DAI_ADDRESS: string;
+    STAKING_ADDRESS: string;
+    STAKING_HELPER_ADDRESS: string;
+    BASH_BONDING_CALC_ADDRESS: string; // daibondCalc: "0xa5381A8345edfafc42EB9946C36f5715083a42c9";
+    TREASURY_ADDRESS: string;
+    REDEEM_ADDRESS: string;
+    BASH_DAI_LP_ADDRESS: string; // reserves
+    BASH_DAI_BOND_ADDRESS: string;
+    DAI_BOND_ADDRESS: string;
+}
+
 export const getAddresses = (networkID: number) => {
+    console.log("deprecated getAddresses");
     switch (networkID) {
         case Networks.LOCAL:
             return LOCAL;
@@ -71,6 +89,51 @@ export const getAddresses = (networkID: number) => {
     }
 };
 
-export const getAddressesAsync = async (networkID: number) => {
-    return new Promise(resolve => resolve(getAddresses(networkID)));
+// dynamic import contract addresses for deployment network
+async function getNetworkDeploymentAddresses(deploymentNetwork: string): Promise<IAddresses> {
+    const getDeployPath = (contract: string) => `${deploymentNetwork}/${contract}.json`;
+    const getAddress = async (contract: string) => {
+        const { address } = await import(`../deployments/${getDeployPath(contract)}`); // note: ../deployments must be a literal in this import
+        return address;
+    };
+    const getDeployer = async (contract: string) => {
+        const { receipt } = await import(`../deployments/${getDeployPath(contract)}`);
+        return receipt.from;
+    };
+
+    return {
+        DAO_ADDRESS: await getDeployer("BASHERC20Token"),
+        SBASH_ADDRESS: await getAddress("sBASH"),
+        WSBASH_ADDRESS: await getAddress("wsBASH"),
+        BASH_ADDRESS: await getAddress("BASHERC20Token"),
+        DAI_ADDRESS: await getAddress("DAI"),
+        STAKING_ADDRESS: await getAddress("ATBASHStaking"),
+        STAKING_HELPER_ADDRESS: await getAddress("StakingHelper"),
+        BASH_BONDING_CALC_ADDRESS: await getAddress("ATBASHBondingCalculator"),
+        TREASURY_ADDRESS: await getAddress("BashTreasury"),
+        REDEEM_ADDRESS: "", // todo:
+        BASH_DAI_LP_ADDRESS: await getAddress("BashDaiUniswapPairV2"),
+        BASH_DAI_BOND_ADDRESS: await getAddress("bashDaiBondDepository"),
+        DAI_BOND_ADDRESS: await getAddress("atbashBondDepository"),
+    };
+}
+
+export const getAddressesAsync = async (networkID: number): Promise<IAddresses> => {
+    let networkName: string;
+    switch (networkID) {
+        case Networks.LOCAL:
+            networkName = "localhost";
+            break;
+        case Networks.MAINNET:
+            networkName = "mainnet";
+            break;
+        case Networks.RINKEBY:
+            networkName = "rinkeby";
+            break;
+        default:
+            throw Error("Unknown network deployment");
+    }
+    var addresses = await getNetworkDeploymentAddresses(networkName);
+    console.log("Addresses: %o", addresses);
+    return addresses;
 };

@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 
-const sourceDir = "../atbash/deployments/localhost";
-const destDir = "./src/deployments/localhost";
+const sourceDir = "../atbash/deployments";
+const destDir = "./src/deployments";
 
 if (!fs.pathExists(destDir)) {
     fs.mkdir("./src/deployments", (err) => {
@@ -16,5 +16,5 @@ fs.copy(sourceDir, destDir, {overwrite: true }, (err) => {
     if (err) return console.error(err);
 });
 
-console.log("Localhost deployments imported");
+console.log("All deployments imported");
 

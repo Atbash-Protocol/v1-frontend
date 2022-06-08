@@ -4,7 +4,7 @@ import { BondType } from "./constants";
 import { Networks } from "../../constants/blockchain";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getBondCalculator } from "../bond-calculator";
-import { getAddresses } from "../../constants/addresses";
+import { getAddressesAsync } from "../../constants/addresses";
 
 // Keep all LP specific fields/logic within the LPBond class
 export interface LPBondOpts extends BondOpts {
@@ -27,11 +27,12 @@ export class LPBond extends Bond {
     }
 
     async getTreasuryBalance(networkID: Networks, provider: StaticJsonRpcProvider) {
-        const addresses = getAddresses(networkID);
+        // const addresses = getAddresses(networkID);
+        const addresses = await getAddressesAsync(networkID);
 
-        const token = this.getContractForReserve(networkID, provider);
-        const tokenAddress = this.getAddressForReserve(networkID);
-        const bondCalculator = getBondCalculator(networkID, provider);
+        const token = await this.getContractForReserve(networkID, provider);
+        const tokenAddress = await this.getAddressForReserve(networkID);
+        const bondCalculator = await getBondCalculator(networkID, provider);
         const tokenAmount = await token.balanceOf(addresses.TREASURY_ADDRESS);
         const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
         const markdown = await bondCalculator.markdown(tokenAddress);
@@ -49,9 +50,9 @@ export class LPBond extends Bond {
     }
 
     private async getReserves(networkID: Networks, provider: StaticJsonRpcProvider, isToken: boolean): Promise<number> {
-        const addresses = getAddresses(networkID);
+        const addresses = await getAddressesAsync(networkID);
 
-        const token = this.getContractForReserve(networkID, provider);
+        const token = await this.getContractForReserve(networkID, provider);
 
         let [reserve0, reserve1] = await token.getReserves();
         const token1: string = await token.token1();
@@ -62,6 +63,14 @@ export class LPBond extends Bond {
 
     private toTokenDecimal(isBASH: boolean, reserve: number) {
         return isBASH ? reserve / Math.pow(10, 9) : reserve / Math.pow(10, 18);
+    }
+
+    public async getAddressForBond(networkID: Networks): Promise<string> {
+        return (await getAddressesAsync(networkID)).BASH_DAI_BOND_ADDRESS;
+    }
+
+    public async getAddressForReserve(networkID: Networks): Promise<string> {
+        return (await getAddressesAsync(networkID)).BASH_DAI_LP_ADDRESS;
     }
 }
 
