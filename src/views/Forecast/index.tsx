@@ -5,6 +5,7 @@ import { BCard } from 'components/BCard';
 import { theme } from 'constants/theme';
 
 import ForecastMetrics from './components/ForecastMetrics';
+import Form from './components/Form';
 
 function Forecast() {
     const { t } = useTranslation();
@@ -19,6 +20,8 @@ function Forecast() {
             </Typography>
 
             <ForecastMetrics />
+
+            <Form />
         </BCard>
     );
 }

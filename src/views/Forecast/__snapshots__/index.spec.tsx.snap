@@ -30,6 +30,278 @@ Object {
            
         </p>
         Forecast Metrics
+        <div
+          class="MuiGrid-root MuiGrid-container css-11lq3yg-MuiGrid-root"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+          >
+            <div
+              class="MuiBox-root css-0"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+              >
+                sBASH AMOUNT
+              </p>
+              <div
+                class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+              >
+                <input
+                  class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                  inputmode="numeric"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
+                  type="number"
+                  value="0"
+                />
+                <div
+                  class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+                >
+                  <div
+                    class="MuiBox-root css-og7htl"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                    >
+                      Max
+                    </p>
+                  </div>
+                </div>
+                <fieldset
+                  aria-hidden="true"
+                  class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    class="css-hdw1oc"
+                  >
+                    <span
+                      class="notranslate"
+                    >
+                      ​
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root css-0"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+              >
+                REWARD YIELD (%)
+              </p>
+              <div
+                class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+              >
+                <input
+                  class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                  inputmode="numeric"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
+                  type="number"
+                  value="0"
+                />
+                <div
+                  class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+                >
+                  <div
+                    class="MuiBox-root css-og7htl"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                    >
+                      Max
+                    </p>
+                  </div>
+                </div>
+                <fieldset
+                  aria-hidden="true"
+                  class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    class="css-hdw1oc"
+                  >
+                    <span
+                      class="notranslate"
+                    >
+                      ​
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root css-0"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 MuiTypography-alignCenter css-1uwgr7b-MuiTypography-root"
+              >
+                BASH Price AT PURCHASE ($)
+              </p>
+              <div
+                class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+              >
+                <input
+                  class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                  inputmode="numeric"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
+                  type="number"
+                  value="0"
+                />
+                <div
+                  class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+                >
+                  <div
+                    class="MuiBox-root css-og7htl"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                    >
+                      Max
+                    </p>
+                  </div>
+                </div>
+                <fieldset
+                  aria-hidden="true"
+                  class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    class="css-hdw1oc"
+                  >
+                    <span
+                      class="notranslate"
+                    >
+                      ​
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root css-0"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+              >
+                Future BASH MARKET PRICE ($)
+              </p>
+              <div
+                class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+              >
+                <input
+                  class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                  inputmode="numeric"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
+                  type="number"
+                  value="0"
+                />
+                <div
+                  class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+                >
+                  <div
+                    class="MuiBox-root css-og7htl"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                    >
+                      Max
+                    </p>
+                  </div>
+                </div>
+                <fieldset
+                  aria-hidden="true"
+                  class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    class="css-hdw1oc"
+                  >
+                    <span
+                      class="notranslate"
+                    >
+                      ​
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+          >
+            <div
+              class="MuiBox-root css-1unhm3"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-1pzpssa-MuiTypography-root"
+              >
+                common:day_other
+              </p>
+              <span
+                class="MuiSlider-colorPrimary MuiSlider-sizeMedium MuiSlider-root MuiSlider-vertical css-y50uh2-MuiSlider-root"
+              >
+                <span
+                  class="MuiSlider-rail css-qx5f9e-MuiSlider-rail"
+                />
+                <span
+                  class="MuiSlider-track css-ada0pd-MuiSlider-track"
+                  style="bottom: 0%; height: 0%;"
+                />
+                <span
+                  class="MuiSlider-thumbColorPrimary MuiSlider-thumbSizeMedium MuiSlider-thumb css-y35fuw-MuiSlider-thumb"
+                  data-index="0"
+                  style="bottom: 0%;"
+                >
+                  <input
+                    aria-orientation="vertical"
+                    aria-valuemax="365"
+                    aria-valuemin="0"
+                    aria-valuenow="0"
+                    data-index="0"
+                    max="365"
+                    min="0"
+                    step="1"
+                    style="border: 0px; height: 100%; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 100%; direction: ltr;"
+                    type="range"
+                    value="0"
+                  />
+                  <span
+                    aria-hidden="true"
+                    class="MuiSlider-valueLabel css-1kz0hui-MuiSlider-valueLabel"
+                  >
+                    <span
+                      class="MuiSlider-valueLabelCircle"
+                    >
+                      <span
+                        class="MuiSlider-valueLabelLabel"
+                      >
+                        0
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+          >
+            <span>
+              Initial investment
+            </span>
+            <span>
+              Current wealth
+            </span>
+            <span>
+              Bash rewards estimation
+            </span>
+            <span>
+              Potential return
+            </span>
+            <span>
+              Lambo prices
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </body>,
@@ -59,6 +331,278 @@ Object {
          
       </p>
       Forecast Metrics
+      <div
+        class="MuiGrid-root MuiGrid-container css-11lq3yg-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-0"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            >
+              sBASH AMOUNT
+            </p>
+            <div
+              class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+            >
+              <input
+                class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                inputmode="numeric"
+                pattern="^[0-9]*[.,]?[0-9]*$"
+                type="number"
+                value="0"
+              />
+              <div
+                class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+              >
+                <div
+                  class="MuiBox-root css-og7htl"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                  >
+                    Max
+                  </p>
+                </div>
+              </div>
+              <fieldset
+                aria-hidden="true"
+                class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="css-hdw1oc"
+                >
+                  <span
+                    class="notranslate"
+                  >
+                    ​
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root css-0"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            >
+              REWARD YIELD (%)
+            </p>
+            <div
+              class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+            >
+              <input
+                class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                inputmode="numeric"
+                pattern="^[0-9]*[.,]?[0-9]*$"
+                type="number"
+                value="0"
+              />
+              <div
+                class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+              >
+                <div
+                  class="MuiBox-root css-og7htl"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                  >
+                    Max
+                  </p>
+                </div>
+              </div>
+              <fieldset
+                aria-hidden="true"
+                class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="css-hdw1oc"
+                >
+                  <span
+                    class="notranslate"
+                  >
+                    ​
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root css-0"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 MuiTypography-alignCenter css-1uwgr7b-MuiTypography-root"
+            >
+              BASH Price AT PURCHASE ($)
+            </p>
+            <div
+              class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+            >
+              <input
+                class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                inputmode="numeric"
+                pattern="^[0-9]*[.,]?[0-9]*$"
+                type="number"
+                value="0"
+              />
+              <div
+                class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+              >
+                <div
+                  class="MuiBox-root css-og7htl"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                  >
+                    Max
+                  </p>
+                </div>
+              </div>
+              <fieldset
+                aria-hidden="true"
+                class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="css-hdw1oc"
+                >
+                  <span
+                    class="notranslate"
+                  >
+                    ​
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root css-0"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            >
+              Future BASH MARKET PRICE ($)
+            </p>
+            <div
+              class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-1facavo-MuiInputBase-root-MuiOutlinedInput-root"
+            >
+              <input
+                class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                inputmode="numeric"
+                pattern="^[0-9]*[.,]?[0-9]*$"
+                type="number"
+                value="0"
+              />
+              <div
+                class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+              >
+                <div
+                  class="MuiBox-root css-og7htl"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                  >
+                    Max
+                  </p>
+                </div>
+              </div>
+              <fieldset
+                aria-hidden="true"
+                class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="css-hdw1oc"
+                >
+                  <span
+                    class="notranslate"
+                  >
+                    ​
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-1unhm3"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-1pzpssa-MuiTypography-root"
+            >
+              common:day_other
+            </p>
+            <span
+              class="MuiSlider-colorPrimary MuiSlider-sizeMedium MuiSlider-root MuiSlider-vertical css-y50uh2-MuiSlider-root"
+            >
+              <span
+                class="MuiSlider-rail css-qx5f9e-MuiSlider-rail"
+              />
+              <span
+                class="MuiSlider-track css-ada0pd-MuiSlider-track"
+                style="bottom: 0%; height: 0%;"
+              />
+              <span
+                class="MuiSlider-thumbColorPrimary MuiSlider-thumbSizeMedium MuiSlider-thumb css-y35fuw-MuiSlider-thumb"
+                data-index="0"
+                style="bottom: 0%;"
+              >
+                <input
+                  aria-orientation="vertical"
+                  aria-valuemax="365"
+                  aria-valuemin="0"
+                  aria-valuenow="0"
+                  data-index="0"
+                  max="365"
+                  min="0"
+                  step="1"
+                  style="border: 0px; height: 100%; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 100%; direction: ltr;"
+                  type="range"
+                  value="0"
+                />
+                <span
+                  aria-hidden="true"
+                  class="MuiSlider-valueLabel css-1kz0hui-MuiSlider-valueLabel"
+                >
+                  <span
+                    class="MuiSlider-valueLabelCircle"
+                  >
+                    <span
+                      class="MuiSlider-valueLabelLabel"
+                    >
+                      0
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+        >
+          <span>
+            Initial investment
+          </span>
+          <span>
+            Current wealth
+          </span>
+          <span>
+            Bash rewards estimation
+          </span>
+          <span>
+            Potential return
+          </span>
+          <span>
+            Lambo prices
+          </span>
+        </div>
+      </div>
     </div>
   </div>,
   "debug": [Function],
