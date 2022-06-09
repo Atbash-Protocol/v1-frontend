@@ -15,7 +15,7 @@ export const selectStakingRebaseAmount = createSelector([selectStakingReward, se
 });
 
 export const selectStakingRebasePercentage = createSelector([selectStakingRebaseAmount], amount => {
-    return `${(amount || new Decimal(0)).mul(100).toFixed(4)} %`;
+    return (amount || new Decimal(0)).mul(100);
 });
 
 export const selectStakingRewards = createSelector([selectStakingRebaseAmount], stakingRebase => {

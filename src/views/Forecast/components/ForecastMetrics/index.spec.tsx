@@ -17,7 +17,7 @@ describe('Metrics', () => {
     it('renders correctly', () => {
         jest.spyOn(AccountSelectorModule, 'selectSBASHBalance').mockReturnValue(new Decimal(2));
         jest.spyOn(AppSelectorsModule, 'selectFormattedReservePrice').mockReturnValue('$30.00');
-        jest.spyOn(MetricsSelectorsModule, 'selectStakingRebasePercentage').mockReturnValue('12.0234%');
+        jest.spyOn(MetricsSelectorsModule, 'selectStakingRebasePercentage').mockReturnValue(new Decimal('12.023'));
 
         const comp = renderComponent(<ForecastMetrics />);
 

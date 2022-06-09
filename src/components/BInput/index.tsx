@@ -1,30 +1,35 @@
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
 
-import { OutlinedInput, InputAdornment, Box, Typography } from '@mui/material';
+import { OutlinedInput, InputAdornment, Box, Typography, SxProps, Theme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { theme } from 'constants/theme';
 
 interface BInputProps {
+    name: string;
     defaultValue: string;
-    maxValue: string;
-    onChange: (value: string) => void;
+    onChange: (value: Record<string, string>) => void;
+    maxValue?: string;
     placeholder?: string;
     endAdornmentLabel?: string;
+    extraSxProps?: SxProps<Theme> | undefined;
 }
 
-const BInput = ({ defaultValue, maxValue, onChange, endAdornmentLabel, placeholder }: BInputProps) => {
+const BInput = ({ name, defaultValue, maxValue, onChange, endAdornmentLabel, placeholder, extraSxProps }: BInputProps) => {
     const { t } = useTranslation();
     const [value, setValue] = useState(defaultValue);
 
     const handleClickMaxValue = (event: SyntheticEvent<HTMLDivElement>) => {
         event.preventDefault();
-        setValue(maxValue);
+        setValue(maxValue ?? defaultValue);
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        onChange(event.target.value);
+        const inputValue = event.target.value;
+
+        setValue(inputValue);
+        onChange({ [name]: inputValue });
     };
 
     return (
@@ -35,9 +40,10 @@ const BInput = ({ defaultValue, maxValue, onChange, endAdornmentLabel, placehold
                 borderColor: theme.palette.primary.main,
                 borderRadius: 0,
                 outlineColor: theme.palette.primary.main,
-                borderRight: 'none',
                 width: '100%',
+                ...(extraSxProps ?? {}),
             }}
+            name={name}
             type="number"
             placeholder={placeholder}
             value={value}

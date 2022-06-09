@@ -1,4 +1,5 @@
 import Decimal from 'decimal.js';
+import { utils } from 'ethers';
 import { createSelector } from 'reselect';
 
 import { formatUSDFromDecimal } from 'helpers/price-units';
@@ -27,3 +28,6 @@ export const selectDaiPrice = (state: RootState): Decimal => {
 };
 
 export const selectMarketPrice = createSelector([selectReserve, selectDaiPrice], (reserve, dai) => reserve.mul(dai));
+
+// converted marketPrice from wei
+export const selectComputedMarketPrice = createSelector([selectMarketPrice], marketPrice => marketPrice.div(10 ** 9));

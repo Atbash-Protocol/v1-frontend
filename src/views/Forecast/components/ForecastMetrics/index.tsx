@@ -3,6 +3,7 @@ import { t } from 'i18next';
 import { useSelector } from 'react-redux';
 
 import MenuMetric from 'components/Metrics/MenuMetric';
+import { formatUSDFromDecimal } from 'helpers/price-units';
 import { selectSBASHBalance } from 'store/modules/account/account.selectors';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectStakingRebasePercentage } from 'store/modules/metrics/metrics.selectors';
@@ -14,7 +15,7 @@ const ForecastMetrics = () => {
 
     const metrics = [
         { key: 'BASHPrice', value: BASHPrice },
-        { key: 'globe:CurrentRewardYield', value: stakingPercentage },
+        { key: 'globe:CurrentRewardYield', value: formatUSDFromDecimal(stakingPercentage) },
         { key: 'globe:YourStakedBASHBalance', value: `${SBashBalance} SBASH` },
     ].map(({ key, value }) => (
         <Grid item key={key} xs={6} sm={4} md={4} lg={4} mt={2}>
