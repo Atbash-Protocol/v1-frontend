@@ -7,6 +7,7 @@ import { formatUSD } from 'helpers/price-units';
 import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 
+import { selectDaiPrice } from '../markets/markets.selectors';
 import { calculateStakingRewards } from './app.helpers';
 
 export const selectFormattedReservePrice = (state: RootState): string | null => {
