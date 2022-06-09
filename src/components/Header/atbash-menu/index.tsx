@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { getAddresses, TOKEN_DECIMALS, DEFAULT_NETWORK } from "../../../constants";
+import { useEffect, useState } from "react";
+import { TOKEN_DECIMALS, DEFAULT_NETWORK, getAddressesAsync, IAddresses } from "../../../constants";
 import { useSelector } from "react-redux";
 import { Link, Fade, Popper } from "@material-ui/core";
 import "./atbash-menu.scss";
@@ -41,11 +41,36 @@ function AtbashMenu() {
         return (state.app && state.app.networkID) || DEFAULT_NETWORK;
     });
 
-    const addresses = getAddresses(networkID);
+    const initialState: IAddresses = {
+        BASH_ADDRESS: "",
+        BASH_BONDING_CALC_ADDRESS: "",
+        BASH_DAI_BOND_ADDRESS: "",
+        BASH_DAI_LP_ADDRESS: "",
+        DAI_ADDRESS: "",
+        DAI_BOND_ADDRESS: "",
+        DAO_ADDRESS: "",
+        REDEEM_ADDRESS: "",
+        SBASH_ADDRESS: "",
+        STAKING_ADDRESS: "",
+        STAKING_HELPER_ADDRESS: "",
+        TREASURY_ADDRESS: "",
+        WSBASH_ADDRESS: "",
+    };
+    const [addresses, setAddresses] = useState<IAddresses>(initialState);
+    const loadAddresses = async () => {
+        const addresses = await getAddressesAsync(networkID);
+        setAddresses(addresses);
+    };
+    useEffect(() => {
+        loadAddresses();
+    }, [networkID]);
 
-    const SBASH_ADDRESS = addresses.SBASH_ADDRESS;
-    const BASH_ADDRESS = addresses.BASH_ADDRESS;
-    const DAI_ADDRESS = addresses.DAI_ADDRESS;
+    
+    // const addresses = getAddresses(networkID);
+
+    // const SBASH_ADDRESS = addresses.SBASH_ADDRESS;
+    // const BASH_ADDRESS = addresses.BASH_ADDRESS;
+    // const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
     const handleClick = (event: any) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -66,7 +91,7 @@ function AtbashMenu() {
                             {/* TODO: Update for MAINNET */}
                             <Link
                                 className="tooltip-item"
-                                href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}`}
+                                href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${addresses.DAI_ADDRESS}&outputCurrency=${addresses.BASH_ADDRESS}`}
                                 target="_blank"
                             >
                                 <p>{t("BuyOnUniswap")}</p>
@@ -77,10 +102,10 @@ function AtbashMenu() {
                                     <div className="divider" />
                                     <p className="add-tokens-title">{t("AddTokenToWallet")}</p>
                                     <div className="divider" />
-                                    <div className="tooltip-item" onClick={addTokenToWallet("BASH", BASH_ADDRESS)}>
+                                    <div className="tooltip-item" onClick={addTokenToWallet("BASH", addresses.BASH_ADDRESS)}>
                                         <p>↑ BASH</p>
                                     </div>
-                                    <div className="tooltip-item" onClick={addTokenToWallet("sBASH", SBASH_ADDRESS)}>
+                                    <div className="tooltip-item" onClick={addTokenToWallet("sBASH", addresses.SBASH_ADDRESS)}>
                                         <p>↑ sBASH</p>
                                     </div>
                                 </div>

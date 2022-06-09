@@ -1,13 +1,13 @@
 import { IToken } from "../helpers/tokens";
 import { ethers, utils } from "ethers";
 import { IAllBondData } from "../hooks/bonds";
-import { getAddresses, Networks } from "../constants";
+import { getAddressesAsync, Networks } from "../constants";
 import axios from "axios";
 import { TraderZapinContract } from "../abi";
 import { BigNumber } from "ethers";
 
 export const zapinLpData = async (bond: IAllBondData, token: IToken, tokenAmmount: string, network: Networks, slippage: number) => {
-    const addresses = getAddresses(network);
+    const addresses = await getAddressesAsync(network);
 
     const sellToken = token.isAvax ? ethers.constants.AddressZero : token.address;
     const buyToken = bond.getAddressForReserve(network);

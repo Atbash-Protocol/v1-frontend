@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { getAddresses } from "../../constants";
+import { getAddressesAsync } from "../../constants";
 import { StakingHelperContract, TimeTokenContract, MemoTokenContract, StakingContract, RedeemContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -26,7 +26,8 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
     const signer = provider.getSigner(address);
     const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
@@ -77,7 +78,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
     const signer = provider.getSigner(address);
     const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
@@ -137,7 +138,7 @@ export const changeRedeem = createAsyncThunk("stake/changeRedeem", async ({ acti
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
     const signer = provider.getSigner(address);
     const redeem = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, signer);
 
@@ -178,7 +179,7 @@ export const changeStake = createAsyncThunk("stake/changeStake", async ({ action
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
     const signer = provider.getSigner(address);
     const staking = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, signer);
     const stakingHelper = new ethers.Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, signer);

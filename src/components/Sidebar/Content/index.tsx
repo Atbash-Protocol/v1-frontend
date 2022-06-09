@@ -19,8 +19,9 @@ import useENS from "hooks/useENS";
 import Davatar from "@davatar/react";
 
 import { useTranslation } from "react-i18next";
-import { getAddresses } from "constants/addresses";
+import { getAddressesAsync, IAddresses } from "constants/addresses";
 import { DEFAULT_NETWORK } from "constants/blockchain";
+import { useEffect, useState } from "react";
 
 function NavContent() {
     const { t } = useTranslation();
@@ -29,7 +30,31 @@ function NavContent() {
     const { bonds } = useBonds();
     const { ensName } = useENS(address);
 
-    const addresses = getAddresses(DEFAULT_NETWORK);
+    // const addresses = getAddresses(DEFAULT_NETWORK);
+    const initialState: IAddresses = {
+        BASH_ADDRESS: "",
+        BASH_BONDING_CALC_ADDRESS: "",
+        BASH_DAI_BOND_ADDRESS: "",
+        BASH_DAI_LP_ADDRESS: "",
+        DAI_ADDRESS: "",
+        DAI_BOND_ADDRESS: "",
+        DAO_ADDRESS: "",
+        REDEEM_ADDRESS: "",
+        SBASH_ADDRESS: "",
+        STAKING_ADDRESS: "",
+        STAKING_HELPER_ADDRESS: "",
+        TREASURY_ADDRESS: "",
+        WSBASH_ADDRESS: "",
+    };
+    const [addresses, setAddresses] = useState<IAddresses>(initialState);
+    const loadAddresses = async () => {
+        const addresses = await getAddressesAsync(DEFAULT_NETWORK);
+        setAddresses(addresses);
+    };
+    useEffect(() => {
+        loadAddresses();
+    }, []);
+
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
