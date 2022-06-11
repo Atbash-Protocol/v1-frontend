@@ -9,19 +9,19 @@ Object {
         class="MuiGrid-root MuiGrid-container css-14b6npa-MuiGrid-root"
       >
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
         >
           {"initialData":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"}}
            
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1i13btd-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-2 css-hhvbpy-MuiGrid-root"
         >
           {"currentDay":1,"minDays":1,"maxDays":365}
            
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
         >
           {"data":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"},"initialPrice":"10","duration":1}
            
@@ -34,19 +34,19 @@ Object {
       class="MuiGrid-root MuiGrid-container css-14b6npa-MuiGrid-root"
     >
       <div
-        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
       >
         {"initialData":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"}}
          
       </div>
       <div
-        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1i13btd-MuiGrid-root"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-2 css-hhvbpy-MuiGrid-root"
       >
         {"currentDay":1,"minDays":1,"maxDays":365}
          
       </div>
       <div
-        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
       >
         {"data":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"},"initialPrice":"10","duration":1}
          
