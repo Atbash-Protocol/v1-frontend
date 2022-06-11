@@ -19,7 +19,7 @@ const BSlider = styled(Slider)({
 
 const DaysPicker = ({ currentDay, onChange, minDays, maxDays }: DaysPickerProps) => {
     const { t } = useTranslation();
-    const isMobile = useMediaQuery(theme.breakpoints.up('xs'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleChange = (event: Event, sliderValue: number | Array<number>) => {
         event.preventDefault();
