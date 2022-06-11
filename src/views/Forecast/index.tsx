@@ -8,8 +8,8 @@ import { selectSBASHBalance } from 'store/modules/account/account.selectors';
 import { selectComputedMarketPrice } from 'store/modules/markets/markets.selectors';
 import { selectStakingRebasePercentage } from 'store/modules/metrics/metrics.selectors';
 
-import ForecastMetrics from './components/ForecastMetrics';
-import Form from './components/Form';
+import Dashboard from './components/Dashboard';
+import ForecastMetrics from './components/Dashboard/components/ForecastMetrics';
 
 function Forecast() {
     const { t } = useTranslation();
@@ -27,9 +27,9 @@ function Forecast() {
                 <>{t('globe:ForecastWarning')} </>
             </Typography>
 
-            <ForecastMetrics />
+            <ForecastMetrics {...{ BASHPrice, stakingPercentage, SBASHBalance }} />
 
-            <Form {...{ BASHPrice, stakingPercentage, SBASHBalance }} />
+            <Dashboard {...{ BASHPrice, stakingPercentage, SBASHBalance }} />
         </BCard>
     );
 }
