@@ -5,7 +5,7 @@ import { Box, Skeleton, Typography, useMediaQuery } from '@mui/material';
 import { theme } from 'constants/theme';
 
 export const MenuMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null }) => {
-    const isMobile = useMediaQuery(theme.breakpoints.up('xs'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: isMobile ? 'left' : 'center' }}>
