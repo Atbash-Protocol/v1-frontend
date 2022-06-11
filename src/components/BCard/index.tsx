@@ -8,7 +8,12 @@ export const BCard = ({ title, children, zoom, className }: { title: string; chi
             className={className}
             sx={{
                 padding: theme.spacing(4),
-                marginRight: theme.spacing(4),
+                [theme.breakpoints.up('xs')]: {
+                    margin: '.5rem',
+                },
+                [theme.breakpoints.down('xs')]: {
+                    margin: '1rem',
+                },
                 '@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none)': {
                     background: theme.palette.cardBackground.main,
                     backdropFilter: 'blur(100px)',

@@ -34,13 +34,13 @@ const Dashboard = ({ BASHPrice, stakingPercentage, SBASHBalance }: ForecastFormP
 
     return (
         <Grid container mt={theme.spacing(4)}>
-            <Grid item xs={5}>
+            <Grid item xs={12} sm={5}>
                 <ForecastConfiguration onConfigurationChange={setFormData} initialData={formData} />
             </Grid>
-            <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Grid item xs={12} sm={2} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <DaysPicker currentDay={days} onChange={setDays} minDays={MIN_DAYS} maxDays={MAX_DAYS} />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={12} sm={5}>
                 <ForecastDetails data={formData} initialPrice={BASHPrice} duration={days} />
             </Grid>
         </Grid>
