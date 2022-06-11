@@ -30,7 +30,9 @@ const ForecastDetails = ({ data, duration, initialPrice }: ForecastDetailsProps)
     ].map(({ key, value }, index) => {
         return (
             <Box key={index} sx={{ justifyContent: 'space-between', color: 'white', display: 'inline-flex', width: '100%', mt: theme.spacing(2) }}>
-                <Typography variant="body1">{t(key)}</Typography>
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    {t(key)}
+                </Typography>
                 <Typography variant="body1" noWrap>
                     {value}
                 </Typography>
@@ -40,7 +42,9 @@ const ForecastDetails = ({ data, duration, initialPrice }: ForecastDetailsProps)
 
     const lambos = (
         <Box key="lambos" sx={{ justifyContent: 'space-between', color: 'white', display: 'inline-flex', width: '100%', mt: theme.spacing(2) }}>
-            <Typography variant="body1">{t('globe:PotentialNumberLambo')}</Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                {t('globe:PotentialNumberLambo')}
+            </Typography>
             <Typography variant="body1">{nbLambo}</Typography>
         </Box>
     );
