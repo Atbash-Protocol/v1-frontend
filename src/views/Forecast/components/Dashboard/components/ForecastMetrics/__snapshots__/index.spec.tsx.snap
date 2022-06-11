@@ -1,68 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Forecast renders 1`] = `
+exports[`Metrics renders correctly 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div
-        class="MuiBox-root css-8fs7kz"
+        class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-mhc70k-MuiGrid-root"
       >
         <div
-          class="MuiBox-root css-19na2ny"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
         >
-          <h4
-            class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
-          >
-            globe:ForecastTitle
-          </h4>
+           
+          {"value":"$10.00"}
         </div>
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-15j5nkq-MuiTypography-root"
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
         >
-          globe:EstimateYourReturns
            
-        </p>
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-18y7bwq-MuiTypography-root"
+          {"value":"$12"}
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
         >
-          globe:ForecastWarning
            
-        </p>
-        Forecast Metrics
-        Dashboard 
-        {"BASHPrice":"82.23","stakingPercentage":"20","SBASHBalance":"10.93"}
+          {"value":"50.00 SBASH"}
+        </div>
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      class="MuiBox-root css-8fs7kz"
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-mhc70k-MuiGrid-root"
     >
       <div
-        class="MuiBox-root css-19na2ny"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
       >
-        <h4
-          class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
-        >
-          globe:ForecastTitle
-        </h4>
+         
+        {"value":"$10.00"}
       </div>
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-15j5nkq-MuiTypography-root"
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
       >
-        globe:EstimateYourReturns
          
-      </p>
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-18y7bwq-MuiTypography-root"
+        {"value":"$12"}
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
       >
-        globe:ForecastWarning
          
-      </p>
-      Forecast Metrics
-      Dashboard 
-      {"BASHPrice":"82.23","stakingPercentage":"20","SBASHBalance":"10.93"}
+        {"value":"50.00 SBASH"}
+      </div>
     </div>
   </div>,
   "debug": [Function],

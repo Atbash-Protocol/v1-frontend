@@ -1,5 +1,4 @@
 import Decimal from 'decimal.js';
-import { utils } from 'ethers';
 import { createSelector } from 'reselect';
 
 import { formatUSDFromDecimal } from 'helpers/price-units';

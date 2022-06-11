@@ -13,7 +13,7 @@ interface DaysPickerProps {
     maxDays: number;
 }
 
-const BSlider = styled(Slider)({ color: blue[300] });
+const BSlider = styled(Slider)({ color: blue[600] });
 
 const DaysPicker = ({ currentDay, onChange, minDays, maxDays }: DaysPickerProps) => {
     const { t } = useTranslation();
@@ -24,11 +24,11 @@ const DaysPicker = ({ currentDay, onChange, minDays, maxDays }: DaysPickerProps)
     };
 
     return (
-        <Box width={100} height={'10rem'} sx={{ justifyContent: 'center', alignItems: 'center' }} pb={theme.spacing(2)}>
+        <Box height={'90%'} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }} pb={theme.spacing(2)}>
             <Typography variant="body1" color={theme.palette.primary.light} mb={theme.spacing(2)}>
                 {t('common:day_other', { count: currentDay })}
             </Typography>
-            <BSlider orientation="vertical" defaultValue={20} value={currentDay} min={minDays} max={maxDays} valueLabelDisplay="auto" onChange={handleChange} />
+            <BSlider orientation="vertical" defaultValue={20} value={currentDay} min={minDays} max={maxDays} size={'medium'} valueLabelDisplay="auto" onChange={handleChange} />
         </Box>
     );
 };
