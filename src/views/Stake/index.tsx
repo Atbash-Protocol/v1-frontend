@@ -92,7 +92,7 @@ function Stake() {
             if (token === "sBASH") return unstakeAllowance > 0;
             return 0;
         },
-        [stakeAllowance],
+        [stakeAllowance, unstakeAllowance],
     );
 
     const changeView = (newView: number) => () => {

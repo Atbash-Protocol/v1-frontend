@@ -1,11 +1,12 @@
 import { ethers } from "ethers";
 import { getAddressesAsync } from "../../constants";
-import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract } from "../../abi";
+import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract, PresaleContract, AbashContract } from "../../abi";
 import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { RootState } from "../store";
 import allBonds from "../../helpers/bond";
+import { ArrowBackSharp } from "@material-ui/icons";
 
 interface ILoadAppDetails {
     networkID: number;
@@ -19,9 +20,14 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
 
     // const ohmPrice = getTokenPrice("OHM");
     // const ohmAmount = 1512.12854088 * ohmPrice;
+    // const presaleContract = new ethers.Contract(addresses.PRESALE_ADDRESS, PresaleContract, provider);
+    const abashContract = new ethers.Contract(addresses.ABASH_ADDRESS, AbashContract, provider);
+    const redeemableAbash = (await abashContract.totalSupply())
+        .sub(await abashContract.balanceOf(addresses.PRESALE_ADDRESS))
+        .sub(await abashContract.balanceOf(addresses.PRESALE_REDEMPTION_ADDRESS));
 
     const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
-    // const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
+    // disable: const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
     const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
     const BASHContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
     const DAIContract = new ethers.Contract(addresses.DAI_ADDRESS, TimeTokenContract, provider); // todo: DAI
@@ -98,6 +104,7 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
         redeemRfv,
         redeemSbSent,
         redeemMimAvailable,
+        redeemableAbash: Number(ethers.utils.formatUnits(redeemableAbash, 18)),
     };
 });
 
@@ -127,6 +134,7 @@ export interface IAppSlice {
     redeemRfv: number;
     redeemSbSent: number;
     redeemMimAvailable: number;
+    redeemableAbash: number;
 }
 
 const appSlice = createSlice({

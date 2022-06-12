@@ -18,4 +18,5 @@ export const messages = {
     slippage_too_small: i18n.t("messages.SlippageTooSmall"),
     slippage_too_big: i18n.t("messages.SlippageTooBig"),
     your_balance_update_soon: i18n.t("messages.YourBalanceUpdateSoon"),
+    before_redeem: i18n.t("messages.BeforeRedeem"),
 };

@@ -26,12 +26,14 @@ export const getBalances = createAsyncThunk("account/getBalances", async ({ addr
     const wsBASHBalance = await wsBASHContract.balanceOf(address);
     const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, provider);
     const BASHbalance = await bashContract.balanceOf(address);
-
+    const aBashContract = new ethers.Contract(addresses.ABASH_ADDRESS, SBashTokenContract, provider); // todo: fix contract
+    const aBashBalance = await aBashContract.balanceOf(address);
     return {
         balances: {
             wsBASH: ethers.utils.formatEther(wsBASHBalance),
             sBASH: ethers.utils.formatUnits(sBASHBalance, "gwei"),
             BASH: ethers.utils.formatUnits(BASHbalance, "gwei"),
+            aBash: ethers.utils.formatUnits(aBashBalance),
         },
     };
 });
@@ -44,6 +46,8 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     let unstakeAllowance = 0;
     let wrapAllowance = 0;
     let redeemAllowance = 0;
+    let aBashBalance = 0;
+    let aBashRedeemAllowance = 0;
 
     // const addresses = getAddresses(networkID);
     const addresses = await getAddressesAsync(networkID);
@@ -67,14 +71,22 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
         wsBASHBalance = await wsBASHContract.balanceOf(address);
     }
 
+    if (addresses.ABASH_ADDRESS) {
+        const abashContract = new ethers.Contract(addresses.ABASH_ADDRESS, MimTokenContract, provider); // todo: use abash contract
+        aBashBalance = await abashContract.balanceOf(address);
+        aBashRedeemAllowance = await abashContract.allowance(address, addresses.PRESALE_REDEMPTION_ADDRESS);
+    }
+
     return {
         balances: {
             wsBASH: ethers.utils.formatEther(wsBASHBalance),
             sBASH: ethers.utils.formatUnits(sBASHBalance, "gwei"),
             BASH: ethers.utils.formatUnits(BASHbalance, "gwei"),
+            aBash: ethers.utils.formatUnits(aBashBalance),
         },
         redeeming: {
             BASH: Number(redeemAllowance),
+            aBash: Number(aBashRedeemAllowance),
         },
         staking: {
             BASH: Number(stakeAllowance),
@@ -220,10 +232,12 @@ export interface IAccountSlice {
         wsBASH: string;
         sBASH: string;
         BASH: string;
+        aBash: string;
     };
     loading: boolean;
     redeeming: {
         BASH: number;
+        aBash: number;
     };
     staking: {
         BASH: number;
@@ -238,10 +252,10 @@ export interface IAccountSlice {
 const initialState: IAccountSlice = {
     loading: true,
     bonds: {},
-    balances: { wsBASH: "", sBASH: "", BASH: "" },
+    balances: { wsBASH: "", sBASH: "", BASH: "", aBash: "" },
     staking: { BASH: 0, sBASH: 0 },
     wrapping: { sBASHAllowance: 0 },
-    redeeming: { BASH: 0 },
+    redeeming: { BASH: 0, aBash: 0 },
     tokens: {},
 };
 

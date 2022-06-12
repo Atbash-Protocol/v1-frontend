@@ -17,3 +17,6 @@ export { abi as TreasuryContract } from "./TreasuryContract.json";
 export { abi as ZapinContract } from "./ZapinContract.json";
 export { abi as TraderZapinContract } from "./TraderZapinContract.json";
 export { abi as RedeemContract } from "./Redeem.json";
+export { abi as PresaleRedemption } from "./PresaleRedemption.json";
+export { abi as PresaleContract } from "./PresaleContract.json";
+export { abi as AbashContract } from "./tokens/AbashContract.json";

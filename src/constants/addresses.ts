@@ -73,6 +73,9 @@ export interface IAddresses {
     BASH_DAI_LP_ADDRESS: string; // reserves
     BASH_DAI_BOND_ADDRESS: string;
     DAI_BOND_ADDRESS: string;
+    ABASH_ADDRESS: string;
+    PRESALE_ADDRESS: string;
+    PRESALE_REDEMPTION_ADDRESS: string;
 }
 
 export const getAddresses = (networkID: number) => {
@@ -111,10 +114,13 @@ async function getNetworkDeploymentAddresses(deploymentNetwork: string): Promise
         STAKING_HELPER_ADDRESS: await getAddress("StakingHelper"),
         BASH_BONDING_CALC_ADDRESS: await getAddress("ATBASHBondingCalculator"),
         TREASURY_ADDRESS: await getAddress("BashTreasury"),
-        REDEEM_ADDRESS: "", // todo:
+        REDEEM_ADDRESS: "", // todo: snowbank redemption, not needed
         BASH_DAI_LP_ADDRESS: await getAddress("BashDaiUniswapPairV2"),
         BASH_DAI_BOND_ADDRESS: await getAddress("bashDaiBondDepository"),
         DAI_BOND_ADDRESS: await getAddress("atbashBondDepository"),
+        ABASH_ADDRESS: await getAddress("aBASHERC20"),
+        PRESALE_ADDRESS: await getAddress("Presale"),
+        PRESALE_REDEMPTION_ADDRESS: await getAddress("PresaleRedemption"),
     };
 }
 

@@ -1,7 +1,7 @@
 {
-    "StakeTitle": "Redeem",
+    "RedeemTitle": "Redeem",
     "ConnectYourWalletToStake": "Connect your wallet to redeem MIM tokens!",
-    "Stake": "Redeem",
+    "Redeem": "Redeem",
     "Unstake": "Unstake",
     "StakingSB": "Redeem MIM",
     "UnstakingStakedBASH": "Unstaking sBASH",
@@ -14,9 +14,9 @@
     "ValueOfYourBASH": "Value of Your BASH",
     "ValueOfYourStakedBASH": "Value of Your Staked BASH",
     "ValueOfYourWrappedStakedSB": "Value of Your Wrapped Staked BASH",
-    "Staking": "redeeming",
+    "Redeeming": "redeeming",
     "Unstaking": "unstaking",
-    "ApproveStaking": "Approve Redeeming",
+    "ApproveRedeeming": "Approve Redeeming",
     "ApproveUnstaking": "Approve Unstaking",
     "ApproveNote": "Note: The \"Approve\" transaction is only needed when redeeming for the first time; subsequent redeems only requires you to perform the \"Redeem\" transaction.",
     "ValueOfYourNextRewardAmount": "Value of Your Next Reward Amount"

@@ -114,12 +114,11 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
 
     const stakeAllowance = await bashContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
     const unstakeAllowance = await sBASHContract.allowance(address, addresses.STAKING_ADDRESS);
-    console.log("Stacking allowance: ", stakeAllowance);
     return dispatch(
         fetchAccountSuccess({
             staking: {
-                sbStake: Number(stakeAllowance),
-                sBASHUnstake: Number(unstakeAllowance),
+                BASH: Number(stakeAllowance),
+                sBASH: Number(unstakeAllowance),
             },
         }),
     );

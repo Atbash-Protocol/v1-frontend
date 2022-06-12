@@ -14,6 +14,7 @@ export interface IAccountBalances {
         wsBASH: string;
         sBASH: string;
         BASH: string;
+        aBash: string;
     };
 }
 
@@ -28,9 +29,11 @@ export interface IUserAccountDetails {
         BASH: string;
         sBASH: string;
         wsBASH: string;
+        aBash: string;
     };
     redeeming: {
         BASH: number;
+        aBash: number;
     };
     staking: {
         BASH: number;

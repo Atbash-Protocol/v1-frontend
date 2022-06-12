@@ -45,6 +45,9 @@ function NavContent() {
         STAKING_HELPER_ADDRESS: "",
         TREASURY_ADDRESS: "",
         WSBASH_ADDRESS: "",
+        ABASH_ADDRESS: "",
+        PRESALE_ADDRESS: "",
+        PRESALE_REDEMPTION_ADDRESS: "",
     };
     const [addresses, setAddresses] = useState<IAddresses>(initialState);
     const loadAddresses = async () => {

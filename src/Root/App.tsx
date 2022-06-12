@@ -9,7 +9,7 @@ import { IReduxState } from "store/slices/state.interface";
 import Loading from "components/Loader";
 import useBonds from "hooks/bonds";
 import ViewBase from "layout/ViewBase";
-import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } from "../views";
+import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap, PresaleRedemption } from "../views";
 
 import "./style.scss";
 import useTokens from "../hooks/tokens";
@@ -113,7 +113,7 @@ function App() {
                     <Wrap />
                 </Route>
 
-                <Route path="/redeem">
+                <Route path="/redeem2">
                     <Redeem />
                 </Route>
 
@@ -130,6 +130,10 @@ function App() {
                         );
                     })}
                     <ChooseBond />
+                </Route>
+
+                <Route path="/redeem">
+                    <PresaleRedemption />
                 </Route>
 
                 <Route component={NotFound} />
