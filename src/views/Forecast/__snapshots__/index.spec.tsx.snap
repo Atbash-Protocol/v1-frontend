@@ -6,7 +6,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="MuiBox-root css-8fs7kz"
+        class="MuiBox-root css-1vv71kp"
       >
         <div
           class="MuiBox-root css-19na2ny"
@@ -14,21 +14,30 @@ Object {
           <h4
             class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
           >
-            bond:Forecast
+            globe:ForecastTitle
           </h4>
         </div>
         <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-15j5nkq-MuiTypography-root"
         >
-          ComingSoon
+          globe:EstimateYourReturns
            
         </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-18y7bwq-MuiTypography-root"
+        >
+          globe:ForecastWarning
+           
+        </p>
+        Forecast Metrics
+        Dashboard 
+        {"BASHPrice":"82.23","stakingPercentage":"20","SBASHBalance":"10.93"}
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      class="MuiBox-root css-8fs7kz"
+      class="MuiBox-root css-1vv71kp"
     >
       <div
         class="MuiBox-root css-19na2ny"
@@ -36,15 +45,24 @@ Object {
         <h4
           class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
         >
-          bond:Forecast
+          globe:ForecastTitle
         </h4>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-15j5nkq-MuiTypography-root"
       >
-        ComingSoon
+        globe:EstimateYourReturns
          
       </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-18y7bwq-MuiTypography-root"
+      >
+        globe:ForecastWarning
+         
+      </p>
+      Forecast Metrics
+      Dashboard 
+      {"BASHPrice":"82.23","stakingPercentage":"20","SBASHBalance":"10.93"}
     </div>
   </div>,
   "debug": [Function],

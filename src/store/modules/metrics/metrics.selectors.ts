@@ -14,6 +14,10 @@ export const selectStakingRebaseAmount = createSelector([selectStakingReward, se
     return new Decimal(stakingReward.toString()).div(new Decimal(circSupply).mul(10 ** 9)); // rewardYield rate for this epoch
 });
 
+export const selectStakingRebasePercentage = createSelector([selectStakingRebaseAmount], amount => {
+    return (amount || new Decimal(0)).mul(100);
+});
+
 export const selectStakingRewards = createSelector([selectStakingRebaseAmount], stakingRebase => {
     if (stakingRebase === null) return null;
 
