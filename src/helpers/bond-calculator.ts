@@ -1,10 +1,10 @@
-import { StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Networks } from "../constants/blockchain";
-import { BondingCalcContract } from "../abi";
-import { ethers } from "ethers";
-import { getAddresses } from "../constants/addresses";
+import { Contract, providers } from 'ethers';
 
-export function getBondCalculator(networkID: Networks, provider: StaticJsonRpcProvider) {
+import { BondingCalcContract } from '../abi';
+import { getAddresses } from '../constants/addresses';
+import { Networks } from '../constants/blockchain';
+
+export function getBondCalculator(networkID: Networks, provider: providers.StaticJsonRpcProvider) {
     const addresses = getAddresses(networkID);
-    return new ethers.Contract(addresses.BASH_BONDING_CALC_ADDRESS, BondingCalcContract, provider);
+    return new Contract(addresses.BASH_BONDING_CALC_ADDRESS, BondingCalcContract, provider);
 }

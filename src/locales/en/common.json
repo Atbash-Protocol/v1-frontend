@@ -1,12 +1,12 @@
 {
-    "hello": "hello world!",
     "PageNotFound": "Page not found",
-    "day_one": "day",
-    "day_other": "days",
-    "hour_one": "hour",
-    "hour_other": "hours",
-    "min_one": "min",
-    "min_other": "mins",
+    "approximativaly": "Approx",
+    "day_one": "{{count}} day",
+    "day_other": "{{count}} days",
+    "hour_one": "{{count}} hour",
+    "hour_other": "{{count}} hours",
+    "min_one": "{{count}} min",
+    "min_other": "{{count}} mins",
     "Amount": "Amount",
     "Max": "Max",
     "Approve": "Approve",
@@ -74,5 +74,9 @@
         "InsufficientBalance": "Insufficient balance to make a transaction",
         "BondTooSmall": "Bond too small",
         "UserDeniedSignature": "User denied transaction signature"
+    },
+    "errors": {
+        "critical": "Critical error",
+        "network": "This is due to a badly initialized app. Please change network and refresh the page"
     }
 }

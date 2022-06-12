@@ -1,93 +1,94 @@
-import { useState } from "react";
-import { getAddresses, TOKEN_DECIMALS, DEFAULD_NETWORK } from "../../../constants";
-import { useSelector } from "react-redux";
-import { Link, Fade, Popper } from "@material-ui/core";
-import "./atbash-menu.scss";
-import { IReduxState } from "../../../store/slices/state.interface";
-import { getTokenUrl } from "../../../helpers";
+import React, { useState } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { Box, Button, Divider, Link, Fade, Popper, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-const addTokenToWallet = (tokenSymbol: string, tokenAddress: string) => async () => {
-    const tokenImage = getTokenUrl(tokenSymbol.toLowerCase());
+import BASH_IMG from 'assets/tokens/bash.png';
+import SBASH_IMG from 'assets/tokens/sBASH.png';
+import { theme } from 'constants/theme';
+import { useWeb3Context } from 'contexts/web3/web3.context';
+import { useSignerConnected } from 'contexts/web3/web3.hooks';
+import { getBuyLink } from 'lib/uniswap/link';
 
+import { DEFAULT_NETWORK, getAddresses, TOKEN_DECIMALS } from '../../../constants';
+
+const addTokenToWallet = (tokenSymbol: string, tokenAddress: string, tokenImagePath: string) => async () => {
     if (window.ethereum) {
-        try {
-            await window.ethereum.request({
-                method: "wallet_watchAsset",
-                params: {
-                    type: "ERC20",
-                    options: {
-                        address: tokenAddress,
-                        symbol: tokenSymbol,
-                        decimals: TOKEN_DECIMALS,
-                        image: tokenImage,
-                    },
+        await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20',
+                options: {
+                    address: tokenAddress,
+                    symbol: tokenSymbol,
+                    decimals: TOKEN_DECIMALS,
+                    image: [window.location.origin, tokenImagePath].join('/'),
                 },
-            });
-        } catch (error) {
-            console.log(error);
-        }
+            },
+        });
     }
 };
 
 function AtbashMenu() {
     const { t } = useTranslation();
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const isEthereumAPIAvailable = window.ethereum;
+    const isUserSigned = useSignerConnected();
+    const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
-    const networkID = useSelector<IReduxState, number>(state => {
-        return (state.app && state.app.networkID) || DEFAULD_NETWORK;
-    });
+    const {
+        state: { networkID },
+    } = useWeb3Context();
+
+    if (!networkID || networkID !== DEFAULT_NETWORK) return null;
 
     const addresses = getAddresses(networkID);
 
     const SBASH_ADDRESS = addresses.SBASH_ADDRESS;
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
+    const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: React.MouseEvent) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
 
     const open = Boolean(anchorEl);
+    const id = open ? 'menu-popover' : undefined;
 
     return (
-        <div className="bash-menu-root" onMouseEnter={e => handleClick(e)} onMouseLeave={e => handleClick(e)}>
-            <div className="bash-menu-btn">
-                <p>{t("BuyBASH")}</p>
-            </div>
+        <Box mr={1}>
+            <Button sx={{ padding: theme.spacing(1) }} aria-describedby={id} onClick={e => handleClick(e)}>
+                <Typography>
+                    <>{t('BuyBASH')}</>
+                </Typography>
+            </Button>
 
-            <Popper className="bash-menu-popper" open={open} anchorEl={anchorEl} transition>
+            <Popper id={id} open={open} anchorEl={anchorEl} transition>
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={200}>
-                        <div className="tooltip">
-                            <Link
-                                className="tooltip-item"
-                                href={`https://www.traderjoexyz.com/trade?inputCurrency=0x130966628846bfd36ff31a822705796e8cb8c18d&outputCurrency=${BASH_ADDRESS}`}
-                                target="_blank"
-                            >
-                                <p>{t("BuyOnUniswap")}</p>
+                        <Box sx={{ background: theme.palette.cardBackground.light, padding: theme.spacing(2) }}>
+                            <Link href={getBuyLink(DAI_ADDRESS, BASH_ADDRESS)} component={Typography} target="_blank">
+                                <>{t('BuyOnUniswap')}</>
                             </Link>
 
-                            {isEthereumAPIAvailable && (
-                                <div className="add-tokens">
-                                    <div className="divider" />
-                                    <p className="add-tokens-title">{t("AddTokenToWallet")}</p>
-                                    <div className="divider" />
-                                    <div className="tooltip-item" onClick={addTokenToWallet("BASH", BASH_ADDRESS)}>
-                                        <p>↑ BASH</p>
-                                    </div>
-                                    <div className="tooltip-item" onClick={addTokenToWallet("sBASH", SBASH_ADDRESS)}>
-                                        <p>↑ sBASH</p>
-                                    </div>
-                                </div>
+                            {isUserSigned && (
+                                <Box sx={{ color: theme.palette.primary.light }}>
+                                    <Typography>
+                                        <>{t('AddTokenToWallet')}</>
+                                    </Typography>
+                                    <Divider />
+                                    <Typography sx={{ cursor: 'pointer' }} onClick={addTokenToWallet('BASH', BASH_ADDRESS, BASH_IMG)}>
+                                        ↑ BASH
+                                    </Typography>
+                                    <Typography sx={{ cursor: 'pointer' }} onClick={() => addTokenToWallet('sBASH', SBASH_ADDRESS, SBASH_IMG)}>
+                                        ↑ sBASH
+                                    </Typography>
+                                </Box>
                             )}
-                        </div>
+                        </Box>
                     </Fade>
                 )}
             </Popper>
-        </div>
+        </Box>
     );
 }
 

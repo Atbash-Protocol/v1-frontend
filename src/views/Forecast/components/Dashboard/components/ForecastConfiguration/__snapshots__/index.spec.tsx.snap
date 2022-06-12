@@ -1,0 +1,464 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Configuration renders 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="MuiBox-root css-vzmj5c"
+      >
+        <div
+          class="MuiBox-root css-1by3yj5"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+          >
+            globe:StakedSBAmount
+          </p>
+          <div
+            class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+          >
+            <input
+              class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+              inputmode="numeric"
+              name="stakedSBAmount"
+              pattern="^[0-9]*[.,]?[0-9]*$"
+              placeholder="globe:EnterStakedBASHAmount"
+              type="number"
+              value="122.01"
+            />
+            <div
+              class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+            >
+              <div
+                class="MuiBox-root css-og7htl"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                >
+                  Max
+                </p>
+              </div>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="css-hdw1oc"
+              >
+                <span
+                  class="notranslate"
+                >
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-1yuhvjn"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+          >
+            globe:RewardYieldPercent
+          </p>
+          <div
+            class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+          >
+            <input
+              class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+              inputmode="numeric"
+              name="rewardYieldPercent"
+              pattern="^[0-9]*[.,]?[0-9]*$"
+              placeholder="globe:EnterRewardYieldPercent"
+              type="number"
+              value="120"
+            />
+            <div
+              class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+            >
+              <div
+                class="MuiBox-root css-og7htl"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                >
+                  globe:Current
+                </p>
+              </div>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="css-hdw1oc"
+              >
+                <span
+                  class="notranslate"
+                >
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-1yuhvjn"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+          >
+            globe:BASHPriceAtPurchase
+          </p>
+          <div
+            class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+          >
+            <input
+              class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+              inputmode="numeric"
+              name="BASHPriceAtPurchase"
+              pattern="^[0-9]*[.,]?[0-9]*$"
+              placeholder="globe:EnterBuyPrice"
+              type="number"
+              value="80"
+            />
+            <div
+              class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+            >
+              <div
+                class="MuiBox-root css-og7htl"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                >
+                  globe:Current
+                </p>
+              </div>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="css-hdw1oc"
+              >
+                <span
+                  class="notranslate"
+                >
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-1yuhvjn"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+          >
+            globe:FutureBASHMarketPrice
+          </p>
+          <div
+            class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+          >
+            <input
+              class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+              inputmode="numeric"
+              name="futureBASHMarketPrice"
+              pattern="^[0-9]*[.,]?[0-9]*$"
+              placeholder="globe:EnterFuturePrice"
+              type="number"
+              value="1200"
+            />
+            <div
+              class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+            >
+              <div
+                class="MuiBox-root css-og7htl"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                >
+                  globe:Current
+                </p>
+              </div>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="css-hdw1oc"
+              >
+                <span
+                  class="notranslate"
+                >
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="MuiBox-root css-vzmj5c"
+    >
+      <div
+        class="MuiBox-root css-1by3yj5"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+        >
+          globe:StakedSBAmount
+        </p>
+        <div
+          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+            inputmode="numeric"
+            name="stakedSBAmount"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder="globe:EnterStakedBASHAmount"
+            type="number"
+            value="122.01"
+          />
+          <div
+            class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+          >
+            <div
+              class="MuiBox-root css-og7htl"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+              >
+                Max
+              </p>
+            </div>
+          </div>
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-hdw1oc"
+            >
+              <span
+                class="notranslate"
+              >
+                ​
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-1yuhvjn"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+        >
+          globe:RewardYieldPercent
+        </p>
+        <div
+          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+            inputmode="numeric"
+            name="rewardYieldPercent"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder="globe:EnterRewardYieldPercent"
+            type="number"
+            value="120"
+          />
+          <div
+            class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+          >
+            <div
+              class="MuiBox-root css-og7htl"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+              >
+                globe:Current
+              </p>
+            </div>
+          </div>
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-hdw1oc"
+            >
+              <span
+                class="notranslate"
+              >
+                ​
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-1yuhvjn"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+        >
+          globe:BASHPriceAtPurchase
+        </p>
+        <div
+          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+            inputmode="numeric"
+            name="BASHPriceAtPurchase"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder="globe:EnterBuyPrice"
+            type="number"
+            value="80"
+          />
+          <div
+            class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+          >
+            <div
+              class="MuiBox-root css-og7htl"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+              >
+                globe:Current
+              </p>
+            </div>
+          </div>
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-hdw1oc"
+            >
+              <span
+                class="notranslate"
+              >
+                ​
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-1yuhvjn"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-1ypfif-MuiTypography-root"
+        >
+          globe:FutureBASHMarketPrice
+        </p>
+        <div
+          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-adornedEnd css-5z7mkc-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+            inputmode="numeric"
+            name="futureBASHMarketPrice"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder="globe:EnterFuturePrice"
+            type="number"
+            value="1200"
+          />
+          <div
+            class="MuiInputAdornment-root MuiInputAdornment-positionEnd css-1laqsz7-MuiInputAdornment-root"
+          >
+            <div
+              class="MuiBox-root css-og7htl"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+              >
+                globe:Current
+              </p>
+            </div>
+          </div>
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-hdw1oc"
+            >
+              <span
+                class="notranslate"
+              >
+                ​
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

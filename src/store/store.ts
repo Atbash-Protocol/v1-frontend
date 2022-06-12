@@ -1,18 +1,20 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 
-import accountReducer from "./slices/account-slice";
-import bondingReducer from "./slices/bond-slice";
-import appReducer from "./slices/app-slice";
-import pendingTransactionsReducer from "./slices/pending-txns-slice";
-import messagesReducer from "./slices/messages-slice";
+import newAccountReducer from './modules/account/account.slice';
+import mainReducer from './modules/app/app.slice';
+import boundReducer from './modules/bonds/bonds.slice';
+import marketReducer from './modules/markets/markets.slice';
+import messagesReducer from './modules/messages/messages.slice';
+import transactionsReducer from './modules/transactions/transactions.slice';
 
 const store = configureStore({
     reducer: {
-        account: accountReducer,
-        bonding: bondingReducer,
-        app: appReducer,
-        pendingTransactions: pendingTransactionsReducer,
+        bonds: boundReducer,
         messages: messagesReducer,
+        main: mainReducer,
+        markets: marketReducer,
+        account: newAccountReducer,
+        transactions: transactionsReducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });

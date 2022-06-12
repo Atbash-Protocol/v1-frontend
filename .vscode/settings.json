@@ -1,4 +1,16 @@
 {
     "i18n-ally.localesPaths": ["src/locales"],
-    "i18n-ally.keystyle": "flat"
+    "i18n-ally.keystyle": "flat",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": false
+    },
+    "search.exclude": {
+        "**/node_modules": false
+    }
 }
