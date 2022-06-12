@@ -51,7 +51,7 @@ describe('#selectStakingRebaseAmount', () => {
 });
 
 describe('#selectStakingRebasePercentage', () => {
-    it('returns the formatted percentage', () => {
+    it('returns the staking rebase percentage', () => {
         const state = {
             main: {
                 staking: { epoch: { distribute: BigNumber.from(1000 * 10 ** 9) } },
@@ -59,7 +59,7 @@ describe('#selectStakingRebasePercentage', () => {
             },
         };
 
-        expect(selectStakingRebasePercentage(state as any)?.toString()).toEqual('83.3333 %');
+        expect(selectStakingRebasePercentage(state as any)?.toString()).toEqual('83.333333333333333333');
     });
 });
 

@@ -1,9 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import createMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
-import { Web3Context } from 'contexts/web3/web3.context';
 
 import BInput from '.';
 
@@ -13,6 +8,7 @@ const renderComponent = (props: any) => {
 
 describe('BInput', () => {
     const props = {
+        name: 'inputName',
         defaultValue: 0,
         maxValue: 10,
         placeholder: 'placeholder',
@@ -38,6 +34,6 @@ describe('BInput', () => {
         fireEvent.change(input!, { target: { value: '20' } });
 
         expect(props.onChange).toHaveBeenCalledTimes(1);
-        expect(props.onChange).toHaveBeenCalledWith('20');
+        expect(props.onChange).toHaveBeenCalledWith({ [props.name]: '20' });
     });
 });
