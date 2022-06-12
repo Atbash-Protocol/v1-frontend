@@ -12,7 +12,7 @@ Object {
           class="MuiBox-root css-faoohn"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
           >
             globe:YourInitialInvestment
           </p>
@@ -26,7 +26,7 @@ Object {
           class="MuiBox-root css-faoohn"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
           >
             globe:CurrentWealth
           </p>
@@ -40,7 +40,7 @@ Object {
           class="MuiBox-root css-faoohn"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
           >
             globe:BASHRewardsEstimation
           </p>
@@ -54,7 +54,7 @@ Object {
           class="MuiBox-root css-faoohn"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
           >
             globe:PotentialReturn
           </p>
@@ -68,7 +68,7 @@ Object {
           class="MuiBox-root css-faoohn"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
           >
             globe:PotentialNumberLambo
           </p>
@@ -89,7 +89,7 @@ Object {
         class="MuiBox-root css-faoohn"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
         >
           globe:YourInitialInvestment
         </p>
@@ -103,7 +103,7 @@ Object {
         class="MuiBox-root css-faoohn"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
         >
           globe:CurrentWealth
         </p>
@@ -117,7 +117,7 @@ Object {
         class="MuiBox-root css-faoohn"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
         >
           globe:BASHRewardsEstimation
         </p>
@@ -131,7 +131,7 @@ Object {
         class="MuiBox-root css-faoohn"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
         >
           globe:PotentialReturn
         </p>
@@ -145,7 +145,7 @@ Object {
         class="MuiBox-root css-faoohn"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-ndaqpv-MuiTypography-root"
         >
           globe:PotentialNumberLambo
         </p>
