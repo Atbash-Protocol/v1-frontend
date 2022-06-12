@@ -1,31 +1,23 @@
-import { lazy, Suspense } from 'react';
+import React, { useEffect, useState } from "react";
+import App from "./App";
+import { HashRouter } from "react-router-dom";
+import { loadTokenPrices } from "../helpers";
+import Loading from "../components/Loader";
 
-import { BrowserRouter } from 'react-router-dom';
+function Root() {
+    const [loading, setLoading] = useState(true);
 
-import Loader from 'components/Loader';
-import { useWeb3ContextInitialized } from 'contexts/web3/web3.hooks';
-import ViewBase from 'layout/ViewBase';
+    useEffect(() => {
+        loadTokenPrices().then(() => setLoading(false));
+    }, []);
 
-const App = lazy(() => import('./App'));
-
-function Root(): JSX.Element {
-    const web3ContextReady = useWeb3ContextInitialized();
-
-    if (!web3ContextReady) return <Loader />;
+    if (loading) return <Loading />;
 
     return (
-        <Suspense fallback={<Loader />}>
+        <HashRouter>
             <App />
-        </Suspense>
+        </HashRouter>
     );
 }
 
-// DOC : Using BrowserRouter before viewbase because of the <Link> components in Menu
-export const RenderWithViewBase = () => (
-    <BrowserRouter>
-        <ViewBase>
-            <Root />
-        </ViewBase>
-    </BrowserRouter>
-);
-export default RenderWithViewBase;
+export default Root;

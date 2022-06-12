@@ -1,55 +1,60 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useWeb3Context } from "../../../hooks";
+import { DEFAULD_NETWORK } from "../../../constants";
+import { IReduxState } from "../../../store/slices/state.interface";
+import { IPendingTxn } from "../../../store/slices/pending-txns-slice";
+import "./connect-menu.scss";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { colors } from "@material-ui/core";
 
-import { Box, Button } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-
-import { theme } from 'constants/theme';
-import { Web3Context } from 'contexts/web3/web3.context';
-import { useSignerConnected, useGoodNetworkCheck } from 'contexts/web3/web3.hooks';
-import { selectPendingTransactions } from 'store/modules/transactions/transactions.selectors';
+import { useTranslation } from "react-i18next";
 
 function ConnectMenu() {
     const { t } = useTranslation();
-    const { memoConnect, memoDisconnect, state } = useContext(Web3Context);
+    const { connect, disconnect, connected, web3, providerChainID, checkWrongNetwork } = useWeb3Context();
+    const dispatch = useDispatch();
+    const [isConnected, setConnected] = useState(connected);
 
-    const isUserSigned = useSignerConnected();
+    let pendingTransactions = useSelector<IReduxState, IPendingTxn[]>(state => {
+        return state.pendingTransactions;
+    });
 
-    const isUserOnGoodNetwork = useGoodNetworkCheck();
+    let buttonText = t("ConnectWallet");
+    let clickFunc: any = connect;
+    let buttonStyle = {};
 
-    const pendingTransactions = useSelector(selectPendingTransactions);
+    if (isConnected) {
+        buttonText = t("Disconnect");
+        clickFunc = disconnect;
+    }
 
-    const handleButtonClick = useCallback(() => {
-        return isUserSigned ? memoDisconnect(state.signer) : memoConnect();
-    }, [isUserSigned, memoConnect, memoDisconnect]);
+    if (pendingTransactions && pendingTransactions.length > 0) {
+        buttonText = t("CountPending", { count: pendingTransactions.length });
+        clickFunc = () => {};
+    }
 
-    const [buttonText, setButtonText] = useState(t('ConnectWallet'));
+    if (isConnected && providerChainID !== DEFAULD_NETWORK) {
+        buttonText = t("WrongNetwork");
+        buttonStyle = { backgroundColor: "rgb(255, 67, 67)", color: "#ffffff" };
+        clickFunc = () => {
+            checkWrongNetwork();
+        };
+    }
 
     useEffect(() => {
-        if (isUserSigned) {
-            if (!isUserOnGoodNetwork) {
-                setButtonText(t('WrongNetwork'));
-            } else if (pendingTransactions.length > 0) {
-                setButtonText(t('CountPending', { count: pendingTransactions.length })); // Ususally user can't have more than 1
-            } else {
-                setButtonText(t('Disconnect'));
-            }
-        }
-    }, [isUserSigned, pendingTransactions, isUserOnGoodNetwork]);
+        setConnected(connected);
+    }, [web3, connected]);
 
     return (
-        <Box>
-            <Button
-                sx={{
-                    background: isUserSigned && !isUserOnGoodNetwork ? 'red !important' : 'rgba(255, 255, 255, 0.9)',
-                    boxShadow: '0px 0px 10px rgba(44, 39, 109, 0.1)',
-                    padding: theme.spacing(1),
-                }}
-                onClick={handleButtonClick}
-            >
-                <>{buttonText}</>
-            </Button>
-        </Box>
+        <div className="connect-button" style={buttonStyle} onClick={clickFunc}>
+            <p>{buttonText}</p>
+            {pendingTransactions.length > 0 && (
+                <div className="connect-button-progress">
+                    <CircularProgress size={15} color="inherit" />
+                </div>
+            )}
+        </div>
     );
 }
 

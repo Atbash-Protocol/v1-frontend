@@ -1,60 +1,167 @@
-import { forwardRef, RefObject, useState } from 'react';
+import React, { useState, forwardRef, useCallback } from "react";
+import classnames from "classnames";
+import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar, SnackbarContent } from "notistack";
+import Collapse from "@material-ui/core/Collapse";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { Message } from "../../store/slices/messages-slice";
+import WarningIcon from "@material-ui/icons/Warning";
+import ErrorIcon from "@material-ui/icons/Error";
+import InfoIcon from "@material-ui/icons/Info";
+import SuccessIcon from "@material-ui/icons/CheckCircle";
+import { Color } from "@material-ui/lab/Alert";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
-import CloseIcon from '@mui/icons-material/Close';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, Snackbar, Alert, Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
-import { theme } from 'constants/theme';
-import { Message } from 'store/modules/messages/messages.types';
+const useStyles = makeStyles(theme => ({
+    root: {
+        [theme.breakpoints.up("sm")]: {
+            minWidth: "344px !important",
+        },
+        maxWidth: 500,
+    },
+    card: {
+        width: "100%",
+    },
+    error: {
+        backgroundColor: "#d32f2f",
+    },
+    info: {
+        backgroundColor: "#2979ff",
+    },
+    warning: {
+        backgroundColor: "#ffa000",
+    },
+    success: {
+        backgroundColor: "#43a047",
+    },
+    typography: {
+        color: "#FFFFFF",
+        fontFamily: "Montserrat SemiBold",
+    },
+    actionRoot: {
+        padding: "8px 8px 8px 16px",
+        justifyContent: "space-between",
+        color: "#FFFFFF",
+    },
+    icons: {
+        marginLeft: "auto",
+    },
+    expand: {
+        padding: "8px 8px",
+        transform: "rotate(0deg)",
+        transition: theme.transitions.create("transform", {
+            duration: theme.transitions.duration.shortest,
+        }),
+        color: "#FFFFFF",
+    },
+    expandOpen: {
+        transform: "rotate(180deg)",
+    },
+    collapse: {
+        padding: 16,
+    },
+    checkIcon: {
+        fontSize: 20,
+        color: "#b3b3b3",
+        paddingRight: 4,
+    },
+    checkIconCopy: {
+        color: "#43a047",
+    },
+    button: {
+        padding: 0,
+        textTransform: "none",
+    },
+    errorWrap: {
+        marginTop: 10,
+    },
+    errorText: {
+        whiteSpace: "pre-wrap",
+        maxHeight: 300,
+        overflow: "auto",
+        background: "rgba(0,0,0,0.1)",
+        padding: 5,
+        borderRadius: 5,
+    },
+}));
 
-export const BSnackBar = forwardRef<RefObject<HTMLDivElement>, Message>(({ severity, description, detailledDescription }, ref) => {
-    const [snackbarOpen, setSnackbarOpen] = useState(true);
+const SnackMessage = forwardRef<HTMLDivElement, { id: string | number; message: Message }>((props, ref) => {
+    const { t } = useTranslation();
 
-    const handleClose = () => {
-        setSnackbarOpen(false);
+    const classes = useStyles();
+    const { closeSnackbar } = useSnackbar();
+    const [expanded, setExpanded] = useState(false);
+    const [isCopy, setIsCopy] = useState(false);
+
+    const handleExpandClick = useCallback(() => {
+        setExpanded(oldExpanded => !oldExpanded);
+    }, []);
+
+    const handleDismiss = useCallback(() => {
+        closeSnackbar(props.id);
+    }, [props.id, closeSnackbar]);
+
+    const getIcon = (severity: Color) => {
+        switch (severity) {
+            case "error":
+                return <ErrorIcon color="inherit" />;
+            case "info":
+                return <InfoIcon color="inherit" />;
+            case "success":
+                return <SuccessIcon color="inherit" />;
+            case "warning":
+                return <WarningIcon color="inherit" />;
+            default:
+                return <div />;
+        }
     };
 
-    const hasDetailledDescription = !!detailledDescription;
-
-    const expendIcon = hasDetailledDescription ? <ExpandMoreIcon /> : undefined;
-
-    const MessageDetails = hasDetailledDescription ? (
-        <AccordionDetails sx={{ overflow: 'hidden' }}>
-            <Typography sx={{ overflow: 'hidden' }} variant="body1" paragraph noWrap>
-                {detailledDescription}
-            </Typography>
-        </AccordionDetails>
-    ) : (
-        <></>
-    );
-
     return (
-        <Box ref={ref} sx={{ paddingLeft: theme.spacing(2), paddingRight: theme.spacing(2) }}>
-            <Snackbar open={snackbarOpen} sx={{ position: 'relative' }}>
-                <Alert variant="filled" severity={severity} sx={{ paddingLeft: theme.spacing(2), paddingRight: theme.spacing(2), alignItems: 'center' }}>
-                    <Accordion
-                        sx={{
-                            boxShadow: 'none',
-                            background: 'transparent',
-                        }}
-                    >
-                        <AccordionSummary
-                            sx={{
-                                borderBottom: hasDetailledDescription ? '1px solid' : 'none',
-                            }}
-                            expandIcon={expendIcon}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Box onClick={handleClose}>
-                                <CloseIcon color="primary" />
-                            </Box>
-                            <Typography>{description}</Typography>
-                        </AccordionSummary>
-                        {MessageDetails}
-                    </Accordion>
-                </Alert>
-            </Snackbar>
-        </Box>
+        <SnackbarContent ref={ref} className={classes.root}>
+            <Card className={classnames(classes.card, classes[props.message.severity])}>
+                <CardActions classes={{ root: classes.actionRoot }}>
+                    {getIcon(props.message.severity)}
+                    <Typography variant="subtitle2" className={classes.typography}>
+                        {props.message.text}
+                    </Typography>
+                    <div className={classes.icons}>
+                        {props.message.error && (
+                            <IconButton aria-label="Show more" className={classnames(classes.expand, { [classes.expandOpen]: expanded })} onClick={handleExpandClick}>
+                                <ExpandMoreIcon color="inherit" />
+                            </IconButton>
+                        )}
+                        <IconButton className={classes.expand} onClick={handleDismiss}>
+                            <CloseIcon color="inherit" />
+                        </IconButton>
+                    </div>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <Paper className={classes.collapse}>
+                        <CopyToClipboard text={JSON.stringify(props.message.error)} onCopy={() => setIsCopy(true)}>
+                            <Button size="small" className={classes.button}>
+                                <CheckCircleIcon className={classnames(classes.checkIcon, { [classes.checkIconCopy]: isCopy })} />
+                                {t("CopyToClipboard")}
+                            </Button>
+                        </CopyToClipboard>
+                        <div className={classes.errorWrap}>
+                            <Typography>{t("ErrorMessage")}: </Typography>
+                            <Typography className={classes.errorText}>{JSON.stringify(props.message.error, null, 2)}</Typography>
+                        </div>
+                    </Paper>
+                </Collapse>
+            </Card>
+        </SnackbarContent>
     );
 });
+
+export default SnackMessage;
