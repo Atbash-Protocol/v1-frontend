@@ -1,50 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Wrap renders 1`] = `
+exports[`Metrics renders correctly 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div
-        class="MuiBox-root css-1vv71kp"
+        class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-mhc70k-MuiGrid-root"
       >
         <div
-          class="MuiBox-root css-19na2ny"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
         >
-          <h4
-            class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
-          >
-            bond:Wrap
-          </h4>
-        </div>
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
-        >
-          ComingSoon
            
-        </p>
+          {"value":"$10.00"}
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
+        >
+           
+          {"value":"$12"}
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
+        >
+           
+          {"value":"50.00 SBASH"}
+        </div>
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      class="MuiBox-root css-1vv71kp"
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-mhc70k-MuiGrid-root"
     >
       <div
-        class="MuiBox-root css-19na2ny"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
       >
-        <h4
-          class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
-        >
-          bond:Wrap
-        </h4>
-      </div>
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
-      >
-        ComingSoon
          
-      </p>
+        {"value":"$10.00"}
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
+      >
+         
+        {"value":"$12"}
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-4 MuiGrid-grid-lg-4 css-17sqnp1-MuiGrid-root"
+      >
+         
+        {"value":"50.00 SBASH"}
+      </div>
     </div>
   </div>,
   "debug": [Function],

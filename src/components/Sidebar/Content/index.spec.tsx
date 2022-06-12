@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import createMockStore from 'redux-mock-store';
 
 import * as Web3HooksModule from 'contexts/web3/web3.hooks';
 import * as UseENSHookModule from 'hooks/useENS';
@@ -9,17 +9,12 @@ import * as BondSelectorModule from 'store/modules/bonds/bonds.selector';
 
 import NavContent from '.';
 
-function renderComponent(component: JSX.Element, contextState?: any) {
+function renderComponent(component: JSX.Element) {
+    const mockStore = createMockStore([]);
+
     return render(
         <BrowserRouter>
-            <Provider
-                store={configureStore({
-                    reducer: {},
-                })}
-            >
-                {component}
-            </Provider>
-            ,
+            <Provider store={mockStore({})}>{component}</Provider>,
         </BrowserRouter>,
     );
 }

@@ -1,50 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Wrap renders 1`] = `
+exports[`Dashboard renders 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div
-        class="MuiBox-root css-1vv71kp"
+        class="MuiGrid-root MuiGrid-container css-14b6npa-MuiGrid-root"
       >
         <div
-          class="MuiBox-root css-19na2ny"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
         >
-          <h4
-            class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
-          >
-            bond:Wrap
-          </h4>
-        </div>
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
-        >
-          ComingSoon
+          {"initialData":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"}}
            
-        </p>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-2 css-hhvbpy-MuiGrid-root"
+        >
+          {"currentDay":1,"minDays":1,"maxDays":365}
+           
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
+        >
+          {"data":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"},"initialPrice":"10","duration":1}
+           
+        </div>
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      class="MuiBox-root css-1vv71kp"
+      class="MuiGrid-root MuiGrid-container css-14b6npa-MuiGrid-root"
     >
       <div
-        class="MuiBox-root css-19na2ny"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
       >
-        <h4
-          class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
-        >
-          bond:Wrap
-        </h4>
-      </div>
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
-      >
-        ComingSoon
+        {"initialData":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"}}
          
-      </p>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-2 css-hhvbpy-MuiGrid-root"
+      >
+        {"currentDay":1,"minDays":1,"maxDays":365}
+         
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-5 css-11lxi55-MuiGrid-root"
+      >
+        {"data":{"stakedSBAmount":"50","rewardYieldPercent":"12.29","BASHPriceAtPurchase":"10.00","futureBASHMarketPrice":"10.00"},"initialPrice":"10","duration":1}
+         
+      </div>
     </div>
   </div>,
   "debug": [Function],

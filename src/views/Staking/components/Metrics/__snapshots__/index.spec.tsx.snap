@@ -14,16 +14,16 @@ Object {
           <div
             class="MuiBox-root css-dvxtzn"
           >
-            <h6
-              class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+            <p
+              class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
             >
               APY
-            </h6>
-            <p
-              class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+            </p>
+            <h5
+              class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
             >
               1000000
-            </p>
+            </h5>
           </div>
         </div>
         <div
@@ -32,16 +32,16 @@ Object {
           <div
             class="MuiBox-root css-dvxtzn"
           >
-            <h6
-              class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+            <p
+              class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
             >
               TVL
-            </h6>
-            <p
-              class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+            </p>
+            <h5
+              class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
             >
               $2,300
-            </p>
+            </h5>
           </div>
         </div>
         <div
@@ -50,16 +50,16 @@ Object {
           <div
             class="MuiBox-root css-dvxtzn"
           >
-            <h6
-              class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+            <p
+              class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
             >
               CurrentIndex
-            </h6>
-            <p
-              class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+            </p>
+            <h5
+              class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
             >
               2 BASH
-            </p>
+            </h5>
           </div>
         </div>
         <div
@@ -68,16 +68,16 @@ Object {
           <div
             class="MuiBox-root css-dvxtzn"
           >
-            <h6
-              class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+            <p
+              class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
             >
               BASHPrice
-            </h6>
-            <p
-              class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+            </p>
+            <h5
+              class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
             >
               2.01 BASH
-            </p>
+            </h5>
           </div>
         </div>
       </div>
@@ -93,16 +93,16 @@ Object {
         <div
           class="MuiBox-root css-dvxtzn"
         >
-          <h6
-            class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+          <p
+            class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
           >
             APY
-          </h6>
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+          </p>
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
           >
             1000000
-          </p>
+          </h5>
         </div>
       </div>
       <div
@@ -111,16 +111,16 @@ Object {
         <div
           class="MuiBox-root css-dvxtzn"
         >
-          <h6
-            class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+          <p
+            class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
           >
             TVL
-          </h6>
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+          </p>
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
           >
             $2,300
-          </p>
+          </h5>
         </div>
       </div>
       <div
@@ -129,16 +129,16 @@ Object {
         <div
           class="MuiBox-root css-dvxtzn"
         >
-          <h6
-            class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+          <p
+            class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
           >
             CurrentIndex
-          </h6>
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+          </p>
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
           >
             2 BASH
-          </p>
+          </h5>
         </div>
       </div>
       <div
@@ -147,16 +147,16 @@ Object {
         <div
           class="MuiBox-root css-dvxtzn"
         >
-          <h6
-            class="MuiTypography-root MuiTypography-h6 css-467uil-MuiTypography-root"
+          <p
+            class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
           >
             BASHPrice
-          </h6>
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-uhm4if-MuiTypography-root"
+          </p>
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
           >
             2.01 BASH
-          </p>
+          </h5>
         </div>
       </div>
     </div>

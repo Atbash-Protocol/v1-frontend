@@ -27,3 +27,6 @@ export const selectDaiPrice = (state: RootState): Decimal => {
 };
 
 export const selectMarketPrice = createSelector([selectReserve, selectDaiPrice], (reserve, dai) => reserve.mul(dai));
+
+// converted marketPrice from wei
+export const selectComputedMarketPrice = createSelector([selectMarketPrice], marketPrice => marketPrice.div(10 ** 9));

@@ -1,10 +1,67 @@
 import Decimal from 'decimal.js';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber } from 'ethers';
 import { DateTime } from 'luxon';
 
 import { Epoch } from 'store/modules/app/app.types';
 
-import { selectStakingRewards } from '../metrics.selectors';
+import { selectCircSupply, selectStakingRewards, selectStakingReward, selectStakingRebaseAmount, selectStakingRebasePercentage } from '../metrics.selectors';
+
+describe('#selectCircSupply', () => {
+    it('returns the circ supply', () => {
+        const circSupply = 1000;
+        const state = { main: { metrics: { circSupply } } };
+
+        expect(selectCircSupply(state as any)).toEqual(circSupply);
+    });
+});
+
+describe('#selectStakingReward', () => {
+    it.each([
+        { epoch: null, expected: null },
+        { epoch: { distribute: null }, expected: null },
+        { epoch: { distribute: BigNumber.from(1000) }, expected: BigNumber.from(1000) },
+    ])('returns the staking reward', ({ epoch, expected }) => {
+        const state = { main: { staking: { epoch } } };
+
+        expect(selectStakingReward(state as any)).toEqual(expected);
+    });
+});
+
+describe('#selectStakingRebaseAmount', () => {
+    it.each([
+        { circSupply: null, stakingReward: null },
+        { circSupply: 1000, stakingReward: null },
+        { circSupply: null, stakingReward: BigNumber.from(100) },
+    ])('returns null when  circSupply is $circSupply and stakingReward is $stakingReward', ({ circSupply, stakingReward }) => {
+        const state = { main: { staking: { epoch: { distribute: stakingReward } }, metrics: { circSupply } } };
+
+        expect(selectStakingRebaseAmount(state as any)).toEqual(null);
+    });
+
+    it('returns the stakingRebase amount', () => {
+        const state = {
+            main: {
+                staking: { epoch: { distribute: BigNumber.from(1000 * 10 ** 9) } },
+                metrics: { circSupply: 1200 },
+            },
+        };
+
+        expect(selectStakingRebaseAmount(state as any)?.toString()).toEqual('0.83333333333333333333');
+    });
+});
+
+describe('#selectStakingRebasePercentage', () => {
+    it('returns the staking rebase percentage', () => {
+        const state = {
+            main: {
+                staking: { epoch: { distribute: BigNumber.from(1000 * 10 ** 9) } },
+                metrics: { circSupply: 1200 },
+            },
+        };
+
+        expect(selectStakingRebasePercentage(state as any)?.toString()).toEqual('83.333333333333333333');
+    });
+});
 
 describe('#selectStakingRewards', () => {
     it.each([
