@@ -1,10 +1,32 @@
-import { SvgIcon } from "@material-ui/core";
-import { ReactComponent as ETHImg } from "../assets/tokens/ETH.svg";
-import { IAllBondData } from "../hooks/bonds";
-import { dai } from "../helpers/bond";
+import Decimal from 'decimal.js';
+import fromExponential from 'from-exponential';
 
-export const priceUnits = (bond: IAllBondData) => {
-    if (bond.name === dai.name) return <SvgIcon component={ETHImg} viewBox="0 0 32 32" style={{ height: "15px", width: "15px" }} />;
+export const formatUSD = (value: number, digits = 0): string => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: digits,
+        minimumFractionDigits: digits,
+    }).format(value);
+};
 
-    return "$";
+export const formatUSDFromDecimal = (value: Decimal, digits = 0): string => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: digits,
+        minimumFractionDigits: digits,
+    }).format(value.toNumber());
+};
+
+export const formatNumber = (number = 0, precision?: number) => {
+    const [exp, decimals] = fromExponential(number).split('.');
+
+    if (!decimals || !precision) return exp;
+
+    return [exp, decimals.substring(0, precision)].join('.');
+};
+
+export const formatAPY = (formatted: string): string => {
+    return formatted.length > 16 ? '> 1 000 000 %' : formatted;
 };
