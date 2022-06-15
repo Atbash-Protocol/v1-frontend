@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import MenuMetric from 'components/Metrics/MenuMetric';
-import { formatAPY, formatUSD } from 'helpers/price-units';
+import { formatAPY, formatUSD, formatUSDFromDecimal } from 'helpers/price-units';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectStakingRewards, selectTVL } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
@@ -18,7 +18,7 @@ function StakeMetrics() {
 
     const metrics = [
         { key: 'APY', value: stakingMetrics?.stakingAPY ? `${formatAPY(stakingMetrics.stakingAPY.toString())}` : null },
-        { key: 'TVL', value: TVL ? formatUSD(TVL) : null },
+        { key: 'TVL', value: TVL ? formatUSDFromDecimal(TVL) : null },
         { key: 'CurrentIndex', value: currentIndex },
         { key: 'BASHPrice', value: BASHPrice },
     ].map(({ key, value }) => (

@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { sum } from 'lodash';
+import { sum, values } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { formatTimer } from 'helpers/prettify-seconds';
@@ -140,4 +140,10 @@ export const selectFormattedTreasuryBalance = createSelector([selectAllBondMetri
     );
 
     return formatUSD(total, 2);
+});
+
+export const selectTreasuryReady = createSelector([selectAllBondMetrics], bondMetrics => {
+    return Object.entries(bondMetrics)
+        .map(([_, bond]) => bond.treasuryBalance)
+        .some(balance => balance !== null);
 });

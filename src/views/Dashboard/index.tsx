@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from 'components/Loader';
 import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
-import { formatUSD, formatAPY } from 'helpers/price-units';
+import { formatUSD, formatAPY, formatUSDFromDecimal } from 'helpers/price-units';
 import { selectAppLoading, selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectFormattedTreasuryBalance } from 'store/modules/bonds/bonds.selector';
-import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
+import { selectFormattedTreasuryBalance, selectTreasuryReady } from 'store/modules/bonds/bonds.selector';
+import { getBondMetrics, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
 import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';
@@ -38,12 +38,19 @@ function Dashboard() {
 
     const treasuryBalance = useSelector(selectFormattedTreasuryBalance);
     const appIsLoading = useSelector(selectAppLoading);
+    const bondTreasuryReady = useSelector(selectTreasuryReady);
 
     useEffect(() => {
         if (!appIsLoading && networkID) {
             dispatch(getTreasuryBalance({ networkID }));
         }
     }, [networkID, appIsLoading]);
+
+    useEffect(() => {
+        if (bondTreasuryReady && networkID) {
+            dispatch(getBondMetrics({ networkID }));
+        }
+    }, [networkID, bondTreasuryReady]);
 
     if (appIsLoading) return <Loading />;
 
@@ -58,7 +65,7 @@ function Dashboard() {
     const DashboardItems = [
         { name: 'BashPrice', value: bashPrice },
         { name: 'MarketCap', value: marketCap },
-        { name: 'TVL', value: formatUSD(TVL || 0, 2) },
+        { name: 'TVL', value: TVL ? formatUSDFromDecimal(TVL, 2) : 0 },
         { name: 'TreasuryBalance', value: treasuryBalance },
 
         ...APYMetrics,

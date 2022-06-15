@@ -23,7 +23,7 @@ const BASH_DAI: BondConfig = {
             reserveAddress: '0x908B40ED87FCA620B101B3Cba2B4C640D11eF016',
         },
         [Networks.RINKEBY]: {
-            bondAddress: '0xcE24D6A45D5c59D31D05c8C278cA3455dD6a43DA',
+            bondAddress: '0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f',
             reserveAddress: '0x26DF06b47412dA76061ddA1fD9fe688A497FB88b', // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
         },
     },

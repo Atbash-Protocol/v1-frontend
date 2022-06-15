@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import Decimal from 'decimal.js';
 import { providers, constants, Contract, utils, BigNumber } from 'ethers';
-import { snakeCase } from 'lodash';
+import _, { isNil, snakeCase } from 'lodash';
 
 import { BondingCalcContract } from 'abi';
 import { BONDS } from 'config/bonds';
@@ -74,6 +75,73 @@ export const initializeBonds = createAsyncThunk('app/bonds', async (provider: WE
     };
 });
 
+export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ networkID }: { networkID: number }, { getState }) => {
+    const {
+        bonds: { bondMetrics, bondCalculator, bondInstances },
+        main: {
+            contracts: { BASH_CONTRACT },
+            metrics: { totalSupply, rawCircSupply, circSupply, reserves },
+            staking: { epoch },
+        },
+        markets: {
+            markets: { dai },
+        },
+    } = getState() as IReduxState;
+    const { TREASURY_ADDRESS, DAO_ADDRESS } = getAddresses(networkID);
+
+    console.log('reached', rawCircSupply, totalSupply, reserves, dai, epoch, BASH_CONTRACT, bondCalculator);
+
+    if (isNil(rawCircSupply) || !totalSupply || !reserves || !dai || !epoch || !BASH_CONTRACT || !bondCalculator) throw new Error('Missing metrics to compute bond metrics');
+
+    console.log('bonds', bondMetrics);
+
+    const balances = Object.entries(bondMetrics).reduce(
+        (acc, [bondID, { treasuryBalance }]) => {
+            const isLPBond = bondInstances[bondID].isLP();
+
+            if (isLPBond) {
+                acc.lpBonds += treasuryBalance || 0;
+            } else {
+                acc.bashBonds += treasuryBalance || 0;
+            }
+
+            return acc;
+        },
+        { lpBonds: 0, bashBonds: 0 },
+    );
+
+    const daoBash = await BASH_CONTRACT.balanceOf(DAO_ADDRESS);
+    const daoBashAmount = Number(utils.formatUnits(daoBash, 'gwei'));
+
+    const rfvTreasury = balances.lpBonds + balances.bashBonds;
+
+    console.log(totalSupply, balances.lpBonds, daoBashAmount);
+
+    const bashSupply = totalSupply - balances.bashBonds - daoBashAmount; // Check with @reddread, on his version he doesnt count the LP
+    const rfv = rfvTreasury / bashSupply;
+
+    const stakingRebase = new Decimal(epoch.distribute.toString()).div(rawCircSupply.toString()).toNumber();
+    const treasuryForRunway = rfvTreasury / circSupply!;
+    const runway = Math.log(treasuryForRunway) / Math.log(1 + stakingRebase) / 3;
+
+    console.log('bonds', rfvTreasury, circSupply, runway);
+    //  const bashSupply = totalSupply - LpBashAmount - daoBashAmount;
+    // const stakingRebase = epoch.distribute.div(new Decimal(rawCircSupply.toString() || 0).mul(10 ** 9).toString()).toNumber(); // rewardYield rate for this epoch
+    // const treasuryRunway = rfvTreasury / (rawCircSupply.toNumber() || 1);
+    // const runway = Math.log(treasuryRunway) / Math.log(1 + stakingRebase) / 3;
+
+    const marketPrice = reserves.div(10 ** 9).toNumber() * dai;
+    const deltaMarketPriceRfv = ((rfv - marketPrice) / rfv) * 100;
+
+    return {
+        stakingRebase,
+        rfv,
+        deltaMarketPriceRfv,
+        rfvTreasury,
+        runway,
+    };
+});
+
 export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async ({ networkID }: { networkID: number }, { getState }) => {
     const {
         bonds: { bondInstances, bondCalculator },
@@ -83,7 +151,12 @@ export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async
 
     if (!bondCalculator || Object.values(bondInstances).length === 0) return { balance: 0 };
 
-    const balances = await Promise.all(Object.keys(bondInstances).map(bondKey => bondInstances[bondKey].getTreasuryBalance(bondCalculator, TREASURY_ADDRESS)));
+    const balances = await Promise.all([
+        bondInstances.bash_dai_lp.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS),
+        bondInstances.dai.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS),
+    ]);
+
+    console.log('balances', balances);
 
     const keys = Object.keys(bondInstances);
 

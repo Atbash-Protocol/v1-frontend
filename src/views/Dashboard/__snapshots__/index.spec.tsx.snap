@@ -8,27 +8,27 @@ Object {
       id="WEB3_CONNECT_MODAL_ID"
     >
       <div
-        class="sc-jSMfEi feQmWT web3modal-modal-lightbox"
+        class="sc-jRQBWg VgIbA web3modal-modal-lightbox"
         offset="0"
         opacity="0.4"
       >
         <div
-          class="sc-gKXOVf gOSrSh web3modal-modal-container"
+          class="sc-gKclnd hURhkl web3modal-modal-container"
         >
           <div
-            class="sc-iBkjds hbCoUo web3modal-modal-hitbox"
+            class="sc-iCfMLu fFpYRP web3modal-modal-hitbox"
           />
           <div
-            class="sc-ftvSup iabRxz web3modal-modal-card"
+            class="sc-furwcr drkVTs web3modal-modal-card"
           >
             <div
-              class="sc-eCYdqJ dFclSe web3modal-provider-wrapper"
+              class="sc-eCImPb gUOshg web3modal-provider-wrapper"
             >
               <div
-                class="sc-hKMtZM keqyKc web3modal-provider-container"
+                class="sc-hKwDye iYVKZz web3modal-provider-container"
               >
                 <div
-                  class="sc-bczRLJ dtZuCG web3modal-provider-icon"
+                  class="sc-bdvvtL fqonLZ web3modal-provider-icon"
                 >
                   <img
                     alt="WalletConnect"
@@ -36,12 +36,12 @@ Object {
                   />
                 </div>
                 <div
-                  class="sc-gsnTZi kmGPKa web3modal-provider-name"
+                  class="sc-gsDKAQ bebuFe web3modal-provider-name"
                 >
                   WalletConnect
                 </div>
                 <div
-                  class="sc-dkzDqf flNBYJ web3modal-provider-description"
+                  class="sc-dkPtRN VpGdq web3modal-provider-description"
                 >
                   Scan with WalletConnect to connect
                 </div>
@@ -165,27 +165,27 @@ Object {
       id="WEB3_CONNECT_MODAL_ID"
     >
       <div
-        class="sc-jSMfEi feQmWT web3modal-modal-lightbox"
+        class="sc-jRQBWg VgIbA web3modal-modal-lightbox"
         offset="0"
         opacity="0.4"
       >
         <div
-          class="sc-gKXOVf gOSrSh web3modal-modal-container"
+          class="sc-gKclnd hURhkl web3modal-modal-container"
         >
           <div
-            class="sc-iBkjds hbCoUo web3modal-modal-hitbox"
+            class="sc-iCfMLu fFpYRP web3modal-modal-hitbox"
           />
           <div
-            class="sc-ftvSup iabRxz web3modal-modal-card"
+            class="sc-furwcr drkVTs web3modal-modal-card"
           >
             <div
-              class="sc-eCYdqJ dFclSe web3modal-provider-wrapper"
+              class="sc-eCImPb gUOshg web3modal-provider-wrapper"
             >
               <div
-                class="sc-hKMtZM keqyKc web3modal-provider-container"
+                class="sc-hKwDye iYVKZz web3modal-provider-container"
               >
                 <div
-                  class="sc-bczRLJ dtZuCG web3modal-provider-icon"
+                  class="sc-bdvvtL fqonLZ web3modal-provider-icon"
                 >
                   <img
                     alt="WalletConnect"
@@ -193,12 +193,12 @@ Object {
                   />
                 </div>
                 <div
-                  class="sc-gsnTZi kmGPKa web3modal-provider-name"
+                  class="sc-gsDKAQ bebuFe web3modal-provider-name"
                 >
                   WalletConnect
                 </div>
                 <div
-                  class="sc-dkzDqf flNBYJ web3modal-provider-description"
+                  class="sc-dkPtRN VpGdq web3modal-provider-description"
                 >
                   Scan with WalletConnect to connect
                 </div>

@@ -19,6 +19,10 @@ export interface BondMetrics {
     terms?: string;
 }
 
+export interface BondCoreMetrics {
+    rfv: number;
+    runway: number;
+}
 export interface BondTerms {
     vestingTerm: string;
 }
@@ -26,6 +30,7 @@ export interface BondTerms {
 export interface BondItem {
     bondInstance: LPBond | StableBond;
     metrics: BondMetrics;
+    coreMetrics: BondCoreMetrics;
     // terms: BondTerms;
 }
 

@@ -25,13 +25,13 @@ export const initializeProviderContracts = createAsyncThunk(
         if (!contractSignerOrProvider) throw new Error('Unable to get a contract signer or provider');
 
         return {
-            [ContractEnum.STAKING_CONTRACT]: new Contract(addresses.STAKING_CONTRACT, StakingContract, contractSignerOrProvider),
+            [ContractEnum.STAKING_CONTRACT]: new Contract(addresses.STAKING_ADDRESS, StakingContract, contractSignerOrProvider),
             [ContractEnum.STAKING_HELPER_ADDRESS]: new Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, contractSignerOrProvider),
             [ContractEnum.INITIAL_PAIR_ADDRESS]: new Contract(addresses.INITIAL_PAIR_ADDRESS, LpReserveContract, contractSignerOrProvider),
-            [ContractEnum.REDEEM_ADDRESS]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, contractSignerOrProvider),
+            [ContractEnum.REDEEM_CONTRACT]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, contractSignerOrProvider),
             [ContractEnum.SBASH_CONTRACT]: new Contract(addresses.SBASH_ADDRESS, MemoTokenContract, contractSignerOrProvider),
             [ContractEnum.BASH_CONTRACT]: new Contract(addresses.BASH_ADDRESS, TimeTokenContract, contractSignerOrProvider),
-            [ContractEnum.DAI_ADDRESS]: new Contract(addresses.DAI_ADDRESS, TimeTokenContract, contractSignerOrProvider),
+            [ContractEnum.DAI_CONTRACT]: new Contract(addresses.DAI_ADDRESS, TimeTokenContract, contractSignerOrProvider),
             [ContractEnum.WSBASH_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, MemoTokenContract, contractSignerOrProvider),
             [ContractEnum.ZAPIN_ADDRESS]: new Contract(addresses.WSBASH_ADDRESS, ZapinContract, contractSignerOrProvider),
         };
@@ -59,9 +59,32 @@ export const getCoreMetrics = createAsyncThunk('app/coreMetrics', async (_, { ge
 
     if (!BASH_CONTRACT || !SBASH_CONTRACT || !INITIAL_PAIR_ADDRESS) throw new Error('Unable to get coreMetrics');
 
+    console.log('SBASH', SBASH_CONTRACT);
+
+    // circSupply(pin):7975.388983832 OK
+    // currentIndex(pin):15678.414459578 OK
+    // totalSupply(pin):211332.949546243 OK
+    // marketCap(pin):17327266.049053952 OK
+    // treasuryBalance(pin):405628.9857534438 OK
+    // fiveDayRate(pin):5.4080634807768355 OK
+    // stakingAPY(pin):7.781383026774918e+58 OK
+    // stakingTVL(pin):653905.068112971 OK
+    // stakingRebase(pin):0.13183152712882745
+    // marketPrice(pin):81.99036679447126 // WRONG with bad computations
+    // deltaMarketPriceRfv(pin):-82.66963727676799
+    // currentBlockTime(pin):1655240950
+    // nextRebase(pin):1648371400
+    // rfv(pin):44.88450736355561
+    // runway(pin):10.575929150312577
+    // redeemRfv(pin):0
+    // redeemSbSent(pin):0
+    // redeemMimAvailable(pin):0
+
     const rawCircSupply = await SBASH_CONTRACT.circulatingSupply();
     const totalSupply = (await BASH_CONTRACT.totalSupply()) / 10 ** ERC20_DECIMALS;
+
     const circSupply = rawCircSupply / Math.pow(10, ERC20_DECIMALS);
+
     const [reserve1, reserve2]: ethers.BigNumber[] = await INITIAL_PAIR_ADDRESS.getReserves();
 
     return {

@@ -15,7 +15,7 @@ import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectBondInstance, selectBondMetrics } from 'store/modules/bonds/bonds.selector';
-import { calcBondDetails, getBondTerms, getTreasuryBalance, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
+import { calcBondDetails, getBondTerms, getBondMetrics, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
 import { BondMetrics } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 import BondPurchase from 'views/Bond/actions/BondPurchase';
@@ -51,7 +51,7 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
 
     useEffect(() => {
         if (networkID) {
-            dispatch(getTreasuryBalance({ networkID }));
+            dispatch(getBondMetrics({ networkID }));
         }
     }, [networkID]);
 

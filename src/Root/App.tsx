@@ -12,7 +12,7 @@ import { selectAppLoading } from 'store/modules/app/app.selectors';
 import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
 import { MainSliceState } from 'store/modules/app/app.types';
 import { selectBondInstances } from 'store/modules/bonds/bonds.selector';
-import { initializeBonds } from 'store/modules/bonds/bonds.thunks';
+import { getBondMetrics, initializeBonds } from 'store/modules/bonds/bonds.thunks';
 import { getMarketPrices } from 'store/modules/markets/markets.thunks';
 import { IReduxState } from 'store/slices/state.interface';
 
@@ -55,7 +55,6 @@ function App(): JSX.Element {
                 dispatch(getCoreMetrics());
                 dispatch(getStakingMetrics());
                 dispatch(getMarketPrices());
-
                 dispatch(initializeBonds(signer || provider));
             });
         }

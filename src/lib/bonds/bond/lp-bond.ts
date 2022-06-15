@@ -25,7 +25,9 @@ export class LPBond extends Bond {
         const reserveContract = this.getReserveContract();
 
         const tokenAmount: BigNumber = await reserveContract.balanceOf(treasuryAddress);
+
         const valuation: BigNumber = await bondCalculatorContract.valuation(reserveContract.address, tokenAmount);
+
         const markdown: BigNumber = await bondCalculatorContract.markdown(reserveContract.address);
 
         // valuation * 10 ** 9 / markdown * 10 ** 18
