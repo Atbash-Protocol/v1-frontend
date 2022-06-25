@@ -19,7 +19,7 @@
     "Mint": "Mint",
     "MintBond": "Mint {{bond}}",
     "RedeemBond": "Redeem {{bond}}",
-    "Redeem": "Coming Soon",
+    "Redeem": "Redeem",
     "Settings": "Settings",
     "Slippage": "Slippage",
     "SlippageHelpText": "Transaction may revert if price changes by more than slippage %",

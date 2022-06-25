@@ -95,7 +95,7 @@ function ChooseBond() {
                 </div>
             </Zoom>
 
-            {!isSmallScreen && (
+            {!isSmallScreen && bonds.findIndex(bond => !bond.isActive) != -1 && (
                 <Zoom in={true}>
                     <div className="choose-bond-view-card inactive-view-card">
                         <div className="choose-bond-view-card-header">

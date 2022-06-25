@@ -45,7 +45,7 @@ export class LPBond extends Bond {
         return this.getReserves(networkID, provider, true);
     }
 
-    public getSbAmount(networkID: Networks, provider: StaticJsonRpcProvider) {
+    public getBashAmount(networkID: Networks, provider: StaticJsonRpcProvider) {
         return this.getReserves(networkID, provider, false);
     }
 

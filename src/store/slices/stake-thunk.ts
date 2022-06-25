@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { getAddressesAsync } from "../../constants";
-import { StakingHelperContract, TimeTokenContract, MemoTokenContract, StakingContract, RedeemContract } from "../../abi";
+import { StakingHelperContract, BashTokenContract, SBashTokenContract, StakingContract, RedeemContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAccountSuccess, getBalances } from "./account-slice";
@@ -30,14 +30,14 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
     const addresses = await getAddressesAsync(networkID);
 
     const signer = provider.getSigner(address);
-    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
+    const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
 
         if (token === "BASH") {
-            approveTx = await sbContract.approve(addresses.REDEEM_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await bashContract.approve(addresses.REDEEM_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         const text = i18n.t("redeem:ApproveStaking");
@@ -56,7 +56,7 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
 
     await sleep(2);
 
-    const stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
+    const stakeAllowance = await bashContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
 
     return dispatch(
         fetchAccountSuccess({
@@ -81,8 +81,8 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     const addresses = await getAddressesAsync(networkID);
 
     const signer = provider.getSigner(address);
-    const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
-    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
+    const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, signer);
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, signer);
 
     let approveTx;
     try {

@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { getAddressesAsync } from "../../constants";
-import { TimeTokenContract as BashTokenContract, MemoTokenContract as SBashTokenContract, MimTokenContract } from "../../abi";
+import { BashTokenContract as BashTokenContract, SBashTokenContract as SBashTokenContract, DaiTokenContract } from "../../abi";
 import { setAll } from "../../helpers";
 
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
@@ -26,7 +26,7 @@ export const getBalances = createAsyncThunk("account/getBalances", async ({ addr
     const wsBASHBalance = await wsBASHContract.balanceOf(address);
     const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, provider);
     const BASHbalance = await bashContract.balanceOf(address);
-    const aBashContract = new ethers.Contract(addresses.ABASH_ADDRESS, SBashTokenContract, provider); // todo: fix contract
+    const aBashContract = new ethers.Contract(addresses.ABASH_ADDRESS, SBashTokenContract, provider);
     const aBashBalance = await aBashContract.balanceOf(address);
     return {
         balances: {
@@ -72,7 +72,7 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     }
 
     if (addresses.ABASH_ADDRESS) {
-        const abashContract = new ethers.Contract(addresses.ABASH_ADDRESS, MimTokenContract, provider); // todo: use abash contract
+        const abashContract = new ethers.Contract(addresses.ABASH_ADDRESS, DaiTokenContract, provider);
         aBashBalance = await abashContract.balanceOf(address);
         aBashRedeemAllowance = await abashContract.allowance(address, addresses.PRESALE_REDEMPTION_ADDRESS);
     }

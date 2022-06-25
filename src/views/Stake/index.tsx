@@ -102,8 +102,8 @@ function Stake() {
 
     const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
-    const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-    console.log(`Trimmed StakingAPY: ${trimmedStakingAPY}`);
+    const formattedAPY = trim(stakingAPY * 100, 1);
+    const trimmedStakingAPY = formattedAPY.length > 16 ? "> 1,000,000" : formattedAPY;
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
     const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
@@ -135,9 +135,7 @@ function Stake() {
                                     <Grid item xs={6} sm={3} md={3} lg={3}>
                                         <div className="stake-card-apy">
                                             <p className="stake-card-metrics-title">{t("APY")}</p>
-                                            <p className="stake-card-metrics-value">
-                                                {stakingAPY ? <>{new Intl.NumberFormat("en-US").format(Number(trimmedStakingAPY))}%</> : <Skeleton width="150px" />}
-                                            </p>
+                                            <p className="stake-card-metrics-value">{stakingAPY ? <>{trimmedStakingAPY}%</> : <Skeleton width="150px" />}</p>
                                         </div>
                                     </Grid>
 

@@ -17,7 +17,8 @@ function Dashboard() {
 
     const { loading: isAppLoading, ...app } = useSelector<IReduxState, IAppSlice>(state => state.app);
 
-    const trimmedStakingAPY = formatNumber(app.stakingAPY * 100, 1);
+    const formattedAPY = formatNumber(app.stakingAPY * 100, 1);
+    const trimmedStakingAPY = formattedAPY.length > 16 ? "> 1,000,000" : formattedAPY;
 
     const DashboardItems = [
         { name: "RiskFreeValue", value: formatUSD(app.rfv) },

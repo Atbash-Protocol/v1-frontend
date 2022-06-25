@@ -8,7 +8,7 @@ import { clearPendingTxn, fetchPendingTxns } from "./pending-txns-slice";
 import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
 import { getGasPrice } from "../../helpers/get-gas-price";
 import { ethers } from "ethers";
-import { MimTokenContract, ZapinContract } from "../../abi";
+import { DaiTokenContract, ZapinContract } from "../../abi";
 import { calculateUserBondDetails, fetchAccountSuccess } from "./account-slice";
 import { IAllBondData } from "../../hooks/bonds";
 import { zapinData, zapinLpData } from "../../helpers/zapin-fetch-data";
@@ -35,7 +35,7 @@ export const changeApproval = createAsyncThunk("zapin/changeApproval", async ({ 
     const signer = provider.getSigner();
     const ZAPIN_ADDRESS = "0x0"; // addresses.ZAPIN_ADDRESS disabled: no zapin
 
-    const tokenContract = new ethers.Contract(token.address, MimTokenContract, signer);
+    const tokenContract = new ethers.Contract(token.address, DaiTokenContract, signer);
 
     let approveTx;
     try {

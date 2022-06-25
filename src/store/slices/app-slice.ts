@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { getAddressesAsync } from "../../constants";
-import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract, PresaleContract, AbashContract } from "../../abi";
+import { StakingContract, SBashTokenContract, BashTokenContract, RedeemContract, PresaleContract, AbashContract } from "../../abi";
 import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { JsonRpcProvider } from "@ethersproject/providers";
@@ -28,9 +28,11 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
 
     const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
     // disable: const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
-    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
-    const BASHContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
-    const DAIContract = new ethers.Contract(addresses.DAI_ADDRESS, TimeTokenContract, provider); // todo: DAI
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, provider);
+    const BASHContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, provider);
+    const DAIContract = new ethers.Contract(addresses.DAI_ADDRESS, BashTokenContract, provider);
+
+    const redeemableBash = (await BASHContract.balanceOf(addresses.PRESALE_REDEMPTION_ADDRESS)) / Math.pow(10, 9);
 
     const currentBlock = await provider.getBlockNumber();
     const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
@@ -50,22 +52,24 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
 
     const tokenBalPromises = allBonds.map(bond => bond.getTreasuryBalance(networkID, provider)); // get the balances of reserves in treasury
     const tokenBalances = await Promise.all(tokenBalPromises);
-
     const treasuryBalance = tokenBalances.reduce((tokenBalance0, tokenBalance1) => tokenBalance0 + tokenBalance1); // + redeemMimAvailable + 16176498; // add all balances + redeemable DAI + ?
 
     // dead-code: const tokenAmountsPromises = allBonds.map(bond => bond.getTokenAmount(networkID, provider));
     // dead-code: const tokenAmounts = await Promise.all(tokenAmountsPromises);
 
-    const rfvTreasury = tokenBalances[0] + tokenBalances[1]; // tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
+    // the amount of stable funds backing bash
+    const rfvTreasury = tokenBalances[0] + tokenBalances[1] / 2; // tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
 
+    // get bash held in DAO
     const daoBash = await BASHContract.balanceOf(addresses.DAO_ADDRESS);
     const daoBashAmount = Number(ethers.utils.formatUnits(daoBash, "gwei"));
 
-    const bashBondsAmountsPromises = allBonds.filter(bond => bond.name !== "bash_dai_minting").map(bond => bond.getSbAmount(networkID, provider));
+    // Determine total amount of bash in bonds
+    const bashBondsAmountsPromises = allBonds.filter(bond => bond.name !== "bash_dai_minting").map(bond => bond.getBashAmount(networkID, provider));
     const bashBondsAmounts = await Promise.all(bashBondsAmountsPromises);
 
     const LpBashAmount = bashBondsAmounts.reduce((bashAmount0, bashAmount1) => bashAmount0 + bashAmount1, 0);
-    const bashSupply = totalSupply - LpBashAmount - daoBashAmount;
+    const bashSupply = totalSupply - LpBashAmount - daoBashAmount - redeemableBash; // todo: should this include redeemable?
 
     const rfv = rfvTreasury / bashSupply; // rfvTreasury / (sbSupply - redeemSbSent); // qty of bash treasury can afford to pay out to stakers
 
@@ -73,8 +77,9 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
     const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
     const circ = await sBASHContract.circulatingSupply(); // available sBASH not held by staking contract
     const stakingRebase = stakingReward / circ; // rewardYield rate for this epoch
-    const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1; // 3 epoch/day
-    const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
+    const epochsPerDay = 3;
+    const fiveDayRate = Math.pow(1 + stakingRebase, 5 * epochsPerDay) - 1; // 3 epoch/day
+    const stakingAPY = Math.pow(1 + stakingRebase, 365 * epochsPerDay) - 1;
 
     const currentIndex = await stakingContract.index();
     const nextRebase = epoch.endTime;

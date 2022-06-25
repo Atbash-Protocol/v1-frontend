@@ -34,7 +34,7 @@ export abstract class Bond {
     // Async method that returns a Promise
     public abstract getTreasuryBalance(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
     public abstract getTokenAmount(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
-    public abstract getSbAmount(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
+    public abstract getBashAmount(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
     public abstract getAddressForBond(networkID: Networks): Promise<string>;
     public abstract getAddressForReserve(networkID: Networks): Promise<string>;
 

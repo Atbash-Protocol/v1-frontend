@@ -5,9 +5,9 @@ export { abi as WavaxBondContract } from "./bonds/WavaxContract.json";
 export { abi as StableReserveContract } from "./reserves/StableContract.json";
 export { abi as LpReserveContract } from "./reserves/LpContract.json";
 
-export { abi as MemoTokenContract } from "./tokens/MemoContract.json";
-export { abi as TimeTokenContract } from "./tokens/TimeContract.json";
-export { abi as MimTokenContract } from "./tokens/MimContract.json";
+export { abi as SBashTokenContract } from "./tokens/SBashContract.json";
+export { abi as BashTokenContract } from "./tokens/BashContract.json";
+export { abi as DaiTokenContract } from "./tokens/DaiContract.json";
 
 export { abi as BondingCalcContract } from "./BondingCalcContract.json";
 export { abi as WrappingContract } from "./WrappingContract.json";
@@ -17,6 +17,6 @@ export { abi as TreasuryContract } from "./TreasuryContract.json";
 export { abi as ZapinContract } from "./ZapinContract.json";
 export { abi as TraderZapinContract } from "./TraderZapinContract.json";
 export { abi as RedeemContract } from "./Redeem.json";
-export { abi as PresaleRedemption } from "./PresaleRedemption.json";
+export { abi as PresaleRedemptionContract } from "./PresaleRedemptionContract.json";
 export { abi as PresaleContract } from "./PresaleContract.json";
 export { abi as AbashContract } from "./tokens/AbashContract.json";

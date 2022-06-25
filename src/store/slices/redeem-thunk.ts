@@ -1,12 +1,12 @@
 import { ethers } from "ethers";
 import { getAddressesAsync } from "../../constants";
-import { StakingHelperContract, TimeTokenContract, MemoTokenContract, StakingContract, PresaleRedemption } from "../../abi";
+import { BashTokenContract, PresaleRedemptionContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAccountSuccess, getBalances } from "./account-slice";
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { Networks } from "../../constants/blockchain";
-import { warning, success, info, error } from "./messages-slice";
+import { warning, success, info } from "./messages-slice";
 import { messages } from "../../constants/messages";
 import { getGasPrice } from "../../helpers/get-gas-price";
 import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
@@ -29,7 +29,7 @@ export const changeRedeemApproval = createAsyncThunk("redeem/changeRedeemApprova
     const addresses = await getAddressesAsync(networkID);
 
     const signer = provider.getSigner(address);
-    const abashContract = new ethers.Contract(addresses.ABASH_ADDRESS, TimeTokenContract, signer);
+    const abashContract = new ethers.Contract(addresses.ABASH_ADDRESS, BashTokenContract, signer);
 
     let approveTx;
     try {
@@ -81,7 +81,7 @@ export const changeRedeem = createAsyncThunk("redeem/changeRedeem", async ({ act
     }
     const addresses = await getAddressesAsync(networkID);
     const signer = provider.getSigner(address);
-    const redeem = new ethers.Contract(addresses.PRESALE_REDEMPTION_ADDRESS, PresaleRedemption, signer);
+    const redeem = new ethers.Contract(addresses.PRESALE_REDEMPTION_ADDRESS, PresaleRedemptionContract, signer);
 
     let redeemTx;
 
