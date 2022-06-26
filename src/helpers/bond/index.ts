@@ -23,18 +23,15 @@ export const dai = new StableBond({
     bondIconSvg: DAIIcon,
     bondContractABI: StableBondContract,
     reserveContractAbi: StableReserveContract,
+    // network addresses will come from imported deployments
     networkAddrs: {
         [Networks.RINKEBY]: {
-            // bondAddress: "0xA7362d19C099FF7c933528E2cB6859004276c1f0",
-            // reserveAddress: "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735", // DAI
             bondAddress: "",
             reserveAddress: "",
         },
         [Networks.LOCAL]: {
             bondAddress: "",
             reserveAddress: "",
-            // bondAddress: DaiBondAddress,
-            // reserveAddress: DaiAddress,
         },
         [Networks.MAINNET]: {
             bondAddress: "",
@@ -72,6 +69,7 @@ export const BASHUSDC = new LPBond({
     bondIconSvg: BASHUSDCison,
     bondContractABI: LpBondContract,
     reserveContractAbi: LpReserveContract,
+    // network addresses will come from imported deployments
     networkAddrs: {
         [Networks.MAINNET]: {
             bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
@@ -94,6 +92,7 @@ export const BASHDAI = new LPBond({
     bondIconSvg: bashDAIIcon,
     bondContractABI: LpBondContract,
     reserveContractAbi: LpReserveContract,
+    // network addresses will come from imported deployments
     networkAddrs: {
         [Networks.MAINNET]: {
             bondAddress: "",
@@ -102,12 +101,8 @@ export const BASHDAI = new LPBond({
         [Networks.LOCAL]: {
             bondAddress: "",
             reserveAddress: "",
-            // bondAddress: BashDaiBondAddress,
-            // reserveAddress: BashDaiLpAddress,
         },
         [Networks.RINKEBY]: {
-            // bondAddress: "0xD47142787C29231a13dFe884D21139148d54292c",
-            // reserveAddress: "0x04f5Cf4b35D7aEd8435336567939Df0E0e7164F9", // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
             bondAddress: "",
             reserveAddress: "",
         },
@@ -133,26 +128,28 @@ export const BASHDAI = new LPBond({
 //     isActive: true,
 // });
 
-export const bashDai = new StableBond({
-    name: "bash_dai_minting",
-    displayName: "BASH-DAI LP",
-    bondToken: "DAI",
-    bondIconSvg: bashDAIIcon,
-    bondContractABI: StableBondContract,
-    reserveContractAbi: StableReserveContract,
-    networkAddrs: {
-        [Networks.RINKEBY]: {
-            bondAddress: "0x90A08fdF9f433954930f19E97FE9A1B0bDBf5C5f",
-            reserveAddress: "0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
-        },
-        [Networks.LOCAL]: {
-            bondAddress: "",
-            reserveAddress: "",
-        },
-        [Networks.MAINNET]: { bondAddress: "", reserveAddress: "" },
-    },
-    isActive: true,
-});
+// duplicate?
+// export const bashDai = new StableBond({
+//     name: "bash_dai_minting",
+//     displayName: "BASH-DAI LP",
+//     bondToken: "DAI",
+//     bondIconSvg: bashDAIIcon,
+//     bondContractABI: StableBondContract,
+//     reserveContractAbi: StableReserveContract,
+//     // network addresses will come from imported deployments
+//     networkAddrs: {
+//         [Networks.RINKEBY]: {
+//             bondAddress: "",
+//             reserveAddress: "",
+//         },
+//         [Networks.LOCAL]: {
+//             bondAddress: "",
+//             reserveAddress: "",
+//         },
+//         [Networks.MAINNET]: { bondAddress: "", reserveAddress: "" },
+//     },
+//     isActive: true,
+// });
 
 export const bashFloof = new LPBond({
     name: "bash_floof_minting",

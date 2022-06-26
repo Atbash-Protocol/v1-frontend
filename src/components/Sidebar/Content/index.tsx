@@ -20,8 +20,10 @@ import Davatar from "@davatar/react";
 
 import { useTranslation } from "react-i18next";
 import { getAddressesAsync, IAddresses } from "constants/addresses";
-import { DEFAULT_NETWORK } from "constants/blockchain";
+import { DEFAULT_NETWORK, Networks } from "constants/blockchain";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { IReduxState } from "store/slices/state.interface";
 
 function NavContent() {
     const { t } = useTranslation();
@@ -29,6 +31,11 @@ function NavContent() {
     const address = useAddress();
     const { bonds } = useBonds();
     const { ensName } = useENS(address);
+    const [chainArgument, setChainArgument] = useState("");
+
+    const networkID = useSelector<IReduxState, number>(state => {
+        return (state.app && state.app.networkID) || DEFAULT_NETWORK;
+    });
 
     // const addresses = getAddresses(DEFAULT_NETWORK);
     const initialState: IAddresses = {
@@ -53,10 +60,11 @@ function NavContent() {
     const loadAddresses = async () => {
         const addresses = await getAddressesAsync(DEFAULT_NETWORK);
         setAddresses(addresses);
+        if (networkID == Networks.RINKEBY) setChainArgument("&chain=rinkeby");
     };
     useEffect(() => {
         loadAddresses();
-    }, []);
+    }, [networkID]);
 
     const BASH_ADDRESS = addresses.BASH_ADDRESS;
     const DAI_ADDRESS = addresses.DAI_ADDRESS;
@@ -127,7 +135,7 @@ function NavContent() {
                             ))}
                     </div>
 
-                    <Link href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}`} target="_blank">
+                    <Link href={`https://app.uniswap.org/#/swap?inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}${chainArgument}`} target="_blank">
                         <div className="button-dapp-menu">
                             <div className="dapp-menu-item">
                                 <img alt="" src={BuyIcon} />

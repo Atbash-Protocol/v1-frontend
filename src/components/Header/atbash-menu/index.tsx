@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TOKEN_DECIMALS, DEFAULT_NETWORK, getAddressesAsync, IAddresses } from "../../../constants";
+import { TOKEN_DECIMALS, DEFAULT_NETWORK, getAddressesAsync, IAddresses, Networks } from "../../../constants";
 import { useSelector } from "react-redux";
 import { Link, Fade, Popper } from "@material-ui/core";
 import "./atbash-menu.scss";
@@ -36,6 +36,7 @@ function AtbashMenu() {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const isEthereumAPIAvailable = window.ethereum;
+    const [chainArgument, setChainArgument] = useState("");
 
     const networkID = useSelector<IReduxState, number>(state => {
         return (state.app && state.app.networkID) || DEFAULT_NETWORK;
@@ -63,16 +64,11 @@ function AtbashMenu() {
     const loadAddresses = async () => {
         const addresses = await getAddressesAsync(networkID);
         setAddresses(addresses);
+        if (networkID == Networks.RINKEBY) setChainArgument("&chain=rinkeby");
     };
     useEffect(() => {
         loadAddresses();
     }, [networkID]);
-
-    // const addresses = getAddresses(networkID);
-
-    // const SBASH_ADDRESS = addresses.SBASH_ADDRESS;
-    // const BASH_ADDRESS = addresses.BASH_ADDRESS;
-    // const DAI_ADDRESS = addresses.DAI_ADDRESS;
 
     const handleClick = (event: any) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -90,10 +86,9 @@ function AtbashMenu() {
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={200}>
                         <div className="tooltip">
-                            {/* TODO: Update for MAINNET */}
                             <Link
                                 className="tooltip-item"
-                                href={`https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=${addresses.DAI_ADDRESS}&outputCurrency=${addresses.BASH_ADDRESS}`}
+                                href={`https://app.uniswap.org/#/swap?&inputCurrency=${addresses.DAI_ADDRESS}&outputCurrency=${addresses.BASH_ADDRESS}${chainArgument}`}
                                 target="_blank"
                             >
                                 <p>{t("BuyOnUniswap")}</p>
