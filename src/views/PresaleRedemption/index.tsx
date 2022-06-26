@@ -71,7 +71,7 @@ function PresaleRedemption() {
     );
 
     const userRedeemableAbash = new Intl.NumberFormat("en-US", {
-        maximumFractionDigits: 2,
+        maximumFractionDigits: 8,
         minimumFractionDigits: 2,
     }).format(Number(abashBalance));
 

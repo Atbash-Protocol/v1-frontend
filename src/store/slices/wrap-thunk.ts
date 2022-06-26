@@ -61,7 +61,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     return dispatch(
         fetchAccountSuccess({
             wrapping: {
-                sbWrap: Number(wrapAllowance),
+                sBASHAllowance: Number(wrapAllowance),
             },
         }),
     );
