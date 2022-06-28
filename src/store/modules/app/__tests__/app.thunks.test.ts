@@ -64,9 +64,9 @@ describe('#initializeProviderContracts', () => {
             // ethers.Contracts are mocked
             expect(payload).toEqual({
                 BASH_CONTRACT: { address: expect.any(String), signer: provider },
-                DAI_ADDRESS: { address: expect.any(String), signer: provider },
+                DAI_CONTRACT: { address: expect.any(String), signer: provider },
                 INITIAL_PAIR_ADDRESS: { address: expect.any(String), signer: provider },
-                REDEEM_ADDRESS: { address: expect.any(String), signer: provider },
+                REDEEM_CONTRACT: { address: expect.any(String), signer: provider },
                 SBASH_CONTRACT: { address: expect.any(String), signer: provider },
                 STAKING_CONTRACT: { address: expect.any(String), signer: provider },
                 STAKING_HELPER_ADDRESS: { address: expect.any(String), signer: provider },

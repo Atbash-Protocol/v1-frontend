@@ -102,15 +102,36 @@ describe('#initializeProviderContracts', () => {
     });
 });
 
-describe.only('#getBondMetrics', () => {
+describe('#getBondMetrics', () => {
     const dispatch = jest.fn();
+
+    it('throws an error if metrics are not defined', async () => {
+        const getState = jest.fn().mockReturnValue({ bonds: { bondMetrics: {} }, main: { contracts: {}, metrics: {}, staking: {} }, markets: { markets: {} } });
+
+        const action = await getBondMetrics({ networkID: 1 });
+
+        const payload = await action(dispatch, getState, undefined);
+
+        expect((payload as any).error.message).toEqual('Missing metrics to compute bond metrics');
+    });
 
     it('returns 0 if no instances or no bondCalculator', async () => {
         const BashContractMock = {
             balanceOf: jest.fn().mockResolvedValue(BigNumber.from(12)),
         };
         const getState = jest.fn().mockReturnValue({
-            bonds: { bondInstances: [], bondCalculator: jest.fn() },
+            bonds: {
+                bondInstances: {
+                    dai: {
+                        isLP: () => false,
+                    },
+                    dai_lp: {
+                        isLP: () => true,
+                    },
+                },
+                bondMetrics: { dai: { treasuryBalance: 1000000 }, dai_lp: { treasuryBalance: 1000000 } },
+                bondCalculator: jest.fn(),
+            },
             markets: {
                 markets: {
                     dai: 1.01,
@@ -123,6 +144,7 @@ describe.only('#getBondMetrics', () => {
                 metrics: {
                     totalSupply: 10000000000,
                     circSupply: 500000000000,
+                    rawCircSupply: 5000000000000000000,
                     reserves: BigNumber.from(40000000000),
                 },
                 staking: {
@@ -137,22 +159,13 @@ describe.only('#getBondMetrics', () => {
 
         const { payload } = await action(dispatch, getState, undefined);
 
-        expect(payload).toEqual({ balance: 0 });
-    });
-
-    it.skip('returns the bondInstance balance', async () => {
-        const testBond = {
-            getBondMetrics: jest.fn().mockResolvedValue(10000),
-        };
-        const getState = jest.fn().mockReturnValue({
-            bonds: { bondInstances: { dai: testBond }, bondCalculator: jest.fn() },
+        expect(payload).toEqual({
+            deltaMarketPriceRfv: -20197880,
+            rfv: 0.00020002000200020003,
+            rfvTreasury: 2000000,
+            runway: -18658737810871900,
+            stakingRebase: 2e-16,
         });
-
-        const action = await getBondMetrics({ networkID: 1 });
-
-        const res = await action(dispatch, getState, undefined);
-
-        expect(res).toEqual({ dai: 10000 });
     });
 });
 

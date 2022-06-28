@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
+import Decimal from 'decimal.js';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import * as redux from 'react-redux';
@@ -37,12 +38,13 @@ describe('NotFound', () => {
         jest.spyOn(AppSelectorsModule, 'useContractLoaded').mockReturnValue(true);
         jest.spyOn(AppSelectorsModule, 'selectAppLoading').mockReturnValue(true);
         jest.spyOn(MetricsSelectorsModule, 'selectWSBASHPrice').mockReturnValue('$10.0');
-        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(10000);
+        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(new Decimal(10000));
         jest.spyOn(MetricsSelectorsModule, 'selectStakingRewards').mockReturnValue(null);
         jest.spyOn(MetricsSelectorsModule, 'selectFormattedMarketCap').mockReturnValue('$200');
         jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('$200');
         jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
         jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
+        jest.spyOn(BondSelectorsModule, 'selectTreasuryReady').mockReturnValue(true);
 
         const comp = renderComponent(<Dashboard />);
 
@@ -54,12 +56,13 @@ describe('NotFound', () => {
         jest.spyOn(AppSelectorsModule, 'selectFormattedReservePrice').mockReturnValue('$20.0');
         jest.spyOn(AppSelectorsModule, 'useContractLoaded').mockReturnValue(true);
         jest.spyOn(MetricsSelectorsModule, 'selectWSBASHPrice').mockReturnValue('$10.0');
-        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(10000);
+        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(new Decimal(10000));
         jest.spyOn(MetricsSelectorsModule, 'selectStakingRewards').mockReturnValue(null);
         jest.spyOn(MetricsSelectorsModule, 'selectFormattedMarketCap').mockReturnValue('$200');
         jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('$200');
         jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
         jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
+        jest.spyOn(BondSelectorsModule, 'selectTreasuryReady').mockReturnValue(true);
 
         const comp = renderComponent(<Dashboard />);
 

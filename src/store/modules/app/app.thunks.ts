@@ -59,8 +59,6 @@ export const getCoreMetrics = createAsyncThunk('app/coreMetrics', async (_, { ge
 
     if (!BASH_CONTRACT || !SBASH_CONTRACT || !INITIAL_PAIR_ADDRESS) throw new Error('Unable to get coreMetrics');
 
-    console.log('SBASH', SBASH_CONTRACT);
-
     // circSupply(pin):7975.388983832 OK
     // currentIndex(pin):15678.414459578 OK
     // totalSupply(pin):211332.949546243 OK

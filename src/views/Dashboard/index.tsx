@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from 'components/Loader';
 import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
-import { formatUSD, formatAPY, formatUSDFromDecimal } from 'helpers/price-units';
+import { formatAPY, formatUSDFromDecimal } from 'helpers/price-units';
 import { selectAppLoading, selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectFormattedTreasuryBalance, selectTreasuryReady } from 'store/modules/bonds/bonds.selector';
 import { getBondMetrics, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
@@ -35,21 +35,16 @@ function Dashboard() {
     const stakingRewards = useSelector(selectStakingRewards);
     const TVL = useSelector(selectTVL);
     const currentIndex = useSelector(selectFormattedIndex);
-
     const treasuryBalance = useSelector(selectFormattedTreasuryBalance);
     const appIsLoading = useSelector(selectAppLoading);
     const bondTreasuryReady = useSelector(selectTreasuryReady);
 
     useEffect(() => {
-        if (!appIsLoading && networkID) {
-            dispatch(getTreasuryBalance({ networkID }));
-        }
+        if (!appIsLoading && networkID) dispatch(getTreasuryBalance({ networkID }));
     }, [networkID, appIsLoading]);
 
     useEffect(() => {
-        if (bondTreasuryReady && networkID) {
-            dispatch(getBondMetrics({ networkID }));
-        }
+        if (bondTreasuryReady && networkID) dispatch(getBondMetrics({ networkID }));
     }, [networkID, bondTreasuryReady]);
 
     if (appIsLoading) return <Loading />;

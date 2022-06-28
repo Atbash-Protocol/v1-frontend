@@ -89,11 +89,7 @@ export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ n
     } = getState() as IReduxState;
     const { TREASURY_ADDRESS, DAO_ADDRESS } = getAddresses(networkID);
 
-    console.log('reached', rawCircSupply, totalSupply, reserves, dai, epoch, BASH_CONTRACT, bondCalculator);
-
     if (isNil(rawCircSupply) || !totalSupply || !reserves || !dai || !epoch || !BASH_CONTRACT || !bondCalculator) throw new Error('Missing metrics to compute bond metrics');
-
-    console.log('bonds', bondMetrics);
 
     const balances = Object.entries(bondMetrics).reduce(
         (acc, [bondID, { treasuryBalance }]) => {
@@ -115,8 +111,6 @@ export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ n
 
     const rfvTreasury = balances.lpBonds + balances.bashBonds;
 
-    console.log(totalSupply, balances.lpBonds, daoBashAmount);
-
     const bashSupply = totalSupply - balances.bashBonds - daoBashAmount; // Check with @reddread, on his version he doesnt count the LP
     const rfv = rfvTreasury / bashSupply;
 
@@ -124,7 +118,6 @@ export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ n
     const treasuryForRunway = rfvTreasury / circSupply!;
     const runway = Math.log(treasuryForRunway) / Math.log(1 + stakingRebase) / 3;
 
-    console.log('bonds', rfvTreasury, circSupply, runway);
     //  const bashSupply = totalSupply - LpBashAmount - daoBashAmount;
     // const stakingRebase = epoch.distribute.div(new Decimal(rawCircSupply.toString() || 0).mul(10 ** 9).toString()).toNumber(); // rewardYield rate for this epoch
     // const treasuryRunway = rfvTreasury / (rawCircSupply.toNumber() || 1);
@@ -155,8 +148,6 @@ export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async
         bondInstances.bash_dai_lp.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS),
         bondInstances.dai.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS),
     ]);
-
-    console.log('balances', balances);
 
     const keys = Object.keys(bondInstances);
 
