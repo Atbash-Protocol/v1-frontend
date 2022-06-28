@@ -144,6 +144,6 @@ export const selectFormattedTreasuryBalance = createSelector([selectAllBondMetri
 
 export const selectTreasuryReady = createSelector([selectAllBondMetrics], bondMetrics => {
     return Object.entries(bondMetrics)
-        .map(([_, bond]) => bond.treasuryBalance)
+        .map(([, bond]) => bond.treasuryBalance)
         .some(balance => balance !== null);
 });
