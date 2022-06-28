@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import MenuMetric from 'components/Metrics/MenuMetric';
-import { formatAPY, formatUSD, formatUSDFromDecimal } from 'helpers/price-units';
+import { formatAPY, formatUSDFromDecimal } from 'helpers/price-units';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectStakingRewards, selectTVL } from 'store/modules/metrics/metrics.selectors';
 import { selectFormattedIndex } from 'store/modules/stake/stake.selectors';

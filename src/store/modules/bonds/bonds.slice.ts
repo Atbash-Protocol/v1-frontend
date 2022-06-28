@@ -2,16 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { isActionRejected } from 'store/utils/action';
 
-import {
-    approveBonds,
-    calcBondDetails,
-    calculateUserBondDetails,
-    getBondTerms,
-    getBondMetrics,
-    initializeBonds,
-    loadBondBalancesAndAllowances,
-    getTreasuryBalance,
-} from './bonds.thunks';
+import { approveBonds, calcBondDetails, calculateUserBondDetails, getBondTerms, initializeBonds, loadBondBalancesAndAllowances, getTreasuryBalance } from './bonds.thunks';
 import { BondSlice } from './bonds.types';
 
 // Define the initial state using that type

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Decimal from 'decimal.js';
 import { providers, constants, Contract, utils, BigNumber } from 'ethers';
-import _, { isNil, snakeCase } from 'lodash';
+import { isNil, snakeCase } from 'lodash';
 
 import { BondingCalcContract } from 'abi';
 import { BONDS } from 'config/bonds';
@@ -87,9 +87,10 @@ export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ n
             markets: { dai },
         },
     } = getState() as IReduxState;
-    const { TREASURY_ADDRESS, DAO_ADDRESS } = getAddresses(networkID);
+    const { DAO_ADDRESS } = getAddresses(networkID);
 
-    if (isNil(rawCircSupply) || !totalSupply || !reserves || !dai || !epoch || !BASH_CONTRACT || !bondCalculator) throw new Error('Missing metrics to compute bond metrics');
+    if (isNil(rawCircSupply) || !circSupply || !totalSupply || !reserves || !dai || !epoch || !BASH_CONTRACT || !bondCalculator)
+        throw new Error('Missing metrics to compute bond metrics');
 
     const balances = Object.entries(bondMetrics).reduce(
         (acc, [bondID, { treasuryBalance }]) => {
@@ -115,7 +116,7 @@ export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ n
     const rfv = rfvTreasury / bashSupply;
 
     const stakingRebase = new Decimal(epoch.distribute.toString()).div(rawCircSupply.toString()).toNumber();
-    const treasuryForRunway = rfvTreasury / circSupply!;
+    const treasuryForRunway = rfvTreasury / circSupply;
     const runway = Math.log(treasuryForRunway) / Math.log(1 + stakingRebase) / 3;
 
     //  const bashSupply = totalSupply - LpBashAmount - daoBashAmount;

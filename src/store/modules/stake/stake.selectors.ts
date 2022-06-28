@@ -21,9 +21,9 @@ export const selectFormattedIndex = (state: RootState): string | null => {
 };
 
 // Could be refactored
-export const selectRawCircSupply = (state: any) => state.main.metrics.rawCircSupply;
+export const selectRawCircSupply = (state: RootState) => state.main.metrics.rawCircSupply;
 
-export const selectStakingReward = (state: any) => state.main.staking.epoch?.distribute || null;
+export const selectStakingReward = (state: RootState) => state.main.staking.epoch?.distribute || null;
 export const selectStakingRebaseAmount = createSelector([selectStakingReward, selectRawCircSupply], (stakingReward, rawCircSupply) => {
     if (!rawCircSupply || !stakingReward) return null;
 
@@ -36,7 +36,7 @@ export const selectStakingBalance = createSelector(
         const nextRewardValue = (stakingRebaseAmount ?? new Decimal(0)).mul(SBASHBalance);
         const wrappedTokenEquivalent = WSBASHBalance.mul(new Decimal((index ?? 0).toString()));
 
-        const effectiveNextRewardValue = nextRewardValue.add((stakingRebaseAmount!.div(10 ** 9) ?? new Decimal(0)).mul(wrappedTokenEquivalent));
+        const effectiveNextRewardValue = nextRewardValue.add((stakingRebaseAmount ?? new Decimal(0).div(10 ** 9) ?? new Decimal(0)).mul(wrappedTokenEquivalent));
 
         return {
             nextRewardValue: formatUSDFromDecimal(nextRewardValue.mul(marketPrice)),

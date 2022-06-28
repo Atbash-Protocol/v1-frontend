@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { sum, values } from 'lodash';
+import { sum } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { formatTimer } from 'helpers/prettify-seconds';

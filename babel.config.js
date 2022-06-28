@@ -25,7 +25,6 @@ module.exports = api => {
                     },
                     modules: "commonjs",
                 },
-                "@babel/preset-react",
             ],
             isTestEnv && ["@babel/preset-typescript"],
             (isProductionEnv || isDevelopmentEnv) && [
@@ -43,6 +42,7 @@ module.exports = api => {
                 {
                     development: isDevelopmentEnv || isTestEnv,
                     useBuiltIns: true,
+                    absoluteRuntime: false
                 },
             ],
         ].filter(Boolean),
