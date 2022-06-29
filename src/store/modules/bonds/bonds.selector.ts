@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import { TFunction } from 'i18next';
 import { sum } from 'lodash';
 import { createSelector } from 'reselect';
@@ -10,6 +11,7 @@ import { RootState } from 'store/store';
 
 import { selectReserveLoading, useContractLoaded } from '../app/app.selectors';
 import { selectMarketsLoading } from '../markets/markets.selectors';
+import { selectIndex } from '../stake/stake.selectors';
 import { BondItem, BondMetrics } from './bonds.types';
 
 export const selectAllBonds = (state: RootState) => {
@@ -146,4 +148,17 @@ export const selectTreasuryReady = createSelector([selectAllBondMetrics], bondMe
     return Object.entries(bondMetrics)
         .map(([, bond]) => bond.treasuryBalance)
         .some(balance => balance !== null);
+});
+
+const selectCoreMetrics = (state: RootState) => state.bonds.coreMetrics;
+
+export const selectFormattedBondCoreMetrics = createSelector([selectCoreMetrics, selectIndex], ({ rfv, runway }, currentIndex) => {
+    const indexInGwei = new Decimal((currentIndex ?? 0).toString()).div(10 ** 9);
+    const rfvBASH = new Decimal(rfv).mul(indexInGwei).toNumber();
+
+    return {
+        rfv: formatUSD(rfv),
+        rfvBASH: formatUSD(rfvBASH),
+        runway: new Decimal(runway).toFixed(1),
+    };
 });

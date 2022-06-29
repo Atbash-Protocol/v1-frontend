@@ -36,8 +36,8 @@ export class LPBond extends Bond {
         return tokenUSD.toNumber();
     }
 
-    public async getTokenAmount() {
-        return this.getReserves('', true);
+    public async getTokenAmount(BASH_ADDRESS: string) {
+        return this.getReserves(BASH_ADDRESS, true);
     }
 
     public async getSbAmount(BASH_ADDRESS: string) {

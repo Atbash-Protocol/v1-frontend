@@ -21,7 +21,9 @@ export interface BondMetrics {
 
 export interface BondCoreMetrics {
     rfv: number;
+    rfvTreasury: number;
     runway: number;
+    deltaMarketPriceRfv: number;
 }
 export interface BondTerms {
     vestingTerm: string;
@@ -30,7 +32,6 @@ export interface BondTerms {
 export interface BondItem {
     bondInstance: LPBond | StableBond;
     metrics: BondMetrics;
-    coreMetrics: BondCoreMetrics;
     // terms: BondTerms;
 }
 
@@ -46,6 +47,8 @@ export interface BondSlice {
     bondMetrics: Record<string, BondMetrics>;
     bondCalculator: Contract | null;
     treasuryBalance: number | null;
+    coreMetrics: BondCoreMetrics;
+
     loading: boolean;
     bondQuoting: boolean;
     bondQuote: BondQuote;

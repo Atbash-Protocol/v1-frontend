@@ -105,7 +105,7 @@ describe('#initializeProviderContracts', () => {
 describe('#getBondMetrics', () => {
     const dispatch = jest.fn();
 
-    it('throws an error if metrics are not defined', async () => {
+    it('throws an error if metrics elements are not defined', async () => {
         const getState = jest.fn().mockReturnValue({ bonds: { bondMetrics: {} }, main: { contracts: {}, metrics: {}, staking: {} }, markets: { markets: {} } });
 
         const action = await getBondMetrics({ networkID: 1 });
@@ -115,7 +115,7 @@ describe('#getBondMetrics', () => {
         expect((payload as any).error.message).toEqual('Missing metrics to compute bond metrics');
     });
 
-    it('returns 0 if no instances or no bondCalculator', async () => {
+    it('returns the metrics', async () => {
         const BashContractMock = {
             balanceOf: jest.fn().mockResolvedValue(BigNumber.from(12)),
         };
@@ -124,12 +124,15 @@ describe('#getBondMetrics', () => {
                 bondInstances: {
                     dai: {
                         isLP: () => false,
+                        getSbAmount: () => 10,
                     },
                     dai_lp: {
                         isLP: () => true,
+                        getSbAmount: () => 50,
                     },
                 },
-                bondMetrics: { dai: { treasuryBalance: 1000000 }, dai_lp: { treasuryBalance: 1000000 } },
+                bondMetrics: { dai: { treasuryBalance: 10000 }, dai_lp: { treasuryBalance: 5000 } },
+                coreMetrics: {},
                 bondCalculator: jest.fn(),
             },
             markets: {
@@ -142,9 +145,9 @@ describe('#getBondMetrics', () => {
                     BASH_CONTRACT: BashContractMock,
                 },
                 metrics: {
-                    totalSupply: 10000000000,
-                    circSupply: 500000000000,
-                    rawCircSupply: 5000000000000000000,
+                    totalSupply: 400,
+                    circSupply: 3,
+                    rawCircSupply: 300000000000,
                     reserves: BigNumber.from(40000000000),
                 },
                 staking: {
@@ -160,11 +163,11 @@ describe('#getBondMetrics', () => {
         const { payload } = await action(dispatch, getState, undefined);
 
         expect(payload).toEqual({
-            deltaMarketPriceRfv: -20197880,
-            rfv: 0.00020002000200020003,
-            rfvTreasury: 2000000,
-            runway: -18658737810871900,
-            stakingRebase: 2e-16,
+            deltaMarketPriceRfv: -9.88799999224321,
+            rfv: 36.76470588494809,
+            rfvTreasury: 12500,
+            runway: 833487151.4097351,
+            stakingRebase: 3.3333333333333334e-9,
         });
     });
 });

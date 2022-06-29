@@ -2,7 +2,16 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { isActionRejected } from 'store/utils/action';
 
-import { approveBonds, calcBondDetails, calculateUserBondDetails, getBondTerms, initializeBonds, loadBondBalancesAndAllowances, getTreasuryBalance } from './bonds.thunks';
+import {
+    approveBonds,
+    calcBondDetails,
+    calculateUserBondDetails,
+    getBondTerms,
+    initializeBonds,
+    loadBondBalancesAndAllowances,
+    getTreasuryBalance,
+    getBondMetrics,
+} from './bonds.thunks';
 import { BondSlice } from './bonds.types';
 
 // Define the initial state using that type
@@ -10,6 +19,13 @@ const initialState: BondSlice = {
     bonds: {},
     bondInstances: {},
     bondMetrics: {},
+    coreMetrics: {
+        // common metrics for all bonds
+        rfv: 0,
+        rfvTreasury: 0,
+        runway: 0,
+        deltaMarketPriceRfv: 0,
+    },
     bondCalculator: null,
     treasuryBalance: null,
     loading: true,
@@ -57,14 +73,11 @@ export const BondSlices = createSlice({
         );
 
         builder.addCase(calcBondDetails.fulfilled, (state, { payload: { bondID, ...metrics } }) => {
-            // state.bonds[bondID].metrics = { ...state.bonds[bondID].metrics, ...metrics };
-
             state.bondMetrics[bondID] = {
                 ...state.bondMetrics[bondID],
                 ...metrics,
                 loading: false,
             };
-            // return state;
         });
 
         builder.addCase(getBondTerms.fulfilled, (state, { payload, meta: { arg: bondID } }) => {
@@ -88,8 +101,6 @@ export const BondSlices = createSlice({
             ) => {
                 state.bondMetrics[bondID].allowance = payload.allowance;
                 state.bondMetrics[bondID].balance = payload.balance;
-
-                // return state;
             },
         );
 
@@ -104,6 +115,13 @@ export const BondSlices = createSlice({
         builder.addCase(calculateUserBondDetails.fulfilled, (state, { payload }) => {
             state.bondQuote = payload;
             state.bondQuoting = false;
+        });
+
+        builder.addCase(getBondMetrics.fulfilled, (state, { payload }) => {
+            state.coreMetrics.rfv = payload.rfv;
+            state.coreMetrics.rfvTreasury = payload.rfvTreasury;
+            state.coreMetrics.runway = payload.runway;
+            state.coreMetrics.deltaMarketPriceRfv = payload.deltaMarketPriceRfv;
         });
 
         builder.addMatcher(isActionRejected, (state, action) => {

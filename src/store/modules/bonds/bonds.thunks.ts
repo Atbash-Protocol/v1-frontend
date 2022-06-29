@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Decimal from 'decimal.js';
 import { providers, constants, Contract, utils, BigNumber } from 'ethers';
-import { isNil, snakeCase } from 'lodash';
+import { isNil, snakeCase, sum } from 'lodash';
 
 import { BondingCalcContract } from 'abi';
 import { BONDS } from 'config/bonds';
@@ -87,10 +87,12 @@ export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ n
             markets: { dai },
         },
     } = getState() as IReduxState;
-    const { DAO_ADDRESS } = getAddresses(networkID);
+    const { DAO_ADDRESS, PRESALE_REDEMPTION_ADDRESS } = getAddresses(networkID);
 
     if (isNil(rawCircSupply) || !circSupply || !totalSupply || !reserves || !dai || !epoch || !BASH_CONTRACT || !bondCalculator)
         throw new Error('Missing metrics to compute bond metrics');
+
+    const bondsBashAmounts = await Promise.all([...Object.values(bondInstances).map(bond => bond.getSbAmount(BASH_CONTRACT.address))]);
 
     const balances = Object.entries(bondMetrics).reduce(
         (acc, [bondID, { treasuryBalance }]) => {
@@ -109,20 +111,17 @@ export const getBondMetrics = createAsyncThunk('bonds/bonds-metrics', async ({ n
 
     const daoBash = await BASH_CONTRACT.balanceOf(DAO_ADDRESS);
     const daoBashAmount = Number(utils.formatUnits(daoBash, 'gwei'));
+    const redeemableBash = (await BASH_CONTRACT.balanceOf(PRESALE_REDEMPTION_ADDRESS)) / Math.pow(10, 9);
 
-    const rfvTreasury = balances.lpBonds + balances.bashBonds;
+    const rfvTreasury = balances.lpBonds / 2 + balances.bashBonds;
+    const bashAmounts = sum(bondsBashAmounts);
 
-    const bashSupply = totalSupply - balances.bashBonds - daoBashAmount; // Check with @reddread, on his version he doesnt count the LP
+    const bashSupply = totalSupply - bashAmounts - daoBashAmount - redeemableBash;
+
     const rfv = rfvTreasury / bashSupply;
-
     const stakingRebase = new Decimal(epoch.distribute.toString()).div(rawCircSupply.toString()).toNumber();
     const treasuryForRunway = rfvTreasury / circSupply;
     const runway = Math.log(treasuryForRunway) / Math.log(1 + stakingRebase) / 3;
-
-    //  const bashSupply = totalSupply - LpBashAmount - daoBashAmount;
-    // const stakingRebase = epoch.distribute.div(new Decimal(rawCircSupply.toString() || 0).mul(10 ** 9).toString()).toNumber(); // rewardYield rate for this epoch
-    // const treasuryRunway = rfvTreasury / (rawCircSupply.toNumber() || 1);
-    // const runway = Math.log(treasuryRunway) / Math.log(1 + stakingRebase) / 3;
 
     const marketPrice = reserves.div(10 ** 9).toNumber() * dai;
     const deltaMarketPriceRfv = ((rfv - marketPrice) / rfv) * 100;
@@ -145,10 +144,7 @@ export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async
 
     if (!bondCalculator || Object.values(bondInstances).length === 0) return { balance: 0 };
 
-    const balances = await Promise.all([
-        bondInstances.bash_dai_lp.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS),
-        bondInstances.dai.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS),
-    ]);
+    const balances = await Promise.all([...Object.values(bondInstances).map(bond => bond.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS))]);
 
     const keys = Object.keys(bondInstances);
 

@@ -10,7 +10,7 @@ import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
 import { formatAPY, formatUSDFromDecimal } from 'helpers/price-units';
 import { selectAppLoading, selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectFormattedTreasuryBalance, selectTreasuryReady } from 'store/modules/bonds/bonds.selector';
+import { selectFormattedBondCoreMetrics, selectFormattedTreasuryBalance, selectTreasuryReady } from 'store/modules/bonds/bonds.selector';
 import { getBondMetrics, getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
 import { selectMarketsLoading } from 'store/modules/markets/markets.selectors';
 import { selectFormattedMarketCap, selectStakingRewards, selectTVL, selectWSBASHPrice } from 'store/modules/metrics/metrics.selectors';
@@ -38,6 +38,7 @@ function Dashboard() {
     const treasuryBalance = useSelector(selectFormattedTreasuryBalance);
     const appIsLoading = useSelector(selectAppLoading);
     const bondTreasuryReady = useSelector(selectTreasuryReady);
+    const { rfv, rfvBASH, runway } = useSelector(selectFormattedBondCoreMetrics);
 
     useEffect(() => {
         if (!appIsLoading && networkID) dispatch(getTreasuryBalance({ networkID }));
@@ -64,9 +65,9 @@ function Dashboard() {
         { name: 'TreasuryBalance', value: treasuryBalance },
 
         ...APYMetrics,
-        // { name: "RiskFreeValue", value: formatUSD(app.rfv) },
-        // { name: "RiskFreeValuewsBASH", value: formatUSD(app.rfv * Number(app.currentIndex)) },
-        // { name: "Runway", value: `${formatNumber(Number(app.runway), 1)} Days` },
+        { name: 'RiskFreeValue', value: rfv },
+        { name: 'RiskFreeValuewsBASH', value: rfvBASH },
+        { name: 'Runway', value: t('common:day', { count: Number(runway) }) },
     ];
 
     return (

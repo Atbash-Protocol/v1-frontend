@@ -45,6 +45,7 @@ describe('NotFound', () => {
         jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
         jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
         jest.spyOn(BondSelectorsModule, 'selectTreasuryReady').mockReturnValue(true);
+        jest.spyOn(BondSelectorsModule, 'selectFormattedBondCoreMetrics').mockReturnValue({ rfv: '0', rfvBASH: '0', runway: '0' });
 
         const comp = renderComponent(<Dashboard />);
 
@@ -63,6 +64,7 @@ describe('NotFound', () => {
         jest.spyOn(BondSelectorsModule, 'isAtLeastOneActive').mockReturnValue(true);
         jest.spyOn(BondSelectorsModule, 'selectFormattedTreasuryBalance').mockReturnValue('$200 000');
         jest.spyOn(BondSelectorsModule, 'selectTreasuryReady').mockReturnValue(true);
+        jest.spyOn(BondSelectorsModule, 'selectFormattedBondCoreMetrics').mockReturnValue({ rfv: '$10', rfvBASH: '$100', runway: '12.4' });
 
         const comp = renderComponent(<Dashboard />);
 
