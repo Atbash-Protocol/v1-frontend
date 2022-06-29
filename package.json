@@ -34,7 +34,6 @@
     "i18next-browser-languagedetector": "^6.1.2",
     "intl": "^1.2.5",
     "lodash": "^4.17.21",
-    "node-sass": "^6.0.1",
     "node-watch": "^0.7.1",
     "notistack": "^1.0.10",
     "numeral": "^2.0.6",
