@@ -91,8 +91,6 @@ export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, 
         const gasPrice = await getGasPrice(provider);
 
         if (action === "wrap") {
-            console.log(value);
-            console.log(ethers.utils.parseEther(value));
             wrapTx = await wsBASH.wrap(ethers.utils.parseUnits(value, "gwei"), { gasPrice });
         } else {
             wrapTx = await wsBASH.unwrap(ethers.utils.parseEther(value), { gasPrice });

@@ -140,6 +140,6 @@ export const getAddressesAsync = async (networkID: number): Promise<IAddresses> 
             throw Error("Unknown network deployment");
     }
     var addresses = await getNetworkDeploymentAddresses(networkName);
-    console.log("Addresses: %o", addresses);
+    // console.log("Addresses: %o", addresses);
     return addresses;
 };
