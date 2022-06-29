@@ -1,104 +1,117 @@
 import { ethers } from "ethers";
-import { getAddresses } from "../../constants";
-import { StakingContract, MemoTokenContract, TimeTokenContract, RedeemContract } from "../../abi";
+import { getAddressesAsync } from "../../constants";
+import { StakingContract, SBashTokenContract, BashTokenContract, RedeemContract, PresaleContract, AbashContract } from "../../abi";
 import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { RootState } from "../store";
 import allBonds from "../../helpers/bond";
+import { ArrowBackSharp } from "@material-ui/icons";
 
 interface ILoadAppDetails {
     networkID: number;
     provider: JsonRpcProvider;
 }
 
-export const loadAppDetails = createAsyncThunk(
-    "app/loadAppDetails",
-    //@ts-ignore
-    async ({ networkID, provider }: ILoadAppDetails) => {
-        const mimPrice = getTokenPrice("MIM");
-        const addresses = getAddresses(networkID);
+export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ networkID, provider }: ILoadAppDetails) => {
+    const daiPrice = getTokenPrice("DAI");
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
-        const ohmPrice = getTokenPrice("OHM");
-        const ohmAmount = 1512.12854088 * ohmPrice;
+    // const ohmPrice = getTokenPrice("OHM");
+    // const ohmAmount = 1512.12854088 * ohmPrice;
+    // const presaleContract = new ethers.Contract(addresses.PRESALE_ADDRESS, PresaleContract, provider);
+    const abashContract = new ethers.Contract(addresses.ABASH_ADDRESS, AbashContract, provider);
+    const redeemableAbash = (await abashContract.totalSupply())
+        .sub(await abashContract.balanceOf(addresses.PRESALE_ADDRESS))
+        .sub(await abashContract.balanceOf(addresses.PRESALE_REDEMPTION_ADDRESS));
 
-        const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
-        const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
-        const currentBlock = await provider.getBlockNumber();
-        const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
-        const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, provider);
-        const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, provider);
-        const mimContract = new ethers.Contract(addresses.MIM_ADDRESS, TimeTokenContract, provider);
+    const stakingContract = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, provider);
+    // disable: const redeemContract = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, provider);
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, provider);
+    const BASHContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, provider);
+    const DAIContract = new ethers.Contract(addresses.DAI_ADDRESS, BashTokenContract, provider);
 
-        const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * mimPrice;
+    const redeemableBash = (await BASHContract.balanceOf(addresses.PRESALE_REDEMPTION_ADDRESS)) / Math.pow(10, 9);
 
-        const totalSupply = (await sbContract.totalSupply()) / Math.pow(10, 9);
-        const circSupply = (await sBASHContract.circulatingSupply()) / Math.pow(10, 9);
+    const currentBlock = await provider.getBlockNumber();
+    const currentBlockTime = (await provider.getBlock(currentBlock)).timestamp;
 
-        const stakingTVL = circSupply * marketPrice;
-        const marketCap = totalSupply * marketPrice;
+    const marketPrice = ((await getMarketPrice(networkID, provider)) / Math.pow(10, 9)) * daiPrice;
 
-        const redeemRfv = (await redeemContract.RFV()) / Math.pow(10, 9);
-        const redeemSbSent = (await sbContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 9);
-        const redeemMimAvailable = (await mimContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 18);
+    const totalSupply = (await BASHContract.totalSupply()) / Math.pow(10, 9);
+    const circSupply = (await sBASHContract.circulatingSupply()) / Math.pow(10, 9);
 
-        const tokenBalPromises = allBonds.map(bond => bond.getTreasuryBalance(networkID, provider));
-        const tokenBalances = await Promise.all(tokenBalPromises);
-        const treasuryBalance = tokenBalances.reduce((tokenBalance0, tokenBalance1) => tokenBalance0 + tokenBalance1) + redeemMimAvailable + 16176498;
+    // Total value locked - dollar amount of all staked Bash
+    const stakingTVL = circSupply * marketPrice;
+    const marketCap = totalSupply * marketPrice;
 
-        const tokenAmountsPromises = allBonds.map(bond => bond.getTokenAmount(networkID, provider));
-        const tokenAmounts = await Promise.all(tokenAmountsPromises);
+    const redeemRfv = 0; // (await redeemContract.RFV()) / Math.pow(10, 9);
+    const redeemSbSent = 0; // (await sbContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 9);
+    const redeemMimAvailable = 0; // (await DAIContract.balanceOf(addresses.REDEEM_ADDRESS)) / Math.pow(10, 18);
 
-        const rfvTreasury = tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
+    const tokenBalPromises = allBonds.map(bond => bond.getTreasuryBalance(networkID, provider)); // get the balances of reserves in treasury
+    const tokenBalances = await Promise.all(tokenBalPromises);
+    const treasuryBalance = tokenBalances.reduce((tokenBalance0, tokenBalance1) => tokenBalance0 + tokenBalance1); // + redeemMimAvailable + 16176498; // add all balances + redeemable DAI + ?
 
-        const daoSb = await sbContract.balanceOf(addresses.DAO_ADDRESS);
-        const daoSbAmount = Number(ethers.utils.formatUnits(daoSb, "gwei"));
+    // dead-code: const tokenAmountsPromises = allBonds.map(bond => bond.getTokenAmount(networkID, provider));
+    // dead-code: const tokenAmounts = await Promise.all(tokenAmountsPromises);
 
-        const sbBondsAmountsPromises = allBonds.filter(bond => bond.name !== "bash_dai_minting").map(bond => bond.getSbAmount(networkID, provider));
-        const sbBondsAmounts = await Promise.all(sbBondsAmountsPromises);
+    // the amount of stable funds backing bash
+    const rfvTreasury = tokenBalances[0] + tokenBalances[1] / 2; // tokenBalances[0] + tokenBalances[1] + redeemMimAvailable + tokenBalances[2] / 2 + tokenBalances[3] / 2 + 16176498;
 
-        const LpSbAmount = sbBondsAmounts.reduce((sbAmount0, sbAmount1) => sbAmount0 + sbAmount1, 0);
-        const sbSupply = totalSupply - LpSbAmount - daoSbAmount;
+    // get bash held in DAO
+    const daoBash = await BASHContract.balanceOf(addresses.DAO_ADDRESS);
+    const daoBashAmount = Number(ethers.utils.formatUnits(daoBash, "gwei"));
 
-        const rfv = rfvTreasury / (sbSupply - redeemSbSent);
-        const deltaMarketPriceRfv = ((rfv - marketPrice) / rfv) * 100;
+    // Determine total amount of bash in bonds
+    const bashBondsAmountsPromises = allBonds.filter(bond => bond.name !== "bash_dai_minting").map(bond => bond.getBashAmount(networkID, provider));
+    const bashBondsAmounts = await Promise.all(bashBondsAmountsPromises);
 
-        const epoch = await stakingContract.epoch();
-        const stakingReward = epoch.distribute;
-        const circ = await sBASHContract.circulatingSupply();
-        const stakingRebase = stakingReward / circ;
-        const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
-        const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
+    const LpBashAmount = bashBondsAmounts.reduce((bashAmount0, bashAmount1) => bashAmount0 + bashAmount1, 0);
+    const bashSupply = totalSupply - LpBashAmount - daoBashAmount - redeemableBash; // todo: should this include redeemable?
 
-        const currentIndex = await stakingContract.index();
-        const nextRebase = epoch.endTime;
+    const rfv = rfvTreasury / bashSupply; // rfvTreasury / (sbSupply - redeemSbSent); // qty of bash treasury can afford to pay out to stakers
 
-        const treasuryRunway = rfvTreasury / circSupply;
-        const runway = Math.log(treasuryRunway) / Math.log(1 + stakingRebase) / 3;
+    const epoch = await stakingContract.epoch();
+    const stakingReward = epoch.distribute; // the amount of BASH to distribute in the coming epoch
+    const circ = await sBASHContract.circulatingSupply(); // available sBASH not held by staking contract
+    const stakingRebase = stakingReward / circ; // rewardYield rate for this epoch
+    const epochsPerDay = 3;
+    const fiveDayRate = Math.pow(1 + stakingRebase, 5 * epochsPerDay) - 1; // 3 epoch/day
+    const stakingAPY = Math.pow(1 + stakingRebase, 365 * epochsPerDay) - 1;
 
-        return {
-            currentIndex: Number(ethers.utils.formatUnits(currentIndex, "gwei")),
-            totalSupply,
-            marketCap,
-            currentBlock,
-            circSupply,
-            fiveDayRate,
-            treasuryBalance,
-            stakingAPY,
-            stakingTVL,
-            stakingRebase,
-            marketPrice,
-            deltaMarketPriceRfv,
-            currentBlockTime,
-            nextRebase,
-            rfv,
-            runway,
-            redeemRfv,
-            redeemSbSent,
-            redeemMimAvailable,
-        };
-    },
-);
+    const currentIndex = await stakingContract.index();
+    const nextRebase = epoch.endTime;
+
+    const treasuryRunway = rfvTreasury / circSupply;
+    const runway = Math.log(treasuryRunway) / Math.log(1 + stakingRebase) / 3;
+
+    const deltaMarketPriceRfv = ((rfv - marketPrice) / rfv) * 100;
+
+    return {
+        currentIndex: Number(ethers.utils.formatUnits(currentIndex, "gwei")), // in sBASH.decimals 9
+        totalSupply,
+        marketCap,
+        currentBlock,
+        circSupply,
+        fiveDayRate,
+        treasuryBalance,
+        stakingAPY,
+        stakingTVL,
+        stakingRebase,
+        marketPrice,
+        deltaMarketPriceRfv: deltaMarketPriceRfv,
+        currentBlockTime,
+        nextRebase,
+        rfv: rfv,
+        runway,
+        redeemRfv,
+        redeemSbSent,
+        redeemMimAvailable,
+        redeemableAbash: Number(ethers.utils.formatUnits(redeemableAbash, 18)),
+    };
+});
 
 const initialState = {
     loading: true,
@@ -126,6 +139,7 @@ export interface IAppSlice {
     redeemRfv: number;
     redeemSbSent: number;
     redeemMimAvailable: number;
+    redeemableAbash: number;
 }
 
 const appSlice = createSlice({

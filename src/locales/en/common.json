@@ -1,5 +1,5 @@
 {
-    "hello": "hello world!",
+    "walletNotConnected": "Please connect your wallet to continue",
     "PageNotFound": "Page not found",
     "day_one": "day",
     "day_other": "days",
@@ -60,6 +60,7 @@
         "ExistingMint": "You have an existing mint. Minting will reset your vesting period and forfeit any pending claimable rewards. We recommend claiming rewards first or using a fresh wallet. Do you still wish to proceed?",
         "BeforeStake": "Before staking, enter a value.",
         "BeforeUnstake": "Before unstaking, enter a value.",
+        "BeforeRedeem": "Before redeeming, enter a value.",
         "BeforeWrap": "Before wrapping, enter a value.",
         "BeforeUnwrap": "Before unwrapping, enter a value.",
         "TxSuccessfullySend": "Your transaction was successfully sent",

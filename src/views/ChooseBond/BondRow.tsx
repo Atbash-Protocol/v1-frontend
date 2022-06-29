@@ -25,11 +25,9 @@ export function BondDataCard({ bond }: IBondProps) {
                     <div className="bond-name">
                         <p className="bond-name-title">{bond.displayName}</p>
                         {bond.isLP && (
-                            <div>
-                                <Link href={bond.lpUrl} target="_blank">
-                                    <p className="bond-name-title">{t("bond:ViewContract")}</p>
-                                </Link>
-                            </div>
+                            <Link href={bond.lpUrl} target="_blank">
+                                <p className="bond-name-title">{t("bond:ViewContract")}</p>
+                            </Link>
                         )}
                     </div>
                 </div>

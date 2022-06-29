@@ -1,15 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useAddress, useWeb3Context } from "../hooks";
-import { calcBondDetails } from "../store/slices/bond-slice";
-import { loadAppDetails } from "../store/slices/app-slice";
-import { loadAccountDetails, calculateUserBondDetails, calculateUserTokenDetails } from "../store/slices/account-slice";
-import { IReduxState } from "../store/slices/state.interface";
-import Loading from "../components/Loader";
-import useBonds from "../hooks/bonds";
-import ViewBase from "../components/ViewBase";
-import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap } from "../views";
+import { useAddress, useWeb3Context } from "hooks/web3";
+import { calcBondDetails } from "store/slices/bond-slice";
+import { loadAppDetails } from "store/slices/app-slice";
+import { loadAccountDetails, calculateUserBondDetails, calculateUserTokenDetails } from "store/slices/account-slice";
+import { IReduxState } from "store/slices/state.interface";
+import Loading from "components/Loader";
+import useBonds from "hooks/bonds";
+import ViewBase from "layout/ViewBase";
+import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap, PresaleRedemption } from "../views";
 
 import "./style.scss";
 import useTokens from "../hooks/tokens";
@@ -22,7 +22,9 @@ function App() {
 
     const [walletChecked, setWalletChecked] = useState(false);
 
-    const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
+    const isAppLoading = useSelector<IReduxState, boolean>(state => {
+        return state.app.loading;
+    });
     const isAppLoaded = useSelector<IReduxState, boolean>(state => !Boolean(state.app.marketPrice));
 
     const { bonds } = useBonds();
@@ -86,34 +88,21 @@ function App() {
     }, []);
 
     useEffect(() => {
-        if (walletChecked) {
+        if (walletChecked || connected) {
             loadDetails("app");
             loadDetails("account");
             loadDetails("userBonds");
             loadDetails("userTokens");
         }
-    }, [walletChecked]);
-
-    useEffect(() => {
-        if (connected) {
-            loadDetails("app");
-            loadDetails("account");
-            loadDetails("userBonds");
-            loadDetails("userTokens");
-        }
-    }, [connected]);
+    }, [walletChecked, connected]);
 
     if (isAppLoading) return <Loading />;
 
     return (
         <ViewBase>
             <Switch>
-                <Route exact path="/dashboard">
-                    <Dashboard />
-                </Route>
-
                 <Route exact path="/">
-                    <Redirect to="/stake" />
+                    <Dashboard />
                 </Route>
 
                 <Route path="/stake">
@@ -124,7 +113,7 @@ function App() {
                     <Wrap />
                 </Route>
 
-                <Route path="/redeem">
+                <Route path="/redeem2">
                     <Redeem />
                 </Route>
 
@@ -141,6 +130,10 @@ function App() {
                         );
                     })}
                     <ChooseBond />
+                </Route>
+
+                <Route path="/redeem">
+                    <PresaleRedemption />
                 </Route>
 
                 <Route component={NotFound} />

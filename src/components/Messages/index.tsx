@@ -19,7 +19,7 @@ function Messages() {
         }
     }, [messages.message]);
 
-    return <div></div>;
+    return null;
 }
 
 export default Messages;

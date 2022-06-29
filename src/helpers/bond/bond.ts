@@ -34,7 +34,9 @@ export abstract class Bond {
     // Async method that returns a Promise
     public abstract getTreasuryBalance(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
     public abstract getTokenAmount(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
-    public abstract getSbAmount(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
+    public abstract getBashAmount(networkID: Networks, provider: StaticJsonRpcProvider): Promise<number>;
+    public abstract getAddressForBond(networkID: Networks): Promise<string>;
+    public abstract getAddressForReserve(networkID: Networks): Promise<string>;
 
     constructor(type: BondType, bondOpts: BondOpts) {
         this.name = bondOpts.name;
@@ -47,21 +49,13 @@ export abstract class Bond {
         this.isActive = bondOpts.isActive;
     }
 
-    public getAddressForBond(networkID: Networks) {
-        return this.networkAddrs[networkID].bondAddress;
-    }
-
-    public getContractForBond(networkID: Networks, provider: StaticJsonRpcProvider | JsonRpcSigner) {
-        const bondAddress = this.getAddressForBond(networkID);
+    public async getContractForBond(networkID: Networks, provider: StaticJsonRpcProvider | JsonRpcSigner) {
+        const bondAddress = await this.getAddressForBond(networkID);
         return new Contract(bondAddress, this.bondContractABI, provider);
     }
 
-    public getAddressForReserve(networkID: Networks) {
-        return this.networkAddrs[networkID].reserveAddress;
-    }
-
-    public getContractForReserve(networkID: Networks, provider: StaticJsonRpcProvider | JsonRpcSigner) {
-        const reserveAddress = this.getAddressForReserve(networkID);
+    public async getContractForReserve(networkID: Networks, provider: StaticJsonRpcProvider | JsonRpcSigner) {
+        const reserveAddress = await this.getAddressForReserve(networkID);
         return new Contract(reserveAddress, this.reserveContractAbi, provider);
     }
 

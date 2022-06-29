@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { getAddresses, TOKEN_DECIMALS, DEFAULD_NETWORK } from "../../../constants";
+import { useEffect, useState } from "react";
+import { TOKEN_DECIMALS, DEFAULT_NETWORK, getAddressesAsync, IAddresses, Networks } from "../../../constants";
 import { useSelector } from "react-redux";
 import { Link, Fade, Popper } from "@material-ui/core";
 import "./atbash-menu.scss";
@@ -36,15 +36,39 @@ function AtbashMenu() {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const isEthereumAPIAvailable = window.ethereum;
+    const [chainArgument, setChainArgument] = useState("");
 
     const networkID = useSelector<IReduxState, number>(state => {
-        return (state.app && state.app.networkID) || DEFAULD_NETWORK;
+        return (state.app && state.app.networkID) || DEFAULT_NETWORK;
     });
 
-    const addresses = getAddresses(networkID);
-
-    const SBASH_ADDRESS = addresses.SBASH_ADDRESS;
-    const BASH_ADDRESS = addresses.BASH_ADDRESS;
+    const initialState: IAddresses = {
+        BASH_ADDRESS: "",
+        BASH_BONDING_CALC_ADDRESS: "",
+        BASH_DAI_BOND_ADDRESS: "",
+        BASH_DAI_LP_ADDRESS: "",
+        DAI_ADDRESS: "",
+        DAI_BOND_ADDRESS: "",
+        DAO_ADDRESS: "",
+        REDEEM_ADDRESS: "",
+        SBASH_ADDRESS: "",
+        STAKING_ADDRESS: "",
+        STAKING_HELPER_ADDRESS: "",
+        TREASURY_ADDRESS: "",
+        WSBASH_ADDRESS: "",
+        ABASH_ADDRESS: "",
+        PRESALE_ADDRESS: "",
+        PRESALE_REDEMPTION_ADDRESS: "",
+    };
+    const [addresses, setAddresses] = useState<IAddresses>(initialState);
+    const loadAddresses = async () => {
+        const addresses = await getAddressesAsync(networkID);
+        setAddresses(addresses);
+        if (networkID == Networks.RINKEBY) setChainArgument("&chain=rinkeby");
+    };
+    useEffect(() => {
+        loadAddresses();
+    }, [networkID]);
 
     const handleClick = (event: any) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -64,7 +88,7 @@ function AtbashMenu() {
                         <div className="tooltip">
                             <Link
                                 className="tooltip-item"
-                                href={`https://www.traderjoexyz.com/trade?inputCurrency=0x130966628846bfd36ff31a822705796e8cb8c18d&outputCurrency=${BASH_ADDRESS}`}
+                                href={`https://app.uniswap.org/#/swap?&inputCurrency=${addresses.DAI_ADDRESS}&outputCurrency=${addresses.BASH_ADDRESS}${chainArgument}`}
                                 target="_blank"
                             >
                                 <p>{t("BuyOnUniswap")}</p>
@@ -75,10 +99,10 @@ function AtbashMenu() {
                                     <div className="divider" />
                                     <p className="add-tokens-title">{t("AddTokenToWallet")}</p>
                                     <div className="divider" />
-                                    <div className="tooltip-item" onClick={addTokenToWallet("BASH", BASH_ADDRESS)}>
+                                    <div className="tooltip-item" onClick={addTokenToWallet("BASH", addresses.BASH_ADDRESS)}>
                                         <p>↑ BASH</p>
                                     </div>
-                                    <div className="tooltip-item" onClick={addTokenToWallet("sBASH", SBASH_ADDRESS)}>
+                                    <div className="tooltip-item" onClick={addTokenToWallet("sBASH", addresses.SBASH_ADDRESS)}>
                                         <p>↑ sBASH</p>
                                     </div>
                                 </div>

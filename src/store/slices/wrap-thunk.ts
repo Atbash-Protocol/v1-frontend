@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { getAddresses } from "../../constants";
-import { WrappingContract, TimeTokenContract, MemoTokenContract } from "../../abi";
+import { getAddressesAsync } from "../../constants";
+import { WrappingContract, BashTokenContract, SBashTokenContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAccountSuccess, getBalances } from "./account-slice";
@@ -26,10 +26,11 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
-    const signer = provider.getSigner();
-    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
+    const signer = provider.getSigner(address);
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, signer);
 
     let approveTx;
     try {
@@ -60,7 +61,7 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     return dispatch(
         fetchAccountSuccess({
             wrapping: {
-                sbWrap: Number(wrapAllowance),
+                sBASHAllowance: Number(wrapAllowance),
             },
         }),
     );
@@ -79,8 +80,9 @@ export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, 
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
-    const signer = provider.getSigner();
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
+    const signer = provider.getSigner(address); // needed for address?
     const wsBASH = new ethers.Contract(addresses.WSBASH_ADDRESS, WrappingContract, signer);
 
     let wrapTx;
@@ -89,8 +91,6 @@ export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, 
         const gasPrice = await getGasPrice(provider);
 
         if (action === "wrap") {
-            console.log(value);
-            console.log(ethers.utils.parseEther(value));
             wrapTx = await wsBASH.wrap(ethers.utils.parseUnits(value, "gwei"), { gasPrice });
         } else {
             wrapTx = await wsBASH.unwrap(ethers.utils.parseEther(value), { gasPrice });

@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { getAddresses } from "../../constants";
-import { StakingHelperContract, TimeTokenContract, MemoTokenContract, StakingContract, RedeemContract } from "../../abi";
+import { getAddressesAsync } from "../../constants";
+import { StakingHelperContract, BashTokenContract, SBashTokenContract, StakingContract, RedeemContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAccountSuccess, getBalances } from "./account-slice";
@@ -26,17 +26,18 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
-    const signer = provider.getSigner();
-    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
+    const signer = provider.getSigner(address);
+    const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
 
         if (token === "BASH") {
-            approveTx = await sbContract.approve(addresses.REDEEM_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await bashContract.approve(addresses.REDEEM_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         const text = i18n.t("redeem:ApproveStaking");
@@ -55,7 +56,7 @@ export const changeRedeemApproval = createAsyncThunk("stake/changeRedeemApproval
 
     await sleep(2);
 
-    const stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
+    const stakeAllowance = await bashContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
 
     return dispatch(
         fetchAccountSuccess({
@@ -77,18 +78,18 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
-    const signer = provider.getSigner();
-    const sbContract = new ethers.Contract(addresses.BASH_ADDRESS, TimeTokenContract, signer);
-    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, MemoTokenContract, signer);
+    const signer = provider.getSigner(address);
+    const bashContract = new ethers.Contract(addresses.BASH_ADDRESS, BashTokenContract, signer);
+    const sBASHContract = new ethers.Contract(addresses.SBASH_ADDRESS, SBashTokenContract, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
 
         if (token === "BASH") {
-            approveTx = await sbContract.approve(addresses.STAKING_HELPER_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await bashContract.approve(addresses.STAKING_HELPER_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         if (token === "sBASH") {
@@ -111,14 +112,13 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
 
     await sleep(2);
 
-    const stakeAllowance = await sbContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
+    const stakeAllowance = await bashContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
     const unstakeAllowance = await sBASHContract.allowance(address, addresses.STAKING_ADDRESS);
-
     return dispatch(
         fetchAccountSuccess({
             staking: {
-                sbStake: Number(stakeAllowance),
-                sBASHUnstake: Number(unstakeAllowance),
+                BASH: Number(stakeAllowance),
+                sBASH: Number(unstakeAllowance),
             },
         }),
     );
@@ -137,8 +137,8 @@ export const changeRedeem = createAsyncThunk("stake/changeRedeem", async ({ acti
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
-    const signer = provider.getSigner();
+    const addresses = await getAddressesAsync(networkID);
+    const signer = provider.getSigner(address);
     const redeem = new ethers.Contract(addresses.REDEEM_ADDRESS, RedeemContract, signer);
 
     let stakeTx;
@@ -178,8 +178,8 @@ export const changeStake = createAsyncThunk("stake/changeStake", async ({ action
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
-    const signer = provider.getSigner();
+    const addresses = await getAddressesAsync(networkID);
+    const signer = provider.getSigner(address);
     const staking = new ethers.Contract(addresses.STAKING_ADDRESS, StakingContract, signer);
     const stakingHelper = new ethers.Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, signer);
 

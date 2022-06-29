@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Grid, InputAdornment, OutlinedInput, Zoom } from "@material-ui/core";
 import RebaseTimer from "../../components/RebaseTimer";
-import { trim } from "../../helpers";
+import { formatUSD, trim } from "../../helpers";
 import { changeStake, changeApproval } from "../../store/slices/stake-thunk";
 import "./stake.scss";
 import { useWeb3Context } from "../../hooks";
@@ -92,7 +92,7 @@ function Stake() {
             if (token === "sBASH") return unstakeAllowance > 0;
             return 0;
         },
-        [stakeAllowance],
+        [stakeAllowance, unstakeAllowance],
     );
 
     const changeView = (newView: number) => () => {
@@ -102,49 +102,20 @@ function Stake() {
 
     const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
-    const trimmedStakingAPY = trim(stakingAPY * 100, 1);
+    const formattedAPY = trim(stakingAPY * 100, 1);
+    const trimmedStakingAPY = formattedAPY.length > 16 ? "> 1,000,000" : formattedAPY;
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
     const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
     const effectiveNextRewardValue = trim(Number(Number(nextRewardValue) + (Number(stakingRebasePercentage) / 100) * Number(wrappedTokenEquivalent)), 6);
-    const valueOfSB = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(BASHbalance) * app.marketPrice);
-    const valueOfStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(trimmedsBASHBalance) * app.marketPrice);
-    const valueOfWrappedStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
+    const valueOfSB = formatUSD(Number(BASHbalance) * app.marketPrice);
+    const valueOfStakedBalance = formatUSD(Number(trimmedsBASHBalance) * app.marketPrice);
+    const valueOfWrappedStakedBalance = formatUSD(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
     const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
-    const valueOfAllBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(sumOfAllBalance * app.marketPrice);
-    const valueOfYourNextRewardAmount = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(nextRewardValue) * app.marketPrice);
-    const valueOfYourEffectiveNextRewardAmount = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(Number(effectiveNextRewardValue) * app.marketPrice);
+    const valueOfAllBalance = formatUSD(sumOfAllBalance * app.marketPrice);
+    const valueOfYourNextRewardAmount = formatUSD(Number(nextRewardValue) * app.marketPrice);
+    const valueOfYourEffectiveNextRewardAmount = formatUSD(Number(effectiveNextRewardValue) * app.marketPrice);
 
     return (
         <div className="stake-view">
@@ -164,9 +135,7 @@ function Stake() {
                                     <Grid item xs={6} sm={3} md={3} lg={3}>
                                         <div className="stake-card-apy">
                                             <p className="stake-card-metrics-title">{t("APY")}</p>
-                                            <p className="stake-card-metrics-value">
-                                                {stakingAPY ? <>{new Intl.NumberFormat("en-US").format(Number(trimmedStakingAPY))}%</> : <Skeleton width="150px" />}
-                                            </p>
+                                            <p className="stake-card-metrics-value">{stakingAPY ? <>{trimmedStakingAPY}%</> : <Skeleton width="150px" />}</p>
                                         </div>
                                     </Grid>
 
@@ -215,7 +184,7 @@ function Stake() {
                                 </div>
                             )}
                             {address && (
-                                <div>
+                                <>
                                     <div className="stake-card-action-area">
                                         <div className="stake-card-action-stage-btns-wrap">
                                             <div onClick={changeView(0)} className={classnames("stake-card-action-stage-btn", { active: !view })}>
@@ -347,61 +316,57 @@ function Stake() {
                                             <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(fiveDayRate) * 100, 4)}%</>}</p>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
                     </Grid>
                 </div>
             </Zoom>
-            <Zoom in={true}>
-                <div>
-                    {address && (
-                        <div className="stake-card">
-                            <Grid className="stake-card-grid" container direction="column">
-                                <Grid item>
-                                    <div className="stake-card-header data-row">
-                                        <p className="stake-card-header-title">{t("YourBalance")}</p>
-                                        <p className="stake-card-header-title">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfAllBalance}</>}</p>
-                                    </div>
-                                </Grid>
-
-                                <div className="stake-card-area">
-                                    <div>
-                                        <div className="">
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourBASH")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
-                                            </div>
-
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourStakedBASH")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
-                                            </div>
-
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourNextRewardAmount")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourNextRewardAmount}</>}</p>
-                                            </div>
-
-                                            <div className="data-row">
-                                                <p className="data-row-name">{t("stake:ValueOfYourEffectiveNextRewardAmount")}</p>
-                                                <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourEffectiveNextRewardAmount}</>}</p>
-                                            </div>
-
-                                            {Number(trimmedWrappedStakedSBBalance) > 0 && (
-                                                <div className="data-row">
-                                                    <p className="data-row-name">{t("stake:ValueOfYourWrappedStakedSB")}</p>
-                                                    <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
+            {address && (
+                <Zoom in={true}>
+                    <div className="stake-card">
+                        <Grid className="stake-card-grid" container direction="column">
+                            <Grid item>
+                                <div className="stake-card-header data-row">
+                                    <p className="stake-card-header-title">{t("YourBalance")}</p>
+                                    <p className="stake-card-header-title">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfAllBalance}</>}</p>
                                 </div>
                             </Grid>
-                        </div>
-                    )}
-                </div>
-            </Zoom>
+
+                            <div className="stake-card-area">
+                                <>
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourBASH")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
+                                    </div>
+
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourStakedBASH")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
+                                    </div>
+
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourNextRewardAmount")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourNextRewardAmount}</>}</p>
+                                    </div>
+
+                                    <div className="data-row">
+                                        <p className="data-row-name">{t("stake:ValueOfYourEffectiveNextRewardAmount")}</p>
+                                        <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfYourEffectiveNextRewardAmount}</>}</p>
+                                    </div>
+
+                                    {Number(trimmedWrappedStakedSBBalance) > 0 && (
+                                        <div className="data-row">
+                                            <p className="data-row-name">{t("stake:ValueOfYourWrappedStakedSB")}</p>
+                                            <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
+                                        </div>
+                                    )}
+                                </>
+                            </div>
+                        </Grid>
+                    </div>
+                </Zoom>
+            )}
         </div>
     );
 }

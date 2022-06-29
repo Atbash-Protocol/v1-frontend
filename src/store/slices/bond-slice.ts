@@ -1,7 +1,7 @@
 import { ethers, constants } from "ethers";
 import { getMarketPrice, getTokenPrice } from "../../helpers";
 import { calculateUserBondDetails, getBalances } from "./account-slice";
-import { getAddresses } from "../../constants";
+import { getAddressesAsync } from "../../constants";
 import { fetchPendingTxns, clearPendingTxn } from "./pending-txns-slice";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
@@ -31,13 +31,13 @@ export const changeApproval = createAsyncThunk("bonding/changeApproval", async (
         return;
     }
 
-    const signer = provider.getSigner();
-    const reserveContract = bond.getContractForReserve(networkID, signer);
+    const signer = provider.getSigner(address);
+    const reserveContract = await bond.getContractForReserve(networkID, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
-        const bondAddr = bond.getAddressForBond(networkID);
+        const bondAddr = await bond.getAddressForBond(networkID);
         approveTx = await reserveContract.approve(bondAddr, constants.MaxUint256, { gasPrice });
         dispatch(
             fetchPendingTxns({
@@ -60,7 +60,7 @@ export const changeApproval = createAsyncThunk("bonding/changeApproval", async (
 
     let allowance = "0";
 
-    allowance = await reserveContract.allowance(address, bond.getAddressForBond(networkID));
+    allowance = await reserveContract.allowance(address, await bond.getAddressForBond(networkID));
 
     return dispatch(
         fetchAccountSuccess({
@@ -93,29 +93,38 @@ export interface IBondDetails {
 }
 
 export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async ({ bond, value, provider, networkID }: ICalcBondDetails, { dispatch }) => {
+    // console.warn("disabled: calcBondDetails");
+
     if (!value) {
         value = "0";
     }
 
     const amountInWei = ethers.utils.parseEther(value);
+    // return {};
 
     let bondPrice = 0,
         bondDiscount = 0,
         valuation = 0,
         bondQuote = 0;
 
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
-    const bondContract = bond.getContractForBond(networkID, provider);
-    const bondCalcContract = getBondCalculator(networkID, provider);
+    let bondContract = await bond.getContractForBond(networkID, provider);
+    let bondCalcContract = await getBondCalculator(networkID, provider);
 
-    const terms = await bondContract.terms();
+    let terms;
+    try {
+        terms = await bondContract.terms();
+    } catch (e) {
+        console.error(e);
+    }
     const maxBondPrice = (await bondContract.maxPayout()) / Math.pow(10, 9);
 
     let marketPrice = await getMarketPrice(networkID, provider);
 
-    const mimPrice = getTokenPrice("MIM");
-    marketPrice = (marketPrice / Math.pow(10, 9)) * mimPrice;
+    const daiPrice = getTokenPrice("DAI");
+    marketPrice = (marketPrice / Math.pow(10, 9)) * daiPrice;
 
     try {
         bondPrice = await bondContract.bondPriceInUSD();
@@ -154,7 +163,7 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
     }
 
     // Calculate bonds purchased
-    const token = bond.getContractForReserve(networkID, provider);
+    const token = await bond.getContractForReserve(networkID, provider);
     let purchased = await token.balanceOf(addresses.TREASURY_ADDRESS);
 
     if (bond.isLP) {
@@ -202,8 +211,8 @@ export const bondAsset = createAsyncThunk("bonding/bondAsset", async ({ value, a
     const depositorAddress = address;
     const acceptedSlippage = slippage / 100 || 0.005;
     const valueInWei = ethers.utils.parseUnits(value, "ether");
-    const signer = provider.getSigner();
-    const bondContract = bond.getContractForBond(networkID, signer);
+    const signer = provider.getSigner(address);
+    const bondContract = await bond.getContractForBond(networkID, signer);
 
     const calculatePremium = await bondContract.bondPrice();
     const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
@@ -254,8 +263,8 @@ export const redeemBond = createAsyncThunk("bonding/redeemBond", async ({ addres
         return;
     }
 
-    const signer = provider.getSigner();
-    const bondContract = bond.getContractForBond(networkID, signer);
+    const signer = provider.getSigner(address);
+    const bondContract = await bond.getContractForBond(networkID, signer);
 
     let redeemTx;
     try {

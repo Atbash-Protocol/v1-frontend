@@ -1,14 +1,14 @@
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { createAsyncThunk, Dispatch } from "@reduxjs/toolkit";
 import { messages } from "../../constants/messages";
-import { getAddresses, Networks } from "../../constants";
+import { getAddressesAsync, Networks } from "../../constants";
 import { IToken } from "../../helpers/tokens";
 import { info, success, warning } from "./messages-slice";
 import { clearPendingTxn, fetchPendingTxns } from "./pending-txns-slice";
 import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
 import { getGasPrice } from "../../helpers/get-gas-price";
 import { ethers } from "ethers";
-import { MimTokenContract, ZapinContract } from "../../abi";
+import { DaiTokenContract, ZapinContract } from "../../abi";
 import { calculateUserBondDetails, fetchAccountSuccess } from "./account-slice";
 import { IAllBondData } from "../../hooks/bonds";
 import { zapinData, zapinLpData } from "../../helpers/zapin-fetch-data";
@@ -29,17 +29,19 @@ export const changeApproval = createAsyncThunk("zapin/changeApproval", async ({ 
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
-    const addresses = getAddresses(networkID);
+    // const addresses = getAddresses(networkID);
+    const addresses = await getAddressesAsync(networkID);
 
     const signer = provider.getSigner();
+    const ZAPIN_ADDRESS = "0x0"; // addresses.ZAPIN_ADDRESS disabled: no zapin
 
-    const tokenContract = new ethers.Contract(token.address, MimTokenContract, signer);
+    const tokenContract = new ethers.Contract(token.address, DaiTokenContract, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
 
-        approveTx = await tokenContract.approve(addresses.ZAPIN_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+        approveTx = await tokenContract.approve(ZAPIN_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
 
         const text = i18n.t("bond:ZapinApproveToken", { token: token.name });
         const pendingTxnType = "approve_" + token.address;
@@ -57,7 +59,7 @@ export const changeApproval = createAsyncThunk("zapin/changeApproval", async ({ 
 
     await sleep(2);
 
-    const tokenAllowance = await tokenContract.allowance(address, addresses.ZAPIN_ADDRESS);
+    const tokenAllowance = await tokenContract.allowance(address, ZAPIN_ADDRESS);
 
     return dispatch(
         fetchAccountSuccess({
@@ -160,16 +162,19 @@ export const zapinMint = createAsyncThunk(
             return;
         }
         const acceptedSlippage = slippage / 100 || 0.02;
-        const addresses = getAddresses(networkID);
+        // const addresses = getAddresses(networkID);
+        const addresses = await getAddressesAsync(networkID);
+
         const depositorAddress = address;
 
         const signer = provider.getSigner();
-        const zapinContract = new ethers.Contract(addresses.ZAPIN_ADDRESS, ZapinContract, signer);
+        const ZAPIN_ADDRESS = "0x0"; // addresses.ZAPIN_ADDRESS disabled: no zapin
+        const zapinContract = new ethers.Contract(ZAPIN_ADDRESS, ZapinContract, signer);
 
-        const bondAddress = bond.getAddressForBond(networkID);
+        const bondAddress = await bond.getAddressForBond(networkID);
         const valueInWei = trim(Number(value) * Math.pow(10, token.decimals));
 
-        const bondContract = bond.getContractForBond(networkID, signer);
+        const bondContract = await bond.getContractForBond(networkID, signer);
 
         const calculatePremium = await bondContract.bondPrice();
         const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
