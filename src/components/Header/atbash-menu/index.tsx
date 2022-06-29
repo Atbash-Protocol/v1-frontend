@@ -65,7 +65,6 @@ function AtbashMenu() {
         loadAddresses();
     }, [networkID]);
 
-    
     // const addresses = getAddresses(networkID);
 
     // const SBASH_ADDRESS = addresses.SBASH_ADDRESS;
