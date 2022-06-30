@@ -10,14 +10,12 @@ import { selectUserStakingInfos } from 'store/modules/app/app.selectors';
 const UserStakeMetrics = () => {
     const { t } = useTranslation();
 
-    const { BASH, SBASH, WSBASH } = useSelector(selectFormattedStakeBalance);
+    const { BASH, SBASH } = useSelector(selectFormattedStakeBalance);
     const userStakingMetrics = useSelector(selectUserStakingInfos);
 
     const keyMetrics = [
         { key: 'YourBalance', value: BASH },
         { key: 'stake:YourStakedBalance', value: SBASH },
-        { key: 'stake:YourWrappedStakedBalance', value: WSBASH },
-        { key: 'stake:WrappedTokenEquivalent', value: userStakingMetrics.wrappedTokenEquivalent },
         { key: 'stake:NextRewardAmount', value: userStakingMetrics.nextRewardValue },
         { key: 'stake:NextRewardYield', value: userStakingMetrics.stakingRebasePercentage },
         { key: 'stake:ROIFiveDayRate', value: userStakingMetrics.fiveDayRate },
@@ -31,7 +29,7 @@ const UserStakeMetrics = () => {
 
     return (
         <Box>
-            <Typography variant="h4" sx={{ color: theme.palette.primary.main }}>
+            <Typography variant="h4" sx={{ color: theme.palette.primary.light }}>
                 <>{t('stake:StakingMetrics')} </>
             </Typography>
 

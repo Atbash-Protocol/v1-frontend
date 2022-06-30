@@ -21,6 +21,7 @@ const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown 
                     xs: 0.5,
                     sm: 0.75,
                 },
+                color: theme.palette.primary.light,
             }}
         >
             <Typography
