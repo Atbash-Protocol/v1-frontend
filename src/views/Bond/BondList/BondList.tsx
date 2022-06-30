@@ -10,7 +10,7 @@ import { MenuMetric } from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { useWeb3Context } from 'contexts/web3/web3.context';
 import { selectAllBonds, selectBondsReady, selectFormattedTreasuryBalance } from 'store/modules/bonds/bonds.selector';
-import { getTreasuryBalance } from 'store/modules/bonds/bonds.thunks';
+import { getBondMetrics } from 'store/modules/bonds/bonds.thunks';
 import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
 
 import BondtListItem from './BondListItem';
@@ -72,7 +72,7 @@ function BondList() {
 
     useEffect(() => {
         if (networkID && bondsReady) {
-            dispatch(getTreasuryBalance({ networkID }));
+            dispatch(getBondMetrics({ networkID }));
         }
     }, [networkID, bondsReady]);
 

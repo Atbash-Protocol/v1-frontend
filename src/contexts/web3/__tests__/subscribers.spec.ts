@@ -11,6 +11,17 @@ class MockProvider extends Web3Provider {
 }
 
 describe('#subscribeSigner', () => {
+    let reloadMock: jest.Mock;
+
+    beforeEach(() => {
+        delete (window as any).location;
+        reloadMock = jest.fn();
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        window.location = { reload: reloadMock };
+    });
+
     it('subscribes correctly to close and network changes events', () => {
         const dispatch = jest.fn();
         const provider = jest.fn();
@@ -25,13 +36,17 @@ describe('#subscribeSigner', () => {
         expect(dispatch).toHaveBeenCalledTimes(2);
         expect(dispatch).toHaveBeenNthCalledWith(1, { type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer: expect.anything(), networkId: 1234 } });
         expect(dispatch).toHaveBeenNthCalledWith(2, { type: WEB3ActionTypesEnum.CLOSE, payload: { signer: expect.anything() } });
+        expect(reloadMock).toHaveBeenCalled();
     });
 });
 
 describe('#createSigner', () => {
     it('creates a signer', async () => {
         const web3ModalMock = {
-            connect: jest.fn().mockResolvedValue(''),
+            connect: jest.fn().mockResolvedValue({
+                on: jest.fn(),
+                once: jest.fn(),
+            }),
         };
         const dispatch = jest.fn();
 

@@ -17,7 +17,7 @@ export class StableBond extends Bond {
 
         const tokenAmount: BigNumber = await reserveContract.balanceOf(treasuryAddress);
 
-        return new Decimal(tokenAmount.toHexString()).div(10 ** 18).toNumber();
+        return new Decimal(tokenAmount.toString()).div(10 ** 18).toNumber();
     }
 
     public getTokenAmount() {

@@ -8,7 +8,7 @@ export interface BondOptions {
     displayName: string;
     token: string;
     iconPath: string;
-    lpProvider: BondProviderEnum; // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
+    lpProvider: BondProviderEnum;
     type: BondType;
     networkID: number;
     isActive: boolean;
@@ -27,7 +27,7 @@ export abstract class Bond {
 
     public abstract initializeContracts({ bondAddress, reserveAddress }: BondAddresses, signer: providers.JsonRpcSigner): void;
     public abstract getTreasuryBalance(bondCalculatorContract: ethers.Contract, treasuryAddress: string): Promise<number>;
-    public abstract getTokenAmount(): Promise<number>;
+    public abstract getTokenAmount(BASH_ADDRESS: string): Promise<number>;
     public abstract getSbAmount(BASH_ADDRESS: string): Promise<number>;
 
     public isLP(): boolean {

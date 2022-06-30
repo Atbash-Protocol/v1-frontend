@@ -55,7 +55,6 @@ export const useBlockchainInfos = (state: RootState) => state.main.blockchain;
 
 export const selectCirculatingSupply = (state: RootState) => state.main.metrics.circSupply;
 
-//TODO: Move inside staking selectors
 export const selectUserStakingInfos = createSelector(
     [
         (state: IReduxState) => {
@@ -81,7 +80,7 @@ export const selectUserStakingInfos = createSelector(
         const wrappedTokenEquivalent = WBASHBalance.mul(index?.toHexString() || 0);
 
         return {
-            fiveDayRate: `${fiveDayRate && (fiveDayRate / 1000).toFixed(2)}  %`,
+            fiveDayRate: `${fiveDayRate && (fiveDayRate * 100).toFixed(4)}  %`,
             stakingRebasePercentage: `${stakingRebase.mul(100).toFixed(2)} %`,
             nextRewardValue: `${nextRewardValue.toFixed(2)} BASH`,
             effectiveNextRewardValue: effectiveNextRewardValue ? `effectiveNextRewardValue wsBASH` : null,

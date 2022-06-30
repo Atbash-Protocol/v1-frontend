@@ -9,7 +9,7 @@ exports[`BondDialog renders 1`] = `
       class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorTransparent MuiAppBar-positionSticky css-13z6jsw-MuiPaper-root-MuiAppBar-root"
     >
       <div
-        class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-itmo3m-MuiToolbar-root"
+        class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-p84j8g-MuiToolbar-root"
       >
         <div
           class="MuiBox-root css-i9gxme"

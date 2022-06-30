@@ -55,7 +55,6 @@ function App(): JSX.Element {
                 dispatch(getCoreMetrics());
                 dispatch(getStakingMetrics());
                 dispatch(getMarketPrices());
-
                 dispatch(initializeBonds(signer || provider));
             });
         }

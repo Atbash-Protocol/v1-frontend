@@ -34,7 +34,7 @@ Object {
               </svg>
             </div>
             <div
-              class="MuiAlert-message css-acap47-MuiAlert-message"
+              class="MuiAlert-message css-1pxa9xg-MuiAlert-message"
             >
               <div
                 class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded MuiAccordion-gutters css-1snbl0p-MuiPaper-root-MuiAccordion-root"
@@ -128,7 +128,7 @@ Object {
             </svg>
           </div>
           <div
-            class="MuiAlert-message css-acap47-MuiAlert-message"
+            class="MuiAlert-message css-1pxa9xg-MuiAlert-message"
           >
             <div
               class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded MuiAccordion-gutters css-1snbl0p-MuiPaper-root-MuiAccordion-root"

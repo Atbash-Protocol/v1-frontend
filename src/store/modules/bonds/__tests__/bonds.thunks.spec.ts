@@ -2,7 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 
 import * as BondUtilsModule from 'store/modules/bonds/bonds.utils';
 
-import { calcBondDetails, getBondTerms, getTreasuryBalance, initializeBonds } from '../bonds.thunks';
+import { calcBondDetails, getBondTerms, getBondMetrics, initializeBonds } from '../bonds.thunks';
 
 // mock the enums since they cant be used inside jest.mock
 jest.mock('config/bonds', () => ({
@@ -102,34 +102,73 @@ describe('#initializeProviderContracts', () => {
     });
 });
 
-describe('#getTreasuryBalance', () => {
+describe('#getBondMetrics', () => {
     const dispatch = jest.fn();
 
-    it('returns 0 if no instances or no bondCalculator', async () => {
-        const getState = jest.fn().mockReturnValue({
-            bonds: { bondInstances: [], bondCalculator: null },
-        });
+    it('throws an error if metrics elements are not defined', async () => {
+        const getState = jest.fn().mockReturnValue({ bonds: { bondMetrics: {} }, main: { contracts: {}, metrics: {}, staking: {} }, markets: { markets: {} } });
 
-        const action = await getTreasuryBalance({ networkID: 1 });
+        const action = await getBondMetrics({ networkID: 1 });
 
-        const { payload } = await action(dispatch, getState, undefined);
+        const payload = await action(dispatch, getState, undefined);
 
-        expect(payload).toEqual({ balance: 0 });
+        expect((payload as any).error.message).toEqual('Missing metrics to compute bond metrics');
     });
 
-    it('returns the bondInstance balance', async () => {
-        const testBond = {
-            getTreasuryBalance: jest.fn().mockResolvedValue(10000),
+    it('returns the metrics', async () => {
+        const BashContractMock = {
+            balanceOf: jest.fn().mockResolvedValue(BigNumber.from(12)),
         };
         const getState = jest.fn().mockReturnValue({
-            bonds: { bondInstances: { dai: testBond }, bondCalculator: jest.fn() },
+            bonds: {
+                bondInstances: {
+                    dai: {
+                        isLP: () => false,
+                        getSbAmount: () => 10,
+                    },
+                    dai_lp: {
+                        isLP: () => true,
+                        getSbAmount: () => 50,
+                    },
+                },
+                bondMetrics: { dai: { treasuryBalance: 10000 }, dai_lp: { treasuryBalance: 5000 } },
+                coreMetrics: {},
+                bondCalculator: jest.fn(),
+            },
+            markets: {
+                markets: {
+                    dai: 1.01,
+                },
+            },
+            main: {
+                contracts: {
+                    BASH_CONTRACT: BashContractMock,
+                },
+                metrics: {
+                    totalSupply: 400,
+                    circSupply: 3,
+                    rawCircSupply: 300000000000,
+                    reserves: BigNumber.from(40000000000),
+                },
+                staking: {
+                    epoch: {
+                        distribute: BigNumber.from(1000),
+                    },
+                },
+            },
         });
 
-        const action = await getTreasuryBalance({ networkID: 1 });
+        const action = await getBondMetrics({ networkID: 1 });
 
         const { payload } = await action(dispatch, getState, undefined);
 
-        expect(payload).toEqual({ dai: 10000 });
+        expect(payload).toEqual({
+            deltaMarketPriceRfv: -9.88799999224321,
+            rfv: 36.76470588494809,
+            rfvTreasury: 12500,
+            runway: 833487151.4097351,
+            stakingRebase: 3.3333333333333334e-9,
+        });
     });
 });
 

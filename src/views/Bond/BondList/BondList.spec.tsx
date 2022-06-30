@@ -50,7 +50,7 @@ describe('BondList', () => {
             expect(store.getActions()[0]).toEqual(
                 expect.objectContaining({
                     payload: undefined,
-                    type: 'bonds/bonds-treasury/pending',
+                    type: 'bonds/bonds-metrics/pending',
                 }),
             );
         });
