@@ -35,9 +35,11 @@ export const BCard = ({ title, children, zoom, className }: { title: string; chi
     );
 
     return zoom ? (
-        <Zoom>
-            <>{card}</>
-        </Zoom>
+        <>
+            <Zoom in={false}>
+                <>{card}</>
+            </Zoom>
+        </>
     ) : (
         card
     );

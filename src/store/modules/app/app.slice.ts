@@ -10,13 +10,13 @@ const initialState: MainSliceState = {
     contracts: {
         [ContractEnum.BASH_CONTRACT]: null,
         [ContractEnum.SBASH_CONTRACT]: null,
-        [ContractEnum.DAI_ADDRESS]: null,
-        [ContractEnum.INITIAL_PAIR_ADDRESS]: null,
+        [ContractEnum.DAI_CONTRACT]: null,
+        [ContractEnum.BASH_DAI_LP_ADDRESS]: null,
         [ContractEnum.STAKING_CONTRACT]: null,
         [ContractEnum.STAKING_HELPER_ADDRESS]: null,
         [ContractEnum.WSBASH_ADDRESS]: null,
         [ContractEnum.ZAPIN_ADDRESS]: null,
-        [ContractEnum.REDEEM_ADDRESS]: null,
+        [ContractEnum.REDEEM_CONTRACT]: null,
     },
     contractsLoaded: false,
 

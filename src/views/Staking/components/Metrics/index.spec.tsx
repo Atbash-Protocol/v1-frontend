@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
+import Decimal from 'decimal.js';
 import { Provider } from 'react-redux';
 
 import * as AppSelectorsModule from 'store/modules/app/app.selectors';
@@ -16,7 +17,7 @@ describe('Metrics', () => {
     it('renders correctly', () => {
         jest.spyOn(AppSelectorsModule, 'selectFormattedReservePrice').mockReturnValue('2.01 BASH');
         jest.spyOn(MetricsSelectorsModule, 'selectStakingRewards').mockReturnValue({ stakingAPY: 1000000 } as any);
-        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(2300);
+        jest.spyOn(MetricsSelectorsModule, 'selectTVL').mockReturnValue(new Decimal(2300));
         jest.spyOn(StakeSelectorsModule, 'selectFormattedIndex').mockReturnValue('2 BASH');
 
         const comp = renderComponent(<StakeMetrics />);

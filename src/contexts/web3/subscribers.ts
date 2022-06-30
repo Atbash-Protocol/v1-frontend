@@ -11,11 +11,9 @@ import { WEB3ContextAction, WEB3ActionTypesEnum } from './web3.types';
 export const subscribeSigner = async (web3provider: providers.Web3Provider, dispatch: Dispatch<WEB3ContextAction>) => {
     web3provider.on('networkChanged', async (networkId: number) => {
         const signer = new providers.Web3Provider(web3provider as unknown as providers.ExternalProvider);
-
         dispatch({ type: WEB3ActionTypesEnum.NETWORK_CHANGED, payload: { signer, networkId } });
         window.location.reload();
     });
-
     web3provider.once('close', () => {
         dispatch({ type: WEB3ActionTypesEnum.CLOSE, payload: { signer: web3provider.getSigner() } });
     });
@@ -23,7 +21,6 @@ export const subscribeSigner = async (web3provider: providers.Web3Provider, disp
 
 export const createSigner = async (web3Modal: Core, dispatch: Dispatch<WEB3ContextAction>) => {
     const web3Provider = await web3Modal.connect();
-
     const signer = new providers.Web3Provider(web3Provider);
 
     subscribeSigner(web3Provider, dispatch);

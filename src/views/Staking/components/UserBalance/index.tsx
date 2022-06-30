@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
+import { theme } from 'constants/theme';
 import { selectFormattedStakeBalance } from 'store/modules/account/account.selectors';
 import { selectFormattedBashBalance } from 'store/modules/markets/markets.selectors';
 import { selectTotalBalance } from 'store/modules/metrics/metrics.selectors';
@@ -30,7 +31,7 @@ const UserBalance = () => {
 
     return (
         <>
-            <Box sx={{ display: 'inline-flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box sx={{ display: 'inline-flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', color: theme.palette.primary.light }}>
                 <Typography variant="h4">
                     <>{t('YourBalance')}</>
                 </Typography>

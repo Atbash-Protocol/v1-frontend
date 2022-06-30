@@ -18,8 +18,8 @@ class TestBond extends LPBond {
         return super.getTreasuryBalance(bondCalculatorContract, treasuryAddress);
     }
 
-    public getTokenAmount() {
-        return super.getTokenAmount();
+    public getTokenAmount(BASH_ADDRESS: string) {
+        return super.getTokenAmount(BASH_ADDRESS);
     }
 
     public getSbAmount(BASH_ADDRESS: string) {
@@ -95,7 +95,7 @@ describe('TestBond', () => {
                 token1: jest.fn().mockResolvedValue('0xBASH_ADDRESS'),
             } as any);
 
-            await expect(testBond.getTokenAmount()).resolves.toEqual(3e-7);
+            await expect(testBond.getTokenAmount('0x')).resolves.toEqual(3e-7);
         });
     });
 

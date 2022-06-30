@@ -45,7 +45,7 @@ export const stakeAction = createAsyncThunk(
 
         dispatch(addNotification({ severity: 'info', description: messages.your_balance_update_soon }));
 
-        await dispatch(loadBalancesAndAllowances(signerAddress));
+        dispatch(loadBalancesAndAllowances(signerAddress));
 
         dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
     },
@@ -76,5 +76,7 @@ export const approveContract = createAsyncThunk(
         } finally {
             dispatch(clearPendingTransaction(transactionType));
         }
+
+        dispatch(loadBalancesAndAllowances(signerAddress));
     },
 );

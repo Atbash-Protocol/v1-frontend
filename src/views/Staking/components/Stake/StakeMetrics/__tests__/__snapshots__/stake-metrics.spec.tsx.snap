@@ -9,13 +9,13 @@ Object {
         class="MuiBox-root css-0"
       >
         <h4
-          class="MuiTypography-root MuiTypography-h4 css-18vawm5-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-h4 css-10zuisz-MuiTypography-root"
         >
           stake:StakingMetrics
            
         </h4>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -31,7 +31,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -47,37 +47,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
-        >
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-          >
-            stake:YourWrappedStakedBalance
-          </p>
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-          >
-            <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
-            />
-          </p>
-        </div>
-        <div
-          class="MuiBox-root css-1dd102f"
-        >
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-          >
-            stake:WrappedTokenEquivalent
-          </p>
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-          >
-            0 sBASH
-          </p>
-        </div>
-        <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -91,7 +61,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -105,7 +75,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -126,13 +96,13 @@ Object {
       class="MuiBox-root css-0"
     >
       <h4
-        class="MuiTypography-root MuiTypography-h4 css-18vawm5-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-h4 css-10zuisz-MuiTypography-root"
       >
         stake:StakingMetrics
          
       </h4>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -148,7 +118,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -164,37 +134,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
-      >
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-        >
-          stake:YourWrappedStakedBalance
-        </p>
-        <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-        >
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
-          />
-        </p>
-      </div>
-      <div
-        class="MuiBox-root css-1dd102f"
-      >
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-        >
-          stake:WrappedTokenEquivalent
-        </p>
-        <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-        >
-          0 sBASH
-        </p>
-      </div>
-      <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -208,7 +148,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -222,7 +162,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -300,13 +240,13 @@ Object {
         class="MuiBox-root css-0"
       >
         <h4
-          class="MuiTypography-root MuiTypography-h4 css-18vawm5-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-h4 css-10zuisz-MuiTypography-root"
         >
           stake:StakingMetrics
            
         </h4>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -322,7 +262,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -338,37 +278,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
-        >
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-          >
-            stake:YourWrappedStakedBalance
-          </p>
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-          >
-            <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
-            />
-          </p>
-        </div>
-        <div
-          class="MuiBox-root css-1dd102f"
-        >
-          <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-          >
-            stake:WrappedTokenEquivalent
-          </p>
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-          >
-            0 sBASH
-          </p>
-        </div>
-        <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -382,7 +292,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -396,7 +306,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -410,7 +320,7 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-1dd102f"
+          class="MuiBox-root css-4hl15i"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -431,13 +341,13 @@ Object {
       class="MuiBox-root css-0"
     >
       <h4
-        class="MuiTypography-root MuiTypography-h4 css-18vawm5-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-h4 css-10zuisz-MuiTypography-root"
       >
         stake:StakingMetrics
          
       </h4>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -453,7 +363,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -469,37 +379,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
-      >
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-        >
-          stake:YourWrappedStakedBalance
-        </p>
-        <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-        >
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
-          />
-        </p>
-      </div>
-      <div
-        class="MuiBox-root css-1dd102f"
-      >
-        <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
-        >
-          stake:WrappedTokenEquivalent
-        </p>
-        <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
-        >
-          0 sBASH
-        </p>
-      </div>
-      <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -513,7 +393,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -527,7 +407,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
@@ -541,7 +421,7 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-1dd102f"
+        class="MuiBox-root css-4hl15i"
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"

@@ -4,14 +4,14 @@ import { DateTime } from 'luxon';
 
 import { Epoch } from 'store/modules/app/app.types';
 
-import { selectCircSupply, selectStakingRewards, selectStakingReward, selectStakingRebaseAmount, selectStakingRebasePercentage } from '../metrics.selectors';
+import { selectRawCircSupply, selectStakingRewards, selectStakingReward, selectStakingRebaseAmount, selectStakingRebasePercentage } from '../metrics.selectors';
 
-describe('#selectCircSupply', () => {
+describe('#selectRawCircSupply', () => {
     it('returns the circ supply', () => {
-        const circSupply = 1000;
-        const state = { main: { metrics: { circSupply } } };
+        const rawCircSupply = 1000;
+        const state = { main: { metrics: { rawCircSupply } } };
 
-        expect(selectCircSupply(state as any)).toEqual(circSupply);
+        expect(selectRawCircSupply(state as any)).toEqual(rawCircSupply);
     });
 });
 
@@ -42,11 +42,11 @@ describe('#selectStakingRebaseAmount', () => {
         const state = {
             main: {
                 staking: { epoch: { distribute: BigNumber.from(1000 * 10 ** 9) } },
-                metrics: { circSupply: 1200 },
+                metrics: { rawCircSupply: 1200 },
             },
         };
 
-        expect(selectStakingRebaseAmount(state as any)?.toString()).toEqual('0.83333333333333333333');
+        expect(selectStakingRebaseAmount(state as any)?.toString()).toEqual('833333333.33333333333');
     });
 });
 
@@ -55,21 +55,21 @@ describe('#selectStakingRebasePercentage', () => {
         const state = {
             main: {
                 staking: { epoch: { distribute: BigNumber.from(1000 * 10 ** 9) } },
-                metrics: { circSupply: 1200 },
+                metrics: { rawCircSupply: 1200 },
             },
         };
 
-        expect(selectStakingRebasePercentage(state as any)?.toString()).toEqual('83.333333333333333333');
+        expect(selectStakingRebasePercentage(state as any)?.toString()).toEqual('83333333333.333333333');
     });
 });
 
 describe('#selectStakingRewards', () => {
     it.each([
-        { epoch: undefined, circSupply: undefined },
-        { epoch: undefined, circSupply: 10 },
-        { epoch: { number: BigNumber.from(0) }, circSupply: undefined },
-    ])('returns null if metrics cant be computed', ({ epoch, circSupply }) => {
-        expect(selectStakingRewards({ main: { staking: { epoch }, metrics: { circSupply } } } as any)).toEqual(null);
+        { epoch: undefined, rawCircSupply: undefined },
+        { epoch: undefined, rawCircSupply: 10 },
+        { epoch: { number: BigNumber.from(0) }, rawCircSupply: undefined },
+    ])('returns null if metrics cant be computed', ({ epoch, rawCircSupply }) => {
+        expect(selectStakingRewards({ main: { staking: { epoch }, metrics: { rawCircSupply } } } as any)).toEqual(null);
     });
 
     it('returns the rewards', () => {
@@ -79,13 +79,13 @@ describe('#selectStakingRewards', () => {
             endTime: DateTime.utc().plus({ day: 2 }).toMillis(),
         };
 
-        const circSupply = 120000;
+        const rawCircSupply = 1200000000;
 
-        expect(selectStakingRewards({ main: { staking: { epoch }, metrics: { circSupply } } } as any)).toEqual({
-            fiveDayRate: 0.0000015000010624999,
-            stakingAPY: 0.0000912541596054194,
-            stakingRebase: new Decimal('8.3333333333333333333e-8'),
-            stakingReward: 8.333333333333334e-8,
+        expect(selectStakingRewards({ main: { staking: { epoch }, metrics: { rawCircSupply } } } as any)).toEqual({
+            fiveDayRate: 0.13256,
+            stakingAPY: 8840.29893,
+            stakingRebase: new Decimal('0.0083333333333333333333'),
+            stakingReward: 0.008333333333333333,
         });
     });
 });
