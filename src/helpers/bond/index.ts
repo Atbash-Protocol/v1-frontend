@@ -107,7 +107,7 @@ export const BASHDAI = new LPBond({
             reserveAddress: "",
         },
     },
-    lpUrl: `https://app.uniswap.org/#/add/v2/0xb9c20Db8649D5d9D0649031a52C39fa2bD6c4e97/0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735?chain=rinkeby`, // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
+    lpUrl: `https://app.uniswap.org/#/swap?inputCurrency=0x6b175474e89094c44da98b954eedeac495271d0f&outputCurrency=0x5646077e2779a4e8607a99257bd76f627a262d86&chain=mainnet`, // sushi rinkeby: "https://app.sushi.com/add/0x6C538aDf35d1927497090e6971Fc46D8ed813dF6/0xdc7B08BB2AbcE1BA5b82509115F3fb7358E412aB",
     isActive: true,
 });
 
