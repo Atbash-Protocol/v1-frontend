@@ -1,7 +1,7 @@
 {
   "name": "@scaffold-eth/react-app",
   "version": "1.1.0",
-  "homepage": ".",
+  "homepage": "https://atbash.finance",
   "browserslist": {
     "production": [
       ">0.2% or last 2 versions",
@@ -32,6 +32,7 @@
     "classnames": "^2.3.1",
     "ethers": "^5.4.0",
     "from-exponential": "^1.1.1",
+    "gh-pages": "^4.0.0",
     "i18next": "^21.5.4",
     "i18next-browser-languagedetector": "^6.1.2",
     "intl": "^1.2.5",
@@ -107,6 +108,8 @@
     "test": "react-scripts test",
     "lint": "npx eslint src/ --ext .ts,.js,.tsx,.jsx",
     "lint-fix": "npx eslint src/ --ext .ts,.js,.tsx,.jsx --fix",
-    "import-deployments": "node ./scripts/import-deployments"
+    "import-deployments": "node ./scripts/import-deployments",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   }
 }
