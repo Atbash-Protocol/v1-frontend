@@ -16,7 +16,7 @@ export default function Social() {
                 <SvgIcon color="primary" component={Twitter} />
             </Link>
 
-            <Link href="https://t.me/joinchat/rlVyL0qVGcI5NWZk" target="_blank">
+            <Link href="https://t.me/AtbashProtocol" target="_blank">
                 <SvgIcon viewBox="0 0 32 32" color="primary" component={Telegram} />
             </Link>
 
