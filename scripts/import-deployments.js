@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 
-const sourceDir = "../atbash/deployments";
+const sourceDir = "../Atbash-2/deployments";
 const destDir = "./src/deployments";
 
 if (!fs.pathExists(destDir)) {
