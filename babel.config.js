@@ -45,6 +45,7 @@ module.exports = api => {
                     useBuiltIns: true,
                 },
             ],
+            ["react-app", { "absoluteRuntime": false }],
         ].filter(Boolean),
         plugins: [
             "lodash",
