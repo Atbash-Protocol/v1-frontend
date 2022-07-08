@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 
-const sourceDir = "../Atbash-2/deployments";
+const sourceDir = "../atbash/deployments"; // set this to where your atbash contract project resides
 const destDir = "./src/deployments";
 
 if (!fs.pathExists(destDir)) {
