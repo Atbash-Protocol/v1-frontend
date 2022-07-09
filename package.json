@@ -107,6 +107,7 @@
         "extends": "react-app"
     },
     "scripts": {
+        "prebuild": "yarn cache clean",
         "build": "react-scripts build",
         "eject": "react-scripts eject",
         "start": "react-scripts start",
