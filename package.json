@@ -100,8 +100,7 @@
     },
     "resolutions": {
         "@types/react": "17.0.9",
-        "@types/react-dom": "17.0.9",
-        "**/@babel/runtime": "7.18.6"
+        "@types/react-dom": "17.0.9"
     },
     "eslintConfig": {
         "extends": "react-app"
