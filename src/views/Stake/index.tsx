@@ -135,7 +135,7 @@ function Stake() {
                                     <Grid item xs={6} sm={3} md={3} lg={3}>
                                         <div className="stake-card-apy">
                                             <p className="stake-card-metrics-title">{t("APY")}</p>
-                                            <p className="stake-card-metrics-value">{stakingAPY ? <>{trimmedStakingAPY}%</> : <Skeleton width="150px" />}</p>
+                                            <p className="stake-card-metrics-value">{trimmedStakingAPY}%</p>
                                         </div>
                                     </Grid>
 
