@@ -9,20 +9,11 @@ import { BondMetrics as BondMetricsProps } from 'store/modules/bonds/bonds.types
 const BondMetrics = ({ bondMetrics }: { bondMetrics: BondMetricsProps }) => {
     const { t } = useTranslation();
 
-    const metrics = selectBondMintingMetrics(bondMetrics);
-
-    if (!metrics) {
-        return <> </>;
-    }
-
-    const { maxBondPrice, bondDiscount, vestingTerm } = metrics;
+    const { maxBondPrice, bondDiscount, vestingTerm } = selectBondMintingMetrics(bondMetrics);
 
     const metrics2 = [
         { value: maxBondPrice ? formatUSD(maxBondPrice, 2).toString() : null, metricKey: t('bond:MaxYouCanBuy') },
-        {
-            metricKey: t('bond:Discount'),
-            value: bondDiscount,
-        },
+        { metricKey: t('bond:Discount'), value: bondDiscount },
         { metricKey: t('bond:MinimumPurchase'), value: vestingTerm ? vestingTerm / 10 ** 6 : null },
     ].map(({ value, metricKey }, index) => <MemoInlineMetric {...{ value, metricKey }} key={index} />);
 
