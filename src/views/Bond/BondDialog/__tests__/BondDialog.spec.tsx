@@ -12,6 +12,7 @@ import store from 'store/store';
 
 jest.mock('../components/Mint', () => ({ Mint: () => <> Mint</> }));
 jest.mock('../components/Redeem', () => ({ Redeem: () => <> Redeem</> }));
+jest.mock('../components/Metrics', () => () => <> Metrics</>);
 
 import BondDialog from '..';
 

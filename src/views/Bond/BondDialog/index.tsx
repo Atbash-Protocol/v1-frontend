@@ -9,20 +9,28 @@ import Loader from 'components/Loader';
 import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectBondInstance, selectBondMetricsReady, selectBondPrice } from 'store/modules/bonds/bonds.selector';
+import { selectBondInstance, selectBondItemMetrics, selectBondMetricsReady, selectBondPrice } from 'store/modules/bonds/bonds.selector';
 import { Bond } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 
+import BondMetrics from './components/Metrics';
 import { Mint } from './components/Mint';
 import { Redeem } from './components/Redeem';
 
-const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bond: Bond }) => {
+interface BondDialogProps {
+    open: boolean;
+    bondID: string;
+    bond: Bond;
+}
+
+const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
     const history = useHistory();
 
     const onBackdropClick = () => history.goBack();
 
     const bashPrice = useSelector(selectFormattedReservePrice);
     const bondPrice = useSelector((state: RootState) => selectBondPrice(state, bondID));
+    const metrics = useSelector((state: RootState) => selectBondItemMetrics(state, bondID));
 
     //TODO: Add the custom settings : Slippage & Recipient address
 
@@ -75,6 +83,10 @@ const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bo
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <BMultiTabs tabs={bondActions} />
                 </Box>
+
+                <Box>
+                    <BondMetrics bondMetrics={metrics} />
+                </Box>
             </DialogContent>
         </Dialog>
     );
@@ -86,7 +98,7 @@ const BondDialogLoader = ({ open, bondID }: { open: boolean; bondID: string }) =
 
     if (!metrics || !bond) return <Loader />;
 
-    return <BondDetails open={open} bondID={bondID} bond={bond} />;
+    return <BondDialog open={open} bondID={bondID} bond={bond} />;
 };
 
 export default BondDialogLoader;
