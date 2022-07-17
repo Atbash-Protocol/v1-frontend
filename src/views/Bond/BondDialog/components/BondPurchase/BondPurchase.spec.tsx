@@ -10,7 +10,7 @@ import { BondOptions } from 'lib/bonds/bond/bond';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { BondProviderEnum } from 'lib/bonds/bonds.types';
 
-import BondPurchase from './BondPurchase';
+import BondPurchase from './index';
 
 describe('#BondPurchase', () => {
     const middlewares = [thunk];

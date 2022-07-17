@@ -21,7 +21,7 @@ import { CritialError, NotFound, Wrap, Forecast, Redeem } from '../views';
 const Dashboard = lazy(() => import('views/Dashboard'));
 const Stake = lazy(() => import('views/Staking'));
 const BondList = lazy(() => import('views/Bond/BondList/BondList'));
-const BondDialog = lazy(() => import('../components/BondDialog'));
+const BondDialog = lazy(() => import('../views/Bond/BondDialog'));
 
 function App(): JSX.Element {
     const dispatch = useDispatch();

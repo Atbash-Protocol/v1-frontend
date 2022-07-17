@@ -1,7 +1,8 @@
 import { Box, Divider } from '@mui/material';
 
 import { theme } from 'constants/theme';
-import BondPurchase from 'views/Bond/actions/BondPurchase';
+
+import BondPurchase from '../BondPurchase';
 
 export const Mint = ({ bondID }: { bondID: string }) => {
     return (

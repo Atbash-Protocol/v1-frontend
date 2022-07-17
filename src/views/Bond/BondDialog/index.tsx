@@ -16,17 +16,6 @@ import { RootState } from 'store/store';
 import { Mint } from './components/Mint';
 import { Redeem } from './components/Redeem';
 
-/**
- *
- * TODO :
- * - create mint view
- *  - add buttons
- *   + approve form
- *  - add custom slippage
- * - create redeem view
- *     - claim + claim and autostake
- */
-
 const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bond: Bond }) => {
     const history = useHistory();
 

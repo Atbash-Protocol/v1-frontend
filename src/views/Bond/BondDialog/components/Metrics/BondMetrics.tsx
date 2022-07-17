@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
 import { formatUSD } from 'helpers/price-units';
 import { selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
-import { BondMetrics } from 'store/modules/bonds/bonds.types';
+import { BondMetrics as BondMetricsProps } from 'store/modules/bonds/bonds.types';
 
-const CBondMetrics = ({ bondMetrics }: { bondMetrics: BondMetrics }) => {
+const BondMetrics = ({ bondMetrics }: { bondMetrics: BondMetricsProps }) => {
     const { t } = useTranslation();
 
     const metrics = selectBondMintingMetrics(bondMetrics);
@@ -33,4 +33,4 @@ const CBondMetrics = ({ bondMetrics }: { bondMetrics: BondMetrics }) => {
     );
 };
 
-export default CBondMetrics;
+export default BondMetrics;

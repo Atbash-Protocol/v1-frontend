@@ -1,6 +1,19 @@
 Todo - 
 - Fix selector in UserMetrics
 
+
+ 
+  TODO :
+  - create mint view
+   - add buttons
+    + approve form
+   - add custom slippage
+  - create redeem view
+      - claim + claim and autostake
+ 
+
+
+ ---- Nice to have 
  
 Clean the i18 locales
 Move the App/Staking slice to staking 

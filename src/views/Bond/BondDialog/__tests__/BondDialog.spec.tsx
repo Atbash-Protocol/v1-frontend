@@ -10,8 +10,8 @@ import * as AppSelectorModule from 'store/modules/app/app.selectors';
 import * as BondsSeletorModule from 'store/modules/bonds/bonds.selector';
 import store from 'store/store';
 
-jest.mock('components/BondDialog/components/Mint', () => ({ Mint: () => <> Mint</> }));
-jest.mock('components/BondDialog/components/Redeem', () => ({ Redeem: () => <> Redeem</> }));
+jest.mock('../components/Mint', () => ({ Mint: () => <> Mint</> }));
+jest.mock('../components/Redeem', () => ({ Redeem: () => <> Redeem</> }));
 
 import BondDialog from '..';
 

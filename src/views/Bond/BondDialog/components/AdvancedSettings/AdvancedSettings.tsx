@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Box, Modal, Paper, SvgIcon, IconButton, FormControl, OutlinedInput, InputLabel, InputAdornment } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { ReactComponent as XIcon } from '../../assets/icons/x.svg';
+import { ReactComponent as XIcon } from 'assets/icons/x.svg';
 // import './bondSettings.scss';
 
 interface IAdvancedSettingsProps {
