@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import { BigNumber, ethers } from 'ethers';
 
 import * as BondUtilsModule from 'store/modules/bonds/bonds.utils';
@@ -281,7 +282,7 @@ describe('#calcBondDetails', () => {
             const { payload } = await action(dispatch, getState, undefined);
 
             expect(payload).toEqual({
-                bondDiscount: 62240662,
+                bondDiscount: new Decimal('62240662.900414937759'),
                 bondID: 'dai',
                 bondPrice: BigNumber.from('0xf1'),
                 bondQuote: 20,
@@ -354,7 +355,7 @@ describe('#calcBondDetails', () => {
             const { payload } = await action(dispatch, getState, undefined);
 
             expect(payload).toEqual({
-                bondDiscount: 62240662,
+                bondDiscount: new Decimal('62240662.900414937759'),
                 bondID: 'dai',
                 bondPrice: BigNumber.from('0xf1'),
                 bondQuote: 20,

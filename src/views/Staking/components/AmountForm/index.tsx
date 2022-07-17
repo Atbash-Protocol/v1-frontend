@@ -100,7 +100,23 @@ const AmountForm = (props: AmountFormProps) => {
                 >
                     {isLoading && <CircularProgress color="secondary" />}
 
-                    {!isLoading && <Typography variant="body1"> {approvesNeeded ? approveLabel : actionLabel}</Typography>}
+                    {!isLoading && (
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                [theme.breakpoints.down('sm')]: {
+                                    maxWidth: '9ch',
+                                    padding: 0,
+                                    overflow: 'hidden',
+                                    fontSize: '.5rem',
+                                    whiteSpace: 'nowrap',
+                                },
+                            }}
+                        >
+                            {' '}
+                            {approvesNeeded ? approveLabel : actionLabel}
+                        </Typography>
+                    )}
                 </Button>
             </Grid>
         </Grid>

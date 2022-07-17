@@ -1,75 +1,53 @@
-import { useEffect } from 'react';
-
-import { Box, Dialog, DialogContent, DialogTitle, Divider, Grid, Typography } from '@mui/material';
+import { Box, Dialog, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
-import { useWeb3Context } from 'contexts/web3/web3.context';
-import { formatUSD } from 'helpers/price-units';
-import { LPBond } from 'lib/bonds/bond/lp-bond';
-import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectBondInstance, selectBondMetrics, selectBondMetricsReady, selectBondPrice } from 'store/modules/bonds/bonds.selector';
-import { calcBondDetails, getBondTerms, getBondMetrics, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
-import { Bond, BondMetrics } from 'store/modules/bonds/bonds.types';
+import { selectBondInstance, selectBondMetricsReady, selectBondPrice } from 'store/modules/bonds/bonds.selector';
+import { Bond } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
-import BondPurchase from 'views/Bond/actions/BondPurchase';
-import BondDetailsMetrics from 'views/Bond/BondMetrics';
+
+import { Actions } from './components/Actions';
+
+/**
+ *
+ * TODO :
+ * - create mint view
+ *  - add buttons
+ *   + approve form
+ *  - add custom slippage
+ * - create redeem view
+ *     - claim + claim and autostake
+ */
 
 const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bond: Bond }) => {
     const history = useHistory();
-    const dispatch = useDispatch();
-
-    const {
-        state: { signer, signerAddress, networkID },
-    } = useWeb3Context();
 
     const onBackdropClick = () => history.goBack();
 
     const bashPrice = useSelector(selectFormattedReservePrice);
     const bondPrice = useSelector((state: RootState) => selectBondPrice(state, bondID));
-    const metrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
-
-    useEffect(() => {
-        if (!metrics?.terms) {
-            dispatch(getBondTerms(bondID));
-        }
-    }, [metrics?.terms]);
-
-    useEffect(() => {
-        if (bondID) {
-            // dispatch(calcBondDetails({ bondID, value: 0 }));
-
-            if (signer && signerAddress) {
-                dispatch(loadBondBalancesAndAllowances({ address: signerAddress || '', bondID }));
-            }
-        }
-    }, [bondID, signer, signerAddress]);
-
-    useEffect(() => {
-        if (networkID) {
-            dispatch(getBondMetrics({ networkID }));
-        }
-    }, [networkID]);
 
     //TODO: Add the custom settings : Slippage & Recipient address
+
+    console.log('Actions', Actions);
 
     return (
         <Dialog
             {...{
                 onBackdropClick,
                 open,
-                maxWidth: 'sm',
+                maxWidth: 'xl',
                 fullWidth: true,
                 PaperProps: { sx: { background: theme.palette.cardBackground.light, color: theme.palette.primary.dark } },
             }}
             sx={{
-                p: 2,
+                p: 4,
                 [theme.breakpoints.up('xs')]: {
                     p: 0,
                 },
@@ -94,13 +72,7 @@ const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bo
                     </Grid>
                 </Box>
 
-                {metrics?.allowance !== null && (
-                    <Box>
-                        <BondPurchase bondID={bondID} />
-                        <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
-                        {/* <BondDetailsMetrics bondMetrics={metrics} /> */}
-                    </Box>
-                )}
+                <Actions bondID={bondID} />
             </DialogContent>
         </Dialog>
     );

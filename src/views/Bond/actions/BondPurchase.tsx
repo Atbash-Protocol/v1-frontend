@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MemoInlineMetric from 'components/Metrics/InlineMetric';
 import { theme } from 'constants/theme';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
-import { selectBondInstance, selectBondMetrics, selectBondQuoteResult } from 'store/modules/bonds/bonds.selector';
+import { selectBondInstance, selectBondIsQuoting, selectBondItemMetrics, selectBondQuoteResult } from 'store/modules/bonds/bonds.selector';
 import { approveBonds, calculateUserBondDetails, depositBond } from 'store/modules/bonds/bonds.thunks';
 import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
@@ -19,9 +19,9 @@ const BondPurchase = ({ bondID }: { bondID: string }) => {
     const { signer, signerAddress } = useSafeSigner();
 
     const bondIsLoading = useSelector<IReduxState, boolean>(state => state.bonds.loading);
-    const bondIsQuoting = useSelector<IReduxState, boolean>(state => state.bonds.bondQuoting);
+    const bondIsQuoting = useSelector((state: RootState) => selectBondIsQuoting(state, bondID));
     const bondQuoteResult = useSelector(state => selectBondQuoteResult(state as RootState, t));
-    const bondMetrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
+    const bondMetrics = useSelector((state: RootState) => selectBondItemMetrics(state, bondID));
     const bondInstance = useSelector((state: RootState) => selectBondInstance(state, bondID));
 
     const [quantity, setQuantity] = useState('');

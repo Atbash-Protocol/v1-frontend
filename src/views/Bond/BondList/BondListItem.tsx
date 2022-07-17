@@ -11,14 +11,14 @@ import { theme } from 'constants/theme';
 import { useSignerConnected } from 'contexts/web3/web3.hooks';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
-import { selectBondInstance, selectBondMetrics, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
+import { selectBondInstance, selectBondItemMetrics, selectBondMintingMetrics } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails } from 'store/modules/bonds/bonds.thunks';
 import { BondMetrics } from 'store/modules/bonds/bonds.types';
 import { IReduxState } from 'store/slices/state.interface';
 
 interface IBondProps {
     bondID: string;
-    metrics: any;
+    metrics: BondMetrics;
     bond: LPBond | StableBond;
 }
 
@@ -111,7 +111,7 @@ const BondtListItem = ({ bondID, bond, metrics }: IBondProps) => {
 
 const BondListItemLoader = ({ bondID }: { bondID: string }) => {
     const bond = useSelector((state: IReduxState) => selectBondInstance(state, bondID));
-    const metrics = useSelector((state: IReduxState) => selectBondMetrics(state, bondID));
+    const metrics = useSelector((state: IReduxState) => selectBondItemMetrics(state, bondID));
 
     if (!metrics || !bond) return <Loader />;
 

@@ -8,8 +8,13 @@ import { BondType } from 'helpers/bond/constants';
 import { BondOptions } from 'lib/bonds/bond/bond';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { BondProviderEnum } from 'lib/bonds/bonds.types';
+import * as AppSelectorModule from 'store/modules/app/app.selectors';
 import * as BondsSeletorModule from 'store/modules/bonds/bonds.selector';
 import store from 'store/store';
+
+jest.mock('components/BondDialog/components/Actions', () => ({
+    Actions: () => <> Actions</>,
+}));
 
 import BondDialog from '..';
 
@@ -44,61 +49,30 @@ describe('BondDialog', () => {
         },
     };
 
-    it('should render AccessUnavailablePanel', () => {
-        const middlewares = [thunk];
+    describe('When the state is not ready', () => {
+        it('renders the loader', () => {
+            jest.spyOn(BondsSeletorModule, 'selectBondMetricsReady').mockReturnValue(false);
+            jest.spyOn(BondsSeletorModule, 'selectBondInstance').mockReturnValue({ bondOptions: { iconPath: 'http://iconpath' }, isLP: () => false } as any);
 
-        const mockStore = createMockStore(middlewares);
+            const container = renderComponent(<BondDialog bondID={testBond.bondInstance.ID} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
 
-        const state = {
-            bonds: {
-                bondMetrics: {
-                    dai: {
-                        metric1: 'ok',
-                    },
-                },
-                bondInstances: {
-                    dai: new LPBond(bondOptions),
-                },
-                bondQuote: {
-                    interestDue: null,
-                    bondMaturationBlock: null,
-                    pendingPayout: null,
-                },
-            },
-            main: {
-                metrics: {
-                    reserves: 10000,
-                },
-                blockchain: {
-                    timestamp: 10000,
-                },
-            },
-            markets: {
-                markets: {
-                    dai: 1.01,
-                },
-            },
-            transactions: [],
-        };
-
-        const testStore = mockStore(state);
-        const providerValue = { state: { signer: 'signer', signerAddress: 'signerAddress', networkID: 2 } };
-        render(<BondDialog open={true} bondID={'dai'} />, {
-            wrapper: ({ children }) => (
-                <Web3Context.Provider value={providerValue as any}>
-                    <ReactReduxModule.Provider store={testStore}>{children}</ReactReduxModule.Provider>
-                </Web3Context.Provider>
-            ),
+            expect(container.container.getElementsByClassName('MuiCircularProgress-root')).toHaveLength(1);
         });
-        expect(testStore.getActions()).toHaveLength(4);
     });
 
-    it('renders the loader', () => {
-        jest.spyOn(BondsSeletorModule, 'selectBondMetrics').mockReturnValue(null);
-        jest.spyOn(BondsSeletorModule, 'selectBondInstance').mockReturnValue({ bondOptions: { iconPath: 'http://iconpath' }, isLP: () => false } as any);
+    describe('When bond data is ready', () => {
+        beforeEach(() => {
+            jest.spyOn(BondsSeletorModule, 'selectBondMetricsReady').mockReturnValue(true);
+            jest.spyOn(BondsSeletorModule, 'selectBondInstance').mockReturnValue(true as any);
+        });
+        it('should render AccessUnavailablePanel', () => {
+            const selectBashPriceMock = jest.spyOn(AppSelectorModule, 'selectFormattedReservePrice').mockReturnValue('$200.00');
+            const selectBondInstanceMock = jest.spyOn(BondsSeletorModule, 'selectBondInstance').mockReturnValue(testBond.bondInstance);
 
-        const container = renderComponent(<BondDialog bondID={testBond.bondInstance.ID} open={true} />, { state: { signer: 'signer', signerAddress: 'signerAddress' } });
+            const container = renderComponent(<BondDialog open={true} bondID={'dai'} />);
 
-        expect(container.container.getElementsByClassName('MuiCircularProgress-root')).toHaveLength(1);
+            expect(selectBashPriceMock).toHaveBeenCalled();
+            expect(selectBondInstanceMock).toHaveBeenCalled();
+        });
     });
 });

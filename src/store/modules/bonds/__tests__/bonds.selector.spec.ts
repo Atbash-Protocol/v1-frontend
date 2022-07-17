@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import { ethers } from 'ethers';
 
 import { selectAllBonds, selectBondInfos, selectBondMintingMetrics } from '../bonds.selector';
@@ -37,7 +38,7 @@ describe('selectBondInfos', () => {
 describe('selectBondMintingMetrics', () => {
     it('returns the formatted metrics', () => {
         const metrics = {
-            bondDiscount: 8.1,
+            bondDiscount: new Decimal(8.1),
             bondPrice: ethers.BigNumber.from(10),
             allowance: null,
             vestingTerm: null,
@@ -47,7 +48,7 @@ describe('selectBondMintingMetrics', () => {
 
         expect(selectBondMintingMetrics(metrics as any)).toEqual({
             allowance: null,
-            bondDiscount: '810 %',
+            bondDiscount: '810.00 %',
             bondPrice: '$0.00',
             maxBondPrice: 30,
             purchased: '$20',

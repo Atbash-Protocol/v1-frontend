@@ -10,15 +10,13 @@ import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { RootState } from 'store/store';
 
-import { selectReserveLoading, useContractLoaded } from '../app/app.selectors';
-import { selectMarketsLoading } from '../markets/markets.selectors';
+import { useContractLoaded } from '../app/app.selectors';
 import { selectIndex } from '../stake/stake.selectors';
 import { BondItem, BondMetrics } from './bonds.types';
 
 export const selectBondInstances = (state: RootState) => Object.values(state.bonds.bondInstances);
 
 export const selectAllBonds = createDraftSafeSelector([selectBondInstances], bondInstances => {
-    console.log(bondInstances);
     return Object.values(bondInstances).reduce(
         (acc, bondInstance) => {
             if (bondInstance.bondOptions.isActive === true) {
@@ -69,12 +67,12 @@ export const selectBondPrice = (state: RootState, bondID: string) => {
     return formatUSDFromDecimal(new Decimal(metrics.bondPrice.toString()).div(10 ** 18), 2);
 };
 
-export const selectBondIsQuoting = (bonds: Record<string, BondItem>, bondID: string) => {
-    const bond = bonds[bondID];
+export const selectBondIsQuoting = (state: RootState, bondID: string) => {
+    const bond = state.bonds.bondMetrics[bondID];
 
     if (!bond) throw new Error('Unable to get bond');
 
-    return bond.metrics.loading ?? false;
+    return bond.loading ?? false;
 };
 
 export const selectBondQuoteResult = (
@@ -93,13 +91,11 @@ export const selectBondQuoteResult = (
     };
 };
 
-export const selectTreasuryBalanceLoading = (state: RootState) => state.bonds.treasuryBalance === null;
+export const selectBondMetrics = (state: RootState) => Object.values(state.bonds.bondMetrics);
 
-export const isAtLeastOneActive = (state: RootState) => Object.values(state.bonds.bonds).length > 0;
+export const selectBondItemMetrics = (state: RootState, bondID: string) => state.bonds.bondMetrics[bondID];
 
-export const selectBonds = (state: RootState) => Object.values(state.bonds.bondMetrics);
-
-export const selectMostProfitableBonds = createSelector([selectBonds], bonds => {
+export const selectMostProfitableBonds = createSelector([selectBondMetrics], bonds => {
     const orderedBonds = bonds.sort((bond1, bond2): number => {
         if (bond1.bondDiscount === null || bond2.bondDiscount === null) return 0;
 
@@ -109,18 +105,9 @@ export const selectMostProfitableBonds = createSelector([selectBonds], bonds => 
     return orderedBonds;
 });
 
-export const selectBondsReady = createSelector([selectBonds, useContractLoaded], (bonds, contractLoaded) => {
+export const selectBondsReady = createSelector([selectBondMetrics, useContractLoaded], (bonds, contractLoaded) => {
     return bonds.length > 0 && contractLoaded;
 });
-
-const selectBondCalculatorLoading = (state: RootState) => state.bonds.bondCalculator === null;
-
-export const selectBondCalcDetailsReady = createSelector(
-    [selectReserveLoading, selectMarketsLoading, selectBondCalculatorLoading],
-    (reserveLoading, marketLoading, calcLoading) => {
-        return !reserveLoading && !marketLoading && !calcLoading;
-    },
-);
 
 // refactor
 
@@ -138,14 +125,6 @@ export const selectBondMetricsReady = (state: RootState, bondId: string) => {
     if (!bondMetrics) return false;
 
     return Object.values(bondMetrics).some(v => v !== null);
-};
-
-export const selectBondMetrics = (state: RootState, bondId: string) => {
-    const bond = state.bonds.bondMetrics[bondId];
-
-    if (!bond) return null;
-
-    return { ...bond, bondPrice: new Decimal(bond.bondPrice?.toString() ?? 0) };
 };
 
 export const selectAllBondMetrics = (state: RootState) => state.bonds.bondMetrics;

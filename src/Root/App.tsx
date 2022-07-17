@@ -11,7 +11,7 @@ import { loadBalancesAndAllowances } from 'store/modules/account/account.thunks'
 import { selectAppLoading, selectMetricsLoading } from 'store/modules/app/app.selectors';
 import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
 import { MainSliceState } from 'store/modules/app/app.types';
-import { selectAllActiveBondsIds, selectAllBondMetrics, selectBondDetailsCalcReady, selectBondInstances } from 'store/modules/bonds/bonds.selector';
+import { selectAllActiveBondsIds, selectBondDetailsCalcReady } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails, initializeBonds } from 'store/modules/bonds/bonds.thunks';
 import { getMarketPrices } from 'store/modules/markets/markets.thunks';
 import { IReduxState } from 'store/slices/state.interface';
