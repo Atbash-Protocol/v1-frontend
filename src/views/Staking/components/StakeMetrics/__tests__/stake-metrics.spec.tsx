@@ -29,7 +29,7 @@ describe('UserStakeMetrics', () => {
     };
 
     it('Renders', () => {
-        jest.spyOn(AppAccountModule, 'selectFormattedStakeBalance').mockReturnValue({ balances });
+        jest.spyOn(AppAccountModule, 'selectFormattedStakeBalance').mockReturnValue({ balances } as any);
         jest.spyOn(AppSelectorModule, 'selectUserStakingInfos').mockReturnValue(stakingInfos);
 
         const component = renderComponent(<UserStakeMetrics />);
@@ -38,7 +38,7 @@ describe('UserStakeMetrics', () => {
     });
 
     it('Renders with optional metrics', () => {
-        jest.spyOn(AppAccountModule, 'selectFormattedStakeBalance').mockReturnValue({ balances });
+        jest.spyOn(AppAccountModule, 'selectFormattedStakeBalance').mockReturnValue({ balances } as any);
         jest.spyOn(AppSelectorModule, 'selectUserStakingInfos').mockReturnValue({ ...stakingInfos, optionalMetrics: true });
 
         const component = renderComponent(<UserStakeMetrics />);

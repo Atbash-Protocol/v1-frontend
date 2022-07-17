@@ -1,7 +1,5 @@
 import { render } from '@testing-library/react';
 import * as ReactReduxModule from 'react-redux';
-import createMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 
 import { Web3Context } from 'contexts/web3/web3.context';
 import { BondType } from 'helpers/bond/constants';
@@ -12,9 +10,8 @@ import * as AppSelectorModule from 'store/modules/app/app.selectors';
 import * as BondsSeletorModule from 'store/modules/bonds/bonds.selector';
 import store from 'store/store';
 
-jest.mock('components/BondDialog/components/Actions', () => ({
-    Actions: () => <> Actions</>,
-}));
+jest.mock('components/BondDialog/components/Mint', () => ({ Mint: () => <> Mint</> }));
+jest.mock('components/BondDialog/components/Redeem', () => ({ Redeem: () => <> Redeem</> }));
 
 import BondDialog from '..';
 

@@ -3,6 +3,7 @@ import { t } from 'i18next';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import { BMultiTabs } from 'components/BMultiTab/BMultiTab';
 import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import MenuMetric from 'components/Metrics/MenuMetric';
@@ -12,7 +13,8 @@ import { selectBondInstance, selectBondMetricsReady, selectBondPrice } from 'sto
 import { Bond } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 
-import { Actions } from './components/Actions';
+import { Mint } from './components/Mint';
+import { Redeem } from './components/Redeem';
 
 /**
  *
@@ -35,7 +37,16 @@ const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bo
 
     //TODO: Add the custom settings : Slippage & Recipient address
 
-    console.log('Actions', Actions);
+    const bondActions = [
+        {
+            label: t('mint:Mint'),
+            component: <Mint bondID={bondID} />,
+        },
+        {
+            label: t('mint:Redeem'),
+            component: <Redeem bondID={bondID} />,
+        },
+    ];
 
     return (
         <Dialog
@@ -72,7 +83,9 @@ const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bo
                     </Grid>
                 </Box>
 
-                <Actions bondID={bondID} />
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <BMultiTabs tabs={bondActions} />
+                </Box>
             </DialogContent>
         </Dialog>
     );
