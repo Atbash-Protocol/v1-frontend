@@ -18,7 +18,7 @@ import { IReduxState } from 'store/slices/state.interface';
 
 interface IBondProps {
     bondID: string;
-    metrics: BondMetrics;
+    metrics: any;
     bond: LPBond | StableBond;
 }
 
@@ -54,10 +54,10 @@ const BondtListItem = ({ bondID, bond, metrics }: IBondProps) => {
     const signerConnected = useSignerConnected();
 
     useEffect(() => {
-        if (bond && metrics) {
+        if (!bond && !metrics) {
             dispatch(calcBondDetails({ bondID, value: 0 }));
         }
-    }, [!bond || !metrics]);
+    }, [bond, metrics]);
 
     const { bondPrice, bondDiscount, purchased, bondSoldOut } = selectBondMintingMetrics(metrics);
 

@@ -14,14 +14,14 @@ import { formatUSD } from 'helpers/price-units';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
-import { selectBondInstance, selectBondMetrics } from 'store/modules/bonds/bonds.selector';
+import { selectBondInstance, selectBondMetrics, selectBondMetricsReady, selectBondPrice } from 'store/modules/bonds/bonds.selector';
 import { calcBondDetails, getBondTerms, getBondMetrics, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
-import { BondMetrics } from 'store/modules/bonds/bonds.types';
+import { Bond, BondMetrics } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 import BondPurchase from 'views/Bond/actions/BondPurchase';
 import BondDetailsMetrics from 'views/Bond/BondMetrics';
 
-const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: string; bond: LPBond | StableBond; metrics: BondMetrics }) => {
+const BondDetails = ({ open, bondID, bond }: { open: boolean; bondID: string; bond: Bond }) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -32,6 +32,8 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
     const onBackdropClick = () => history.goBack();
 
     const bashPrice = useSelector(selectFormattedReservePrice);
+    const bondPrice = useSelector((state: RootState) => selectBondPrice(state, bondID));
+    const metrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
 
     useEffect(() => {
         if (!metrics?.terms) {
@@ -41,7 +43,7 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
 
     useEffect(() => {
         if (bondID) {
-            dispatch(calcBondDetails({ bondID, value: 0 }));
+            // dispatch(calcBondDetails({ bondID, value: 0 }));
 
             if (signer && signerAddress) {
                 dispatch(loadBondBalancesAndAllowances({ address: signerAddress || '', bondID }));
@@ -83,7 +85,7 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
                 <Box>
                     <Grid container item xs={12} mb={4}>
                         <Grid item xs={12} sm={6}>
-                            <MenuMetric key={'treasuryBalance'} metricKey={t('TreasuryBalance')} value={formatUSD(metrics.treasuryBalance || 0, 2)} />
+                            <MenuMetric key={'MintPrice'} metricKey={t('bond:MintPrice')} value={bondPrice} />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
@@ -92,11 +94,11 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
                     </Grid>
                 </Box>
 
-                {metrics.allowance !== null && (
+                {metrics?.allowance !== null && (
                     <Box>
                         <BondPurchase bondID={bondID} />
                         <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
-                        <BondDetailsMetrics bondMetrics={metrics} />
+                        {/* <BondDetailsMetrics bondMetrics={metrics} /> */}
                     </Box>
                 )}
             </DialogContent>
@@ -105,12 +107,12 @@ const BondDetails = ({ open, bondID, bond, metrics }: { open: boolean; bondID: s
 };
 
 const BondDialogLoader = ({ open, bondID }: { open: boolean; bondID: string }) => {
-    const metrics = useSelector((state: RootState) => selectBondMetrics(state, bondID));
+    const metrics = useSelector((state: RootState) => selectBondMetricsReady(state, bondID));
     const bond = useSelector((state: RootState) => selectBondInstance(state, bondID));
 
     if (!metrics || !bond) return <Loader />;
 
-    return <BondDetails open={open} bondID={bondID} bond={bond} metrics={metrics} />;
+    return <BondDetails open={open} bondID={bondID} bond={bond} />;
 };
 
 export default BondDialogLoader;

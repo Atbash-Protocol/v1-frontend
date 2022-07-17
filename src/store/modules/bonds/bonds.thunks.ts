@@ -179,11 +179,10 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
     const bondPrice = bondInstance.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
 
     // = (reserve - bondPrice) / bondPrice
-    const bondDiscount = reserves
+    const bondDiscount = new Decimal(reserves.toString())
         .mul(10 ** 9)
-        .sub(bondPrice)
-        .div(bondPrice)
-        .toNumber();
+        .sub(bondPrice.toString())
+        .div(bondPrice.toString());
 
     const { bondQuote, maxBondPriceToken } = bondInstance.isLP()
         ? await getLPBondQuote(bondInstance, bondAmountInWei, bondCalculator, maxBondPrice)
@@ -199,6 +198,8 @@ export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async (
     const { purchased } = bondInstance.isLP()
         ? await getLPPurchasedBonds(bondInstance, bondCalculator, initialPurchased, daiPrice)
         : await getTokenPurchaseBonds(bondInstance, bondCalculator, initialPurchased, daiPrice);
+
+    console.log('bond calc', bondPrice, bondID, bondInstance.getBondContract().address);
 
     return {
         bondID: bondID,

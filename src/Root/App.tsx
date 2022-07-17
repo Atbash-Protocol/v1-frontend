@@ -8,11 +8,11 @@ import Loader from 'components/Loader';
 import { Web3Context } from 'contexts/web3/web3.context';
 import { useProvider, useSignerConnected } from 'contexts/web3/web3.hooks';
 import { loadBalancesAndAllowances } from 'store/modules/account/account.thunks';
-import { selectAppLoading } from 'store/modules/app/app.selectors';
+import { selectAppLoading, selectMetricsLoading } from 'store/modules/app/app.selectors';
 import { getBlockchainData, getCoreMetrics, getStakingMetrics, initializeProviderContracts } from 'store/modules/app/app.thunks';
 import { MainSliceState } from 'store/modules/app/app.types';
-import { selectBondInstances } from 'store/modules/bonds/bonds.selector';
-import { initializeBonds } from 'store/modules/bonds/bonds.thunks';
+import { selectAllActiveBondsIds, selectAllBondMetrics, selectBondDetailsCalcReady, selectBondInstances } from 'store/modules/bonds/bonds.selector';
+import { calcBondDetails, initializeBonds } from 'store/modules/bonds/bonds.thunks';
 import { getMarketPrices } from 'store/modules/markets/markets.thunks';
 import { IReduxState } from 'store/slices/state.interface';
 
@@ -33,9 +33,11 @@ function App(): JSX.Element {
     const provider = useProvider();
     const isSignerConnected = useSignerConnected();
 
-    const bondInstances = useSelector(selectBondInstances);
     const { errorEncountered, contractsLoaded } = useSelector<IReduxState, MainSliceState>(state => state.main, shallowEqual);
     const appIsLoading = useSelector(selectAppLoading);
+    const activeBondsIds = useSelector(selectAllActiveBondsIds);
+    const coreMetricsLoading = useSelector(selectMetricsLoading);
+    const bondCalcMetricsReady = useSelector(selectBondDetailsCalcReady);
 
     // // TODO: Create a subscription on signer change
     // // TODO: Create a networkID management per provider + signer
@@ -65,6 +67,16 @@ function App(): JSX.Element {
             dispatch(loadBalancesAndAllowances(signerAddress));
         }
     }, [signerAddress, contractsLoaded]);
+
+    useEffect(() => {
+        if (contractsLoaded && !coreMetricsLoading && activeBondsIds.length > 0 && !bondCalcMetricsReady) {
+            batch(() => {
+                for (const bondID of activeBondsIds) {
+                    dispatch(calcBondDetails({ bondID, value: 0 }));
+                }
+            });
+        }
+    }, [activeBondsIds, contractsLoaded, coreMetricsLoading]);
 
     if (errorEncountered) return <CritialError />;
 
@@ -104,10 +116,10 @@ function App(): JSX.Element {
                 <Redeem />
             </Route>
 
-            {bondInstances.map((bond, key) => (
-                <Route key={key} path={`/bond/${bond.ID}`}>
+            {activeBondsIds.map((bond, key) => (
+                <Route key={key} path={`/bond/${bond}`}>
                     <Suspense fallback={<Loader />}>
-                        <BondDialog key={bond.bondOptions.displayName} open={true} bondID={bond.ID} />
+                        <BondDialog key={bond} open={true} bondID={bond} />
                     </Suspense>
                 </Route>
             ))}

@@ -11,6 +11,7 @@ import { selectIndex } from '../stake/stake.selectors';
 
 export const selectRawCircSupply = (state: IReduxState) => state.main.metrics.rawCircSupply;
 export const selectStakingReward = (state: IReduxState) => state.main.staking.epoch?.distribute || null;
+export const selectMetricsLoading = (state: IReduxState) => state.main.metrics.loading;
 
 export const selectStakingRebaseAmount = createSelector([selectStakingReward, selectRawCircSupply], (stakingReward, rawCircSupply) => {
     if (!rawCircSupply || !stakingReward) return null;

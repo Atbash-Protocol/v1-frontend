@@ -1,10 +1,11 @@
+import { createDraftSafeSelector } from '@reduxjs/toolkit';
 import Decimal from 'decimal.js';
 import { TFunction } from 'i18next';
 import { sum } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { formatTimer } from 'helpers/prettify-seconds';
-import { formatUSD } from 'helpers/price-units';
+import { formatUSD, formatUSDFromDecimal } from 'helpers/price-units';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 import { RootState } from 'store/store';
@@ -14,9 +15,10 @@ import { selectMarketsLoading } from '../markets/markets.selectors';
 import { selectIndex } from '../stake/stake.selectors';
 import { BondItem, BondMetrics } from './bonds.types';
 
-export const selectAllBonds = (state: RootState) => {
-    const { bondInstances } = state.bonds;
+export const selectBondInstances = (state: RootState) => Object.values(state.bonds.bondInstances);
 
+export const selectAllBonds = createDraftSafeSelector([selectBondInstances], bondInstances => {
+    console.log(bondInstances);
     return Object.values(bondInstances).reduce(
         (acc, bondInstance) => {
             if (bondInstance.bondOptions.isActive === true) {
@@ -33,7 +35,7 @@ export const selectAllBonds = (state: RootState) => {
         },
         { activeBonds: new Array<LPBond | StableBond>(), inactiveBonds: new Array<LPBond | StableBond>() },
     );
-};
+});
 
 export const selectBondInfos = (bonds: Record<string, BondItem>, bondID: string): BondItem | null => {
     const bond = bonds[bondID];
@@ -53,10 +55,18 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
         allowance: metrics.allowance,
         maxBondPrice: metrics.maxBondPrice,
         vestingTerm: metrics.vestingTerm,
-        bondDiscount: metrics.bondDiscount !== null ? `${metrics.bondDiscount * 100} %` : null,
+        bondDiscount: metrics.bondDiscount !== null ? `${metrics.bondDiscount.mul(100).toFixed(2)} %` : null,
         purchased: metrics.purchased !== null ? formatUSD(metrics.purchased) : null,
-        bondSoldOut: (metrics.bondDiscount ?? 0) * 100 < -30,
+        bondSoldOut: (metrics.bondDiscount?.toNumber() ?? 0) * 100 < -30,
     };
+};
+
+export const selectBondPrice = (state: RootState, bondID: string) => {
+    const metrics = state.bonds.bondMetrics[bondID];
+
+    if (!metrics || metrics.bondPrice === null) return null;
+
+    return formatUSDFromDecimal(new Decimal(metrics.bondPrice.toString()).div(10 ** 18), 2);
 };
 
 export const selectBondIsQuoting = (bonds: Record<string, BondItem>, bondID: string) => {
@@ -88,8 +98,6 @@ export const selectTreasuryBalanceLoading = (state: RootState) => state.bonds.tr
 export const isAtLeastOneActive = (state: RootState) => Object.values(state.bonds.bonds).length > 0;
 
 export const selectBonds = (state: RootState) => Object.values(state.bonds.bondMetrics);
-
-export const selectBondInstances = (state: RootState) => Object.values(state.bonds.bondInstances);
 
 export const selectMostProfitableBonds = createSelector([selectBonds], bonds => {
     const orderedBonds = bonds.sort((bond1, bond2): number => {
@@ -124,15 +132,29 @@ export const selectBondInstance = (state: RootState, bondId: string) => {
     return bond;
 };
 
+export const selectBondMetricsReady = (state: RootState, bondId: string) => {
+    const bondMetrics = state.bonds.bondMetrics[bondId];
+
+    if (!bondMetrics) return false;
+
+    return Object.values(bondMetrics).some(v => v !== null);
+};
+
 export const selectBondMetrics = (state: RootState, bondId: string) => {
     const bond = state.bonds.bondMetrics[bondId];
 
     if (!bond) return null;
 
-    return bond;
+    return { ...bond, bondPrice: new Decimal(bond.bondPrice?.toString() ?? 0) };
 };
 
 export const selectAllBondMetrics = (state: RootState) => state.bonds.bondMetrics;
+
+export const selectBondDetailsCalcReady = createSelector([selectAllBondMetrics], bondMetrics => {
+    const ready = Object.values(bondMetrics).some(v => v.bondPrice !== null);
+
+    return ready;
+});
 
 export const selectFormattedTreasuryBalance = createSelector([selectAllBondMetrics], metrics => {
     const total = sum(
@@ -161,4 +183,8 @@ export const selectFormattedBondCoreMetrics = createSelector([selectCoreMetrics,
         rfvBASH: formatUSD(rfvBASH),
         runway: new Decimal(runway).toFixed(1),
     };
+});
+
+export const selectAllActiveBondsIds = createSelector([selectAllBonds], ({ activeBonds }) => {
+    return Object.values(activeBonds).map(({ ID }) => ID);
 });
