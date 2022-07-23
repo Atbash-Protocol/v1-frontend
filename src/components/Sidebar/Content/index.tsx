@@ -106,14 +106,26 @@ function NavContent() {
 
     const bondItems = bondInstances
         .filter(bond => bond.bondOptions.isActive)
-        .map((bond, i) => (
+        .map(({ ID, bondOptions: { displayName } }, index) => {
+            const bondDiscount = bonds[index].bondDiscount;
+
+            const discount = bondDiscount ? bondDiscount.mul(100).toNumber() : 0;
+
+            return {
+                ID,
+                displayName,
+                discount,
+            };
+        })
+        .sort((bond1, bond2) => (bond1.discount < bond2.discount ? 1 : -1))
+        .map(({ ID, displayName, discount }) => (
             <ListItemLink
-                key={`mint-bond-${bond.ID}`}
-                to={`/bond/${bond.ID}`}
-                primary={bond.bondOptions.displayName}
+                key={`mint-bond-${ID}`}
+                to={`/bond/${ID}`}
+                primary={displayName}
                 extra={
                     <Typography paddingRight={theme.spacing(1)} variant="body2">
-                        {bonds[i].bondDiscount?.mul(100)?.toFixed(2)} %
+                        {discount.toFixed(2)} %
                     </Typography>
                 }
             />

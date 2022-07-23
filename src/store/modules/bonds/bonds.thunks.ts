@@ -168,56 +168,55 @@ export const calcBondDetails = createAsyncThunk(
 
         if (!bondInstance || !bondMetrics || !bondInstance.getBondContract()) throw new Error('Unable to get bondInfos');
 
-        try {
-            const reserves = main.metrics.reserves;
-            const { bondCalculator } = bonds;
-            const daiPrice = markets.markets.dai;
+        const reserves = main.metrics.reserves;
+        const { bondCalculator } = bonds;
+        const daiPrice = markets.markets.dai;
 
-            if (!reserves || !daiPrice || !bondCalculator) throw new Error('State is not setup for bonds');
+        if (!reserves || !daiPrice || !bondCalculator) throw new Error('State is not setup for bonds');
 
-            const terms = await bondInstance.getBondContract().terms();
-            const maxBondPrice = await bondInstance.getBondContract().maxPayout();
-            const bondAmountInWei = utils.parseEther(value.toString());
+        const terms = await bondInstance.getBondContract().terms();
+        const maxBondPrice = await bondInstance.getBondContract().maxPayout();
+        const bondAmountInWei = utils.parseEther(value.toString());
 
-            const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
-            const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as BigNumber;
-            const bondPrice = bondInstance.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
+        const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
+        const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as BigNumber;
 
-            // = (reserve - bondPrice) / bondPrice
-            const bondDiscount = new Decimal(reserves.toString())
-                .mul(10 ** 9)
-                .sub(bondPrice.toString())
-                .div(bondPrice.toString());
+        console.log('bondID', bondID, baseBondPrice.toString());
+        const bondPrice = bondInstance.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
 
-            const { bondQuote, maxBondPriceToken } = bondInstance.isLP()
-                ? await getLPBondQuote(bondInstance, bondAmountInWei, bondCalculator, maxBondPrice)
-                : await getTokenBondQuote(bondInstance, bondAmountInWei, maxBondPrice);
+        // = (reserve - bondPrice) / bondPrice
+        const bondDiscount = new Decimal(reserves.toString())
+            .mul(10 ** 9)
+            .sub(bondPrice.toString())
+            .div(bondPrice.toString());
 
-            if (!!value && bondQuote > maxBondPrice) {
-                dispatch(addNotification({ severity: 'error', description: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
-            }
+        console.log('bondID', bondID, bondDiscount.toString());
 
-            const initialPurchased = await bondInstance.getReserveContract().balanceOf(TREASURY_ADDRESS);
+        const { bondQuote, maxBondPriceToken } = bondInstance.isLP()
+            ? await getLPBondQuote(bondInstance, bondAmountInWei, bondCalculator, maxBondPrice)
+            : await getTokenBondQuote(bondInstance, bondAmountInWei, maxBondPrice);
 
-            const { purchased } = bondInstance.isLP()
-                ? await getLPPurchasedBonds(bondInstance, bondCalculator, initialPurchased, daiPrice)
-                : await getTokenPurchaseBonds(bondInstance, bondCalculator, initialPurchased, daiPrice);
-
-            return {
-                bondID: bondID,
-                bondDiscount,
-                bondQuote,
-                purchased,
-                vestingTerm: Number(terms.vestingTerm), // Number(terms.vestingTerm),
-                maxBondPrice: maxBondPrice / 10 ** 9,
-                bondPrice, // bondPrice / Math.pow(10, 18),
-                marketPrice,
-                maxBondPriceToken,
-            };
-        } catch (err) {
-            console.error(err);
-            throw err;
+        if (!!value && bondQuote > maxBondPrice) {
+            dispatch(addNotification({ severity: 'error', description: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
         }
+
+        const initialPurchased = await bondInstance.getReserveContract().balanceOf(TREASURY_ADDRESS);
+
+        const { purchased } = bondInstance.isLP()
+            ? await getLPPurchasedBonds(bondInstance, bondCalculator, initialPurchased, daiPrice)
+            : await getTokenPurchaseBonds(bondInstance, bondCalculator, initialPurchased, daiPrice);
+
+        return {
+            bondID: bondID,
+            bondDiscount,
+            bondQuote,
+            purchased,
+            vestingTerm: Number(terms.vestingTerm), // Number(terms.vestingTerm),
+            maxBondPrice: maxBondPrice / 10 ** 9,
+            bondPrice, // bondPrice / Math.pow(10, 18),
+            marketPrice,
+            maxBondPriceToken,
+        };
     },
 );
 
