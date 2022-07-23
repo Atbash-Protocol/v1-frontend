@@ -91,6 +91,7 @@ describe('#initializeProviderContracts', () => {
                     bondDiscount: null,
                     bondPrice: null,
                     bondQuote: null,
+                    loading: false,
                     marketPrice: null,
                     maxBondPrice: null,
                     maxBondPriceToken: null,
@@ -175,6 +176,7 @@ describe('#getBondMetrics', () => {
 
 describe('#calcBondDetails', () => {
     const dispatch = jest.fn();
+    const networkID = 4;
 
     it('catches an error if the bond is not defined', async () => {
         const getState = jest.fn().mockReturnValue({
@@ -188,7 +190,7 @@ describe('#calcBondDetails', () => {
             markets: {},
         });
 
-        const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+        const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
         const res = await action(dispatch, getState, undefined);
 
         expect((res as any).error.message).toEqual('Unable to get bondInfos');
@@ -216,7 +218,7 @@ describe('#calcBondDetails', () => {
             markets: { markets: { dai: null } },
         });
 
-        const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+        const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
         const res = await action(dispatch, getState, undefined);
 
         expect((res as any).error.message).toEqual('State is not setup for bonds');
@@ -266,6 +268,9 @@ describe('#calcBondDetails', () => {
                                 maxPayout: jest.fn().mockReturnValue(ethers.BigNumber.from('0xff')),
                                 bondPriceInUSD: jest.fn().mockReturnValue(BigNumber.from('0xf1')),
                             }),
+                            getReserveContract: jest.fn().mockReturnValue({
+                                balanceOf: jest.fn().mockResolvedValue(BigNumber.from(10000000)),
+                            }),
                             isCustomBond: () => false,
                             isLP: () => true,
                         },
@@ -278,7 +283,7 @@ describe('#calcBondDetails', () => {
                 },
             });
 
-            const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+            const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
             const { payload } = await action(dispatch, getState, undefined);
 
             expect(payload).toEqual({
@@ -339,6 +344,9 @@ describe('#calcBondDetails', () => {
                                 maxPayout: jest.fn().mockReturnValue(ethers.BigNumber.from('0xff')),
                                 bondPriceInUSD: jest.fn().mockReturnValue(BigNumber.from('0xf1')),
                             }),
+                            getReserveContract: jest.fn().mockReturnValue({
+                                balanceOf: jest.fn().mockResolvedValue(BigNumber.from(10000000)),
+                            }),
                             isCustomBond: () => false,
                             isLP: () => false,
                         },
@@ -351,7 +359,7 @@ describe('#calcBondDetails', () => {
                 },
             });
 
-            const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+            const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
             const { payload } = await action(dispatch, getState, undefined);
 
             expect(payload).toEqual({

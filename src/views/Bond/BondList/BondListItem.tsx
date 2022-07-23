@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
 import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import { theme } from 'constants/theme';
+import { useWeb3Context } from 'contexts/web3/web3.context';
 import { useSignerConnected } from 'contexts/web3/web3.hooks';
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
@@ -20,6 +21,7 @@ interface IBondProps {
     bondID: string;
     metrics: BondMetrics;
     bond: LPBond | StableBond;
+    networkID: number;
 }
 
 const BondMintMetric = ({ metric, value }: { metric: string; value: string | null }) => {
@@ -48,14 +50,14 @@ const BondMintMetric = ({ metric, value }: { metric: string; value: string | nul
     );
 };
 
-const BondtListItem = ({ bondID, bond, metrics }: IBondProps) => {
+const BondtListItem = ({ bondID, bond, metrics, networkID }: IBondProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const signerConnected = useSignerConnected();
 
     useEffect(() => {
         if (!bond && !metrics) {
-            dispatch(calcBondDetails({ bondID, value: 0 }));
+            dispatch(calcBondDetails({ bondID, value: 0, networkID }));
         }
     }, [bond, metrics]);
 
@@ -112,10 +114,13 @@ const BondtListItem = ({ bondID, bond, metrics }: IBondProps) => {
 const BondListItemLoader = ({ bondID }: { bondID: string }) => {
     const bond = useSelector((state: IReduxState) => selectBondInstance(state, bondID));
     const metrics = useSelector((state: IReduxState) => selectBondItemMetrics(state, bondID));
+    const {
+        state: { networkID },
+    } = useWeb3Context();
 
-    if (!metrics || !bond) return <Loader />;
+    if (!metrics || !bond || !networkID) return <Loader />;
 
-    return <BondtListItem bondID={bondID} bond={bond} metrics={metrics} />;
+    return <BondtListItem bondID={bondID} bond={bond} metrics={metrics} networkID={networkID} />;
 };
 
 export default BondListItemLoader;

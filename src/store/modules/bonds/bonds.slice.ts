@@ -58,27 +58,21 @@ export const BondSlices = createSlice({
             }
         });
 
-        // builder.addCase(
-        //     calcBondDetails.pending,
-        //     (
-        //         state,
-        //         {
-        //             meta: {
-        //                 arg: { bondID },
-        //             },
-        //         },
-        //     ) => {
-        //         state.bondMetrics[bondID].loading = true;
-        //     },
-        // );
+        builder.addCase(
+            calcBondDetails.pending,
+            (
+                state,
+                {
+                    meta: {
+                        arg: { bondID },
+                    },
+                },
+            ) => {
+                state.bondMetrics[bondID].loading = true;
+            },
+        );
 
         builder.addCase(calcBondDetails.fulfilled, (state, { payload: { bondID, ...metrics } }) => {
-            // state.bondMetrics[bondID] = {
-            //     ...state.bondMetrics[bondID],
-            //     ...metrics,
-            //     loading: false,
-            // };
-
             return {
                 ...state,
                 bondMetrics: {

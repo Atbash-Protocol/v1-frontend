@@ -20,6 +20,8 @@ export const createBond = (bondConfig: BondOptions): LPBond | StableBond => {
 export const getBondContractsAddresses = (bondConfig: BondConfig, networkID: Networks): BondAddresses => {
     const addresses = bondConfig.addresses[networkID];
 
+    console.log(addresses, networkID);
+
     if (!addresses || !addresses.bondAddress || !addresses.reserveAddress) throw new Error('Unable to get bond addresses');
 
     return { bondAddress: addresses.bondAddress, reserveAddress: addresses.reserveAddress };

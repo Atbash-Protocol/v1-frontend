@@ -1,4 +1,4 @@
-import { Contract, ethers } from 'ethers';
+import { BigNumber, Contract, ethers } from 'ethers';
 
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
@@ -26,18 +26,26 @@ export const getTokenBondQuote = async (bond: LPBond | StableBond, bondAmountInW
     return { bondQuote, maxBondPriceToken };
 };
 
-export const getLPPurchasedBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
-    const reverseContract = bond.getReserveContract();
-    const markdown = await bondCalculator.markdown(reverseContract.address);
+export const getLPPurchasedBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: BigNumber, daiPrice: number) => {
+    const reserveContract = bond.getReserveContract();
+    const markdown = await bondCalculator.markdown(reserveContract.address);
 
-    let purchased = await bondCalculator.valuation(reverseContract.address, initialPurchased);
-    purchased = (markdown / Math.pow(10, 18)) * (purchased / Math.pow(10, 9));
+    console.log('markdown', markdown);
 
-    if (bond.isCustomBond()) {
-        purchased = purchased * daiPrice;
+    try {
+        let purchased = await bondCalculator.valuation(reserveContract.address, initialPurchased.toString());
+        console.log('purchased', purchased);
+        purchased = (markdown / Math.pow(10, 18)) * (purchased / Math.pow(10, 9));
+
+        if (bond.isCustomBond()) {
+            purchased = purchased * daiPrice;
+        }
+
+        return { purchased };
+    } catch (err) {
+        console.error(err);
+        throw err;
     }
-
-    return { purchased };
 };
 
 export const getTokenPurchaseBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {

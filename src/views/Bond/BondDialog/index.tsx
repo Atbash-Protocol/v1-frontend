@@ -1,6 +1,8 @@
+import { useContext, useEffect } from 'react';
+
 import { Box, Dialog, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { t } from 'i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { BMultiTabs } from 'components/BMultiTab/BMultiTab';
@@ -8,8 +10,10 @@ import BondLogo from 'components/BondLogo';
 import Loader from 'components/Loader';
 import MenuMetric from 'components/Metrics/MenuMetric';
 import { theme } from 'constants/theme';
+import { Web3Context } from 'contexts/web3/web3.context';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectBondInstance, selectBondItemMetrics, selectBondMetricsReady, selectBondPrice } from 'store/modules/bonds/bonds.selector';
+import { loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
 import { Bond } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 
@@ -25,8 +29,13 @@ interface BondDialogProps {
 
 const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const onBackdropClick = () => history.goBack();
+
+    const {
+        state: { signerAddress },
+    } = useContext(Web3Context);
 
     const bashPrice = useSelector(selectFormattedReservePrice);
     const bondPrice = useSelector((state: RootState) => selectBondPrice(state, bondID));
@@ -44,6 +53,12 @@ const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
             component: <Redeem bondID={bondID} />,
         },
     ];
+
+    useEffect(() => {
+        if (signerAddress) {
+            dispatch(loadBondBalancesAndAllowances({ address: signerAddress, bondID }));
+        }
+    }, [signerAddress]);
 
     return (
         <Dialog

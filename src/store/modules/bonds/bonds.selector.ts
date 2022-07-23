@@ -164,6 +164,4 @@ export const selectFormattedBondCoreMetrics = createSelector([selectCoreMetrics,
     };
 });
 
-export const selectAllActiveBondsIds = createSelector([selectAllBonds], ({ activeBonds }) => {
-    return Object.values(activeBonds).map(({ ID }) => ID);
-});
+export const selectAllActiveBondsIds = createSelector([selectAllBonds], ({ activeBonds }) => Object.values(activeBonds).map(({ ID }) => ID));

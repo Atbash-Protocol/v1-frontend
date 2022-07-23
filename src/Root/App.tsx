@@ -15,6 +15,7 @@ import { selectAllActiveBondsIds, selectBondDetailsCalcReady } from 'store/modul
 import { calcBondDetails, initializeBonds } from 'store/modules/bonds/bonds.thunks';
 import { getMarketPrices } from 'store/modules/markets/markets.thunks';
 import { IReduxState } from 'store/slices/state.interface';
+import { RootState } from 'store/store';
 
 import { CritialError, NotFound, Wrap, Forecast, Redeem } from '../views';
 
@@ -38,6 +39,7 @@ function App(): JSX.Element {
     const activeBondsIds = useSelector(selectAllActiveBondsIds);
     const coreMetricsLoading = useSelector(selectMetricsLoading);
     const bondCalcMetricsReady = useSelector(selectBondDetailsCalcReady);
+    const bondMetrics = useSelector((state: RootState) => state.bonds.bondMetrics);
 
     // // TODO: Create a subscription on signer change
     // // TODO: Create a networkID management per provider + signer
@@ -69,14 +71,16 @@ function App(): JSX.Element {
     }, [signerAddress, contractsLoaded]);
 
     useEffect(() => {
-        if (contractsLoaded && !coreMetricsLoading && activeBondsIds.length > 0 && !bondCalcMetricsReady) {
+        if (signerAddress && contractsLoaded && networkID && contractsLoaded && !coreMetricsLoading && activeBondsIds.length > 0 && !bondCalcMetricsReady) {
             batch(() => {
                 for (const bondID of activeBondsIds) {
-                    dispatch(calcBondDetails({ bondID, value: 0 }));
+                    if (bondMetrics[bondID].loading === false) {
+                        dispatch(calcBondDetails({ bondID, value: 0, networkID }));
+                    }
                 }
             });
         }
-    }, [activeBondsIds, contractsLoaded, coreMetricsLoading]);
+    }, [signerAddress, contractsLoaded, networkID, activeBondsIds, contractsLoaded, coreMetricsLoading]);
 
     if (errorEncountered) return <CritialError />;
 

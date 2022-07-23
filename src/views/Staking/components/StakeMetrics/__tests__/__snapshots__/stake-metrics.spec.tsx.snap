@@ -15,15 +15,15 @@ Object {
            
         </h4>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             YourBalance
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             <span
               class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -31,15 +31,15 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:YourStakedBalance
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             <span
               class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -47,43 +47,43 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:NextRewardAmount
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             0 BASH
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:NextRewardYield
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             0.01 %
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:ROIFiveDayRate
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             
           </p>
@@ -102,15 +102,15 @@ Object {
          
       </h4>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           YourBalance
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -118,15 +118,15 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:YourStakedBalance
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -134,43 +134,43 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:NextRewardAmount
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           0 BASH
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:NextRewardYield
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           0.01 %
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:ROIFiveDayRate
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           
         </p>
@@ -246,15 +246,15 @@ Object {
            
         </h4>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             YourBalance
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             <span
               class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -262,15 +262,15 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:YourStakedBalance
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             <span
               class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -278,57 +278,57 @@ Object {
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:NextRewardAmount
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             0 BASH
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:NextRewardYield
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             0.01 %
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:ROIFiveDayRate
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             
           </p>
         </div>
         <div
-          class="MuiBox-root css-4hl15i"
+          class="MuiBox-root css-1z137pa"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
           >
             stake:EffectiveNextRewardAmount
           </p>
           <p
-            class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
           >
             0.1 wSBASH
           </p>
@@ -347,15 +347,15 @@ Object {
          
       </h4>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           YourBalance
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -363,15 +363,15 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:YourStakedBalance
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -379,57 +379,57 @@ Object {
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:NextRewardAmount
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           0 BASH
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:NextRewardYield
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           0.01 %
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:ROIFiveDayRate
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:EffectiveNextRewardAmount
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           0.1 wSBASH
         </p>
