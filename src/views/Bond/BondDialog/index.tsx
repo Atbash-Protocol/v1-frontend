@@ -13,12 +13,11 @@ import { theme } from 'constants/theme';
 import { Web3Context } from 'contexts/web3/web3.context';
 import { selectFormattedReservePrice } from 'store/modules/app/app.selectors';
 import { selectBondInstance, selectBondItemMetrics, selectBondMetricsReady, selectBondPrice } from 'store/modules/bonds/bonds.selector';
-import { loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
+import { calculateUserBondDetails, loadBondBalancesAndAllowances } from 'store/modules/bonds/bonds.thunks';
 import { Bond } from 'store/modules/bonds/bonds.types';
 import { RootState } from 'store/store';
 
-import BondMetrics from './components/Metrics';
-import { Mint } from './components/Mint';
+import Mint from './components/Mint';
 import { Redeem } from './components/Redeem';
 
 interface BondDialogProps {
@@ -34,12 +33,11 @@ const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
     const onBackdropClick = () => history.goBack();
 
     const {
-        state: { signerAddress },
+        state: { signer, signerAddress },
     } = useContext(Web3Context);
 
     const bashPrice = useSelector(selectFormattedReservePrice);
     const bondPrice = useSelector((state: RootState) => selectBondPrice(state, bondID));
-    const metrics = useSelector((state: RootState) => selectBondItemMetrics(state, bondID));
 
     //TODO: Add the custom settings : Slippage & Recipient address
 
@@ -59,6 +57,12 @@ const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
             dispatch(loadBondBalancesAndAllowances({ address: signerAddress, bondID }));
         }
     }, [signerAddress]);
+
+    useEffect(() => {
+        if (signer && signerAddress) {
+            dispatch(calculateUserBondDetails({ signer, signerAddress, bondID }));
+        }
+    }, [signer, signerAddress]);
 
     return (
         <Dialog
@@ -97,10 +101,6 @@ const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
 
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <BMultiTabs tabs={bondActions} />
-                </Box>
-
-                <Box>
-                    <BondMetrics bondMetrics={metrics} />
                 </Box>
             </DialogContent>
         </Dialog>

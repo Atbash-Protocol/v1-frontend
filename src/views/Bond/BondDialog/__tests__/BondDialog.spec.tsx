@@ -15,9 +15,8 @@ import * as BondsSeletorModule from 'store/modules/bonds/bonds.selector';
 
 import BondDialog from '..';
 
-jest.mock('../components/Mint', () => ({ Mint: () => <> Mint</> }));
+jest.mock('../components/Mint', () => () => <> Mint</>);
 jest.mock('../components/Redeem', () => ({ Redeem: () => <> Redeem</> }));
-jest.mock('../components/Metrics', () => () => <> Metrics</>);
 
 function renderComponent(component: JSX.Element, state: any, contextState?: any) {
     const middlewares = [thunk];
@@ -104,7 +103,7 @@ describe('BondDialog', () => {
             const selectBashPriceMock = jest.spyOn(AppSelectorModule, 'selectFormattedReservePrice').mockReturnValue('$200.00');
             const selectBondInstanceMock = jest.spyOn(BondsSeletorModule, 'selectBondInstance').mockReturnValue(testBond.bondInstance);
 
-            const container = renderComponent(<BondDialog open={true} bondID={'dai'} />, state, { state: { signerAddress: '0x0' } });
+            const container = renderComponent(<BondDialog open={true} bondID={'dai'} />, state, { state: { signerAddress: '0x0', signer: jest.fn() } });
 
             expect(selectBashPriceMock).toHaveBeenCalled();
             expect(selectBondInstanceMock).toHaveBeenCalled();

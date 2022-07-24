@@ -181,16 +181,12 @@ export const calcBondDetails = createAsyncThunk(
         const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
         const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as BigNumber;
 
-        console.log('bondID', bondID, baseBondPrice.toString());
         const bondPrice = bondInstance.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
 
-        // = (reserve - bondPrice) / bondPrice
         const bondDiscount = new Decimal(reserves.toString())
             .mul(10 ** 9)
             .sub(bondPrice.toString())
             .div(bondPrice.toString());
-
-        console.log('bondID', bondID, bondDiscount.toString());
 
         const { bondQuote, maxBondPriceToken } = bondInstance.isLP()
             ? await getLPBondQuote(bondInstance, bondAmountInWei, bondCalculator, maxBondPrice)

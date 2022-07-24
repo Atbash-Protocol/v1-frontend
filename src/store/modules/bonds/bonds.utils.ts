@@ -30,8 +30,6 @@ export const getLPPurchasedBonds = async (bond: LPBond | StableBond, bondCalcula
     const reserveContract = bond.getReserveContract();
     const markdown = await bondCalculator.markdown(reserveContract.address);
 
-    console.log('markdown', markdown);
-
     try {
         let purchased = await bondCalculator.valuation(reserveContract.address, initialPurchased.toString());
         console.log('purchased', purchased);

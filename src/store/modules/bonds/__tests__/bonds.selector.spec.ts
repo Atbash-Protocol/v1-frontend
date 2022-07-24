@@ -48,12 +48,14 @@ describe('selectBondMintingMetrics', () => {
 
         expect(selectBondMintingMetrics(metrics as any)).toEqual({
             allowance: null,
+            balance: null,
             bondDiscount: '810.00 %',
             bondPrice: '$0.00',
             maxBondPrice: 30,
             purchased: '$20',
             vestingTerm: null,
             bondSoldOut: false,
+            quote: null,
         });
     });
 });

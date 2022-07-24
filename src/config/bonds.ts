@@ -40,11 +40,7 @@ const StableDAI: BondConfig = {
     addresses: {
         [Networks.RINKEBY]: {
             bondAddress: '0xE6bD71E3acB44814bfED063c75057748bfA94D14',
-            reserveAddress: '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735', // DAI
-        },
-        [Networks.RINKEBY]: {
-            bondAddress: '0xE6bD71E3acB44814bfED063c75057748bfA94D14',
-            reserveAddress: '0xC55C0aD007edaEB867e77d2906C682D99B2C3c23', // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
+            reserveAddress: '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735', // uniswapv2-"0xC35F84DBd48fcB0467ac3Ee2C4e37D848B8d3173",
         },
         [Networks.LOCAL]: {
             bondAddress: '0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1',

@@ -1,7 +1,8 @@
 import { createDraftSafeSelector } from '@reduxjs/toolkit';
 import Decimal from 'decimal.js';
 import { TFunction } from 'i18next';
-import { sum } from 'lodash';
+import { isNil, sum } from 'lodash';
+import { Duration } from 'luxon';
 import { createSelector } from 'reselect';
 
 import { formatTimer } from 'helpers/prettify-seconds';
@@ -48,14 +49,20 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
 
     bondPrice = formatUSD(Number(metrics.bondPrice) / 1e18, 2);
 
+    const balance = metrics.balance ? new Decimal(metrics.balance.toString()).div(10 ** 18).toFixed(2) : null;
+    const quote = !isNil(metrics.bondQuote) ? ` ${new Decimal(metrics.bondQuote).toFixed(2)} BASH` : null;
+    const vestingTerm = metrics.vestingTerm ? Duration.fromObject({ seconds: metrics.vestingTerm }).as('days') : null;
+
     return {
         bondPrice,
         allowance: metrics.allowance,
+        balance,
+        vestingTerm,
         maxBondPrice: metrics.maxBondPrice,
-        vestingTerm: metrics.vestingTerm,
-        bondDiscount: metrics.bondDiscount !== null ? `${metrics.bondDiscount.mul(100).toFixed(2)} %` : null,
+        bondDiscount: !isNil(metrics.bondDiscount) ? `${metrics.bondDiscount.mul(100).toFixed(2)} %` : null,
         purchased: metrics.purchased !== null ? formatUSD(metrics.purchased) : null,
         bondSoldOut: (metrics.bondDiscount?.toNumber() ?? 0) * 100 < -30,
+        quote,
     };
 };
 
