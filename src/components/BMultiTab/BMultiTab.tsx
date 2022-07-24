@@ -2,6 +2,8 @@ import { ReactNode, SyntheticEvent, useState } from 'react';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
+import { theme } from 'constants/theme';
+
 interface TabItem {
     label: string;
     component: JSX.Element;
@@ -22,7 +24,14 @@ const TabPanel = (props: TabPanelProps) => {
 
     return (
         <div role="tabpanel" hidden={value !== index} id={`bmultitab-tabpanel-${index}`} aria-labelledby={`bmultitab-tab-${index}`} {...other}>
-            <Box sx={{ p: 3, color: 'red' }}>{children}</Box>
+            <Box
+                sx={{
+                    [theme.breakpoints.up('md')]: { padding: 3 },
+                    [theme.breakpoints.down('md')]: { padding: 0 },
+                }}
+            >
+                {children}
+            </Box>
         </div>
     );
 };

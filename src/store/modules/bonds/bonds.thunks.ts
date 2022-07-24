@@ -333,8 +333,10 @@ export const depositBond = createAsyncThunk(
 
         try {
             const bondPremium = await bondInstance.getBondContract().bondPrice();
-            const premium = Math.round(bondPremium.toNumber()); // TODO: use acceptedSlippage
-            const gasEstimation = await bondContract.estimateGas.deposit(valueInWei, 8040, address);
+            const premium = Math.round(bondPremium.toNumber()); // TODO: use acceptedSlippage    const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
+            const maxPremium = Math.round(premium * (1 + 0.5));
+
+            const gasEstimation = await bondContract.estimateGas.deposit(valueInWei, maxPremium, address);
 
             bondTx = await bondContract.deposit(valueInWei, premium, address, { gasPrice, gasLimit: gasEstimation });
             dispatch(

@@ -1,93 +1,77 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
-import { Box, Modal, Paper, SvgIcon, IconButton, FormControl, OutlinedInput, InputLabel, InputAdornment } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Box, Paper, SvgIcon, IconButton, FormControl, OutlinedInput, InputAdornment, Typography, FormHelperText, FormLabel } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { ReactComponent as XIcon } from 'assets/icons/x.svg';
-// import './bondSettings.scss';
+import { theme } from 'constants/theme';
 
 interface IAdvancedSettingsProps {
-    open: boolean;
+    handleChange: (args: { recipientAddress: string; slippage: number }) => void;
     handleClose: () => void;
     slippage: number;
     recipientAddress: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onRecipientAddressChange: (e: any) => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onSlippageChange: (e: any) => void;
 }
 
-function AdvancedSettings({ open, handleClose, slippage, recipientAddress, onRecipientAddressChange, onSlippageChange }: IAdvancedSettingsProps) {
+export const AdvancedSettings = ({ slippage, recipientAddress, handleChange, handleClose }: IAdvancedSettingsProps) => {
     const { t } = useTranslation();
 
-    const [value, setValue] = useState(slippage);
+    const [slippageValue, setSlippageValue] = useState(slippage.toString());
+    const [address, setAddress] = useState(recipientAddress);
 
     useEffect(() => {
-        let timeount: any = null;
-        clearTimeout(timeount);
-
-        timeount = setTimeout(() => onSlippageChange(value), 1000);
-        return () => clearTimeout(timeount);
-    }, [value]);
+        handleChange({ recipientAddress: address, slippage: Number(slippageValue) });
+    }, [slippageValue, address]);
 
     return (
-        <Modal id="hades" open={open} onClose={handleClose} hideBackdrop>
-            <Paper className="ohm-card ohm-popover">
-                <div className="cross-wrap">
-                    <IconButton onClick={handleClose}>
-                        <SvgIcon color="primary" component={XIcon} />
-                    </IconButton>
-                </div>
+        <Paper sx={{ p: theme.spacing(2), pb: theme.spacing(4) }}>
+            <Box textAlign={'right'}>
+                <IconButton onClick={handleClose}>
+                    <SvgIcon color="primary" component={Close} />
+                </IconButton>
+            </Box>
 
-                <p className="hades-title">
-                    <>{t('bond:Settings')}</>
-                </p>
+            <Typography variant="h4">
+                <>{t('bond:Settings')}</>
+            </Typography>
 
-                <Box className="card-content">
-                    <InputLabel htmlFor="slippage">
-                        <p className="input-lable">
-                            <>{t('bond:Slippage')}</>
-                        </p>
-                    </InputLabel>
-                    <FormControl variant="outlined" color="primary" fullWidth>
-                        <OutlinedInput
-                            id="slippage"
-                            value={value}
-                            onChange={(e: any) => setValue(e.target.value)}
-                            fullWidth
-                            type="number"
-                            className="bond-input"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <p className="percent">%</p>
-                                </InputAdornment>
-                            }
-                        />
-                        <div className="help-text">
-                            <p className="text-bond-desc">
-                                <>{t('bond:SlippageHelpText')}</>
-                            </p>
-                        </div>
-                    </FormControl>
+            <Box mt={theme.spacing(4)}>
+                <FormControl variant="outlined" color="primary" fullWidth>
+                    <FormLabel component="legend">
+                        <>{t('bond:Slippage')}</>
+                    </FormLabel>
+                    <OutlinedInput
+                        value={slippageValue}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            console.log('here', e.target.value);
+                            setSlippageValue(e.target.value);
+                        }}
+                        fullWidth
+                        type="number"
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <> %</>
+                            </InputAdornment>
+                        }
+                    />
+                    <FormHelperText>
+                        <>{t('bond:SlippageHelpText')}</>
+                    </FormHelperText>
+                </FormControl>
 
-                    <InputLabel htmlFor="recipient">
-                        <p className="input-lable">
-                            <>{t('bond:RecipientAddress')}</>
-                        </p>
-                    </InputLabel>
-                    <FormControl variant="outlined" color="primary" fullWidth>
-                        <OutlinedInput className="bond-input" id="recipient" value={recipientAddress} onChange={onRecipientAddressChange} type="text" />
-                        <div className="help-text">
-                            <p className="text-bond-desc">
-                                <>{t('bond:RecipientAddressHelpText')}</>
-                            </p>
-                        </div>
-                    </FormControl>
-                </Box>
-            </Paper>
-        </Modal>
+                <FormControl variant="outlined" color="primary" fullWidth sx={{ mt: theme.spacing(4) }}>
+                    <FormLabel component="legend">
+                        <>{t('bond:RecipientAddress')}</>
+                    </FormLabel>
+                    <OutlinedInput className="bond-input" id="recipient" value={address} onChange={(e: ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)} type="text" />
+                    <FormHelperText>
+                        <>{t('bond:RecipientAddressHelpText')}</>
+                    </FormHelperText>
+                </FormControl>
+            </Box>
+        </Paper>
     );
-}
+};
 
 export default AdvancedSettings;
