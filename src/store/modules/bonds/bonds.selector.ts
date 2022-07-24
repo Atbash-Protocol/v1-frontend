@@ -66,6 +66,15 @@ export const selectBondMintingMetrics = (metrics: BondMetrics) => {
     };
 };
 
+export const selectBondRedeemMetrics = (metrics: BondMetrics) => {
+    const vestingTerm = metrics.vestingTerm ? Duration.fromObject({ seconds: metrics.vestingTerm }).as('days') : null;
+
+    return {
+        bondDiscount: !isNil(metrics.bondDiscount) ? `${metrics.bondDiscount.mul(100).toFixed(2)} %` : null,
+        vestingTerm,
+    };
+};
+
 export const selectBondPrice = (state: RootState, bondID: string) => {
     const metrics = state.bonds.bondMetrics[bondID];
 
@@ -93,9 +102,9 @@ export const selectBondQuoteResult = (
     t: TFunction,
 ) => {
     return {
-        interestDue: bondQuote.interestDue,
+        interestDue: isNil(bondQuote.interestDue) ? null : `${bondQuote.interestDue.toFixed(2)} BASH`,
         vesting: timestamp === null || bondQuote.bondMaturationBlock === null ? null : formatTimer(timestamp ?? 0, bondQuote.bondMaturationBlock ?? 0, t),
-        pendingPayout: bondQuote.pendingPayout,
+        pendingPayout: isNil(bondQuote.pendingPayout) ? null : `${bondQuote.pendingPayout.toFixed(2)} BASH`,
     };
 };
 

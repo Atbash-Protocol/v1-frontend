@@ -309,7 +309,14 @@ export const calculateUserBondDetails = createAsyncThunk(
 export const depositBond = createAsyncThunk(
     'bonds/deposit',
     async (
-        { amount, bondID, signer, signerAddress, slippage }: { amount: number; bondID: string; signer: providers.Web3Provider; signerAddress: string; slippage?: number },
+        {
+            amount,
+            bondID,
+            signer,
+            signerAddress,
+            slippage,
+            recipientAddress,
+        }: { amount: number; bondID: string; signer: providers.Web3Provider; signerAddress: string; slippage?: number; recipientAddress: string },
         { dispatch, getState },
     ) => {
         const { bonds } = getState() as RootState;
@@ -319,8 +326,7 @@ export const depositBond = createAsyncThunk(
 
         if (!bondInstance || !bondMetrics) throw new Error('Unable to get bonds');
 
-        const address = signerAddress;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const address = recipientAddress.length > 0 ? recipientAddress : signerAddress;
         const acceptedSlippage = (slippage ?? 0.5) / 100 || 0.005;
         const valueInWei = utils.parseUnits(amount.toString(), 'ether');
         const bondContract = bondInstance.getBondContract();
@@ -333,8 +339,8 @@ export const depositBond = createAsyncThunk(
 
         try {
             const bondPremium = await bondInstance.getBondContract().bondPrice();
-            const premium = Math.round(bondPremium.toNumber()); // TODO: use acceptedSlippage    const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
-            const maxPremium = Math.round(premium * (1 + 0.5));
+            const premium = Math.round(bondPremium.toNumber());
+            const maxPremium = Math.round(premium * (1 + acceptedSlippage));
 
             const gasEstimation = await bondContract.estimateGas.deposit(valueInWei, maxPremium, address);
 
@@ -381,3 +387,52 @@ export const loadBondBalancesAndAllowances = createAsyncThunk('bonds/balances-an
 
     return { allowance, balance, ID: bond.ID };
 });
+
+export const redeemBond = createAsyncThunk(
+    'bonds/redeem',
+    async (
+        { recipientAddress, signer, bondID, isAutoStake }: { recipientAddress: string; signer: providers.Web3Provider; bondID: string; isAutoStake: boolean },
+        { dispatch, getState },
+    ) => {
+        const {
+            bonds: { bondInstances },
+        } = getState() as RootState;
+
+        const bondInstance = bondInstances[bondID];
+        if (!bondInstance) throw new Error('Unable to get bondID from bondInstances');
+
+        const gasPrice = await signer.getGasPrice();
+        const signerAddress = await signer.getSigner().getAddress();
+
+        const redeemTx = await bondInstance.getBondContract().redeem(recipientAddress, isAutoStake, { gasPrice });
+
+        try {
+            dispatch(
+                addPendingTransaction({
+                    hash: redeemTx.hash,
+                    type: TransactionTypeEnum.REDEEMING,
+                }),
+            );
+
+            await redeemTx.wait();
+
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
+            dispatch(addNotification({ severity: 'info', description: messages.your_balance_update_soon }));
+
+            await dispatch(calculateUserBondDetails({ signerAddress, signer, bondID }));
+            await dispatch(loadBondBalancesAndAllowances({ address: signerAddress, bondID }));
+            dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
+        } catch (err: unknown) {
+            console.error('catching', err);
+            return metamaskErrorWrap(err, dispatch);
+        } finally {
+            if (redeemTx) {
+                if (isAutoStake) {
+                    dispatch(clearPendingTransaction(TransactionTypeEnum.REDEEMING_STAKING));
+                } else {
+                    dispatch(clearPendingTransaction(TransactionTypeEnum.REDEEMING));
+                }
+            }
+        }
+    },
+);

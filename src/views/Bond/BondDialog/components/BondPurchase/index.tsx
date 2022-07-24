@@ -8,7 +8,7 @@ import { approveBonds, depositBond } from 'store/modules/bonds/bonds.thunks';
 import { RootState } from 'store/store';
 import AmountForm from 'views/Staking/components/AmountForm';
 
-const BondPurchase = ({ bondID }: { bondID: string }) => {
+const BondPurchase = ({ bondID, slippage, recipientAddress }: { bondID: string; slippage: number; recipientAddress: string }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const { signer, signerAddress } = useSafeSigner();
@@ -17,7 +17,7 @@ const BondPurchase = ({ bondID }: { bondID: string }) => {
     const bondInstance = useSelector((state: RootState) => selectBondInstance(state, bondID));
 
     const depositBondAction = (amount: number) => {
-        dispatch(depositBond({ amount, signer, signerAddress, bondID }));
+        dispatch(depositBond({ amount, signer, signerAddress, bondID, slippage, recipientAddress }));
     };
 
     const handleApproveClick = () => {

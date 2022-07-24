@@ -5,6 +5,8 @@ export const TransactionTypeEnum = {
     BASH_APPROVAL: 'BASH_APPROVAL',
     SBASH_APPROVAL: 'SBASH_APPROVAL',
     BONDING: 'BONDING',
+    REDEEMING: 'REDEEMING',
+    REDEEMING_STAKING: 'REDEEMING_STAKING',
 } as const;
 
 export type TransactionType = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];

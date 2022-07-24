@@ -13,3 +13,11 @@ export const selectStakingPending = createSelector([selectPendingTransactions], 
 export const selectUnStakingPending = createSelector([selectPendingTransactions], transactions => {
     return transactions.some(({ type }) => type === TransactionTypeEnum.SBASH_APPROVAL || type === TransactionTypeEnum.UNSTAKE_PENDING);
 });
+
+export const selectIsRedeeming = createSelector([selectPendingTransactions], transactions => {
+    return transactions.some(({ type }) => type === TransactionTypeEnum.REDEEMING);
+});
+
+export const selectIsRedeemingAndAutoStaking = createSelector([selectPendingTransactions], transactions => {
+    return transactions.some(({ type }) => type === TransactionTypeEnum.REDEEMING_STAKING);
+});

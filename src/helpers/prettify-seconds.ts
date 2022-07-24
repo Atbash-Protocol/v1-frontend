@@ -18,7 +18,7 @@ export const formatTimer = (startDate: number, endDate: number, translator: TFun
     if (days) translations.push(translator('day', { count: days }));
 
     translations.push(translator('hour', { count: hours }));
-    translations.push(translator('min', { count: minutes }));
+    translations.push(translator('min', { count: Math.round(minutes) }));
 
     return [translator('approximativaly'), ...translations].join(' ');
 };

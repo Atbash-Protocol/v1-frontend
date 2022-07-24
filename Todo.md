@@ -4,12 +4,12 @@ Todo -
 
  
   TODO :
-  - create mint view
-   - add buttons
-    + approve form
-   - add custom slippage
-  - create redeem view
-      - claim + claim and autostake
+  - Create Wrap Page 
+  - Create Redeem Page
+  - UI : Change font 
+  - Change buttons shape and texts
+  - Remove useless code (Assets)
+
  
 
 
@@ -22,9 +22,3 @@ Use the react-modal for the connetor
 - Add a tooltip to disabled menu ("Coming soon")
 - Add memo to menu items 
 - Add transition to menu
-
-
-
-Bonus : 
-- Implement the switch network possibility
-- Custom slippage

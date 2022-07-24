@@ -16,7 +16,7 @@ import * as BondsSeletorModule from 'store/modules/bonds/bonds.selector';
 import BondDialog from '..';
 
 jest.mock('../components/Mint', () => () => <> Mint</>);
-jest.mock('../components/Redeem', () => ({ Redeem: () => <> Redeem</> }));
+jest.mock('../components/Redeem', () => () => <> Redeem</>);
 
 function renderComponent(component: JSX.Element, state: any, contextState?: any) {
     const middlewares = [thunk];

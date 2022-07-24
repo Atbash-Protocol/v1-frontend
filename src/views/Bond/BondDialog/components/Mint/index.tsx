@@ -12,7 +12,7 @@ import { RootState } from 'store/store';
 
 import BondPurchase from '../BondPurchase';
 
-const Mint = ({ bondID, metrics }: { bondID: string; metrics: BondMetrics }) => {
+const Mint = ({ bondID, metrics, recipientAddress, slippage }: { bondID: string; metrics: BondMetrics; slippage: number; recipientAddress: string }) => {
     const { t } = useTranslation();
     const { balance, quote, maxBondPrice, vestingTerm, bondDiscount } = selectBondMintingMetrics(metrics);
 
@@ -27,20 +27,20 @@ const Mint = ({ bondID, metrics }: { bondID: string; metrics: BondMetrics }) => 
 
     return (
         <Box>
-            <BondPurchase bondID={bondID} />
+            <BondPurchase bondID={bondID} slippage={slippage} recipientAddress={recipientAddress} />
             <Divider variant="fullWidth" textAlign="center" sx={{ borderColor: theme.palette.primary.light, marginBottom: theme.spacing(2) }} />
             <Box>{bondMetrics}</Box>
         </Box>
     );
 };
 
-const MintLoader = ({ bondID }: { bondID: string }) => {
+const MintLoader = ({ bondID, slippage, recipientAddress }: { bondID: string; slippage: number; recipientAddress: string }) => {
     const bondsReady = useSelector(selectBondsReady);
     const metrics = useSelector((state: RootState) => selectBondItemMetrics(state, bondID));
 
     if (!bondsReady) return <Loader />;
 
-    return <Mint bondID={bondID} metrics={metrics} />;
+    return <Mint bondID={bondID} metrics={metrics} slippage={slippage} recipientAddress={recipientAddress} />;
 };
 
 export default MintLoader;

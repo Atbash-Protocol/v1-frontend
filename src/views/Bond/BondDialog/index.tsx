@@ -20,7 +20,7 @@ import { RootState } from 'store/store';
 
 import AdvancedSettings from './components/AdvancedSettings';
 import Mint from './components/Mint';
-import { Redeem } from './components/Redeem';
+import Redeem from './components/Redeem';
 
 interface BondDialogProps {
     open: boolean;
@@ -47,7 +47,6 @@ const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
     const [recipientAddress, setRecipientAddress] = useState(signerAddress);
 
     const handleAdvancedSettingsClick = () => {
-        console.log('show');
         setShowAdvancedSettings(settings => !settings);
     };
 
@@ -62,11 +61,11 @@ const BondDialog = ({ open, bondID, bond }: BondDialogProps) => {
     const bondActions = [
         {
             label: t('mint:Mint'),
-            component: <Mint bondID={bondID} />,
+            component: <Mint bondID={bondID} slippage={slippage} recipientAddress={recipientAddress ?? ''} />,
         },
         {
             label: t('mint:Redeem'),
-            component: <Redeem bondID={bondID} />,
+            component: <Redeem bondID={bondID} recipientAddress={recipientAddress ?? ''} />,
         },
     ];
 
