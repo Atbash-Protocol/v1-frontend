@@ -10,7 +10,7 @@ import { messages } from 'constants/messages';
 import { WEB3State } from 'contexts/web3/web3.types';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
 import { createBond, getBondContractsAddresses } from 'lib/bonds/bonds.helper';
-import { addNotification, walletConnectWarning } from 'store/modules/messages/messages.slice';
+import { addNotification } from 'store/modules/messages/messages.slice';
 import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 

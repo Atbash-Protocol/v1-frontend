@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mint When the state is ready returns the Mint component 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-0"
+  >
+     Bond Purchase
+    <hr
+      class="MuiDivider-root MuiDivider-fullWidth css-fimgk4-MuiDivider-root"
+    />
+    <div
+      class="MuiBox-root css-0"
+    >
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:YourBalance
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:YouWillGet
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:MaxYouCanBuy
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:Discount
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:VestingTerm
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          common:day
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:MinimumPurchase
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          0.01 BASH
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

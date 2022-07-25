@@ -129,10 +129,6 @@ export const BondSlices = createSlice({
             state.coreMetrics.runway = payload.runway;
             state.coreMetrics.deltaMarketPriceRfv = payload.deltaMarketPriceRfv;
         });
-
-        builder.addMatcher(isActionRejected, (state, action) => {
-            console.log('Reject', state, action);
-        });
     },
 });
 

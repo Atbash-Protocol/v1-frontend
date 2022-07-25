@@ -87,6 +87,4 @@ export const MainSlice = createSlice({
     },
 });
 
-export const selectContracts = (state: MainSliceState) => state.contracts;
-
 export default MainSlice.reducer;

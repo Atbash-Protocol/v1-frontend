@@ -17,6 +17,7 @@ describe('MarketReducer', () => {
         },
         loading: true,
     };
+
     it('reduces fulfilled action', () => {
         const action = { type: loadBalancesAndAllowances.fulfilled, payload: {} };
         const state = MarketReducer(initialState, action);

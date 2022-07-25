@@ -25,16 +25,13 @@ const messagesSlice = createSlice({
             state.notifications.push(notification);
         },
         closeNotification(state, action) {
-            const notificationIdx = state.notifications.find(action.payload.id);
+            const notificationIdx = state.notifications.find(e => e.id === action.payload.id);
 
             if (notificationIdx) notificationIdx.display = false;
         },
     },
 });
 
-export const { addNotification } = messagesSlice.actions;
+export const { addNotification, closeNotification } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
-
-// actions
-export const walletConnectWarning = addNotification({ severity: 'warning', description: messages.please_connect_wallet });

@@ -6,7 +6,7 @@ import { formatNumber, formatUSDFromDecimal } from 'helpers/price-units';
 import { RootState } from 'store/store';
 
 import { selectSBASHBalance, selectWSBASHBalance } from '../account/account.selectors';
-import { selectDaiPrice, selectMarketPrice } from '../markets/markets.selectors';
+import { selectMarketPrice } from '../markets/markets.selectors';
 
 export const selectIndex = (state: RootState) => state.main.staking.index;
 
@@ -31,8 +31,8 @@ export const selectStakingRebaseAmount = createSelector([selectStakingReward, se
 });
 
 export const selectStakingBalance = createSelector(
-    [selectWSBASHBalance, selectStakingReward, selectIndex, selectStakingRebaseAmount, selectDaiPrice, selectMarketPrice, selectSBASHBalance],
-    (WSBASHBalance, stakingReward, index, stakingRebaseAmount, daiPrice, marketPrice, SBASHBalance) => {
+    [selectWSBASHBalance, selectIndex, selectStakingRebaseAmount, selectMarketPrice, selectSBASHBalance],
+    (WSBASHBalance, index, stakingRebaseAmount, marketPrice, SBASHBalance) => {
         const nextRewardValue = (stakingRebaseAmount ?? new Decimal(0)).mul(SBASHBalance);
         const wrappedTokenEquivalent = WSBASHBalance.mul(new Decimal((index ?? 0).toString()));
 
