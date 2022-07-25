@@ -143,7 +143,7 @@ export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async
 
     const { TREASURY_ADDRESS } = getAddresses(networkID);
 
-    if (!bondCalculator || Object.values(bondInstances).length === 0) return { balance: 0 };
+    if (!bondCalculator) throw new Error('Unable to get bondCalculator');
 
     const balances = await Promise.all([...Object.values(bondInstances).map(bond => bond.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS))]);
 
@@ -229,11 +229,6 @@ export const getBondTerms = createAsyncThunk('bonds/terms', async (bondID: strin
 });
 
 export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, bondID }: { signer: providers.Web3Provider; bondID: string }, { dispatch, getState }) => {
-    if (!signer) {
-        dispatch(walletConnectWarning);
-        return;
-    }
-
     const {
         bonds: { bondInstances },
     } = getState() as RootState;
@@ -258,7 +253,6 @@ export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, b
 
         dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
     } catch (err) {
-        console.error(err);
         metamaskErrorWrap(err, dispatch);
     } finally {
         if (approveTx) {
@@ -360,7 +354,6 @@ export const depositBond = createAsyncThunk(
 
             dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
         } catch (err: unknown) {
-            console.error('catching', err);
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (bondTx) {
@@ -377,7 +370,7 @@ export const loadBondBalancesAndAllowances = createAsyncThunk('bonds/balances-an
 
     const bond = bondInstances[bondID];
 
-    if (!bond) throw new Error('Bond ');
+    if (!bond) throw new Error('Bond not found');
 
     const bondContract = bond.getBondContract();
     const reserveContract = bond.getReserveContract();
@@ -423,7 +416,6 @@ export const redeemBond = createAsyncThunk(
             await dispatch(loadBondBalancesAndAllowances({ address: signerAddress, bondID }));
             dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
         } catch (err: unknown) {
-            console.error('catching', err);
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (redeemTx) {
