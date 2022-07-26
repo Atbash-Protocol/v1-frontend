@@ -1,8 +1,26 @@
-import { BigNumber, ethers } from 'ethers';
+import Decimal from 'decimal.js';
+import { BigNumber, constants, ethers } from 'ethers';
+import { DateTime } from 'luxon';
 
+import * as MetamaskErrorWrapModule from 'helpers/networks/metamask-error-wrap';
+import * as AppThunkModule from 'store/modules/app/app.thunks';
 import * as BondUtilsModule from 'store/modules/bonds/bonds.utils';
+import * as MessageSliceModule from 'store/modules/messages/messages.slice';
+import * as TransactionSliceModule from 'store/modules/transactions/transactions.slice';
+import { TransactionTypeEnum } from 'store/modules/transactions/transactions.type';
 
-import { calcBondDetails, getBondTerms, getBondMetrics, initializeBonds } from '../bonds.thunks';
+import {
+    calcBondDetails,
+    getBondTerms,
+    getBondMetrics,
+    initializeBonds,
+    getTreasuryBalance,
+    approveBonds,
+    calculateUserBondDetails,
+    depositBond,
+    redeemBond,
+    loadBondBalancesAndAllowances,
+} from '../bonds.thunks';
 
 // mock the enums since they cant be used inside jest.mock
 jest.mock('config/bonds', () => ({
@@ -90,6 +108,7 @@ describe('#initializeProviderContracts', () => {
                     bondDiscount: null,
                     bondPrice: null,
                     bondQuote: null,
+                    loading: false,
                     marketPrice: null,
                     maxBondPrice: null,
                     maxBondPriceToken: null,
@@ -174,6 +193,7 @@ describe('#getBondMetrics', () => {
 
 describe('#calcBondDetails', () => {
     const dispatch = jest.fn();
+    const networkID = 4;
 
     it('catches an error if the bond is not defined', async () => {
         const getState = jest.fn().mockReturnValue({
@@ -187,7 +207,7 @@ describe('#calcBondDetails', () => {
             markets: {},
         });
 
-        const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+        const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
         const res = await action(dispatch, getState, undefined);
 
         expect((res as any).error.message).toEqual('Unable to get bondInfos');
@@ -215,7 +235,7 @@ describe('#calcBondDetails', () => {
             markets: { markets: { dai: null } },
         });
 
-        const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+        const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
         const res = await action(dispatch, getState, undefined);
 
         expect((res as any).error.message).toEqual('State is not setup for bonds');
@@ -265,6 +285,9 @@ describe('#calcBondDetails', () => {
                                 maxPayout: jest.fn().mockReturnValue(ethers.BigNumber.from('0xff')),
                                 bondPriceInUSD: jest.fn().mockReturnValue(BigNumber.from('0xf1')),
                             }),
+                            getReserveContract: jest.fn().mockReturnValue({
+                                balanceOf: jest.fn().mockResolvedValue(BigNumber.from(10000000)),
+                            }),
                             isCustomBond: () => false,
                             isLP: () => true,
                         },
@@ -277,11 +300,11 @@ describe('#calcBondDetails', () => {
                 },
             });
 
-            const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+            const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
             const { payload } = await action(dispatch, getState, undefined);
 
             expect(payload).toEqual({
-                bondDiscount: 62240662,
+                bondDiscount: new Decimal('62240662.900414937759'),
                 bondID: 'dai',
                 bondPrice: BigNumber.from('0xf1'),
                 bondQuote: 20,
@@ -338,6 +361,9 @@ describe('#calcBondDetails', () => {
                                 maxPayout: jest.fn().mockReturnValue(ethers.BigNumber.from('0xff')),
                                 bondPriceInUSD: jest.fn().mockReturnValue(BigNumber.from('0xf1')),
                             }),
+                            getReserveContract: jest.fn().mockReturnValue({
+                                balanceOf: jest.fn().mockResolvedValue(BigNumber.from(10000000)),
+                            }),
                             isCustomBond: () => false,
                             isLP: () => false,
                         },
@@ -350,11 +376,11 @@ describe('#calcBondDetails', () => {
                 },
             });
 
-            const action = await calcBondDetails({ bondID: 'dai', value: 0 });
+            const action = await calcBondDetails({ bondID: 'dai', value: 0, networkID });
             const { payload } = await action(dispatch, getState, undefined);
 
             expect(payload).toEqual({
-                bondDiscount: 62240662,
+                bondDiscount: new Decimal('62240662.900414937759'),
                 bondID: 'dai',
                 bondPrice: BigNumber.from('0xf1'),
                 bondQuote: 20,
@@ -407,5 +433,475 @@ describe('#getBondTerms', () => {
         const { payload } = await action(dispatch, getState, undefined);
 
         expect(payload).toEqual({ terms: 'terms' });
+    });
+});
+
+describe('#getTreasuryBalance', () => {
+    it('returns a default value if no bonds exists', async () => {
+        const dispatch = jest.fn();
+        const getState = jest.fn().mockReturnValue({ bonds: { bondInstances: {} } });
+
+        const action = await getTreasuryBalance({ networkID: 1 });
+
+        const payload = await action(dispatch, getState, undefined);
+        expect((payload as any).error.message).toEqual('Unable to get bondCalculator');
+    });
+
+    it('returns the balances', async () => {
+        const dispatch = jest.fn();
+        const getState = jest.fn().mockReturnValue({
+            bonds: {
+                bondInstances: {
+                    dai: {
+                        getTreasuryBalance: jest.fn().mockResolvedValue('10000'),
+                    },
+                },
+                bondCalculator: jest.fn(),
+            },
+        });
+
+        const action = await getTreasuryBalance({ networkID: 1 });
+
+        const { payload } = await action(dispatch, getState, undefined);
+        expect(payload).toEqual({ dai: '10000' });
+    });
+});
+
+describe('#approveBonds', () => {
+    it('throws an error if bound is not found', async () => {
+        const dispatch = jest.fn();
+        const getState = jest.fn().mockReturnValue({ bonds: { bondInstances: {} } });
+
+        const action = await approveBonds({ signer: jest.fn() as any, bondID: 'dai' });
+
+        const payload = await action(dispatch, getState, undefined);
+        expect((payload as any).error.message).toEqual('Bond not found');
+    });
+
+    describe('Regarding a ready state', () => {
+        const mockAllowance = BigNumber.from('0xfffff');
+        const gasPriceMock = BigNumber.from(10);
+
+        it('creates an approve transaction', async () => {
+            const signer = {
+                getSigner: () => ({
+                    getAddress: () => '0xAddress',
+                }),
+                getGasPrice: jest.fn().mockResolvedValue(gasPriceMock),
+            } as any;
+            const reserveContract = {
+                approve: jest.fn().mockResolvedValue({
+                    wait: jest.fn().mockResolvedValue({}),
+                }),
+                allowance: jest.fn().mockResolvedValue(mockAllowance),
+            };
+
+            const getState = jest.fn().mockReturnValue({
+                bonds: {
+                    bondInstances: {
+                        dai: {
+                            getBondAddresses: jest.fn().mockReturnValue({ bondAddress: '0xAddress' }),
+                            getReserveContract: jest.fn().mockReturnValue(reserveContract),
+                        },
+                    },
+                },
+            });
+            const clearPendingTransactionSpy = jest.spyOn(TransactionSliceModule, 'clearPendingTransaction');
+            const addNotificationSpy = jest.spyOn(MessageSliceModule, 'addNotification');
+            const dispatch = jest.fn();
+
+            const action = await approveBonds({ signer, bondID: 'dai' });
+            const { payload } = await action(dispatch, getState, undefined);
+
+            expect(payload).toEqual({ allowance: mockAllowance });
+            expect(reserveContract.approve).toHaveBeenCalledWith('0xAddress', constants.MaxUint256, { gasPrice: gasPriceMock });
+            expect(addNotificationSpy).toHaveBeenCalledWith({ description: 'Your transaction was successfully sent', severity: 'success' });
+            expect(clearPendingTransactionSpy).toHaveBeenCalledWith(TransactionTypeEnum.APPROVE_CONTRACT);
+        });
+
+        describe('When the transactions returns an error', () => {
+            it('handles the error', async () => {
+                const metamaskErrorWrapSpy = jest.spyOn(MetamaskErrorWrapModule, 'metamaskErrorWrap').mockReturnThis();
+                const signer = {
+                    getSigner: () => ({
+                        getAddress: () => '0xAddress',
+                    }),
+                    getGasPrice: jest.fn().mockResolvedValue(gasPriceMock),
+                } as any;
+                const reserveContract = {
+                    approve: jest.fn().mockResolvedValue({
+                        wait: jest.fn().mockRejectedValue({}),
+                    }),
+                    allowance: jest.fn().mockResolvedValue(mockAllowance),
+                };
+
+                const getState = jest.fn().mockReturnValue({
+                    bonds: {
+                        bondInstances: {
+                            dai: {
+                                getBondAddresses: jest.fn().mockReturnValue({ bondAddress: '0xAddress' }),
+                                getReserveContract: jest.fn().mockReturnValue(reserveContract),
+                            },
+                        },
+                    },
+                });
+                const dispatch = jest.fn();
+
+                const action = await approveBonds({ signer, bondID: 'dai' });
+                const { payload } = await action(dispatch, getState, undefined);
+
+                expect(metamaskErrorWrapSpy).toHaveBeenCalled();
+            });
+        });
+    });
+});
+
+describe('#calculateUserBondDetails', () => {
+    describe('when the state is not ready', () => {
+        it('throws an error', async () => {
+            const dispatch = jest.fn();
+            const getState = jest.fn().mockReturnValue({
+                main: {
+                    blockchain: { timestamp: 100 },
+                },
+                bonds: { bondInstances: {} },
+            });
+
+            const action = await calculateUserBondDetails({ signerAddress: '0x', signer: jest.fn() as any, bondID: 'bondID' });
+
+            const payload = await action(dispatch, getState, undefined);
+            expect((payload as any).error.message).toEqual('Unable to quote');
+        });
+    });
+
+    describe('When the state is ready', () => {
+        let state = {};
+
+        const curDate = DateTime.utc();
+
+        const lastBlockTime = Math.round(curDate.toSeconds());
+        beforeEach(() => {
+            state = {
+                main: {
+                    blockchain: { timestamp: Math.round(curDate.minus({ seconds: 200 }).toSeconds()) },
+                },
+                bonds: {
+                    bondInstances: {
+                        dai: {
+                            getBondContract: jest.fn(() => ({
+                                bondInfo: jest.fn().mockResolvedValue({
+                                    payout: BigNumber.from(1000),
+                                    vesting: BigNumber.from(10),
+                                    lastTime: lastBlockTime,
+                                }),
+                                pendingPayoutFor: jest.fn().mockResolvedValue(BigNumber.from(1)),
+                            })),
+                        },
+                    },
+                },
+            };
+        });
+
+        it('quotes the bond', async () => {
+            const dispatch = jest.fn();
+            const getState = jest.fn().mockReturnValue(state);
+            const spy = jest.spyOn(AppThunkModule, 'getBlockchainData');
+
+            const action = await calculateUserBondDetails({ signerAddress: '0x', signer: jest.fn() as any, bondID: 'dai' });
+            const { payload } = await action(dispatch, getState, undefined);
+
+            expect(payload).toEqual({ bondMaturationBlock: lastBlockTime + 10, bondVesting: 210, interestDue: 0.000001, pendingPayout: 1e-9 });
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+});
+
+describe('#depositBond', () => {
+    describe('When the state is not ready', () => {
+        it.each([
+            { bondInstances: {}, bondMetrics: {} },
+            { bondInstances: { dai: {} }, bondMetrics: {} },
+            { bondInstances: {}, bondMetrics: { dai: {} } },
+        ])('throws an error if metrics or instances is not found', async ({ bondInstances, bondMetrics }) => {
+            const dispatch = jest.fn();
+            const getState = jest.fn().mockReturnValue({
+                bonds: {
+                    bondInstances,
+                    bondMetrics,
+                },
+            });
+
+            const action = await depositBond({ amount: 10, recipientAddress: '0xRecipient', signerAddress: '0x', signer: jest.fn() as any, bondID: 'dai' });
+
+            const payload = await action(dispatch, getState, undefined);
+            expect((payload as any).error.message).toEqual('Unable to get bonds');
+        });
+
+        it('throws an error if bondPrice does not exists', async () => {
+            const dispatch = jest.fn();
+            const getState = jest.fn().mockReturnValue({
+                bonds: {
+                    bondInstances: {
+                        dai: {
+                            getBondContract: jest.fn(),
+                        },
+                    },
+                    bondMetrics: { dai: {} },
+                },
+            });
+
+            const action = await depositBond({ amount: 10, recipientAddress: '0xRecipient', signerAddress: '0x', signer: jest.fn() as any, bondID: 'dai' });
+
+            const payload = await action(dispatch, getState, undefined);
+            expect((payload as any).error.message).toEqual('Unable to get bondPrice');
+        });
+    });
+
+    describe('When the state is ready', () => {
+        let state = {};
+
+        beforeEach(() => {
+            state = {
+                bonds: {
+                    bondInstances: {
+                        dai: {
+                            getBondContract: jest.fn(() => ({
+                                deposit: jest.fn().mockResolvedValue({
+                                    hash: '0xDepositHash',
+                                    wait: jest.fn().mockResolvedValue({}),
+                                }),
+                                bondPrice: jest.fn().mockResolvedValue(BigNumber.from(100)),
+                                estimateGas: { deposit: jest.fn() },
+                            })),
+                        },
+                    },
+                    bondMetrics: { dai: { bondPrice: BigNumber.from(10) } },
+                },
+            };
+        });
+
+        it('mints the bond', async () => {
+            const dispatch = jest.fn();
+            const getState = jest.fn().mockReturnValue(state);
+            const signer = {
+                getSigner: () => ({
+                    getAddress: () => '0xAddress',
+                }),
+                getGasPrice: jest.fn().mockResolvedValue(BigNumber.from(10)),
+            } as any;
+            const addPendingTransactionSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+            const messageSpy = jest.spyOn(MessageSliceModule, 'addNotification');
+            const addNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+            const clearNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+
+            const action = await depositBond({ amount: 10, recipientAddress: '0xRecipient', signerAddress: '0x', signer, bondID: 'dai' });
+            const { payload } = await action(dispatch, getState, undefined);
+
+            expect(payload).toBeUndefined();
+            expect(addPendingTransactionSpy).toHaveBeenCalledWith({ hash: '0xDepositHash', type: 'BONDING' });
+            expect(messageSpy).toHaveBeenNthCalledWith(1, {
+                description: 'Your transaction was successfully sent',
+                severity: 'success',
+            });
+            expect(messageSpy).toHaveBeenNthCalledWith(2, {
+                description: 'Your balance will update soon',
+                severity: 'info',
+            });
+            expect(addNotificationSpy).toHaveBeenCalled();
+            expect(clearNotificationSpy).toHaveBeenCalled();
+        });
+
+        describe('Regarding errors', () => {
+            it('handles mint errors correctly', async () => {
+                const dispatch = jest.fn();
+                const getState = jest.fn().mockReturnValue(
+                    (state = {
+                        bonds: {
+                            bondInstances: {
+                                dai: {
+                                    getBondContract: jest.fn(() => ({
+                                        deposit: jest.fn().mockResolvedValue({
+                                            hash: '0xDepositHash',
+                                            wait: jest.fn().mockRejectedValue({}),
+                                        }),
+                                        bondPrice: jest.fn().mockResolvedValue(BigNumber.from(100)),
+                                        estimateGas: { deposit: jest.fn() },
+                                    })),
+                                },
+                            },
+                            bondMetrics: { dai: { bondPrice: BigNumber.from(10) } },
+                        },
+                    }),
+                );
+                const signer = {
+                    getSigner: () => ({
+                        getAddress: () => '0xAddress',
+                    }),
+                    getGasPrice: jest.fn().mockResolvedValue(BigNumber.from(10)),
+                } as any;
+                const metamaskErrorWrapSpy = jest.spyOn(MetamaskErrorWrapModule, 'metamaskErrorWrap');
+                const messageSpy = jest.spyOn(MessageSliceModule, 'addNotification');
+                const addNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+                const clearNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+
+                const action = await depositBond({ amount: 10, recipientAddress: '0xRecipient', signerAddress: '0x', signer, bondID: 'dai' });
+                await action(dispatch, getState, undefined);
+
+                expect(metamaskErrorWrapSpy).toHaveBeenCalled();
+                expect(addNotificationSpy).toHaveBeenCalled();
+                expect(clearNotificationSpy).toHaveBeenCalled();
+            });
+        });
+    });
+});
+
+describe('#loadBondBalancesAndAllowances', () => {
+    it('throws an error if bond does not exists', async () => {
+        const dispatch = jest.fn();
+        const getState = jest.fn().mockReturnValue({ bonds: { bondInstances: {} } });
+
+        const action = await loadBondBalancesAndAllowances({ address: '0x', bondID: 'dai' });
+
+        const payload = await action(dispatch, getState, undefined);
+        expect((payload as any).error.message).toEqual('Bond not found');
+    });
+
+    it('returns the balances and allowances', async () => {
+        const bondContractMock = { address: '0xBondContract' };
+        const reserveContractMock = {
+            allowance: jest.fn().mockResolvedValue(BigNumber.from('10000')),
+            balanceOf: jest.fn().mockResolvedValue(BigNumber.from('10')),
+        };
+        const dispatch = jest.fn();
+        const getState = jest.fn().mockReturnValue({
+            bonds: {
+                bondInstances: {
+                    dai: {
+                        getBondContract: () => bondContractMock,
+                        getReserveContract: () => reserveContractMock,
+                    },
+                },
+            },
+        });
+
+        const action = await loadBondBalancesAndAllowances({ address: '0x', bondID: 'dai' });
+
+        const { payload } = await action(dispatch, getState, undefined);
+        expect(payload).toEqual({ ID: undefined, allowance: BigNumber.from('10000'), balance: BigNumber.from('10') });
+    });
+});
+
+describe('#Redeem', () => {
+    describe('When the state is not ready', () => {
+        it('throws an error if metrics or instances is not found', async () => {
+            const dispatch = jest.fn();
+            const getState = jest.fn().mockReturnValue({
+                bonds: {
+                    bondInstances: {},
+                },
+            });
+
+            const action = await redeemBond({ recipientAddress: '0xRecipient', isAutoStake: true, signer: jest.fn() as any, bondID: 'dai' });
+
+            const payload = await action(dispatch, getState, undefined);
+            expect((payload as any).error.message).toEqual('Unable to get bondID from bondInstances');
+        });
+    });
+
+    describe('When the state is ready', () => {
+        let state = {};
+
+        beforeEach(() => {
+            state = {
+                bonds: {
+                    bondInstances: {
+                        dai: {
+                            getBondContract: jest.fn(() => ({
+                                redeem: jest.fn().mockResolvedValue({
+                                    hash: '0xDepositHash',
+                                    wait: jest.fn().mockResolvedValue({}),
+                                }),
+                                bondPrice: jest.fn().mockResolvedValue(BigNumber.from(100)),
+                                estimateGas: { redeem: jest.fn() },
+                            })),
+                        },
+                    },
+                    bondMetrics: { dai: { bondPrice: BigNumber.from(10) } },
+                },
+            };
+        });
+
+        it('redeems the bond', async () => {
+            const dispatch = jest.fn();
+            const getState = jest.fn().mockReturnValue(state);
+            const signer = {
+                getSigner: () => ({
+                    getAddress: () => '0xAddress',
+                }),
+                getGasPrice: jest.fn().mockResolvedValue(BigNumber.from(10)),
+            } as any;
+            const addPendingTransactionSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+            const messageSpy = jest.spyOn(MessageSliceModule, 'addNotification');
+            const addNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+            const clearNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+
+            const action = await redeemBond({ isAutoStake: false, recipientAddress: '0xRecipient', signer, bondID: 'dai' });
+            const { payload } = await action(dispatch, getState, undefined);
+
+            expect(payload).toBeUndefined();
+            expect(addPendingTransactionSpy).toHaveBeenCalledWith({ hash: '0xDepositHash', type: 'REDEEMING' });
+            expect(messageSpy).toHaveBeenNthCalledWith(1, {
+                description: 'Your transaction was successfully sent',
+                severity: 'success',
+            });
+            expect(messageSpy).toHaveBeenNthCalledWith(2, {
+                description: 'Your balance will update soon',
+                severity: 'info',
+            });
+            expect(addNotificationSpy).toHaveBeenCalled();
+            expect(clearNotificationSpy).toHaveBeenCalled();
+        });
+
+        describe('Regarding errors', () => {
+            it('handles mint errors correctly', async () => {
+                const dispatch = jest.fn();
+                const getState = jest.fn().mockReturnValue(
+                    (state = {
+                        bonds: {
+                            bondInstances: {
+                                dai: {
+                                    getBondContract: jest.fn(() => ({
+                                        redeem: jest.fn().mockResolvedValue({
+                                            hash: '0xredeemHash',
+                                            wait: jest.fn().mockRejectedValue({}),
+                                        }),
+                                        bondPrice: jest.fn().mockResolvedValue(BigNumber.from(100)),
+                                        estimateGas: { redeem: jest.fn() },
+                                    })),
+                                },
+                            },
+                            bondMetrics: { dai: { bondPrice: BigNumber.from(10) } },
+                        },
+                    }),
+                );
+                const signer = {
+                    getSigner: () => ({
+                        getAddress: () => '0xAddress',
+                    }),
+                    getGasPrice: jest.fn().mockResolvedValue(BigNumber.from(10)),
+                } as any;
+                const metamaskErrorWrapSpy = jest.spyOn(MetamaskErrorWrapModule, 'metamaskErrorWrap');
+                const messageSpy = jest.spyOn(MessageSliceModule, 'addNotification');
+                const addNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+                const clearNotificationSpy = jest.spyOn(TransactionSliceModule, 'addPendingTransaction');
+
+                const action = await redeemBond({ recipientAddress: '0xRecipient', isAutoStake: true, signer, bondID: 'dai' });
+                await action(dispatch, getState, undefined);
+
+                expect(metamaskErrorWrapSpy).toHaveBeenCalled();
+                expect(addNotificationSpy).toHaveBeenCalled();
+                expect(clearNotificationSpy).toHaveBeenCalled();
+            });
+        });
     });
 });

@@ -1,6 +1,7 @@
+import Decimal from 'decimal.js';
 import { ethers } from 'ethers';
 
-import { selectAllBonds, selectBondInfos, selectBondMintingMetrics } from '../bonds.selector';
+import { selectAllActiveBondsIds, selectAllBonds, selectBondInfos, selectBondMetrics, selectBondMintingMetrics } from '../bonds.selector';
 
 describe('selectAllBonds', () => {
     it('returns the active and inactiveBonds', () => {
@@ -37,7 +38,7 @@ describe('selectBondInfos', () => {
 describe('selectBondMintingMetrics', () => {
     it('returns the formatted metrics', () => {
         const metrics = {
-            bondDiscount: 8.1,
+            bondDiscount: new Decimal(8.1),
             bondPrice: ethers.BigNumber.from(10),
             allowance: null,
             vestingTerm: null,
@@ -47,12 +48,45 @@ describe('selectBondMintingMetrics', () => {
 
         expect(selectBondMintingMetrics(metrics as any)).toEqual({
             allowance: null,
-            bondDiscount: '810 %',
+            balance: null,
+            bondDiscount: '810.00 %',
             bondPrice: '$0.00',
             maxBondPrice: 30,
             purchased: '$20',
             vestingTerm: null,
             bondSoldOut: false,
+            quote: null,
         });
+    });
+});
+
+describe('#selectAllActiveBondsIds', () => {
+    it('returns the active bonds IDs', () => {
+        const state = {
+            bonds: {
+                bondInstances: {
+                    dai: { bondOptions: { isActive: true, name: 'dai' }, ID: 'dai' },
+                    'dai-lp': { bondOptions: { isActive: true, name: 'dai-lp' }, ID: 'dai-lp' },
+                    'dai-inactive': { bondOptions: { isActive: false, name: 'dai-inactive' }, ID: 'dai-inactive' },
+                },
+            },
+        };
+
+        expect(selectAllActiveBondsIds(state as any)).toEqual(['dai', 'dai-lp']);
+    });
+});
+
+describe('#selectBondMetrics', () => {
+    it('returns the bondMetrics', () => {
+        const state = {
+            bonds: {
+                bondMetrics: {
+                    dai: { bondDiscount: new Decimal(8.1) },
+                    usdc: { bondDiscount: new Decimal(10.1) },
+                },
+            },
+        };
+
+        expect(selectBondMetrics(state as any)).toEqual([{ bondDiscount: new Decimal(8.1) }, { bondDiscount: new Decimal(10.1) }]);
     });
 });

@@ -11,6 +11,7 @@ import { selectIndex } from '../stake/stake.selectors';
 
 export const selectRawCircSupply = (state: IReduxState) => state.main.metrics.rawCircSupply;
 export const selectStakingReward = (state: IReduxState) => state.main.staking.epoch?.distribute || null;
+export const selectMetricsLoading = (state: IReduxState) => state.main.metrics.loading;
 
 export const selectStakingRebaseAmount = createSelector([selectStakingReward, selectRawCircSupply], (stakingReward, rawCircSupply) => {
     if (!rawCircSupply || !stakingReward) return null;
@@ -39,11 +40,7 @@ export const selectStakingRewards = createSelector([selectStakingRebaseAmount], 
 export const selectTVL = createSelector([selectCirculatingSupply, selectMarketPrice], (circSupply, marketPrice) => {
     if (!circSupply || !marketPrice) return null;
 
-    const TVL = new Decimal(circSupply.toString()).mul(new Decimal(marketPrice.toString()).div(Math.pow(10, 9)));
-
-    if (TVL === null) return new Decimal(0);
-
-    return TVL;
+    return new Decimal(circSupply.toString()).mul(new Decimal(marketPrice.toString()).div(Math.pow(10, 9)));
 });
 
 export const selectTotalBalance = (state: RootState): string => {

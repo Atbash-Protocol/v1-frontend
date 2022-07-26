@@ -22,20 +22,19 @@ const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown 
                     sm: 0.75,
                 },
                 color: theme.palette.primary.light,
+                [theme.breakpoints.up('xs')]: { fontSize: '.8rem' },
+                [theme.breakpoints.up('sm')]: { fontSize: '1.3rem' },
             }}
         >
             <Typography
                 variant="body1"
                 sx={{
                     width: '40%',
-                    [theme.breakpoints.up('xs')]: {
-                        fontSize: '.8rem',
-                    },
                 }}
             >
                 <>{t(metricKey)}</>
             </Typography>
-            <Typography variant="body2" sx={{ width: '60%', textAlign: 'right' }}>
+            <Typography variant="body1" sx={{ width: '60%', textAlign: 'right' }}>
                 {isNil(value) ? <Skeleton sx={{ width: '100%' }} /> : <>{value}</>}
             </Typography>
         </Box>

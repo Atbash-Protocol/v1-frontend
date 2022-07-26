@@ -13,9 +13,10 @@ import Staking from './index';
 
 jest.mock('./components/Metrics', () => () => <> Metrics </>);
 jest.mock('./components/RebaseTimer', () => () => <> RebaseTimer </>);
-jest.mock('./components/Stake', () => () => <> Stake </>);
 jest.mock('./components/UserBalance', () => () => <> UserBalance </>);
-jest.mock('./components/Stake/StakeMetrics', () => () => <> UserStakeMetrics </>);
+jest.mock('./components/StakeMetrics', () => () => <> UserStakeMetrics </>);
+jest.mock('./components/StakeAction', () => ({ StakeCard: () => <> UserStakeAction </> }));
+jest.mock('./components/UnstakeAction', () => ({ UnStakeCard: () => <> UserStakeAction </> }));
 jest.mock('components/Loader', () => () => <> Loader </>);
 
 const renderComponent = (state?: any) => {

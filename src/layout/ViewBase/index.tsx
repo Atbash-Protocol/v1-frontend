@@ -70,7 +70,7 @@ function ViewBase({ children }: IViewBaseProps) {
                     paddingLeft: {
                         xs: 0,
                         height: '100%',
-                        sm: theme.spacing(32), //TODO: Use a dynamic drawer
+                        sm: theme.spacing(40), //TODO: Use a dynamic drawer
                     },
                     maxHeight: '100vh',
                     overflowY: 'scroll',

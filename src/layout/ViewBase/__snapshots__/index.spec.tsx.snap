@@ -96,7 +96,7 @@ Object {
           </div>
         </div>
         <div
-          class="content MuiBox-root css-i3bg81"
+          class="content MuiBox-root css-4bmryx"
         >
            Child 
         </div>
@@ -149,7 +149,7 @@ Object {
         </div>
       </div>
       <div
-        class="content MuiBox-root css-i3bg81"
+        class="content MuiBox-root css-4bmryx"
       >
          Child 
       </div>

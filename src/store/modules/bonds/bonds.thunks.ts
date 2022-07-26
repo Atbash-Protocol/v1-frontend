@@ -10,7 +10,7 @@ import { messages } from 'constants/messages';
 import { WEB3State } from 'contexts/web3/web3.types';
 import { metamaskErrorWrap } from 'helpers/networks/metamask-error-wrap';
 import { createBond, getBondContractsAddresses } from 'lib/bonds/bonds.helper';
-import { addNotification, walletConnectWarning } from 'store/modules/messages/messages.slice';
+import { addNotification } from 'store/modules/messages/messages.slice';
 import { IReduxState } from 'store/slices/state.interface';
 import { RootState } from 'store/store';
 
@@ -22,7 +22,7 @@ import { getLPBondQuote, getLPPurchasedBonds, getTokenBondQuote, getTokenPurchas
 export const initializeBonds = createAsyncThunk('app/bonds', async (provider: WEB3State['provider'] | WEB3State['signer']) => {
     if (!provider) throw new Error('Bond initialization error');
 
-    const signer = provider.getSigner();
+    const signer = provider.getSigner('0xAd28CB10AC6FC37F0fA46c520962ef667756d166');
     const chainID = await signer.getChainId();
 
     // init bond calculator
@@ -59,6 +59,7 @@ export const initializeBonds = createAsyncThunk('app/bonds', async (provider: WE
                         maxBondPriceToken: null,
                         allowance: null,
                         balance: null,
+                        loading: false,
                     },
                 },
             };
@@ -142,7 +143,7 @@ export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async
 
     const { TREASURY_ADDRESS } = getAddresses(networkID);
 
-    if (!bondCalculator || Object.values(bondInstances).length === 0) return { balance: 0 };
+    if (!bondCalculator) throw new Error('Unable to get bondCalculator');
 
     const balances = await Promise.all([...Object.values(bondInstances).map(bond => bond.getTreasuryBalance(bondCalculator, TREASURY_ADDRESS))]);
 
@@ -156,62 +157,64 @@ export const getTreasuryBalance = createAsyncThunk('bonds/bonds-treasury', async
     }, {});
 });
 
-export const calcBondDetails = createAsyncThunk('bonds/calcBondDetails', async ({ bondID, value }: { bondID: string; value: number }, { getState, dispatch }) => {
-    const { bonds, main, markets } = getState() as RootState;
+export const calcBondDetails = createAsyncThunk(
+    'bonds/calcBondDetails',
+    async ({ bondID, value, networkID }: { bondID: string; value: number; networkID: number }, { getState, dispatch }) => {
+        const { bonds, main, markets } = getState() as RootState;
+        const { TREASURY_ADDRESS } = getAddresses(networkID);
 
-    const bondInstance = bonds.bondInstances[bondID];
-    const bondMetrics = bonds.bondMetrics[bondID];
+        const bondInstance = bonds.bondInstances[bondID];
+        const bondMetrics = bonds.bondMetrics[bondID];
 
-    if (!bondInstance || !bondMetrics || !bondInstance.getBondContract()) throw new Error('Unable to get bondInfos');
+        if (!bondInstance || !bondMetrics || !bondInstance.getBondContract()) throw new Error('Unable to get bondInfos');
 
-    const reserves = main.metrics.reserves;
-    const { bondCalculator } = bonds;
-    const daiPrice = markets.markets.dai;
+        const reserves = main.metrics.reserves;
+        const { bondCalculator } = bonds;
+        const daiPrice = markets.markets.dai;
 
-    if (!reserves || !daiPrice || !bondCalculator) throw new Error('State is not setup for bonds');
+        if (!reserves || !daiPrice || !bondCalculator) throw new Error('State is not setup for bonds');
 
-    const terms = await bondInstance.getBondContract().terms();
-    const maxBondPrice = await bondInstance.getBondContract().maxPayout();
-    const bondAmountInWei = utils.parseEther(value.toString());
+        const terms = await bondInstance.getBondContract().terms();
+        const maxBondPrice = await bondInstance.getBondContract().maxPayout();
+        const bondAmountInWei = utils.parseEther(value.toString());
 
-    const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
-    const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as BigNumber;
-    const bondPrice = bondInstance.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
+        const marketPrice = reserves.div(10 ** 9).toNumber() * daiPrice;
+        const baseBondPrice = (await bondInstance.getBondContract().bondPriceInUSD()) as BigNumber;
 
-    // = (reserve - bondPrice) / bondPrice
-    const bondDiscount = reserves
-        .mul(10 ** 9)
-        .sub(bondPrice)
-        .div(bondPrice)
-        .toNumber();
+        const bondPrice = bondInstance.isCustomBond() ? baseBondPrice.mul(daiPrice) : baseBondPrice;
 
-    const { bondQuote, maxBondPriceToken } = bondInstance.isLP()
-        ? await getLPBondQuote(bondInstance, bondAmountInWei, bondCalculator, maxBondPrice)
-        : await getTokenBondQuote(bondInstance, bondAmountInWei, maxBondPrice);
+        const bondDiscount = new Decimal(reserves.toString())
+            .mul(10 ** 9)
+            .sub(bondPrice.toString())
+            .div(bondPrice.toString());
 
-    if (!!value && bondQuote > maxBondPrice) {
-        dispatch(addNotification({ severity: 'error', description: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
-    }
+        const { bondQuote, maxBondPriceToken } = bondInstance.isLP()
+            ? await getLPBondQuote(bondInstance, bondAmountInWei, bondCalculator, maxBondPrice)
+            : await getTokenBondQuote(bondInstance, bondAmountInWei, maxBondPrice);
 
-    //TODO: let purchased = (await reverseContract.balanceOf(TREASURY_ADDRESS)).toNumber() as number;
-    const initialPurchased = 0;
+        if (!!value && bondQuote > maxBondPrice) {
+            dispatch(addNotification({ severity: 'error', description: messages.try_mint_more(maxBondPrice.toFixed(2).toString()) }));
+        }
 
-    const { purchased } = bondInstance.isLP()
-        ? await getLPPurchasedBonds(bondInstance, bondCalculator, initialPurchased, daiPrice)
-        : await getTokenPurchaseBonds(bondInstance, bondCalculator, initialPurchased, daiPrice);
+        const initialPurchased = await bondInstance.getReserveContract().balanceOf(TREASURY_ADDRESS);
 
-    return {
-        bondID: bondID,
-        bondDiscount,
-        bondQuote,
-        purchased,
-        vestingTerm: Number(terms.vestingTerm), // Number(terms.vestingTerm),
-        maxBondPrice: maxBondPrice / 10 ** 9,
-        bondPrice, // bondPrice / Math.pow(10, 18),
-        marketPrice,
-        maxBondPriceToken,
-    };
-});
+        const { purchased } = bondInstance.isLP()
+            ? await getLPPurchasedBonds(bondInstance, bondCalculator, initialPurchased, daiPrice)
+            : await getTokenPurchaseBonds(bondInstance, bondCalculator, initialPurchased, daiPrice);
+
+        return {
+            bondID: bondID,
+            bondDiscount,
+            bondQuote,
+            purchased,
+            vestingTerm: Number(terms.vestingTerm), // Number(terms.vestingTerm),
+            maxBondPrice: maxBondPrice / 10 ** 9,
+            bondPrice, // bondPrice / Math.pow(10, 18),
+            marketPrice,
+            maxBondPriceToken,
+        };
+    },
+);
 
 export const getBondTerms = createAsyncThunk('bonds/terms', async (bondID: string, { getState }) => {
     const {
@@ -226,11 +229,6 @@ export const getBondTerms = createAsyncThunk('bonds/terms', async (bondID: strin
 });
 
 export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, bondID }: { signer: providers.Web3Provider; bondID: string }, { dispatch, getState }) => {
-    if (!signer) {
-        dispatch(walletConnectWarning);
-        return;
-    }
-
     const {
         bonds: { bondInstances },
     } = getState() as RootState;
@@ -255,7 +253,6 @@ export const approveBonds = createAsyncThunk('bonds/approve', async ({ signer, b
 
         dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
     } catch (err) {
-        console.error(err);
         metamaskErrorWrap(err, dispatch);
     } finally {
         if (approveTx) {
@@ -306,7 +303,14 @@ export const calculateUserBondDetails = createAsyncThunk(
 export const depositBond = createAsyncThunk(
     'bonds/deposit',
     async (
-        { amount, bondID, signer, signerAddress, slippage }: { amount: number; bondID: string; signer: providers.Web3Provider; signerAddress: string; slippage?: number },
+        {
+            amount,
+            bondID,
+            signer,
+            signerAddress,
+            slippage,
+            recipientAddress,
+        }: { amount: number; bondID: string; signer: providers.Web3Provider; signerAddress: string; slippage?: number; recipientAddress: string },
         { dispatch, getState },
     ) => {
         const { bonds } = getState() as RootState;
@@ -316,8 +320,7 @@ export const depositBond = createAsyncThunk(
 
         if (!bondInstance || !bondMetrics) throw new Error('Unable to get bonds');
 
-        const address = signerAddress;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const address = recipientAddress.length > 0 ? recipientAddress : signerAddress;
         const acceptedSlippage = (slippage ?? 0.5) / 100 || 0.005;
         const valueInWei = utils.parseUnits(amount.toString(), 'ether');
         const bondContract = bondInstance.getBondContract();
@@ -330,8 +333,10 @@ export const depositBond = createAsyncThunk(
 
         try {
             const bondPremium = await bondInstance.getBondContract().bondPrice();
-            const premium = Math.round(bondPremium.toNumber()); // TODO: use acceptedSlippage
-            const gasEstimation = await bondContract.estimateGas.deposit(valueInWei, 8040, address);
+            const premium = Math.round(bondPremium.toNumber());
+            const maxPremium = Math.round(premium * (1 + acceptedSlippage));
+
+            const gasEstimation = await bondContract.estimateGas.deposit(valueInWei, maxPremium, address);
 
             bondTx = await bondContract.deposit(valueInWei, premium, address, { gasPrice, gasLimit: gasEstimation });
             dispatch(
@@ -349,7 +354,6 @@ export const depositBond = createAsyncThunk(
 
             dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
         } catch (err: unknown) {
-            console.error('catching', err);
             return metamaskErrorWrap(err, dispatch);
         } finally {
             if (bondTx) {
@@ -365,7 +369,8 @@ export const loadBondBalancesAndAllowances = createAsyncThunk('bonds/balances-an
     } = getState() as IReduxState;
 
     const bond = bondInstances[bondID];
-    if (!bond) throw new Error('Bond ');
+
+    if (!bond) throw new Error('Bond not found');
 
     const bondContract = bond.getBondContract();
     const reserveContract = bond.getReserveContract();
@@ -375,3 +380,51 @@ export const loadBondBalancesAndAllowances = createAsyncThunk('bonds/balances-an
 
     return { allowance, balance, ID: bond.ID };
 });
+
+export const redeemBond = createAsyncThunk(
+    'bonds/redeem',
+    async (
+        { recipientAddress, signer, bondID, isAutoStake }: { recipientAddress: string; signer: providers.Web3Provider; bondID: string; isAutoStake: boolean },
+        { dispatch, getState },
+    ) => {
+        const {
+            bonds: { bondInstances },
+        } = getState() as RootState;
+
+        const bondInstance = bondInstances[bondID];
+        if (!bondInstance) throw new Error('Unable to get bondID from bondInstances');
+
+        const gasPrice = await signer.getGasPrice();
+        const signerAddress = await signer.getSigner().getAddress();
+
+        const redeemTx = await bondInstance.getBondContract().redeem(recipientAddress, isAutoStake, { gasPrice });
+
+        try {
+            dispatch(
+                addPendingTransaction({
+                    hash: redeemTx.hash,
+                    type: TransactionTypeEnum.REDEEMING,
+                }),
+            );
+
+            await redeemTx.wait();
+
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
+            dispatch(addNotification({ severity: 'info', description: messages.your_balance_update_soon }));
+
+            await dispatch(calculateUserBondDetails({ signerAddress, signer, bondID }));
+            await dispatch(loadBondBalancesAndAllowances({ address: signerAddress, bondID }));
+            dispatch(addNotification({ severity: 'info', description: messages.your_balance_updated }));
+        } catch (err: unknown) {
+            return metamaskErrorWrap(err, dispatch);
+        } finally {
+            if (redeemTx) {
+                if (isAutoStake) {
+                    dispatch(clearPendingTransaction(TransactionTypeEnum.REDEEMING_STAKING));
+                } else {
+                    dispatch(clearPendingTransaction(TransactionTypeEnum.REDEEMING));
+                }
+            }
+        }
+    },
+);

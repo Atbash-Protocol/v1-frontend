@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { BCard } from 'components/BCard';
+import { BMultiTabs } from 'components/BMultiTab/BMultiTab';
 import Loading from 'components/Loader';
 import { theme } from 'constants/theme';
 import { useSafeSigner } from 'contexts/web3/web3.hooks';
@@ -15,8 +16,9 @@ import { selectStakingRewards } from 'store/modules/metrics/metrics.selectors';
 
 import StakeMetrics from './components/Metrics';
 import RebaseTimer from './components/RebaseTimer';
-import Stake from './components/Stake';
-import UserStakeMetrics from './components/Stake/StakeMetrics';
+import { StakeCard } from './components/StakeAction';
+import UserStakeMetrics from './components/StakeMetrics';
+import { UnStakeCard } from './components/UnstakeAction';
 import UserBalance from './components/UserBalance';
 
 import './staking.scss';
@@ -34,6 +36,11 @@ const Staking = () => {
         }
     }, [signerAddress, contractsLoaded]);
 
+    const tabs = [
+        { label: t('stake:Stake'), component: <StakeCard /> },
+        { label: t('stake:Unstake'), component: <UnStakeCard /> },
+    ];
+
     return (
         <>
             <BCard zoom title={t('stake:StakeTitle')}>
@@ -45,7 +52,7 @@ const Staking = () => {
                     <StakeMetrics />
                 </Box>
                 <Box sx={{ marginTop: theme.spacing(4) }}>
-                    <Stake />
+                    <BMultiTabs tabs={tabs} />;
                 </Box>
                 <Box sx={{ marginTop: theme.spacing(4) }}>
                     <UserStakeMetrics />

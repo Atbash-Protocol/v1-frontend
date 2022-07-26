@@ -1,4 +1,5 @@
-import { Contract, ethers } from 'ethers';
+import Decimal from 'decimal.js';
+import { BigNumber, Contract, ethers } from 'ethers';
 
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
@@ -26,26 +27,26 @@ export const getTokenBondQuote = async (bond: LPBond | StableBond, bondAmountInW
     return { bondQuote, maxBondPriceToken };
 };
 
-export const getLPPurchasedBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
-    const reverseContract = bond.getReserveContract();
-    const markdown = await bondCalculator.markdown(reverseContract.address);
+export const getLPPurchasedBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: BigNumber, daiPrice: number) => {
+    const reserveContract = bond.getReserveContract();
+    const markdown = await bondCalculator.markdown(reserveContract.address);
 
-    let purchased = await bondCalculator.valuation(reverseContract.address, initialPurchased);
-    purchased = (markdown / Math.pow(10, 18)) * (purchased / Math.pow(10, 9));
+    let purchased = await bondCalculator.valuation(reserveContract.address, initialPurchased.toString());
+    purchased = new Decimal(markdown.toString()).div(10 ** 18).mul(new Decimal(purchased.toString()).div(10 ** 9));
 
     if (bond.isCustomBond()) {
-        purchased = purchased * daiPrice;
+        purchased = purchased.mul(daiPrice);
     }
 
-    return { purchased };
+    return { purchased: purchased.toNumber() };
 };
 
 export const getTokenPurchaseBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
-    let purchased = initialPurchased / Math.pow(10, 18);
+    let purchased = new Decimal(initialPurchased.toString()).div(10 ** 18);
 
     if (bond.isCustomBond()) {
-        purchased = purchased * daiPrice;
+        purchased = purchased.mul(daiPrice);
     }
 
-    return { purchased };
+    return { purchased: purchased.toNumber() };
 };

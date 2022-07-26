@@ -68,99 +68,99 @@ Object {
         </h4>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:ValueOfYourBASH
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           $10.00
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:YourStakedBalance
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           10.00 SBASH
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:YourWrappedStakedBalance
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           10.00 WSBASH
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:WrappedTokenEquivalent
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           $10.00
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:NextRewardAmount
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           $25.00
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:ValueOfYourEffectiveNextRewardAmount
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           $2300.00
         </p>
       </div>
       <div
-        class="MuiBox-root css-4hl15i"
+        class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
         >
           stake:ValueOfYourWrappedStakedSB
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
         >
           $10.00
         </p>
@@ -184,99 +184,99 @@ Object {
       </h4>
     </div>
     <div
-      class="MuiBox-root css-4hl15i"
+      class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
       >
         stake:ValueOfYourBASH
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
       >
         $10.00
       </p>
     </div>
     <div
-      class="MuiBox-root css-4hl15i"
+      class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
       >
         stake:YourStakedBalance
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
       >
         10.00 SBASH
       </p>
     </div>
     <div
-      class="MuiBox-root css-4hl15i"
+      class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
       >
         stake:YourWrappedStakedBalance
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
       >
         10.00 WSBASH
       </p>
     </div>
     <div
-      class="MuiBox-root css-4hl15i"
+      class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
       >
         stake:WrappedTokenEquivalent
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
       >
         $10.00
       </p>
     </div>
     <div
-      class="MuiBox-root css-4hl15i"
+      class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
       >
         stake:NextRewardAmount
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
       >
         $25.00
       </p>
     </div>
     <div
-      class="MuiBox-root css-4hl15i"
+      class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
       >
         stake:ValueOfYourEffectiveNextRewardAmount
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
       >
         $2300.00
       </p>
     </div>
     <div
-      class="MuiBox-root css-4hl15i"
+      class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-14f0wl9-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
       >
         stake:ValueOfYourWrappedStakedSB
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body2 css-1hbi8m6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
       >
         $10.00
       </p>

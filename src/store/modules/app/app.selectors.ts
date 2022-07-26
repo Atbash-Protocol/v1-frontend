@@ -83,7 +83,7 @@ export const selectUserStakingInfos = createSelector(
             fiveDayRate: `${fiveDayRate && (fiveDayRate * 100).toFixed(4)}  %`,
             stakingRebasePercentage: `${stakingRebase.mul(100).toFixed(2)} %`,
             nextRewardValue: `${nextRewardValue.toFixed(2)} BASH`,
-            effectiveNextRewardValue: effectiveNextRewardValue ? `effectiveNextRewardValue wsBASH` : null,
+            effectiveNextRewardValue: effectiveNextRewardValue ? `${effectiveNextRewardValue} wsBASH` : null,
             wrappedTokenEquivalent: `${wrappedTokenEquivalent?.toString() || 0} sBASH`,
             optionalMetrics: WBASHBalance.gt(0),
         };

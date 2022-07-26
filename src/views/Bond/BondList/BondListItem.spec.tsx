@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import Decimal from 'decimal.js';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
@@ -48,7 +49,7 @@ describe('BondListItem', () => {
     describe('When the state is not ready', () => {
         it('returns the loader', () => {
             jest.spyOn(BondSelectorModule, 'selectBondInstance').mockReturnValue(null);
-            jest.spyOn(BondSelectorModule, 'selectBondMetrics').mockReturnValue(null);
+            jest.spyOn(BondSelectorModule, 'selectBondItemMetrics').mockReturnValue({} as any);
             const {
                 component: { container },
             } = renderComponent({ bondID: 'dai' }, {}, providerValue);
@@ -63,21 +64,6 @@ describe('BondListItem', () => {
             isLP: jest.fn(),
         } as any;
 
-        it('dispatchs the details if metrics and bond are set', () => {
-            jest.spyOn(BondSelectorModule, 'selectBondInstance').mockReturnValue(bond);
-            jest.spyOn(BondSelectorModule, 'selectBondMetrics').mockReturnValue({} as any);
-
-            const { store } = renderComponent({ bondID: 'dai', bond: { bondOptions } }, {}, providerValue);
-
-            expect(store.getActions()).toHaveLength(1);
-            expect(store.getActions()[0]).toEqual(
-                expect.objectContaining({
-                    payload: undefined,
-                    type: 'bonds/calcBondDetails/pending',
-                }),
-            );
-        });
-
         it('Offers the mint if bond is active', () => {
             jest.spyOn(BondSelectorModule, 'selectBondInstance').mockReturnValue({
                 ...bond,
@@ -86,7 +72,7 @@ describe('BondListItem', () => {
                     isActive: true,
                 },
             });
-            jest.spyOn(BondSelectorModule, 'selectBondMetrics').mockReturnValue({} as any);
+            jest.spyOn(BondSelectorModule, 'selectBondItemMetrics').mockReturnValue({ bondDiscount: new Decimal('10.20') } as any);
 
             renderComponent({ bondID: 'dai', bond: { bondOptions } }, {}, providerValue);
 
@@ -101,7 +87,7 @@ describe('BondListItem', () => {
                     isActive: false,
                 },
             });
-            jest.spyOn(BondSelectorModule, 'selectBondMetrics').mockReturnValue({} as any);
+            jest.spyOn(BondSelectorModule, 'selectBondItemMetrics').mockReturnValue({ bondDiscount: new Decimal(100.2) } as any);
 
             renderComponent({ bondID: 'dai', bond: { bondOptions } }, {}, providerValue);
 
@@ -116,7 +102,7 @@ describe('BondListItem', () => {
                     isActive: false,
                 },
             });
-            jest.spyOn(BondSelectorModule, 'selectBondMetrics').mockReturnValue({} as any);
+            jest.spyOn(BondSelectorModule, 'selectBondItemMetrics').mockReturnValue({ bondDiscount: new Decimal(100.89) } as any);
 
             const {
                 component: { container },

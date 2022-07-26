@@ -4,8 +4,9 @@ import { isNull } from 'lodash';
 import { Dispatch } from 'redux';
 
 import { DEFAULT_NETWORK } from 'constants/blockchain';
+import { messages } from 'constants/messages';
 import { useWeb3Context } from 'contexts/web3/web3.context';
-import { walletConnectWarning } from 'store/modules/messages/messages.slice';
+import { addNotification } from 'store/modules/messages/messages.slice';
 
 export const useGoodNetworkCheck = () => {
     const {
@@ -84,7 +85,7 @@ export const useSafeSigner = (dispatch?: Dispatch) => {
 
     const memoSigner = useMemo(() => {
         if (!signer || !signerAddress) {
-            if (dispatch) dispatch(walletConnectWarning);
+            if (dispatch) dispatch(addNotification({ severity: 'warning', description: messages.please_connect_wallet }));
 
             throw new Error('Missing signer or signerAddress ');
         }

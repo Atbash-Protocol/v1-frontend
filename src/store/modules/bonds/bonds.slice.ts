@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { isActionRejected } from 'store/utils/action';
-
 import {
     approveBonds,
     calcBondDetails,
@@ -73,10 +71,16 @@ export const BondSlices = createSlice({
         );
 
         builder.addCase(calcBondDetails.fulfilled, (state, { payload: { bondID, ...metrics } }) => {
-            state.bondMetrics[bondID] = {
-                ...state.bondMetrics[bondID],
-                ...metrics,
-                loading: false,
+            return {
+                ...state,
+                bondMetrics: {
+                    ...state.bondMetrics,
+                    [bondID]: {
+                        ...state.bondMetrics[bondID],
+                        ...metrics,
+                        loading: false,
+                    },
+                },
             };
         });
 
@@ -122,10 +126,6 @@ export const BondSlices = createSlice({
             state.coreMetrics.rfvTreasury = payload.rfvTreasury;
             state.coreMetrics.runway = payload.runway;
             state.coreMetrics.deltaMarketPriceRfv = payload.deltaMarketPriceRfv;
-        });
-
-        builder.addMatcher(isActionRejected, (state, action) => {
-            console.log('Reject', state, action);
         });
     },
 });
