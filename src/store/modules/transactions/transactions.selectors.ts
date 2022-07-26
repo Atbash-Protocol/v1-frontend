@@ -21,3 +21,7 @@ export const selectIsRedeeming = createSelector([selectPendingTransactions], tra
 export const selectIsRedeemingAndAutoStaking = createSelector([selectPendingTransactions], transactions => {
     return transactions.some(({ type }) => type === TransactionTypeEnum.REDEEMING_STAKING);
 });
+
+export const selectWrappingPending = createSelector([selectPendingTransactions], transactions => {
+    return transactions.some(({ type }) => type === TransactionTypeEnum.WRAPPING);
+});

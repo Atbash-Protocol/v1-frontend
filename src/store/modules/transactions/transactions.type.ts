@@ -7,6 +7,7 @@ export const TransactionTypeEnum = {
     BONDING: 'BONDING',
     REDEEMING: 'REDEEMING',
     REDEEMING_STAKING: 'REDEEMING_STAKING',
+    WRAPPING: 'WRAPPING',
 } as const;
 
 export type TransactionType = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];

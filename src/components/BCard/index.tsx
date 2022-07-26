@@ -1,8 +1,25 @@
+import React from 'react';
+
 import { Box, Typography, Zoom } from '@mui/material';
 
 import { theme } from 'constants/theme';
 
-export const BCard = ({ title, children, zoom, className }: { title: string; children: React.ReactNode; zoom: boolean; className?: string }) => {
+interface BCardProps {
+    title: string | JSX.Element;
+    children: React.ReactNode;
+    zoom: boolean;
+    className?: string;
+}
+
+export const BCard = ({ title, children, zoom, className }: BCardProps) => {
+    const renderTitle = React.isValidElement(title) ? (
+        { title }
+    ) : (
+        <Typography variant="h4" sx={{ textTransform: 'uppercase' }}>
+            {title}
+        </Typography>
+    );
+
     const card = (
         <Box
             className={className}
@@ -26,9 +43,7 @@ export const BCard = ({ title, children, zoom, className }: { title: string; chi
             }}
         >
             <Box sx={{ color: theme.palette.primary.main }}>
-                <Typography variant="h4" sx={{ textTransform: 'uppercase' }}>
-                    {title}
-                </Typography>
+                <>{renderTitle}</>
             </Box>
             {children}
         </Box>

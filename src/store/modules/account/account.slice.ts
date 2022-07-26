@@ -13,6 +13,7 @@ const initialState: AccountSlice = {
     stakingAllowance: {
         BASH: BigNumber.from(0),
         SBASH: BigNumber.from(0),
+        WSBASH: BigNumber.from(0),
     },
     loading: true,
 };
