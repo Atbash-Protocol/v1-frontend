@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { isActionRejected } from 'store/utils/action';
-
 import {
     approveBonds,
     calcBondDetails,

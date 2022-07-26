@@ -36,7 +36,7 @@ export const stakeAction = createAsyncThunk(
 
             await transaction.wait();
 
-            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send, detailledDescription: 'test' }));
+            dispatch(addNotification({ severity: 'success', description: messages.tx_successfully_send }));
         } catch (err: unknown) {
             metamaskErrorWrap(err, dispatch);
         } finally {
@@ -72,7 +72,7 @@ export const approveContract = createAsyncThunk(
             dispatch(addPendingTransaction({ type: transactionType, hash: approveTx.hash }));
             await approveTx.wait();
         } catch (err) {
-            dispatch(addNotification({ severity: 'error', description: messages.tx_successfully_send, detailledDescription: JSON.stringify(err) }));
+            metamaskErrorWrap(err, dispatch);
         } finally {
             dispatch(clearPendingTransaction(transactionType));
         }

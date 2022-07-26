@@ -17,17 +17,14 @@ export class ErrorBoundary extends React.Component<Props, State> {
     }
 
     componentDidCatch(error: Error, errorInfo: unknown) {
-        // Catch errors in any components below and re-render with error message
         this.setState({
             error: error,
             errorInfo: errorInfo,
         });
-        // You can also log error messages to an error reporting service here
     }
 
     render() {
         if (this.state.error) {
-            // Error path
             return (
                 <div>
                     <h2>Something went wrong. Please report this to admins</h2>
@@ -40,7 +37,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
                 </div>
             );
         }
-        // Normally, just render children
+
         return this.props.children;
     }
 }

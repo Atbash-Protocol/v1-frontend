@@ -40,11 +40,7 @@ export const selectStakingRewards = createSelector([selectStakingRebaseAmount], 
 export const selectTVL = createSelector([selectCirculatingSupply, selectMarketPrice], (circSupply, marketPrice) => {
     if (!circSupply || !marketPrice) return null;
 
-    const TVL = new Decimal(circSupply.toString()).mul(new Decimal(marketPrice.toString()).div(Math.pow(10, 9)));
-
-    if (TVL === null) return new Decimal(0);
-
-    return TVL;
+    return new Decimal(circSupply.toString()).mul(new Decimal(marketPrice.toString()).div(Math.pow(10, 9)));
 });
 
 export const selectTotalBalance = (state: RootState): string => {

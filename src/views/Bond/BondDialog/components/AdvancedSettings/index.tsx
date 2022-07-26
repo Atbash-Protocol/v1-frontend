@@ -44,7 +44,6 @@ export const AdvancedSettings = ({ slippage, recipientAddress, handleChange, han
                     <OutlinedInput
                         value={slippageValue}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            console.log('here', e.target.value);
                             setSlippageValue(e.target.value);
                         }}
                         fullWidth

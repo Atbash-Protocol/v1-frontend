@@ -41,8 +41,6 @@ function App(): JSX.Element {
     const bondCalcMetricsReady = useSelector(selectBondDetailsCalcReady);
     const bondMetrics = useSelector((state: RootState) => state.bonds.bondMetrics);
 
-    // // TODO: Create a subscription on signer change
-    // // TODO: Create a networkID management per provider + signer
     useLayoutEffect(() => {
         if (networkID)
             if (isSignerConnected) {
