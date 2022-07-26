@@ -1,23 +1,23 @@
+import { createSelector } from 'reselect';
+
 import { IReduxState } from 'store/slices/state.interface';
 
-import { TransactionType, TransactionTypeEnum } from './transactions.type';
-
-export const selectPendingTx = (state: IReduxState, type: TransactionType): boolean => {
-    const tx = state.transactions.find(t => t.type === type);
-
-    return !tx ? false : true;
-};
-
-export const selectBASHStakingPending = (state: IReduxState) => state.transactions.length > 0;
-
-export const selectStakingPending = ({ transactions }: IReduxState) => {
-    const pendingTx = transactions.filter(
-        tx =>
-            tx.status === 'PENDING' &&
-            [TransactionTypeEnum.BASH_APPROVAL, TransactionTypeEnum.SBASH_APPROVAL, TransactionTypeEnum.STAKING_PENDING].some(txType => txType === tx.type),
-    );
-
-    return pendingTx.length > 0;
-};
+import { TransactionTypeEnum } from './transactions.type';
 
 export const selectPendingTransactions = (state: IReduxState) => state.transactions.filter(tx => tx.status === 'PENDING');
+
+export const selectStakingPending = createSelector([selectPendingTransactions], transactions => {
+    return transactions.some(({ type }) => type === TransactionTypeEnum.BASH_APPROVAL || type === TransactionTypeEnum.STAKE_PENDING);
+});
+
+export const selectUnStakingPending = createSelector([selectPendingTransactions], transactions => {
+    return transactions.some(({ type }) => type === TransactionTypeEnum.SBASH_APPROVAL || type === TransactionTypeEnum.UNSTAKE_PENDING);
+});
+
+export const selectIsRedeeming = createSelector([selectPendingTransactions], transactions => {
+    return transactions.some(({ type }) => type === TransactionTypeEnum.REDEEMING);
+});
+
+export const selectIsRedeemingAndAutoStaking = createSelector([selectPendingTransactions], transactions => {
+    return transactions.some(({ type }) => type === TransactionTypeEnum.REDEEMING_STAKING);
+});

@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BondMetrics renders the metrics 1`] = `
+<div>
+  <div
+    class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-grid-xs-12 css-spompt-MuiGrid-root"
+  >
+    <div
+      class="MuiBox-root css-1z137pa"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+      >
+        bond:YourBalance
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+      >
+        20 BASH
+      </p>
+    </div>
+    <div
+      class="MuiBox-root css-1z137pa"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+      >
+        bond:YouWillGet
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+      >
+        $2000
+      </p>
+    </div>
+    <div
+      class="MuiBox-root css-1z137pa"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+      >
+        bond:MaxYouCanBuy
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+      >
+        $10.00
+      </p>
+    </div>
+    <div
+      class="MuiBox-root css-1z137pa"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+      >
+        bond:Discount
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+      >
+        50%
+      </p>
+    </div>
+    <div
+      class="MuiBox-root css-1z137pa"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+      >
+        bond:VestingTerm
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+      >
+        common:day
+      </p>
+    </div>
+    <div
+      class="MuiBox-root css-1z137pa"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+      >
+        bond:MinimumPurchase
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+      >
+        0.01 BASH
+      </p>
+    </div>
+  </div>
+</div>
+`;

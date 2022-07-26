@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Redeem When the state is ready returns the Redeem component 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-0"
+  >
+    <div
+      class="MuiBox-root css-1q2toq6"
+    >
+      <div
+        class="MuiBox-root css-1blr7m7"
+      >
+        <button
+          class="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root  css-1lxq5oa-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          bond:Claim
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div
+        class="MuiBox-root css-1blr7m7"
+      >
+        <button
+          class="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root  css-1lxq5oa-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          bond:ClaimAutostake
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+    <hr
+      class="MuiDivider-root MuiDivider-fullWidth css-fimgk4-MuiDivider-root"
+    />
+    <div
+      class="MuiBox-root css-0"
+    >
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:PendingRewards
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          0.00 BASH
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:PendingPayout
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:TimeFullyVested
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          ROI
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+          />
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-1z137pa"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        >
+          bond:VestingTerm
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        >
+          common:day
+        </p>
+      </div>
+    </div>
+  </div>
+  )
+</div>
+`;

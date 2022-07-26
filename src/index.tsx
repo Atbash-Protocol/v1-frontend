@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { BSnackBar } from 'components/Messages/snackbar';
 import { theme } from 'constants/theme';
 import { Web3ContextProvider } from 'contexts/web3/web3.context';
+import { ErrorBoundary } from 'Root/Error';
 
 import Root from './Root';
 import store from './store/store';
@@ -30,7 +31,9 @@ ReactDOM.render(
                             return <BSnackBar severity="info" description="test" />;
                         }}
                     >
-                        <Root />
+                        <ErrorBoundary>
+                            <Root />
+                        </ErrorBoundary>
                     </SnackbarProvider>
                 </Provider>
             </Web3ContextProvider>

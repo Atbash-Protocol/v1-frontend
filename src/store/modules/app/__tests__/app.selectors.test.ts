@@ -1,7 +1,22 @@
+import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 import { DateTime } from 'luxon';
 
-import { selectCirculatingSupply, selectFormattedReservePrice, selectReserve, useBlockchainInfos, useContractLoaded, useNextRebase } from '../app.selectors';
+import {
+    selectAppLoading,
+    selectBlockchainLoading,
+    selectCirculatingSupply,
+    selectContractsLoading,
+    selectFormattedReservePrice,
+    selectMetricsLoading,
+    selectReserve,
+    selectReserveLoading,
+    selectStakingLoading,
+    selectUserStakingInfos,
+    useBlockchainInfos,
+    useContractLoaded,
+    useNextRebase,
+} from '../app.selectors';
 
 describe('#selectFormattedReservePrice', () => {
     it.each([
@@ -64,5 +79,105 @@ describe('#selectCirculatingSupply', () => {
         const state = { main: { metrics: { circSupply } } };
 
         expect(selectCirculatingSupply(state as any)).toEqual(circSupply);
+    });
+});
+
+describe('#selectReserve', () => {
+    it('returns 0 if reserve is undefined', () => {
+        const state = { main: { metrics: { reserves: null } } };
+
+        expect(selectReserve(state as any)).toEqual(new Decimal(0));
+    });
+
+    it('returns the reservies', () => {
+        const state = { main: { metrics: { reserves: BigNumber.from(10) } } };
+
+        expect(selectReserve(state as any)).toEqual(new Decimal(10));
+    });
+});
+
+describe('#seleectReserveLoading', () => {
+    it('returns the reserve loading', () => {
+        const state = { main: { metrics: { reserves: null } } };
+
+        expect(selectReserveLoading(state as any)).toEqual(true);
+    });
+});
+
+describe('#selectBlockchainLoading', () => {
+    it('returns the blockchain loading flag', () => {
+        const state = { main: { blockchain: { loading: true } } };
+
+        expect(selectBlockchainLoading(state as any)).toEqual(true);
+    });
+});
+
+describe('#selectMetricsLoading', () => {
+    it('returns the metrics loading flag', () => {
+        const state = { main: { metrics: { loading: true } } };
+
+        expect(selectMetricsLoading(state as any)).toEqual(true);
+    });
+});
+
+describe('#selectStakingLoading', () => {
+    it('returns the blockchain loading flag', () => {
+        const state = { main: { staking: { loading: true } } };
+
+        expect(selectStakingLoading(state as any)).toEqual(true);
+    });
+});
+
+describe('#selectContractsLoading', () => {
+    it('returns the blockchain loading flag', () => {
+        const state = { main: { contracts: [{ dai: null }] } };
+
+        expect(selectContractsLoading(state as any)).toEqual(false);
+    });
+});
+
+describe('#selectAppLoading', () => {
+    it('returns the loading app state', () => {
+        const state = {
+            main: {
+                staking: { loading: false },
+                metrics: { reserves: BigNumber.from(10), loading: false },
+                blockchain: { loading: false },
+                contracts: [{ dai: {} }],
+            },
+        };
+
+        expect(selectAppLoading(state as any)).toBeFalsy();
+    });
+});
+
+describe('#selectUserStakingInfos', () => {
+    it('returns the staking infos', () => {
+        const state = {
+            main: {
+                metrics: {
+                    circSupply: 1_0000,
+                },
+                staking: {
+                    epoch: { distribute: BigNumber.from(12 * 10 ** 9) },
+                    index: BigNumber.from(100000000000),
+                },
+            },
+            account: {
+                balances: {
+                    WSBASH: BigNumber.from(150000000000),
+                    SBASH: BigNumber.from(500000000000),
+                },
+            },
+        };
+
+        expect(selectUserStakingInfos(state as any)).toEqual({
+            effectiveNextRewardValue: '18000000000.6 wsBASH',
+            fiveDayRate: '1.8152  %',
+            nextRewardValue: '0.60 BASH',
+            optionalMetrics: true,
+            stakingRebasePercentage: '0.12 %',
+            wrappedTokenEquivalent: '15000000000000 sBASH',
+        });
     });
 });

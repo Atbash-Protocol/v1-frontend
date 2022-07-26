@@ -44,5 +44,6 @@
     "FullyVested": "Fully Vested",
     "ApprovingBond": "Approving {{bond}}",
     "BondingBond": "Bonding {{bond}}",
-    "RedeemingBond": "Redeeming {{bond}}"
+    "RedeemingBond": "Redeeming {{bond}}",
+    "MintPrice": "Mint Price"
 }

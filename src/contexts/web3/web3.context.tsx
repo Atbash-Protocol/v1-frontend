@@ -54,6 +54,7 @@ export const Web3ContextProvider = ({ children }: { children: JSX.Element }) => 
     const memoDisconnect = useCallback(
         async (currentSigner: WEB3State['signer']) => {
             if (currentSigner && web3Modal) await resetWeb3Signer(dispatch, web3Modal);
+            window.location.reload();
         },
         [web3Modal],
     );

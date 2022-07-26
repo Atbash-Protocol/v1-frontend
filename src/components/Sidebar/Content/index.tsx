@@ -106,7 +106,30 @@ function NavContent() {
 
     const bondItems = bondInstances
         .filter(bond => bond.bondOptions.isActive)
-        .map((bond, i) => <ListItemLink key={`mint-bond-${bond.ID}`} to={`/bond/${bond.ID}`} primary={bond.bondOptions.displayName} extra={<>{bonds[i].bondDiscount} %</>} />);
+        .map(({ ID, bondOptions: { displayName } }, index) => {
+            const bondDiscount = bonds[index].bondDiscount;
+
+            const discount = bondDiscount ? bondDiscount.mul(100).toNumber() : 0;
+
+            return {
+                ID,
+                displayName,
+                discount,
+            };
+        })
+        .sort((bond1, bond2) => (bond1.discount < bond2.discount ? 1 : -1))
+        .map(({ ID, displayName, discount }) => (
+            <ListItemLink
+                key={`mint-bond-${ID}`}
+                to={`/bond/${ID}`}
+                primary={displayName}
+                extra={
+                    <Typography paddingLeft={theme.spacing(2)} variant="body2">
+                        {discount.toFixed(2)} %
+                    </Typography>
+                }
+            />
+        ));
 
     return (
         <Box
@@ -166,7 +189,12 @@ function NavContent() {
                     >
                         {menuItems}
                         <Divider />
-                        {bondItems}
+                        <Box pt={theme.spacing(2)}>
+                            <Typography variant="body2"> {t('common:MintingDiscounts')}</Typography>
+
+                            {bondItems}
+                        </Box>
+
                         <Divider />
                         <ListItemLink to={getBuyLink(BASH_ADDRESS, DAI_ADDRESS)} primary={t('Buy')} renderComponent={Link} icon={<StorefrontIcon />} />
                         {comingSoonItems}

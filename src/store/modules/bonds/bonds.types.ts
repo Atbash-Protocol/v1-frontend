@@ -1,11 +1,13 @@
+import Decimal from 'decimal.js';
 import { Contract, ethers } from 'ethers';
 
 import { LPBond } from 'lib/bonds/bond/lp-bond';
 import { StableBond } from 'lib/bonds/bond/stable-bond';
 
+export type Bond = LPBond | StableBond;
 export interface BondMetrics {
     treasuryBalance: number | null;
-    bondDiscount: number | null;
+    bondDiscount: Decimal | null;
     bondQuote: number | null;
     purchased: number | null;
     vestingTerm: number | null;
@@ -30,7 +32,7 @@ export interface BondTerms {
 }
 
 export interface BondItem {
-    bondInstance: LPBond | StableBond;
+    bondInstance: Bond;
     metrics: BondMetrics;
     // terms: BondTerms;
 }
@@ -43,7 +45,7 @@ export interface BondQuote {
 
 export interface BondSlice {
     bonds: Record<string, BondItem>;
-    bondInstances: Record<string, LPBond | StableBond>;
+    bondInstances: Record<string, Bond>;
     bondMetrics: Record<string, BondMetrics>;
     bondCalculator: Contract | null;
     treasuryBalance: number | null;

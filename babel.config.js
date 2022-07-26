@@ -1,11 +1,9 @@
-/* eslint-disable */
-
 module.exports = api => {
-    const validEnv = ["development", "test", "production"];
+    const validEnv = ['development', 'test', 'production'];
     const currentEnv = api.env();
-    const isDevelopmentEnv = api.env("development");
-    const isProductionEnv = api.env("production");
-    const isTestEnv = api.env("test");
+    const isDevelopmentEnv = api.env('development');
+    const isProductionEnv = api.env('production');
+    const isTestEnv = api.env('test');
 
     if (!validEnv.includes(currentEnv)) {
         throw new Error(
@@ -18,54 +16,53 @@ module.exports = api => {
     return {
         presets: [
             isTestEnv && [
-                "@babel/preset-env",
+                '@babel/preset-env',
                 {
                     targets: {
-                        node: "current",
+                        node: 'current',
                     },
-                    modules: "commonjs",
+                    modules: 'commonjs',
                 },
             ],
-            isTestEnv && ["@babel/preset-typescript"],
+            isTestEnv && ['@babel/preset-typescript'],
             (isProductionEnv || isDevelopmentEnv) && [
-                "@babel/preset-env",
+                '@babel/preset-env',
                 {
                     forceAllTransforms: true,
-                    useBuiltIns: "entry",
+                    useBuiltIns: 'entry',
                     corejs: 3,
                     modules: false,
-                    exclude: ["transform-typeof-symbol"],
+                    exclude: ['transform-typeof-symbol'],
                 },
             ],
             [
-                "@babel/preset-react",
+                '@babel/preset-react',
                 {
                     development: isDevelopmentEnv || isTestEnv,
-                    useBuiltIns: true,
-                    absoluteRuntime: false
+                    absoluteRuntime: false,
                 },
             ],
         ].filter(Boolean),
         plugins: [
-            "lodash",
-            "babel-plugin-macros",
-            "@babel/plugin-syntax-dynamic-import",
-            isTestEnv && "babel-plugin-dynamic-import-node",
-            "@babel/plugin-transform-destructuring",
+            'lodash',
+            'babel-plugin-macros',
+            '@babel/plugin-syntax-dynamic-import',
+            isTestEnv && 'babel-plugin-dynamic-import-node',
+            '@babel/plugin-transform-destructuring',
             [
-                "@babel/plugin-proposal-class-properties",
+                '@babel/plugin-proposal-class-properties',
                 {
                     loose: true,
                 },
             ],
             [
-                "@babel/plugin-proposal-object-rest-spread",
+                '@babel/plugin-proposal-object-rest-spread',
                 {
                     useBuiltIns: true,
                 },
             ],
             [
-                "@babel/plugin-transform-runtime",
+                '@babel/plugin-transform-runtime',
                 {
                     helpers: false,
                     regenerator: true,
@@ -73,47 +70,49 @@ module.exports = api => {
                 },
             ],
             [
-                "@babel/plugin-transform-regenerator",
+                '@babel/plugin-transform-regenerator',
                 {
                     async: false,
                 },
             ],
             [
-                "transform-imports",
+                'transform-imports',
                 {
-                    "@fortawesome/pro-light-svg-icons": {
-                        transform: "@fortawesome/pro-light-svg-icons/${member}",
+                    '@fortawesome/pro-light-svg-icons': {
+                        transform: '@fortawesome/pro-light-svg-icons/${member}',
                         skipDefaultConversion: true,
                         preventFullImport: true,
                     },
-                    "@fortawesome/free-solid-svg-icons": {
-                        transform: "@fortawesome/free-solid-svg-icons/${member}",
+                    '@fortawesome/free-solid-svg-icons': {
+                        transform: '@fortawesome/free-solid-svg-icons/${member}',
                         skipDefaultConversion: true,
                         preventFullImport: true,
                     },
                     lodash: {
-                        transform: "lodash/${member}",
+                        transform: 'lodash/${member}',
                         preventFullImport: true,
                     },
                 },
             ],
             isProductionEnv && [
-                "babel-plugin-transform-react-remove-prop-types",
+                'babel-plugin-transform-react-remove-prop-types',
                 {
                     removeImport: true,
                 },
             ],
-            ["module-resolver",
-            {
-                alias: {
-                    "components": "./src/components",
-                    "constants": "./src/constants",
-                    "helpers": "./src/helpers",
-                    "hooks": "./src/hooks",
-                    "layouts": "./src/layouts",
-                    "store": "./src/store",
+            [
+                'module-resolver',
+                {
+                    alias: {
+                        components: './src/components',
+                        constants: './src/constants',
+                        helpers: './src/helpers',
+                        hooks: './src/hooks',
+                        layouts: './src/layouts',
+                        store: './src/store',
+                    },
                 },
-            }],
+            ],
         ].filter(Boolean),
     };
 };

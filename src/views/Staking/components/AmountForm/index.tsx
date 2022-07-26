@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { theme } from 'constants/theme';
 import { addNotification } from 'store/modules/messages/messages.slice';
-import { selectPendingTx } from 'store/modules/transactions/transactions.selectors';
+import { selectPendingTransactions } from 'store/modules/transactions/transactions.selectors';
 import { TransactionType } from 'store/modules/transactions/transactions.type';
-import { IReduxState } from 'store/slices/state.interface';
 
 interface AmountFormProps {
     initialValue: number;
@@ -30,7 +29,7 @@ const AmountForm = (props: AmountFormProps) => {
     const { initialValue, maxValue, transactionType, approvesNeeded, onApprove, onAction, approveLabel, actionLabel, isLoading } = props;
 
     const [value, setValue] = useState<string>('');
-    const selectPendingTransaction = useSelector<IReduxState, boolean>(state => selectPendingTx(state, transactionType));
+    const pendingTransactions = useSelector(selectPendingTransactions);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -45,7 +44,7 @@ const AmountForm = (props: AmountFormProps) => {
         (e: MouseEvent) => {
             e.preventDefault();
 
-            if (selectPendingTransaction) return;
+            if (pendingTransactions.length > 0) return;
 
             if (approvesNeeded) {
                 return onApprove(transactionType);
@@ -100,7 +99,23 @@ const AmountForm = (props: AmountFormProps) => {
                 >
                     {isLoading && <CircularProgress color="secondary" />}
 
-                    {!isLoading && <Typography variant="body1"> {approvesNeeded ? approveLabel : actionLabel}</Typography>}
+                    {!isLoading && (
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                [theme.breakpoints.down('sm')]: {
+                                    maxWidth: '9ch',
+                                    padding: 0,
+                                    overflow: 'hidden',
+                                    fontSize: '.5rem',
+                                    whiteSpace: 'nowrap',
+                                },
+                            }}
+                        >
+                            {' '}
+                            {approvesNeeded ? approveLabel : actionLabel}
+                        </Typography>
+                    )}
                 </Button>
             </Grid>
         </Grid>
