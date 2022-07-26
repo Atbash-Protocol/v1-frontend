@@ -72,6 +72,7 @@ function App(): JSX.Element {
         if (signerAddress && contractsLoaded && networkID && contractsLoaded && !coreMetricsLoading && activeBondsIds.length > 0 && !bondCalcMetricsReady) {
             batch(() => {
                 for (const bondID of activeBondsIds) {
+                    console.log('bo', bondID);
                     if (bondMetrics[bondID].loading === false) {
                         dispatch(calcBondDetails({ bondID, value: 0, networkID }));
                     }
@@ -79,6 +80,16 @@ function App(): JSX.Element {
             });
         }
     }, [signerAddress, contractsLoaded, networkID, activeBondsIds, contractsLoaded, coreMetricsLoading]);
+
+    useEffect(() => {
+        if (provider && !signer && contractsLoaded && networkID && contractsLoaded && !coreMetricsLoading && activeBondsIds.length > 0 && !bondCalcMetricsReady) {
+            batch(() => {
+                for (const bondID of activeBondsIds) {
+                    dispatch(calcBondDetails({ bondID, value: 0, networkID }));
+                }
+            });
+        }
+    });
 
     if (errorEncountered) return <CritialError />;
 

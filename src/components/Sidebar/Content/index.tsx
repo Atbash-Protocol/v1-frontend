@@ -124,7 +124,7 @@ function NavContent() {
                 to={`/bond/${ID}`}
                 primary={displayName}
                 extra={
-                    <Typography paddingRight={theme.spacing(1)} variant="body2">
+                    <Typography paddingLeft={theme.spacing(2)} variant="body2">
                         {discount.toFixed(2)} %
                     </Typography>
                 }

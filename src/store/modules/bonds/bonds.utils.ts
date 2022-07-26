@@ -42,7 +42,7 @@ export const getLPPurchasedBonds = async (bond: LPBond | StableBond, bondCalcula
 };
 
 export const getTokenPurchaseBonds = async (bond: LPBond | StableBond, bondCalculator: ethers.Contract, initialPurchased: number, daiPrice: number) => {
-    let purchased = new Decimal(initialPurchased).div(10 ** 18);
+    let purchased = new Decimal(initialPurchased.toString()).div(10 ** 18);
 
     if (bond.isCustomBond()) {
         purchased = purchased.mul(daiPrice);
