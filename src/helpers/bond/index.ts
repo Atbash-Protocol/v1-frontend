@@ -6,6 +6,7 @@ import ETHIcon from "../../assets/tokens/ETH.svg";
 import AvaxIcon from "../../assets/tokens/floof.png";
 import BASHUSDCison from "../../assets/tokens/BASH-USDC.png";
 import bashUSDTIcon from "../../assets/tokens/BASH-USDT.png";
+import BashIcon from "../../assets/tokens/bash.png";
 import DAIIcon from "../../assets/tokens/DAI.e.png";
 import MimSdogIcon from "../../assets/tokens/SDOG-MIM.svg";
 import avaxUsdceIcon from "../../assets/tokens/AVAX-USDCe.png";
@@ -18,9 +19,9 @@ import { BashDaiLpAddress, BashDaiBondAddress, DaiAddress, DaiBondAddress, BashA
 
 export const dai = new StableBond({
     name: "DAI",
-    displayName: "DAI",
+    displayName: "BASH",
     bondToken: "DAI",
-    bondIconSvg: DAIIcon,
+    bondIconSvg: BashIcon,
     bondContractABI: StableBondContract,
     reserveContractAbi: StableReserveContract,
     // network addresses will come from imported deployments
