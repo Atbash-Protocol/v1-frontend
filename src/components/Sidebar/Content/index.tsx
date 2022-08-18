@@ -6,6 +6,7 @@ import BuyIcon from 'assets/icons/buy.svg';
 import BorrowIcon from 'assets/icons/House.svg';
 import Forecast from 'assets/icons/chart.svg';
 import GovIcon from 'assets/icons/governance.svg';
+import WrapIcon from 'assets/icons/borrow.svg';
 
 import AtbashICON from 'assets/icons/bash.svg';
 import DashboardIcon from 'assets/icons/dashboard.svg';
@@ -104,7 +105,7 @@ function NavContent() {
 
                     <Link component={NavLink} id="wrap-nav" to="/wrap" className="button-dapp-menu">
                         <div className="dapp-menu-item">
-                            <img alt="" src={BorrowIcon} />
+                            <img alt="" src={WrapIcon} />
 
                             <p>{t('Wrap')}</p>
                         </div>
