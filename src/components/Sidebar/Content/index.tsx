@@ -154,7 +154,7 @@ function NavContent() {
                         </div>
                     </Link>
 
-                    <Link href={`https://app.uniswap.org/#/swap?inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}${chainArgument}`} target="_blank">
+                    <Link href={`https://docs.google.com/forms/d/13rPQU8VQBCLzY3rtDtinv5pYoS3wqIWcJHQtpc0Me78/`} target="_blank">
                         <div className="button-dapp-menu">
                             <div className="dapp-menu-item">
                                 <img alt="" src={BorrowIcon} />
