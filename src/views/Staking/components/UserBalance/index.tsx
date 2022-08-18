@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -11,6 +11,8 @@ import { selectStakingBalance } from 'store/modules/stake/stake.selectors';
 
 const UserBalance = () => {
     const { t } = useTranslation();
+
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const totalBalance = useSelector(selectTotalBalance);
     const stakingBalanceMetrics = useSelector(selectStakingBalance);
@@ -32,7 +34,7 @@ const UserBalance = () => {
     return (
         <>
             <Box sx={{ display: 'inline-flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', color: theme.palette.primary.light }}>
-                <Typography variant="h4">
+                <Typography variant={isMobile ? 'h5' : 'h4'}>
                     <>{t('YourBalance')}</>
                 </Typography>
                 <Typography variant="h4">
