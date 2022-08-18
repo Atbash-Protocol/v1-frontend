@@ -1,16 +1,16 @@
-import { useSelector } from "react-redux";
-import { Zoom } from "@material-ui/core";
-import { formatUSD, formatNumber } from "helpers/price-units";
-import { IReduxState } from "store/slices/state.interface";
-import { IAppSlice } from "store/slices/app-slice";
+import { useSelector } from 'react-redux';
+import { Zoom } from '@material-ui/core';
+import { formatUSD, formatNumber } from 'helpers/price-units';
+import { IReduxState } from 'store/slices/state.interface';
+import { IAppSlice } from 'store/slices/app-slice';
 
-import { useTranslation } from "react-i18next";
-import Grid from "@mui/material/Grid";
-import { Box } from "@mui/material";
-import { theme } from "constants/theme";
-import { Metric } from "./components/Metric";
+import { useTranslation } from 'react-i18next';
+import Grid from '@mui/material/Grid';
+import { Box } from '@mui/material';
+import { theme } from 'constants/theme';
+import { Metric } from './components/Metric';
 
-import "./dashboard.scss";
+import './dashboard.scss';
 
 function Dashboard() {
     const { t } = useTranslation();
@@ -18,19 +18,19 @@ function Dashboard() {
     const { loading: isAppLoading, ...app } = useSelector<IReduxState, IAppSlice>(state => state.app);
 
     const formattedAPY = formatNumber(app.stakingAPY * 100, 1);
-    const trimmedStakingAPY = formattedAPY.length > 16 ? "> 1,000,000" : formattedAPY;
+    const trimmedStakingAPY = formattedAPY.length > 16 ? '> 1,000,000' : formattedAPY;
 
     const DashboardItems = [
-        { name: "RiskFreeValue", value: formatUSD(app.rfv) },
-        { name: "RiskFreeValuewsBASH", value: formatUSD(app.rfv * Number(app.currentIndex)) },
-        { name: "BashPrice", value: formatNumber(app.marketPrice, 2) },
-        { name: "wsBASHPrice", value: formatNumber(app.marketPrice * Number(app.currentIndex), 2) },
-        { name: "MarketCap", value: app.marketCap },
-        { name: "TVL", value: app.stakingTVL },
-        { name: "APY", value: `${trimmedStakingAPY} %` },
-        { name: "CurrentIndex", value: `${formatNumber(Number(app.currentIndex), 2)} BASH` },
-        { name: "TreasuryBalance", value: formatUSD(app.treasuryBalance, 0) },
-        { name: "Runway", value: `${formatNumber(Number(app.runway), 1)} Days` },
+        { name: 'RiskFreeValue', value: formatUSD(app.rfv) },
+        { name: 'RiskFreeValuewsBASH', value: formatUSD(app.rfv * Number(app.currentIndex)) },
+        { name: 'BashPrice', value: formatNumber(app.marketPrice, 2) },
+        { name: 'wsBASHPrice', value: formatNumber(app.marketPrice * Number(app.currentIndex), 2) },
+        { name: 'MarketCap', value: app.marketCap },
+        { name: 'TVL', value: app.stakingTVL },
+        { name: 'APY', value: `${trimmedStakingAPY} %` },
+        { name: 'CurrentIndex', value: `${formatNumber(Number(app.currentIndex), 2)} BASH` },
+        { name: 'TreasuryBalance', value: formatUSD(app.treasuryBalance, 0) },
+        { name: 'Runway', value: `${formatNumber(Number(app.runway), 1)} Days` },
     ];
 
     return (
@@ -43,12 +43,12 @@ function Dashboard() {
                                 className="Dashboard__box__item"
                                 sx={{
                                     backgroundColor: theme.palette.cardBackground.main,
-                                    backdropFilter: "blur(100px)",
-                                    borderRadius: ".5rem",
+                                    backdropFilter: 'blur(100px)',
+                                    borderRadius: '.5rem',
                                     color: theme.palette.secondary.main,
                                     px: theme.spacing(2),
                                     py: theme.spacing(4),
-                                    textAlign: "center",
+                                    textAlign: 'center',
                                 }}
                             >
                                 <Metric name={t(metric.name)} value={metric.value} loading={isAppLoading} />

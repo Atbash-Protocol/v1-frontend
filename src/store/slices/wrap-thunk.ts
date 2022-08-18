@@ -1,18 +1,18 @@
-import { ethers } from "ethers";
-import { getAddressesAsync } from "../../constants";
-import { WrappingContract, BashTokenContract, SBashTokenContract } from "../../abi";
-import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAccountSuccess, getBalances } from "./account-slice";
-import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Networks } from "../../constants/blockchain";
-import { warning, success, info, error } from "./messages-slice";
-import { messages } from "../../constants/messages";
-import { getGasPrice } from "../../helpers/get-gas-price";
-import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
-import { sleep } from "../../helpers";
+import { ethers } from 'ethers';
+import { getAddressesAsync } from '../../constants';
+import { WrappingContract, BashTokenContract, SBashTokenContract } from '../../abi';
+import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from './pending-txns-slice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchAccountSuccess, getBalances } from './account-slice';
+import { JsonRpcProvider, StaticJsonRpcProvider } from '@ethersproject/providers';
+import { Networks } from '../../constants/blockchain';
+import { warning, success, info, error } from './messages-slice';
+import { messages } from '../../constants/messages';
+import { getGasPrice } from '../../helpers/get-gas-price';
+import { metamaskErrorWrap } from '../../helpers/metamask-error-wrap';
+import { sleep } from '../../helpers';
 
-import i18n from "../../i18n";
+import i18n from '../../i18n';
 
 interface IChangeApproval {
     token: string;
@@ -21,7 +21,7 @@ interface IChangeApproval {
     networkID: Networks;
 }
 
-export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ token, provider, address, networkID }: IChangeApproval, { dispatch }) => {
+export const changeApproval = createAsyncThunk('stake/changeApproval', async ({ token, provider, address, networkID }: IChangeApproval, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
@@ -36,12 +36,12 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     try {
         const gasPrice = await getGasPrice(provider);
 
-        if (token === "sBASH") {
+        if (token === 'sBASH') {
             approveTx = await sBASHContract.approve(addresses.WSBASH_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
-        const text = token === "sBASH" ? i18n.t("wrap:ApproveWrapping") : "";
-        const pendingTxnType = token === "sBASH" ? "approve_wrapping" : "";
+        const text = token === 'sBASH' ? i18n.t('wrap:ApproveWrapping') : '';
+        const pendingTxnType = token === 'sBASH' ? 'approve_wrapping' : '';
 
         dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
         await approveTx.wait();
@@ -75,7 +75,7 @@ interface IChangeWrap {
     networkID: Networks;
 }
 
-export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, value, provider, address, networkID }: IChangeWrap, { dispatch }) => {
+export const changeWrap = createAsyncThunk('stake/changeWrap', async ({ action, value, provider, address, networkID }: IChangeWrap, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
@@ -90,12 +90,12 @@ export const changeWrap = createAsyncThunk("stake/changeWrap", async ({ action, 
     try {
         const gasPrice = await getGasPrice(provider);
 
-        if (action === "wrap") {
-            wrapTx = await wsBASH.wrap(ethers.utils.parseUnits(value, "gwei"), { gasPrice });
+        if (action === 'wrap') {
+            wrapTx = await wsBASH.wrap(ethers.utils.parseUnits(value, 'gwei'), { gasPrice });
         } else {
             wrapTx = await wsBASH.unwrap(ethers.utils.parseEther(value), { gasPrice });
         }
-        const pendingTxnType = action === "wrap" ? i18n.t("wrap:Wrapping") : i18n.t("wrap:Unwrapping");
+        const pendingTxnType = action === 'wrap' ? i18n.t('wrap:Wrapping') : i18n.t('wrap:Unwrapping');
         dispatch(fetchPendingTxns({ txnHash: wrapTx.hash, text: getStakingTypeText(action), type: pendingTxnType }));
         await wrapTx.wait();
         dispatch(success({ text: messages.tx_successfully_send }));

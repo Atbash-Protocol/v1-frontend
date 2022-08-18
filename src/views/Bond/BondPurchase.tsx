@@ -1,18 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Box, OutlinedInput, InputAdornment, Slide, FormControl } from "@material-ui/core";
-import { shorten, trim, prettifySeconds } from "../../helpers";
-import { changeApproval, bondAsset, calcBondDetails } from "../../store/slices/bond-slice";
-import { useWeb3Context } from "../../hooks";
-import { IPendingTxn, isPendingTxn, txnButtonText } from "../../store/slices/pending-txns-slice";
-import { Skeleton } from "@material-ui/lab";
-import { IReduxState } from "../../store/slices/state.interface";
-import { IAllBondData } from "../../hooks/bonds";
-import useDebounce from "../../hooks/debounce";
-import { messages } from "../../constants/messages";
-import { warning } from "../../store/slices/messages-slice";
+import { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, OutlinedInput, InputAdornment, Slide, FormControl } from '@material-ui/core';
+import { shorten, trim, prettifySeconds } from '../../helpers';
+import { changeApproval, bondAsset, calcBondDetails } from '../../store/slices/bond-slice';
+import { useWeb3Context } from '../../hooks';
+import { IPendingTxn, isPendingTxn, txnButtonText } from '../../store/slices/pending-txns-slice';
+import { Skeleton } from '@material-ui/lab';
+import { IReduxState } from '../../store/slices/state.interface';
+import { IAllBondData } from '../../hooks/bonds';
+import useDebounce from '../../hooks/debounce';
+import { messages } from '../../constants/messages';
+import { warning } from '../../store/slices/messages-slice';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 interface IBondPurchaseProps {
     bond: IAllBondData;
@@ -26,7 +26,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
     const dispatch = useDispatch();
     const { provider, address, chainID, checkWrongNetwork } = useWeb3Context();
 
-    const [quantity, setQuantity] = useState("");
+    const [quantity, setQuantity] = useState('');
     const [useAvax, setUseAvax] = useState(false);
 
     const isBondLoading = useSelector<IReduxState, boolean>(state => state.bonding.loading ?? true);
@@ -37,13 +37,13 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
     });
 
     const vestingPeriod = () => {
-        return prettifySeconds(bond.vestingTerm, "day");
+        return prettifySeconds(bond.vestingTerm, 'day');
     };
 
     async function onBond() {
         if (await checkWrongNetwork()) return;
 
-        if (quantity === "") {
+        if (quantity === '') {
             dispatch(warning({ text: messages.before_minting }));
             //@ts-ignore
         } else if (isNaN(quantity)) {
@@ -85,7 +85,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
     }
 
     const clearInput = () => {
-        setQuantity("");
+        setQuantity('');
     };
 
     const hasAllowance = useCallback(() => {
@@ -99,7 +99,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
             amount = trim(amount);
         }
 
-        setQuantity((amount || "").toString());
+        setQuantity((amount || '').toString());
     };
 
     const bondDetailsDebounce = useDebounce(quantity, 1000);
@@ -115,7 +115,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
     };
 
     const handleZapinOpen = () => {
-        dispatch(calcBondDetails({ bond, value: "0", provider, networkID: chainID }));
+        dispatch(calcBondDetails({ bond, value: '0', provider, networkID: chainID }));
         setZapinOpen(true);
     };
 
@@ -124,22 +124,22 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
         setZapinOpen(false);
     };
 
-    const displayUnits = useAvax ? "AVAX" : bond.displayUnits;
+    const displayUnits = useAvax ? 'AVAX' : bond.displayUnits;
 
     return (
         <Box display="flex" flexDirection="column">
             <Box display="flex" justifyContent="space-around" flexWrap="wrap">
-                {bond.name === "wavax" && (
+                {bond.name === 'wavax' && (
                     <FormControl className="ohm-input" variant="outlined" color="primary" fullWidth>
                         <div className="avax-checkbox">
                             <input type="checkbox" checked={useAvax} onClick={() => setUseAvax(!useAvax)} />
-                            <p>{t("bond:UseAvax")}</p>
+                            <p>{t('bond:UseAvax')}</p>
                         </div>
                     </FormControl>
                 )}
                 <FormControl className="bond-input-wrap" variant="outlined" color="primary" fullWidth>
                     <OutlinedInput
-                        placeholder={t("Amount")}
+                        placeholder={t('Amount')}
                         type="number"
                         value={quantity}
                         onChange={e => setQuantity(e.target.value)}
@@ -148,7 +148,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
                         endAdornment={
                             <InputAdornment position="end">
                                 <div className="stake-input-btn" onClick={setMax}>
-                                    <p>{t("Max")}</p>
+                                    <p>{t('Max')}</p>
                                 </div>
                             </InputAdornment>
                         }
@@ -158,21 +158,21 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
                     <div
                         className="transaction-button bond-approve-btn"
                         onClick={async () => {
-                            if (isPendingTxn(pendingTransactions, "bond_" + bond.name)) return;
+                            if (isPendingTxn(pendingTransactions, 'bond_' + bond.name)) return;
                             await onBond();
                         }}
                     >
-                        <p>{txnButtonText(pendingTransactions, "bond_" + bond.name, t("bond:Mint"))}</p>
+                        <p>{txnButtonText(pendingTransactions, 'bond_' + bond.name, t('bond:Mint'))}</p>
                     </div>
                 ) : (
                     <div
                         className="transaction-button bond-approve-btn"
                         onClick={async () => {
-                            if (isPendingTxn(pendingTransactions, "approve_" + bond.name)) return;
+                            if (isPendingTxn(pendingTransactions, 'approve_' + bond.name)) return;
                             await onSeekApproval();
                         }}
                     >
-                        <p>{txnButtonText(pendingTransactions, "approve_" + bond.name, t("Approve"))}</p>
+                        <p>{txnButtonText(pendingTransactions, 'approve_' + bond.name, t('Approve'))}</p>
                     </div>
                 )}
 
@@ -184,7 +184,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
 
                 {!hasAllowance() && !useAvax && (
                     <div className="help-text">
-                        <p className="help-text-desc">{t("bond:ApproveHelpText")}</p>
+                        <p className="help-text-desc">{t('bond:ApproveHelpText')}</p>
                     </div>
                 )}
             </Box>
@@ -192,7 +192,7 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
             <Slide direction="left" in={true} mountOnEnter unmountOnExit {...{ timeout: 533 }}>
                 <Box className="bond-data">
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("YourBalance")}</p>
+                        <p className="bond-balance-title">{t('YourBalance')}</p>
                         <p className="bond-balance-title">
                             {isBondLoading ? (
                                 <Skeleton width="100px" />
@@ -205,33 +205,33 @@ function BondPurchase({ bond, slippage, recipientAddress }: IBondPurchaseProps) 
                     </div>
 
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("bond:YouWillGet")}</p>
+                        <p className="bond-balance-title">{t('bond:YouWillGet')}</p>
                         <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.bondQuote, 4)} BASH`}</p>
                     </div>
 
                     <div className={`data-row`}>
-                        <p className="bond-balance-title">{t("bond:MaxYouCanBuy")}</p>
+                        <p className="bond-balance-title">{t('bond:MaxYouCanBuy')}</p>
                         <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.maxBondPrice, 4)} BASH`}</p>
                     </div>
 
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("ROI")}</p>
+                        <p className="bond-balance-title">{t('ROI')}</p>
                         <p className="bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.bondDiscount * 100, 2)}%`}</p>
                     </div>
 
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("bond:VestingTerm")}</p>
+                        <p className="bond-balance-title">{t('bond:VestingTerm')}</p>
                         <p className="bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : vestingPeriod()}</p>
                     </div>
 
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("bond:MinimumPurchase")}</p>
+                        <p className="bond-balance-title">{t('bond:MinimumPurchase')}</p>
                         <p className="bond-balance-title">0.01 BASH</p>
                     </div>
 
                     {recipientAddress !== address && (
                         <div className="data-row">
-                            <p className="bond-balance-title">{t("bond:Recipient")}</p>
+                            <p className="bond-balance-title">{t('bond:Recipient')}</p>
                             <p className="bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : shorten(recipientAddress)}</p>
                         </div>
                     )}

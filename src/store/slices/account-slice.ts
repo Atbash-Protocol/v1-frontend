@@ -1,10 +1,10 @@
-import { ethers } from "ethers";
-import { getAddressesAsync } from "../../constants";
-import { BashTokenContract as BashTokenContract, SBashTokenContract as SBashTokenContract, DaiTokenContract } from "../../abi";
-import { setAll } from "../../helpers";
+import { ethers } from 'ethers';
+import { getAddressesAsync } from '../../constants';
+import { BashTokenContract as BashTokenContract, SBashTokenContract as SBashTokenContract, DaiTokenContract } from '../../abi';
+import { setAll } from '../../helpers';
 
-import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 import {
     IGetBalances,
     IAccountBalances,
@@ -14,9 +14,9 @@ import {
     ICalcUserTokenDetails,
     IUserTokenDetails,
     IUserBondDetails,
-} from "../account/account.types";
+} from '../account/account.types';
 
-export const getBalances = createAsyncThunk("account/getBalances", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
+export const getBalances = createAsyncThunk('account/getBalances', async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
     // const addresses = getAddresses(networkID);
     const addresses = await getAddressesAsync(networkID);
 
@@ -31,14 +31,14 @@ export const getBalances = createAsyncThunk("account/getBalances", async ({ addr
     return {
         balances: {
             wsBASH: ethers.utils.formatEther(wsBASHBalance),
-            sBASH: ethers.utils.formatUnits(sBASHBalance, "gwei"),
-            BASH: ethers.utils.formatUnits(BASHbalance, "gwei"),
+            sBASH: ethers.utils.formatUnits(sBASHBalance, 'gwei'),
+            BASH: ethers.utils.formatUnits(BASHbalance, 'gwei'),
             aBash: ethers.utils.formatUnits(aBashBalance),
         },
     };
 });
 
-export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address }: ILoadAccountDetails): Promise<IUserAccountDetails> => {
+export const loadAccountDetails = createAsyncThunk('account/loadAccountDetails', async ({ networkID, provider, address }: ILoadAccountDetails): Promise<IUserAccountDetails> => {
     let BASHbalance = 0;
     let sBASHBalance = 0;
     let wsBASHBalance = 0;
@@ -80,8 +80,8 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     return {
         balances: {
             wsBASH: ethers.utils.formatEther(wsBASHBalance),
-            sBASH: ethers.utils.formatUnits(sBASHBalance, "gwei"),
-            BASH: ethers.utils.formatUnits(BASHbalance, "gwei"),
+            sBASH: ethers.utils.formatUnits(sBASHBalance, 'gwei'),
+            BASH: ethers.utils.formatUnits(BASHbalance, 'gwei'),
             aBash: ethers.utils.formatUnits(aBashBalance),
         },
         redeeming: {
@@ -98,7 +98,7 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     };
 });
 
-export const calculateUserBondDetails = createAsyncThunk("account/calculateUserBondDetails", async ({ address, bond, networkID, provider }: ICalcUserBondDetails) => {
+export const calculateUserBondDetails = createAsyncThunk('account/calculateUserBondDetails', async ({ address, bond, networkID, provider }: ICalcUserBondDetails) => {
     // console.warn("disabled: calculateUserBondDetails");
     // return new Promise<any>(resevle => {
     //     resevle({
@@ -118,15 +118,15 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({
-                bond: "",
-                displayName: "",
-                bondIconSvg: "",
+                bond: '',
+                displayName: '',
+                bondIconSvg: '',
                 isLP: false,
                 allowance: 0,
                 balance: 0,
                 interestDue: 0,
                 bondMaturationBlock: 0,
-                pendingPayout: "",
+                pendingPayout: '',
                 avaxBalance: 0,
             });
         });
@@ -143,7 +143,7 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
     pendingPayout = await bondContract.pendingPayoutFor(address);
 
     let allowance,
-        balance = "0";
+        balance = '0';
 
     allowance = await reserveContract.allowance(address, bond.getAddressForBond(networkID));
     balance = await reserveContract.balanceOf(address);
@@ -152,7 +152,7 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
     const avaxBalance = await provider.getSigner().getBalance();
     const avaxVal = ethers.utils.formatEther(avaxBalance);
 
-    const pendingPayoutVal = ethers.utils.formatUnits(pendingPayout, "gwei");
+    const pendingPayoutVal = ethers.utils.formatUnits(pendingPayout, 'gwei');
 
     return {
         bond: bond.name,
@@ -168,13 +168,13 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
     };
 });
 
-export const calculateUserTokenDetails = createAsyncThunk("account/calculateUserTokenDetails", async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
-    console.warn("disabled: calculateUserTokenDetails");
+export const calculateUserTokenDetails = createAsyncThunk('account/calculateUserTokenDetails', async ({ address, token, networkID, provider }: ICalcUserTokenDetails) => {
+    console.warn('disabled: calculateUserTokenDetails');
     return new Promise<any>(resevle => {
         resevle({
-            token: "",
-            address: "",
-            img: "",
+            token: '',
+            address: '',
+            img: '',
             allowance: 0,
             balance: 0,
         });
@@ -182,9 +182,9 @@ export const calculateUserTokenDetails = createAsyncThunk("account/calculateUser
     if (!address) {
         return new Promise<any>(resevle => {
             resevle({
-                token: "",
-                address: "",
-                img: "",
+                token: '',
+                address: '',
+                img: '',
                 allowance: 0,
                 balance: 0,
             });
@@ -252,7 +252,7 @@ export interface IAccountSlice {
 const initialState: IAccountSlice = {
     loading: true,
     bonds: {},
-    balances: { wsBASH: "", sBASH: "", BASH: "", aBash: "" },
+    balances: { wsBASH: '', sBASH: '', BASH: '', aBash: '' },
     staking: { BASH: 0, sBASH: 0 },
     wrapping: { sBASHAllowance: 0 },
     redeeming: { BASH: 0, aBash: 0 },
@@ -260,7 +260,7 @@ const initialState: IAccountSlice = {
 };
 
 const accountSlice = createSlice({
-    name: "account",
+    name: 'account',
     initialState,
     reducers: {
         fetchAccountSuccess(state, action) {

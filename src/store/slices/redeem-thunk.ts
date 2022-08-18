@@ -1,18 +1,18 @@
-import { ethers } from "ethers";
-import { getAddressesAsync } from "../../constants";
-import { BashTokenContract, PresaleRedemptionContract } from "../../abi";
-import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAccountSuccess, getBalances } from "./account-slice";
-import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Networks } from "../../constants/blockchain";
-import { warning, success, info } from "./messages-slice";
-import { messages } from "../../constants/messages";
-import { getGasPrice } from "../../helpers/get-gas-price";
-import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
-import { sleep } from "../../helpers";
+import { ethers } from 'ethers';
+import { getAddressesAsync } from '../../constants';
+import { BashTokenContract, PresaleRedemptionContract } from '../../abi';
+import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from './pending-txns-slice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchAccountSuccess, getBalances } from './account-slice';
+import { JsonRpcProvider, StaticJsonRpcProvider } from '@ethersproject/providers';
+import { Networks } from '../../constants/blockchain';
+import { warning, success, info } from './messages-slice';
+import { messages } from '../../constants/messages';
+import { getGasPrice } from '../../helpers/get-gas-price';
+import { metamaskErrorWrap } from '../../helpers/metamask-error-wrap';
+import { sleep } from '../../helpers';
 
-import i18n from "../../i18n";
+import i18n from '../../i18n';
 
 interface IChangeRedeemApproval {
     token: string;
@@ -21,7 +21,7 @@ interface IChangeRedeemApproval {
     networkID: Networks;
 }
 
-export const changeRedeemApproval = createAsyncThunk("redeem/changeRedeemApproval", async ({ token, provider, address, networkID }: IChangeRedeemApproval, { dispatch }) => {
+export const changeRedeemApproval = createAsyncThunk('redeem/changeRedeemApproval', async ({ token, provider, address, networkID }: IChangeRedeemApproval, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
@@ -35,12 +35,12 @@ export const changeRedeemApproval = createAsyncThunk("redeem/changeRedeemApprova
     try {
         const gasPrice = await getGasPrice(provider);
 
-        if (token === "aBash") {
+        if (token === 'aBash') {
             approveTx = await abashContract.approve(addresses.PRESALE_REDEMPTION_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
-        const text = i18n.t("redeem:ApproveRedeeming");
-        const pendingTxnType = "approve_redeem";
+        const text = i18n.t('redeem:ApproveRedeeming');
+        const pendingTxnType = 'approve_redeem';
 
         dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
         await approveTx.wait();
@@ -74,7 +74,7 @@ interface IChangeRedeem {
     networkID: Networks;
 }
 
-export const changeRedeem = createAsyncThunk("redeem/changeRedeem", async ({ action, value, provider, address, networkID }: IChangeRedeem, { dispatch }) => {
+export const changeRedeem = createAsyncThunk('redeem/changeRedeem', async ({ action, value, provider, address, networkID }: IChangeRedeem, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
@@ -89,7 +89,7 @@ export const changeRedeem = createAsyncThunk("redeem/changeRedeem", async ({ act
         const gasPrice = await getGasPrice(provider);
 
         redeemTx = await redeem.redeem(ethers.utils.parseUnits(value), { gasPrice });
-        const pendingTxnType = i18n.t("redeem:Redeem");
+        const pendingTxnType = i18n.t('redeem:Redeem');
         dispatch(fetchPendingTxns({ txnHash: redeemTx.hash, text: getStakingTypeText(action), type: pendingTxnType }));
         await redeemTx.wait();
         dispatch(success({ text: messages.tx_successfully_send }));

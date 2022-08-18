@@ -1,17 +1,17 @@
-import { useSelector, useDispatch } from "react-redux";
-import { Box, Slide } from "@material-ui/core";
-import { IBondDetails, redeemBond } from "store/slices/bond-slice";
-import { useWeb3Context } from "hooks";
-import { trim, prettifySeconds, prettyVestingPeriod } from "helpers";
-import { IPendingTxn, isPendingTxn, txnButtonText } from "store/slices/pending-txns-slice";
-import { Skeleton } from "@material-ui/lab";
-import { IReduxState } from "store/slices/state.interface";
-import { IAllBondData } from "hooks/bonds";
-import { messages } from "constants/messages";
-import { warning } from "store/slices/messages-slice";
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, Slide } from '@material-ui/core';
+import { IBondDetails, redeemBond } from 'store/slices/bond-slice';
+import { useWeb3Context } from 'hooks';
+import { trim, prettifySeconds, prettyVestingPeriod } from 'helpers';
+import { IPendingTxn, isPendingTxn, txnButtonText } from 'store/slices/pending-txns-slice';
+import { Skeleton } from '@material-ui/lab';
+import { IReduxState } from 'store/slices/state.interface';
+import { IAllBondData } from 'hooks/bonds';
+import { messages } from 'constants/messages';
+import { warning } from 'store/slices/messages-slice';
 
-import { useTranslation } from "react-i18next";
-import { IUserBondDetails } from "store/account/account.types";
+import { useTranslation } from 'react-i18next';
+import { IUserBondDetails } from 'store/account/account.types';
 
 interface IBondRedeem {
     bond: IAllBondData;
@@ -54,13 +54,13 @@ function BondRedeem({ bond }: IBondRedeem) {
 
     const vestingTime = () => {
         if (!bondDetails) {
-            return "";
+            return '';
         }
         return prettyVestingPeriod(currentBlockTime, bondDetails.bondMaturationBlock);
     };
 
     const vestingPeriod = () => {
-        return prettifySeconds(bondingState.vestingTerm, "day");
+        return prettifySeconds(bondingState.vestingTerm, 'day');
     };
 
     return (
@@ -69,45 +69,45 @@ function BondRedeem({ bond }: IBondRedeem) {
                 <div
                     className="transaction-button bond-approve-btn"
                     onClick={() => {
-                        if (isPendingTxn(pendingTransactions, "redeem_bond_" + bond.name)) return;
+                        if (isPendingTxn(pendingTransactions, 'redeem_bond_' + bond.name)) return;
                         onRedeem(false);
                     }}
                 >
-                    <p>{txnButtonText(pendingTransactions, "redeem_bond_" + bond.name, t("bond:Claim"))}</p>
+                    <p>{txnButtonText(pendingTransactions, 'redeem_bond_' + bond.name, t('bond:Claim'))}</p>
                 </div>
                 <div
                     className="transaction-button bond-approve-btn"
                     onClick={() => {
-                        if (isPendingTxn(pendingTransactions, "redeem_bond_" + bond.name + "_autostake")) return;
+                        if (isPendingTxn(pendingTransactions, 'redeem_bond_' + bond.name + '_autostake')) return;
                         onRedeem(true);
                     }}
                 >
-                    <p>{txnButtonText(pendingTransactions, "redeem_bond_" + bond.name + "_autostake", t("bond:ClaimAutostake"))}</p>
+                    <p>{txnButtonText(pendingTransactions, 'redeem_bond_' + bond.name + '_autostake', t('bond:ClaimAutostake'))}</p>
                 </div>
             </Box>
 
             <Slide direction="right" in={true} mountOnEnter unmountOnExit {...{ timeout: 533 }}>
                 <Box className="bond-data">
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("bond:PendingRewards")}</p>
+                        <p className="bond-balance-title">{t('bond:PendingRewards')}</p>
                         <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.interestDue, 4)} BASH`}</p>
                     </div>
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("bond:ClaimableRewards")}</p>
+                        <p className="bond-balance-title">{t('bond:ClaimableRewards')}</p>
                         <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.pendingPayout, 4)} BASH`}</p>
                     </div>
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("bond:TimeFullyVested")}</p>
+                        <p className="bond-balance-title">{t('bond:TimeFullyVested')}</p>
                         <p className="price-data bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : vestingTime()}</p>
                     </div>
 
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("ROI")}</p>
+                        <p className="bond-balance-title">{t('ROI')}</p>
                         <p className="bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.bondDiscount * 100, 2)}%`}</p>
                     </div>
 
                     <div className="data-row">
-                        <p className="bond-balance-title">{t("bond:VestingTerm")}</p>
+                        <p className="bond-balance-title">{t('bond:VestingTerm')}</p>
                         <p className="bond-balance-title">{isBondLoading ? <Skeleton width="100px" /> : vestingPeriod()}</p>
                     </div>
                 </Box>

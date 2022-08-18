@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import allTokens from "helpers/tokens";
-import { IReduxState } from "store/slices/state.interface";
-import { IToken } from "helpers/tokens";
-import { IUserTokenDetails } from "store/account/account.types";
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import allTokens from 'helpers/tokens';
+import { IReduxState } from 'store/slices/state.interface';
+import { IToken } from 'helpers/tokens';
+import { IUserTokenDetails } from 'store/account/account.types';
 
 // Smash all the interfaces together to get the BondData Type
 export interface IAllTokenData extends IToken, IUserTokenDetails {}
@@ -27,7 +27,7 @@ function useTokens() {
         });
 
         const mostProfitableBonds = tokenDetails.concat().sort((a, b) => {
-            return a["balance"] > b["balance"] ? -1 : b["balance"] > a["balance"] ? 1 : 0;
+            return a['balance'] > b['balance'] ? -1 : b['balance'] > a['balance'] ? 1 : 0;
         });
 
         setTokens(mostProfitableBonds);

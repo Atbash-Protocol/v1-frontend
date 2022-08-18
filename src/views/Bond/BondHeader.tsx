@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
-import BondLogo from "../../components/BondLogo";
-import AdvancedSettings from "./AdvancedSettings";
-import { IconButton, SvgIcon, Link } from "@material-ui/core";
-import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg";
-import { ReactComponent as XIcon } from "../../assets/icons/x.svg";
-import { useEscape } from "../../hooks";
-import { IAllBondData } from "../../hooks/bonds";
+import { useState } from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
+import BondLogo from '../../components/BondLogo';
+import AdvancedSettings from './AdvancedSettings';
+import { IconButton, SvgIcon, Link } from '@material-ui/core';
+import { ReactComponent as SettingsIcon } from '../../assets/icons/settings.svg';
+import { ReactComponent as XIcon } from '../../assets/icons/x.svg';
+import { useEscape } from '../../hooks';
+import { IAllBondData } from '../../hooks/bonds';
 
 interface IBondHeaderProps {
     bond: IAllBondData;
@@ -31,7 +31,7 @@ function BondHeader({ bond, slippage, recipientAddress, onRecipientAddressChange
 
     useEscape(() => {
         if (open) handleClose;
-        else history.push("/mints");
+        else history.push('/mints');
     });
 
     return (

@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import allBonds from "../helpers/bond";
-import { Bond } from "../helpers/bond/bond";
-import { IBondDetails, IBondSlice } from "../store/slices/bond-slice";
-import { IReduxState } from "store/slices/state.interface";
-import { IUserBondDetails } from "store/account/account.types";
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import allBonds from '../helpers/bond';
+import { Bond } from '../helpers/bond/bond';
+import { IBondDetails, IBondSlice } from '../store/slices/bond-slice';
+import { IReduxState } from 'store/slices/state.interface';
+import { IUserBondDetails } from 'store/account/account.types';
 
 // Smash all the interfaces together to get the BondData Type
 export interface IAllBondData extends Bond, IBondDetails, IUserBondDetails {}
@@ -35,7 +35,7 @@ function useBonds() {
             });
 
         const mostProfitableBonds = bondDetails.concat().sort((a, b) => {
-            return a["bondDiscount"] > b["bondDiscount"] ? -1 : b["bondDiscount"] > a["bondDiscount"] ? 1 : 0;
+            return a['bondDiscount'] > b['bondDiscount'] ? -1 : b['bondDiscount'] > a['bondDiscount'] ? 1 : 0;
         });
 
         setBonds(mostProfitableBonds);

@@ -1,9 +1,9 @@
-import { BondType, NetworkAddresses } from "./constants";
-import { Networks } from "../../constants/blockchain";
-import { ContractInterface, Contract } from "ethers";
-import React from "react";
-import { JsonRpcSigner, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { getTokenPrice } from "../token-price";
+import { BondType, NetworkAddresses } from './constants';
+import { Networks } from '../../constants/blockchain';
+import { ContractInterface, Contract } from 'ethers';
+import React from 'react';
+import { JsonRpcSigner, StaticJsonRpcProvider } from '@ethersproject/providers';
+import { getTokenPrice } from '../token-price';
 
 export interface BondOpts {
     readonly name: string; // Internal name used for references

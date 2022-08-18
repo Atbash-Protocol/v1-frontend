@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { ReactComponent as XIcon } from "../../../../assets/icons/x.svg";
-import { Box, Modal, Paper, SvgIcon, IconButton, OutlinedInput, InputAdornment } from "@material-ui/core";
-import "./choose-token.scss";
+import React, { useState } from 'react';
+import { ReactComponent as XIcon } from '../../../../assets/icons/x.svg';
+import { Box, Modal, Paper, SvgIcon, IconButton, OutlinedInput, InputAdornment } from '@material-ui/core';
+import './choose-token.scss';
 
-import IconsSearch from "../../../../assets/icons/akar-icons_search.svg";
+import IconsSearch from '../../../../assets/icons/akar-icons_search.svg';
 
-import { Skeleton } from "@material-ui/lab";
-import useTokens, { IAllTokenData } from "../../../../hooks/tokens";
-import { trim } from "../../../../helpers";
-import { IAllBondData } from "../../../../hooks/bonds";
-import { dai, wavax } from "../../../../helpers/bond";
-import { DAI, DAI as mimToken, wavax as wavaxToken } from "../../../../helpers/tokens";
+import { Skeleton } from '@material-ui/lab';
+import useTokens, { IAllTokenData } from '../../../../hooks/tokens';
+import { trim } from '../../../../helpers';
+import { IAllBondData } from '../../../../hooks/bonds';
+import { dai, wavax } from '../../../../helpers/bond';
+import { DAI, DAI as mimToken, wavax as wavaxToken } from '../../../../helpers/tokens';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 interface IChooseTokenProps {
     open: boolean;
@@ -26,7 +26,7 @@ function ChooseToken({ open, handleClose, handleSelect, bond }: IChooseTokenProp
 
     const { tokens, loading } = useTokens();
 
-    const [quantity, setQuantity] = useState("");
+    const [quantity, setQuantity] = useState('');
 
     const filtredTokens = tokens.filter(({ name, address, isAvax }) => {
         let addressTest = true;
@@ -64,7 +64,7 @@ function ChooseToken({ open, handleClose, handleSelect, bond }: IChooseTokenProp
                 </div>
                 <Box>
                     <div className="choose-token-poper-header">
-                        <p className="choose-token-poper-header-title">{t("bond:ChooseToken")}</p>
+                        <p className="choose-token-poper-header-title">{t('bond:ChooseToken')}</p>
                         <OutlinedInput
                             placeholder="Search name or paste address"
                             className="choose-token-poper-header-input"
@@ -73,8 +73,8 @@ function ChooseToken({ open, handleClose, handleSelect, bond }: IChooseTokenProp
                             labelWidth={0}
                             startAdornment={
                                 <InputAdornment position="start">
-                                    <Box display="flex" alignItems="center" justifyContent="center" width={"24px"}>
-                                        <img src={IconsSearch} style={{ height: "24px", width: "24px" }} />
+                                    <Box display="flex" alignItems="center" justifyContent="center" width={'24px'}>
+                                        <img src={IconsSearch} style={{ height: '24px', width: '24px' }} />
                                     </Box>
                                 </InputAdornment>
                             }

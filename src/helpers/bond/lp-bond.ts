@@ -1,10 +1,10 @@
-import { ContractInterface } from "ethers";
-import { Bond, BondOpts } from "./bond";
-import { BondType } from "./constants";
-import { Networks } from "../../constants/blockchain";
-import { StaticJsonRpcProvider } from "@ethersproject/providers";
-import { getBondCalculator } from "../bond-calculator";
-import { getAddressesAsync } from "../../constants/addresses";
+import { ContractInterface } from 'ethers';
+import { Bond, BondOpts } from './bond';
+import { BondType } from './constants';
+import { Networks } from '../../constants/blockchain';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import { getBondCalculator } from '../bond-calculator';
+import { getAddressesAsync } from '../../constants/addresses';
 
 // Keep all LP specific fields/logic within the LPBond class
 export interface LPBondOpts extends BondOpts {
@@ -23,7 +23,7 @@ export class LPBond extends Bond {
 
         this.lpUrl = lpBondOpts.lpUrl;
         this.reserveContractAbi = lpBondOpts.reserveContractAbi;
-        this.displayUnits = "LP";
+        this.displayUnits = 'LP';
     }
 
     async getTreasuryBalance(networkID: Networks, provider: StaticJsonRpcProvider) {

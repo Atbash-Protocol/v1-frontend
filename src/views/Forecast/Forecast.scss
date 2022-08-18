@@ -56,7 +56,7 @@
                 font-size: 24px;
                 color: #ffffff;
                 margin-bottom: 4px;
-                font-feature-settings: "ss01";
+                font-feature-settings: 'ss01';
             }
             .Forecast-card-header-subtitle {
                 font-family: Mono;
@@ -81,7 +81,7 @@
             font-family: Montserrat;
             font-size: 14px;
             color: #fff;
-            font-feature-settings: "ss09", "ss11";
+            font-feature-settings: 'ss09', 'ss11';
             @media (min-width: 600px) {
                 margin-bottom: 10px;
             }
@@ -111,7 +111,7 @@
                     font-size: 16px;
                     color: #919fa6;
                     padding-bottom: 6px;
-                    font-feature-settings: "ss01";
+                    font-feature-settings: 'ss01';
                 }
 
                 .Forecast-card-metrics-value {
@@ -119,7 +119,7 @@
                     font-weight: 500;
                     font-size: 24px;
                     color: #ffffff;
-                    font-feature-settings: "ss09", "ss11";
+                    font-feature-settings: 'ss09', 'ss11';
                 }
             }
         }
@@ -143,7 +143,7 @@
                         font-weight: 500;
                         font-size: 16px;
                         color: #ff5a87;
-                        font-feature-settings: "ss01";
+                        font-feature-settings: 'ss01';
                     }
                 }
 
@@ -200,7 +200,7 @@
                         font-family: Montserrat;
                         font-weight: 400;
                         font-size: 16px;
-                        font-feature-settings: "ss09";
+                        font-feature-settings: 'ss09';
                         line-height: 20px;
                     }
 
@@ -244,7 +244,7 @@
                             font-size: 16px;
                             color: rgba(255, 255, 255, 0.9);
                             padding: 14px 20px;
-                            font-feature-settings: "ss09", "ss11";
+                            font-feature-settings: 'ss09', 'ss11';
                         }
 
                         .MuiOutlinedInput-notchedOutline {
@@ -328,7 +328,7 @@
         font-size: 14px;
         line-height: 17px;
         color: #ffffff;
-        font-feature-settings: "ss09", "ss11";
+        font-feature-settings: 'ss09', 'ss11';
     }
 }
 

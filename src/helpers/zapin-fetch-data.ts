@@ -1,10 +1,10 @@
-import { IToken } from "../helpers/tokens";
-import { ethers, utils } from "ethers";
-import { IAllBondData } from "../hooks/bonds";
-import { getAddressesAsync, Networks } from "../constants";
-import axios from "axios";
-import { TraderZapinContract } from "../abi";
-import { BigNumber } from "ethers";
+import { IToken } from '../helpers/tokens';
+import { ethers, utils } from 'ethers';
+import { IAllBondData } from '../hooks/bonds';
+import { getAddressesAsync, Networks } from '../constants';
+import axios from 'axios';
+import { TraderZapinContract } from '../abi';
+import { BigNumber } from 'ethers';
 
 export const zapinLpData = async (bond: IAllBondData, token: IToken, tokenAmmount: string, network: Networks, slippage: number) => {
     const addresses = await getAddressesAsync(network);
@@ -20,13 +20,13 @@ export const zapinLpData = async (bond: IAllBondData, token: IToken, tokenAmmoun
 
     const zapinInterface = new utils.Interface(TraderZapinContract);
 
-    const { _swapTarget, swapData } = zapinInterface.decodeFunctionData("ZapIn", data.data);
+    const { _swapTarget, swapData } = zapinInterface.decodeFunctionData('ZapIn', data.data);
 
     return [_swapTarget, swapData, data.minTokens];
 };
 
 export const zapinData = async (bond: IAllBondData, token: IToken, tokenAmmount: string, network: Networks, slippage: number) => {
-    const sellToken = token.isAvax ? "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" : token.address;
+    const sellToken = token.isAvax ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' : token.address;
     const buyToken = bond.getAddressForReserve(network);
 
     const url = `https://avalanche.api.0x.org/swap/v1/quote?buyToken=${buyToken}&includePriceComparisons=true&intentOnFilling=true&sellAmount=${tokenAmmount}&sellToken=${sellToken}&skipValidation=true&slippagePercentage=${slippage}`;

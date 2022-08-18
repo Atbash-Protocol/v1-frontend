@@ -110,7 +110,7 @@
         "start": "react-scripts start",
         "test": "react-scripts test",
         "lint": "npx eslint src/ --ext .ts,.js,.tsx,.jsx",
-        "lint-fix": "npx eslint src/ --ext .ts,.js,.tsx,.jsx --fix",
+        "prettier": "npx prettier src/ --ext .ts,.js,.tsx,.jsx --write",
         "import-deployments": "node ./scripts/import-deployments",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d build"

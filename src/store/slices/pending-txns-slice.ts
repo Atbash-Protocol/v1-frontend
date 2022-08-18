@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import i18n from "../../i18n";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import i18n from '../../i18n';
 export interface IPendingTxn {
     readonly txnHash: string;
     readonly text: string;
@@ -9,7 +9,7 @@ export interface IPendingTxn {
 const initialState: Array<IPendingTxn> = [];
 
 const pendingTxnsSlice = createSlice({
-    name: "pendingTransactions",
+    name: 'pendingTransactions',
     initialState,
     reducers: {
         fetchPendingTxns(state, action: PayloadAction<IPendingTxn>) {
@@ -25,11 +25,11 @@ const pendingTxnsSlice = createSlice({
 });
 
 export const getStakingTypeText = (action: string) => {
-    return action.toLowerCase() === "stake" ? i18n.t("stake:StakingSB") : i18n.t("stake:UnstakingStakedSB");
+    return action.toLowerCase() === 'stake' ? i18n.t('stake:StakingSB') : i18n.t('stake:UnstakingStakedSB');
 };
 
 export const getWrappingTypeText = (action: string) => {
-    return action.toLowerCase() === "wrap" ? i18n.t("stake:WrappingsBASH") : i18n.t("stake:UnwrappingBASH");
+    return action.toLowerCase() === 'wrap' ? i18n.t('stake:WrappingsBASH') : i18n.t('stake:UnwrappingBASH');
 };
 
 export const isPendingTxn = (pendingTransactions: IPendingTxn[], type: string) => {
@@ -37,7 +37,7 @@ export const isPendingTxn = (pendingTransactions: IPendingTxn[], type: string) =
 };
 
 export const txnButtonText = (pendingTransactions: IPendingTxn[], type: string, defaultText: string) => {
-    return isPendingTxn(pendingTransactions, type) ? i18n.t("PendingEllipsis") : defaultText;
+    return isPendingTxn(pendingTransactions, type) ? i18n.t('PendingEllipsis') : defaultText;
 };
 
 export const { fetchPendingTxns, clearPendingTxn } = pendingTxnsSlice.actions;

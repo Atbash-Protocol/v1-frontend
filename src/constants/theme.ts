@@ -1,15 +1,15 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
     palette: {
         primary: {
-            main: "#919fa6",
+            main: '#919fa6',
         },
         secondary: {
-            main: "#FFFFFF",
+            main: '#FFFFFF',
         },
         cardBackground: {
-            main: "rgba(0,1,40,.5)",
+            main: 'rgba(0,1,40,.5)',
         },
     },
 });

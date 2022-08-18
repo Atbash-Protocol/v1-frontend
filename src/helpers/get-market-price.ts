@@ -1,8 +1,8 @@
-import { ethers } from "ethers";
-import { LpReserveContract } from "../abi";
-import { BASHDAI } from "../helpers/bond";
-import { Networks } from "../constants/blockchain";
-import { getAddresses, getAddressesAsync } from "constants/addresses";
+import { ethers } from 'ethers';
+import { LpReserveContract } from '../abi';
+import { BASHDAI } from '../helpers/bond';
+import { Networks } from '../constants/blockchain';
+import { getAddresses, getAddressesAsync } from 'constants/addresses';
 
 export async function getMarketPrice(networkID: Networks, provider: ethers.Signer | ethers.providers.Provider): Promise<number> {
     // LpReserveContract has .getReserves - gets the amounts in the pool for that pair (bash-dai)

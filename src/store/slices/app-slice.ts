@@ -1,20 +1,20 @@
-import { ethers } from "ethers";
-import { getAddressesAsync } from "../../constants";
-import { StakingContract, SBashTokenContract, BashTokenContract, RedeemContract, PresaleContract, AbashContract } from "../../abi";
-import { setAll, getMarketPrice, getTokenPrice } from "../../helpers";
-import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
-import { JsonRpcProvider } from "@ethersproject/providers";
-import { RootState } from "../store";
-import allBonds from "../../helpers/bond";
-import { ArrowBackSharp } from "@material-ui/icons";
+import { ethers } from 'ethers';
+import { getAddressesAsync } from '../../constants';
+import { StakingContract, SBashTokenContract, BashTokenContract, RedeemContract, PresaleContract, AbashContract } from '../../abi';
+import { setAll, getMarketPrice, getTokenPrice } from '../../helpers';
+import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
+import { JsonRpcProvider } from '@ethersproject/providers';
+import { RootState } from '../store';
+import allBonds from '../../helpers/bond';
+import { ArrowBackSharp } from '@material-ui/icons';
 
 interface ILoadAppDetails {
     networkID: number;
     provider: JsonRpcProvider;
 }
 
-export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ networkID, provider }: ILoadAppDetails) => {
-    const daiPrice = getTokenPrice("DAI");
+export const loadAppDetails = createAsyncThunk('app/loadAppDetails', async ({ networkID, provider }: ILoadAppDetails) => {
+    const daiPrice = getTokenPrice('DAI');
     // const addresses = getAddresses(networkID);
     const addresses = await getAddressesAsync(networkID);
 
@@ -62,10 +62,10 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
 
     // get bash held in DAO
     const daoBash = await BASHContract.balanceOf(addresses.DAO_ADDRESS);
-    const daoBashAmount = Number(ethers.utils.formatUnits(daoBash, "gwei"));
+    const daoBashAmount = Number(ethers.utils.formatUnits(daoBash, 'gwei'));
 
     // Determine total amount of bash in bonds
-    const bashBondsAmountsPromises = allBonds.filter(bond => bond.name !== "bash_dai_minting").map(bond => bond.getBashAmount(networkID, provider));
+    const bashBondsAmountsPromises = allBonds.filter(bond => bond.name !== 'bash_dai_minting').map(bond => bond.getBashAmount(networkID, provider));
     const bashBondsAmounts = await Promise.all(bashBondsAmountsPromises);
 
     const LpBashAmount = bashBondsAmounts.reduce((bashAmount0, bashAmount1) => bashAmount0 + bashAmount1, 0);
@@ -90,7 +90,7 @@ export const loadAppDetails = createAsyncThunk("app/loadAppDetails", async ({ ne
     const deltaMarketPriceRfv = ((rfv - marketPrice) / rfv) * 100;
 
     return {
-        currentIndex: Number(ethers.utils.formatUnits(currentIndex, "gwei")), // in sBASH.decimals 9
+        currentIndex: Number(ethers.utils.formatUnits(currentIndex, 'gwei')), // in sBASH.decimals 9
         totalSupply,
         marketCap,
         currentBlock,
@@ -143,7 +143,7 @@ export interface IAppSlice {
 }
 
 const appSlice = createSlice({
-    name: "app",
+    name: 'app',
     initialState,
     reducers: {
         fetchAppSuccess(state, action) {

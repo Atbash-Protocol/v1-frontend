@@ -1,5 +1,5 @@
-import SbImg from "../assets/tokens/bash.png";
-import sBASHImg from "../assets/tokens/sBASH.png";
+import SbImg from '../assets/tokens/bash.png';
+import sBASHImg from '../assets/tokens/sBASH.png';
 
 function toUrl(tokenPath: string): string {
     const host = window.location.origin;
@@ -7,11 +7,11 @@ function toUrl(tokenPath: string): string {
 }
 
 export function getTokenUrl(name: string) {
-    if (name === "bash") {
+    if (name === 'bash') {
         return toUrl(SbImg);
     }
 
-    if (name === "sbash") {
+    if (name === 'sbash') {
         return toUrl(sBASHImg);
     }
 

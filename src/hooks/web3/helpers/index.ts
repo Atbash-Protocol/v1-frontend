@@ -1,1 +1,1 @@
-export * from "./get-network-uri";
+export * from './get-network-uri';

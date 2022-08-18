@@ -1,13 +1,13 @@
-import React, { useState, ReactElement, useContext, useMemo, useCallback } from "react";
-import Web3Modal from "web3modal";
-import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { DEFAULT_NETWORK } from "../../constants";
-import { Networks } from "../../constants";
-import { messages } from "../../constants/messages";
-import { useDispatch } from "react-redux";
-import { swithNetwork } from "../../helpers/switch-network";
-import { getNetworkURI } from "./helpers/get-network-uri";
+import React, { useState, ReactElement, useContext, useMemo, useCallback } from 'react';
+import Web3Modal from 'web3modal';
+import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { DEFAULT_NETWORK } from '../../constants';
+import { Networks } from '../../constants';
+import { messages } from '../../constants/messages';
+import { useDispatch } from 'react-redux';
+import { swithNetwork } from '../../helpers/switch-network';
+import { getNetworkURI } from './helpers/get-network-uri';
 
 type onChainProvider = {
     connect: () => Promise<Web3Provider>;
@@ -32,7 +32,7 @@ const Web3Context = React.createContext<Web3ContextData>(null);
 export const useWeb3Context = () => {
     const web3Context = useContext(Web3Context);
     if (!web3Context) {
-        throw new Error("useWeb3Context() can only be used inside of <Web3ContextProvider />, " + "please declare it at a higher level.");
+        throw new Error('useWeb3Context() can only be used inside of <Web3ContextProvider />, ' + 'please declare it at a higher level.');
     }
     const { onChainProvider } = web3Context;
     return useMemo(() => {
@@ -51,7 +51,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const [connected, setConnected] = useState(false);
     const [chainID, setChainID] = useState(DEFAULT_NETWORK);
     const [providerChainID, setProviderChainID] = useState(DEFAULT_NETWORK);
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState('');
 
     // const [uri, setUri] = useState(getMainnetURI(chainID));
     const [uri, setUri] = useState(getNetworkURI(DEFAULT_NETWORK));
@@ -87,13 +87,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                 return;
             }
 
-            rawProvider.on("accountsChanged", () => setTimeout(() => window.location.reload(), 1));
+            rawProvider.on('accountsChanged', () => setTimeout(() => window.location.reload(), 1));
 
-            rawProvider.on("chainChanged", async (chain: number) => {
+            rawProvider.on('chainChanged', async (chain: number) => {
                 changeNetwork(chain);
             });
 
-            rawProvider.on("network", (_newNetwork, oldNetwork) => {
+            rawProvider.on('network', (_newNetwork, oldNetwork) => {
                 if (!oldNetwork) return;
                 window.location.reload();
             });
@@ -112,7 +112,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         _initListeners(rawProvider);
 
-        const connectedProvider = new Web3Provider(rawProvider, "any");
+        const connectedProvider = new Web3Provider(rawProvider, 'any');
 
         const chainId = await connectedProvider.getNetwork().then(network => Number(network.chainId));
         const connectedAddress = await connectedProvider.getSigner().getAddress();

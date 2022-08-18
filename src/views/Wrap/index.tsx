@@ -1,20 +1,20 @@
-import { useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Grid, InputAdornment, OutlinedInput, Zoom } from "@material-ui/core";
-import RebaseTimer from "../../components/RebaseTimer";
-import { trim } from "../../helpers";
-import { changeWrap, changeApproval } from "../../store/slices/wrap-thunk";
-import "./wrap.scss";
-import { useWeb3Context } from "../../hooks";
-import { IPendingTxn, isPendingTxn, txnButtonText } from "../../store/slices/pending-txns-slice";
-import { Skeleton } from "@material-ui/lab";
-import { IReduxState } from "../../store/slices/state.interface";
-import { messages } from "../../constants/messages";
-import classnames from "classnames";
-import { warning } from "../../store/slices/messages-slice";
-import { IAppSlice } from "../../store/slices/app-slice";
+import { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Grid, InputAdornment, OutlinedInput, Zoom } from '@material-ui/core';
+import RebaseTimer from '../../components/RebaseTimer';
+import { trim } from '../../helpers';
+import { changeWrap, changeApproval } from '../../store/slices/wrap-thunk';
+import './wrap.scss';
+import { useWeb3Context } from '../../hooks';
+import { IPendingTxn, isPendingTxn, txnButtonText } from '../../store/slices/pending-txns-slice';
+import { Skeleton } from '@material-ui/lab';
+import { IReduxState } from '../../store/slices/state.interface';
+import { messages } from '../../constants/messages';
+import classnames from 'classnames';
+import { warning } from '../../store/slices/messages-slice';
+import { IAppSlice } from '../../store/slices/app-slice';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 function Stake() {
     const { t } = useTranslation();
@@ -24,7 +24,7 @@ function Stake() {
     const app = useSelector<IReduxState, IAppSlice>(state => state.app);
 
     const [view, setView] = useState(0);
-    const [quantity, setQuantity] = useState<string>("");
+    const [quantity, setQuantity] = useState<string>('');
 
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
     const currentIndex = useSelector<IReduxState, string>(state => {
@@ -65,18 +65,18 @@ function Stake() {
 
     const onChangeWrap = async (action: string) => {
         if (await checkWrongNetwork()) return;
-        if (quantity === "" || parseFloat(quantity) === 0) {
-            dispatch(warning({ text: action === "wrap" ? messages.before_wrap : messages.before_unstake }));
+        if (quantity === '' || parseFloat(quantity) === 0) {
+            dispatch(warning({ text: action === 'wrap' ? messages.before_wrap : messages.before_unstake }));
         } else {
             await dispatch(changeWrap({ address, action, value: String(quantity), provider, networkID: chainID }));
-            setQuantity("");
+            setQuantity('');
         }
     };
 
     const hasAllowance = useCallback(
         token => {
-            if (token === "sBASH") return wrapAllowance > 0;
-            if (token === "wsBASH") return true;
+            if (token === 'sBASH') return wrapAllowance > 0;
+            if (token === 'wsBASH') return true;
             return 0;
         },
         [wrapAllowance],
@@ -84,36 +84,36 @@ function Stake() {
 
     const changeView = (newView: number) => () => {
         setView(newView);
-        setQuantity("");
+        setQuantity('');
     };
 
     const trimmedsBASHBalance = trim(Number(sBASHBalance), 6);
     const trimmedWrappedStakedSBBalance = trim(Number(wsBASHBalance), 6);
 
     const wrappedTokenEquivalent = trim(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex), 6);
-    const valueOfSB = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfSB = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(BASHbalance) * app.marketPrice);
-    const valueOfStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfStakedBalance = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(trimmedsBASHBalance) * app.marketPrice);
-    const valueOfWrappedStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfWrappedStakedBalance = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
     const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
-    const valueOfAllBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfAllBalance = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(sumOfAllBalance * app.marketPrice);
@@ -125,8 +125,8 @@ function Stake() {
                     <Grid className="wrap-card-grid" container direction="column" spacing={2}>
                         <Grid item>
                             <div className="wrap-card-header">
-                                <p className="wrap-card-header-title">{t("wrap:WrapTitle")}</p>
-                                <p className="wrap-card-header-subtitle">{t("wrap:WrapYourBASH")}</p>
+                                <p className="wrap-card-header-title">{t('wrap:WrapTitle')}</p>
+                                <p className="wrap-card-header-subtitle">{t('wrap:WrapYourBASH')}</p>
                             </div>
                         </Grid>
 
@@ -135,7 +135,7 @@ function Stake() {
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={4} md={4} lg={4}>
                                         <div className="wrap-card-index">
-                                            <p className="wrap-card-metrics-title">{t("CurrentIndex")}</p>
+                                            <p className="wrap-card-metrics-title">{t('CurrentIndex')}</p>
                                             <p className="wrap-card-metrics-value">{currentIndex ? <>{trim(Number(currentIndex), 2)} BASH</> : <Skeleton width="150px" />}</p>
                                         </div>
                                     </Grid>
@@ -147,27 +147,27 @@ function Stake() {
                             {!address && (
                                 <div className="wrap-card-wallet-notification">
                                     <div className="wrap-card-wallet-connect-btn" onClick={connect}>
-                                        <p>{t("ConnectWallet")}</p>
+                                        <p>{t('ConnectWallet')}</p>
                                     </div>
-                                    <p className="wrap-card-wallet-desc-text">{t("wrap:ConnectYourWalletToWrap")}</p>
+                                    <p className="wrap-card-wallet-desc-text">{t('wrap:ConnectYourWalletToWrap')}</p>
                                 </div>
                             )}
                             {address && (
                                 <>
                                     <div className="wrap-card-action-area">
                                         <div className="wrap-card-action-stage-btns-wrap">
-                                            <div onClick={changeView(0)} className={classnames("wrap-card-action-stage-btn", { active: !view })}>
-                                                <p>{t("wrap:Wrap")}</p>
+                                            <div onClick={changeView(0)} className={classnames('wrap-card-action-stage-btn', { active: !view })}>
+                                                <p>{t('wrap:Wrap')}</p>
                                             </div>
-                                            <div onClick={changeView(1)} className={classnames("wrap-card-action-stage-btn", { active: view })}>
-                                                <p>{t("wrap:Unwrap")}</p>
+                                            <div onClick={changeView(1)} className={classnames('wrap-card-action-stage-btn', { active: view })}>
+                                                <p>{t('wrap:Unwrap')}</p>
                                             </div>
                                         </div>
 
                                         <div className="wrap-card-action-row">
                                             <OutlinedInput
                                                 type="number"
-                                                placeholder={t("Amount")}
+                                                placeholder={t('Amount')}
                                                 className="wrap-card-action-input"
                                                 value={quantity}
                                                 onChange={e => setQuantity(e.target.value)}
@@ -175,7 +175,7 @@ function Stake() {
                                                 endAdornment={
                                                     <InputAdornment position="end">
                                                         <div onClick={setMax} className="wrap-card-action-input-btn">
-                                                            <p>{t("Max")}</p>
+                                                            <p>{t('Max')}</p>
                                                         </div>
                                                     </InputAdornment>
                                                 }
@@ -183,25 +183,25 @@ function Stake() {
 
                                             {view === 0 && (
                                                 <div className="wrap-card-tab-panel">
-                                                    {address && hasAllowance("sBASH") ? (
+                                                    {address && hasAllowance('sBASH') ? (
                                                         <div
                                                             className="wrap-card-tab-panel-btn"
                                                             onClick={() => {
-                                                                if (isPendingTxn(pendingTransactions, "wrapping")) return;
-                                                                onChangeWrap("wrap");
+                                                                if (isPendingTxn(pendingTransactions, 'wrapping')) return;
+                                                                onChangeWrap('wrap');
                                                             }}
                                                         >
-                                                            <p>{txnButtonText(pendingTransactions, "wrapping", t("Wrap sBASH"))}</p>
+                                                            <p>{txnButtonText(pendingTransactions, 'wrapping', t('Wrap sBASH'))}</p>
                                                         </div>
                                                     ) : (
                                                         <div
                                                             className="wrap-card-tab-panel-btn"
                                                             onClick={() => {
-                                                                if (isPendingTxn(pendingTransactions, "approve_wrapping")) return;
-                                                                onSeekApproval("sBASH");
+                                                                if (isPendingTxn(pendingTransactions, 'approve_wrapping')) return;
+                                                                onSeekApproval('sBASH');
                                                             }}
                                                         >
-                                                            <p>{txnButtonText(pendingTransactions, "approve_wrapping", t("Approve"))}</p>
+                                                            <p>{txnButtonText(pendingTransactions, 'approve_wrapping', t('Approve'))}</p>
                                                         </div>
                                                     )}
                                                 </div>
@@ -213,18 +213,18 @@ function Stake() {
                                                         <div
                                                             className="wrap-card-tab-panel-btn"
                                                             onClick={() => {
-                                                                if (isPendingTxn(pendingTransactions, "unwrapping")) return;
-                                                                onChangeWrap("unwrap");
+                                                                if (isPendingTxn(pendingTransactions, 'unwrapping')) return;
+                                                                onChangeWrap('unwrap');
                                                             }}
                                                         >
-                                                            <p>{txnButtonText(pendingTransactions, "unwrapping", t("Unwrap wsBASH"))}</p>
+                                                            <p>{txnButtonText(pendingTransactions, 'unwrapping', t('Unwrap wsBASH'))}</p>
                                                         </div>
                                                     ) : (
                                                         <div
                                                             className="wrap-card-tab-panel-btn"
                                                             onClick={() => {
-                                                                if (isPendingTxn(pendingTransactions, "approve_unwrapping")) return;
-                                                                onSeekApproval("sBASH");
+                                                                if (isPendingTxn(pendingTransactions, 'approve_unwrapping')) return;
+                                                                onSeekApproval('sBASH');
                                                             }}
                                                         ></div>
                                                     )}
@@ -233,31 +233,31 @@ function Stake() {
                                         </div>
 
                                         <div className="wrap-card-action-help-text">
-                                            {address && ((!hasAllowance("sBASH") && view === 0) || (!hasAllowance("sBASH") && view === 1)) && <p>{t("wrap:ApproveNote")}</p>}
+                                            {address && ((!hasAllowance('sBASH') && view === 0) || (!hasAllowance('sBASH') && view === 1)) && <p>{t('wrap:ApproveNote')}</p>}
                                         </div>
                                     </div>
 
                                     <div className="wrap-user-data">
                                         <div className="data-row">
-                                            <p className="data-row-name">{t("YourBalance")}</p>
+                                            <p className="data-row-name">{t('YourBalance')}</p>
                                             <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(BASHbalance), 4)} BASH</>}</p>
                                         </div>
 
                                         <div className="data-row">
-                                            <p className="data-row-name">{t("wrap:YourStakedBalance")}</p>
+                                            <p className="data-row-name">{t('wrap:YourStakedBalance')}</p>
                                             <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedsBASHBalance} sBASH</>}</p>
                                         </div>
 
                                         {Number(trimmedWrappedStakedSBBalance) > 0 && (
                                             <div className="data-row">
-                                                <p className="data-row-name">{t("wrap:YourWrappedStakedBalance")}</p>
+                                                <p className="data-row-name">{t('wrap:YourWrappedStakedBalance')}</p>
                                                 <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{trimmedWrappedStakedSBBalance} wsBASH</>}</p>
                                             </div>
                                         )}
 
                                         {Number(trimmedWrappedStakedSBBalance) > 0 && (
                                             <div className="data-row">
-                                                <p className="data-row-name">{t("wrap:WrappedTokenEquivalent")}</p>
+                                                <p className="data-row-name">{t('wrap:WrappedTokenEquivalent')}</p>
                                                 <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>({wrappedTokenEquivalent} sBASH)</>}</p>
                                             </div>
                                         )}
@@ -275,25 +275,25 @@ function Stake() {
                             <Grid className="wrap-card-grid" container direction="column">
                                 <Grid item>
                                     <div className="wrap-card-header data-row">
-                                        <p className="wrap-card-header-title">{t("YourBalance")}</p>
+                                        <p className="wrap-card-header-title">{t('YourBalance')}</p>
                                         <p className="wrap-card-header-title">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfAllBalance}</>}</p>
                                     </div>
                                 </Grid>
 
                                 <div className="wrap-card-area">
                                     <div className="data-row">
-                                        <p className="data-row-name">{t("wrap:ValueOfYourBASH")}</p>
+                                        <p className="data-row-name">{t('wrap:ValueOfYourBASH')}</p>
                                         <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfSB}</>}</p>
                                     </div>
 
                                     <div className="data-row">
-                                        <p className="data-row-name">{t("wrap:ValueOfYourStakedBASH")}</p>
+                                        <p className="data-row-name">{t('wrap:ValueOfYourStakedBASH')}</p>
                                         <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfStakedBalance}</>}</p>
                                     </div>
 
                                     {Number(trimmedWrappedStakedSBBalance) > 0 && (
                                         <div className="data-row">
-                                            <p className="data-row-name">{t("wrap:ValueOfYourWrappedStakedSB")}</p>
+                                            <p className="data-row-name">{t('wrap:ValueOfYourWrappedStakedSB')}</p>
                                             <p className="data-row-value"> {isAppLoading ? <Skeleton width="80px" /> : <>{valueOfWrappedStakedBalance}</>}</p>
                                         </div>
                                     )}

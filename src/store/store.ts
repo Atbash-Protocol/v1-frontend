@@ -1,10 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 
-import accountReducer from "./slices/account-slice";
-import bondingReducer from "./slices/bond-slice";
-import appReducer from "./slices/app-slice";
-import pendingTransactionsReducer from "./slices/pending-txns-slice";
-import messagesReducer from "./slices/messages-slice";
+import accountReducer from './slices/account-slice';
+import bondingReducer from './slices/bond-slice';
+import appReducer from './slices/app-slice';
+import pendingTransactionsReducer from './slices/pending-txns-slice';
+import messagesReducer from './slices/messages-slice';
 
 const store = configureStore({
     reducer: {

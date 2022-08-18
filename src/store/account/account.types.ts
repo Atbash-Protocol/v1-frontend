@@ -1,7 +1,7 @@
-import { StaticJsonRpcProvider, JsonRpcProvider } from "@ethersproject/providers";
-import { Networks } from "constants/index";
-import { Bond } from "helpers/bond/bond";
-import { IToken } from "helpers/tokens";
+import { StaticJsonRpcProvider, JsonRpcProvider } from '@ethersproject/providers';
+import { Networks } from 'constants/index';
+import { Bond } from 'helpers/bond/bond';
+import { IToken } from 'helpers/tokens';
 
 export interface IGetBalances {
     address: string;

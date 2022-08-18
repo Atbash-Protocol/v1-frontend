@@ -1,20 +1,20 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Grid, InputAdornment, OutlinedInput, Zoom, Link } from "@material-ui/core";
-import { trim } from "../../helpers";
-import { changeStake, changeApproval, changeRedeemApproval, changeRedeem } from "../../store/slices/stake-thunk";
-import "./stake.scss";
-import { useWeb3Context } from "../../hooks";
-import { IPendingTxn, isPendingTxn, txnButtonText } from "../../store/slices/pending-txns-slice";
-import { Skeleton } from "@material-ui/lab";
-import { IReduxState } from "../../store/slices/state.interface";
-import { messages } from "../../constants/messages";
-import classnames from "classnames";
-import { warning } from "../../store/slices/messages-slice";
-import { IAppSlice } from "../../store/slices/app-slice";
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Grid, InputAdornment, OutlinedInput, Zoom, Link } from '@material-ui/core';
+import { trim } from '../../helpers';
+import { changeStake, changeApproval, changeRedeemApproval, changeRedeem } from '../../store/slices/stake-thunk';
+import './stake.scss';
+import { useWeb3Context } from '../../hooks';
+import { IPendingTxn, isPendingTxn, txnButtonText } from '../../store/slices/pending-txns-slice';
+import { Skeleton } from '@material-ui/lab';
+import { IReduxState } from '../../store/slices/state.interface';
+import { messages } from '../../constants/messages';
+import classnames from 'classnames';
+import { warning } from '../../store/slices/messages-slice';
+import { IAppSlice } from '../../store/slices/app-slice';
 
-import { useTranslation } from "react-i18next";
-import RedeemTimer from "../../components/RedeemTimer";
+import { useTranslation } from 'react-i18next';
+import RedeemTimer from '../../components/RedeemTimer';
 
 function Redeem() {
     const { t } = useTranslation();
@@ -23,7 +23,7 @@ function Redeem() {
     const { provider, address, connect, chainID, checkWrongNetwork } = useWeb3Context();
     const app = useSelector<IReduxState, IAppSlice>(state => state.app);
 
-    const [quantity, setQuantity] = useState<string>("");
+    const [quantity, setQuantity] = useState<string>('');
 
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
     const currentIndex = useSelector<IReduxState, string>(state => {
@@ -79,11 +79,11 @@ function Redeem() {
 
     const onChangeStake = async (action: string) => {
         if (await checkWrongNetwork()) return;
-        if (quantity === "" || parseFloat(quantity) === 0) {
-            dispatch(warning({ text: action === "stake" ? messages.before_stake : messages.before_unstake }));
+        if (quantity === '' || parseFloat(quantity) === 0) {
+            dispatch(warning({ text: action === 'stake' ? messages.before_stake : messages.before_unstake }));
         } else {
             await dispatch(changeRedeem({ address, action, value: String(quantity), provider, networkID: chainID }));
-            setQuantity("");
+            setQuantity('');
         }
     };
 
@@ -99,57 +99,57 @@ function Redeem() {
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
     const stakingRebasePercentage = trim(stakingRebase * 100, 4);
     const nextRewardValue = trim((Number(stakingRebasePercentage) / 100) * Number(trimmedsBASHBalance), 6);
-    const valueOfSB = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfSB = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(BASHbalance) * app.marketPrice);
-    const valueOfStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfStakedBalance = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(trimmedsBASHBalance) * app.marketPrice);
-    const valueOfWrappedStakedBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfWrappedStakedBalance = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(trimmedWrappedStakedSBBalance) * Number(currentIndex) * app.marketPrice);
 
     const sumOfAllBalance = Number(BASHbalance) + Number(trimmedsBASHBalance) + Number(trimmedWrappedStakedSBBalance) * Number(currentIndex);
-    const valueOfAllBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfAllBalance = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(sumOfAllBalance * app.marketPrice);
-    const valueOfYourNextRewardAmount = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfYourNextRewardAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(nextRewardValue) * app.marketPrice);
-    const valueOfRedeemableBalance = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfRedeemableBalance = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(BASHbalance) * redeemRfv + Number(sBASHBalance) * redeemRfv);
-    const valueOfMIMRedeemable = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const valueOfMIMRedeemable = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(redeemRfv) * Number(quantity));
-    const totalTreasuryRedeemed = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+    const totalTreasuryRedeemed = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
     }).format(Number(redeemSbSent * redeemRfv));
-    const totalBASHRedeemed = new Intl.NumberFormat("en-US", {
+    const totalBASHRedeemed = new Intl.NumberFormat('en-US', {
         maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     }).format(Number(redeemSbSent));
@@ -183,7 +183,7 @@ function Redeem() {
                     <Grid className="stake-card-grid" container direction="column" spacing={2}>
                         <Grid item>
                             <div className="stake-card-header">
-                                <p className="stake-card-header-title">{t("redeem:StakeTitle")}</p>
+                                <p className="stake-card-header-title">{t('redeem:StakeTitle')}</p>
                                 <RedeemTimer />
                             </div>
                         </Grid>
@@ -221,9 +221,9 @@ function Redeem() {
                             {!address && (
                                 <div className="stake-card-wallet-notification">
                                     <div className="stake-card-wallet-connect-btn" onClick={connect}>
-                                        <p>{t("ConnectWallet")}</p>
+                                        <p>{t('ConnectWallet')}</p>
                                     </div>
-                                    <p className="stake-card-wallet-desc-text">{t("redeem:ConnectYourWalletToStake")}</p>
+                                    <p className="stake-card-wallet-desc-text">{t('redeem:ConnectYourWalletToStake')}</p>
                                 </div>
                             )}
                             {address && (
@@ -232,7 +232,7 @@ function Redeem() {
                                         <div className="stake-card-action-row">
                                             <OutlinedInput
                                                 type="number"
-                                                placeholder={t("Amount")}
+                                                placeholder={t('Amount')}
                                                 className="stake-card-action-input"
                                                 value={quantity}
                                                 onChange={e => setQuantity(e.target.value)}
@@ -240,38 +240,38 @@ function Redeem() {
                                                 endAdornment={
                                                     <InputAdornment position="end">
                                                         <div onClick={setMax} className="stake-card-action-input-btn">
-                                                            <p>{t("Max")}</p>
+                                                            <p>{t('Max')}</p>
                                                         </div>
                                                     </InputAdornment>
                                                 }
                                             />
 
                                             <div className="stake-card-tab-panel">
-                                                {address && hasAllowance("BASH") ? (
+                                                {address && hasAllowance('BASH') ? (
                                                     <div
                                                         className="stake-card-tab-panel-btn"
                                                         onClick={() => {
-                                                            if (isPendingTxn(pendingTransactions, "staking")) return;
-                                                            onChangeStake("stake");
+                                                            if (isPendingTxn(pendingTransactions, 'staking')) return;
+                                                            onChangeStake('stake');
                                                         }}
                                                     >
-                                                        <p>{txnButtonText(pendingTransactions, "staking", t("redeem:StakingSB"))}</p>
+                                                        <p>{txnButtonText(pendingTransactions, 'staking', t('redeem:StakingSB'))}</p>
                                                     </div>
                                                 ) : (
                                                     <div
                                                         className="stake-card-tab-panel-btn"
                                                         onClick={() => {
-                                                            if (isPendingTxn(pendingTransactions, "approve_staking")) return;
-                                                            onSeekApproval("BASH");
+                                                            if (isPendingTxn(pendingTransactions, 'approve_staking')) return;
+                                                            onSeekApproval('BASH');
                                                         }}
                                                     >
-                                                        <p>{txnButtonText(pendingTransactions, "approve_staking", t("Approve"))}</p>
+                                                        <p>{txnButtonText(pendingTransactions, 'approve_staking', t('Approve'))}</p>
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
 
-                                        <div className="stake-card-action-help-text">{address && !hasAllowance("BASH") && <p>{t("redeem:ApproveNote")}</p>}</div>
+                                        <div className="stake-card-action-help-text">{address && !hasAllowance('BASH') && <p>{t('redeem:ApproveNote')}</p>}</div>
                                     </div>
 
                                     <div className="stake-user-data">
@@ -286,12 +286,12 @@ function Redeem() {
                                         <div className="data-row">
                                             <p className="data-row-name">Your Staked BASH Balance</p>
                                             <p className="data-row-value">
-                                                {isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sBASHBalance), 4)} sBASH</>}{" "}
+                                                {isAppLoading ? <Skeleton width="80px" /> : <>{trim(Number(sBASHBalance), 4)} sBASH</>}{' '}
                                                 <a href="https://dapp.atbash.finance/#/stake">Unstake</a>
                                             </p>
                                         </div>
                                         <div className="data-row">
-                                            <p className="data-row-name">{t("Total MIM Redeemable")}</p>
+                                            <p className="data-row-name">{t('Total MIM Redeemable')}</p>
                                             <p className="data-row-value">{isAppLoading ? <Skeleton width="80px" /> : <>{valueOfRedeemableBalance}</>}</p>
                                         </div>
                                     </div>

@@ -1,18 +1,18 @@
-import { useEffect, useState, useCallback } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useAddress, useWeb3Context } from "hooks/web3";
-import { calcBondDetails } from "store/slices/bond-slice";
-import { loadAppDetails } from "store/slices/app-slice";
-import { loadAccountDetails, calculateUserBondDetails, calculateUserTokenDetails } from "store/slices/account-slice";
-import { IReduxState } from "store/slices/state.interface";
-import Loading from "components/Loader";
-import useBonds from "hooks/bonds";
-import ViewBase from "layout/ViewBase";
-import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap, PresaleRedemption } from "../views";
+import { useEffect, useState, useCallback } from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAddress, useWeb3Context } from 'hooks/web3';
+import { calcBondDetails } from 'store/slices/bond-slice';
+import { loadAppDetails } from 'store/slices/app-slice';
+import { loadAccountDetails, calculateUserBondDetails, calculateUserTokenDetails } from 'store/slices/account-slice';
+import { IReduxState } from 'store/slices/state.interface';
+import Loading from 'components/Loader';
+import useBonds from 'hooks/bonds';
+import ViewBase from 'layout/ViewBase';
+import { Stake, Forecast, ChooseBond, Bond, Dashboard, NotFound, Redeem, Wrap, PresaleRedemption } from '../views';
 
-import "./style.scss";
-import useTokens from "../hooks/tokens";
+import './style.scss';
+import useTokens from '../hooks/tokens';
 
 function App() {
     const dispatch = useDispatch();
@@ -33,24 +33,24 @@ function App() {
     async function loadDetails(whichDetails: string) {
         let loadProvider = provider;
 
-        if (whichDetails === "app") {
+        if (whichDetails === 'app') {
             loadApp(loadProvider);
         }
 
-        if (whichDetails === "account" && address && connected) {
+        if (whichDetails === 'account' && address && connected) {
             loadAccount(loadProvider);
             if (isAppLoaded) return;
 
             loadApp(loadProvider);
         }
 
-        if (whichDetails === "userBonds" && address && connected) {
+        if (whichDetails === 'userBonds' && address && connected) {
             bonds.map(bond => {
                 dispatch(calculateUserBondDetails({ address, bond, provider, networkID: chainID }));
             });
         }
 
-        if (whichDetails === "userTokens" && address && connected) {
+        if (whichDetails === 'userTokens' && address && connected) {
             tokens.map(token => {
                 dispatch(calculateUserTokenDetails({ address, token, provider, networkID: chainID }));
             });
@@ -64,7 +64,7 @@ function App() {
                 dispatch(calcBondDetails({ bond, value: null, provider: loadProvider, networkID: chainID }));
             });
             tokens.map(token => {
-                dispatch(calculateUserTokenDetails({ address: "", token, provider, networkID: chainID }));
+                dispatch(calculateUserTokenDetails({ address: '', token, provider, networkID: chainID }));
             });
         },
         [connected],
@@ -89,10 +89,10 @@ function App() {
 
     useEffect(() => {
         if (walletChecked || connected) {
-            loadDetails("app");
-            loadDetails("account");
-            loadDetails("userBonds");
-            loadDetails("userTokens");
+            loadDetails('app');
+            loadDetails('account');
+            loadDetails('userBonds');
+            loadDetails('userTokens');
         }
     }, [walletChecked, connected]);
 

@@ -1,9 +1,9 @@
-import { ContractInterface } from "ethers";
-import { Bond, BondOpts } from "./bond";
-import { BondType } from "./constants";
-import { Networks } from "../../constants/blockchain";
-import { StaticJsonRpcProvider } from "@ethersproject/providers";
-import { getAddressesAsync } from "../../constants/addresses";
+import { ContractInterface } from 'ethers';
+import { Bond, BondOpts } from './bond';
+import { BondType } from './constants';
+import { Networks } from '../../constants/blockchain';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import { getAddressesAsync } from '../../constants/addresses';
 
 export interface StableBondOpts extends BondOpts {
     readonly reserveContractAbi: ContractInterface;
@@ -64,11 +64,11 @@ export class CustomBond extends StableBond {
 
     public async getAddressForBond(networkID: Networks): Promise<string> {
         // return (await getAddressesAsync(networkID)).DAI_BOND_ADDRESS;
-        throw "Not configured for this bond";
+        throw 'Not configured for this bond';
     }
 
     public async getAddressForReserve(networkID: Networks): Promise<string> {
         // return (await getAddressesAsync(networkID)).DAI_ADDRESS;
-        throw "Not configured for this bond";
+        throw 'Not configured for this bond';
     }
 }

@@ -1,6 +1,6 @@
 {
     "MintTitle": "Minting",
- // "MintInactiveTitle": "Retired Minting",
+    // "MintInactiveTitle": "Retired Minting",
     "ChooseToken": "Choose token",
     "ZapinAndMint": "Zapin & Mint",
     "ZapinApproveToken": "Approve {{token}}",

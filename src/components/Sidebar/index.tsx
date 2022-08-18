@@ -1,10 +1,10 @@
-import { Drawer, makeStyles } from "@material-ui/core";
-import { DRAWER_WIDTH } from "constants/styles";
-import Content from "./Content";
+import { Drawer, makeStyles } from '@material-ui/core';
+import { DRAWER_WIDTH } from 'constants/styles';
+import Content from './Content';
 
 const useStyles = makeStyles(theme => ({
     drawer: {
-        [theme.breakpoints.up("md")]: {
+        [theme.breakpoints.up('md')]: {
             width: DRAWER_WIDTH,
             flexShrink: 0,
         },

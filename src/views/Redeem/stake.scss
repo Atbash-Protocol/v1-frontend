@@ -35,18 +35,18 @@
                 font-size: 24px;
                 color: #ffffff;
                 margin-bottom: 4px;
-                font-feature-settings: "ss01";
+                font-feature-settings: 'ss01';
             }
         }
 
         .stake-card-header-title-redistribution {
             font-family: Nib;
             font-weight: 300;
-                font-size: 36px;
-                color: #ffffff;
-                margin-bottom: 16px;
-                font-feature-settings: "ss01";
-                text-align: center;
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 16px;
+            font-feature-settings: 'ss01';
+            text-align: center;
         }
 
         .stake-card-redeem-text {
@@ -54,7 +54,7 @@
             font-weight: 400;
             font-size: 16px;
             color: #fff;
-            font-feature-settings: "ss01";
+            font-feature-settings: 'ss01';
             line-height: 22px;
             margin-bottom: 12px;
 
@@ -95,7 +95,7 @@
                     font-size: 16px;
                     color: #919fa6;
                     padding-bottom: 6px;
-                    font-feature-settings: "ss01";
+                    font-feature-settings: 'ss01';
                 }
 
                 .stake-card-metrics-value {
@@ -103,7 +103,7 @@
                     font-weight: 500;
                     font-size: 24px;
                     color: #ffffff;
-                    font-feature-settings: "ss09", "ss11";
+                    font-feature-settings: 'ss09', 'ss11';
                 }
             }
         }
@@ -127,7 +127,7 @@
                         font-weight: 500;
                         font-size: 16px;
                         color: #ff5a87;
-                        font-feature-settings: "ss01";
+                        font-feature-settings: 'ss01';
                     }
                 }
 
@@ -195,7 +195,7 @@
                             font-size: 16px;
                             color: rgba(255, 255, 255, 0.9);
                             padding: 14px 20px;
-                            font-feature-settings: "ss09", "ss11";
+                            font-feature-settings: 'ss09', 'ss11';
                         }
 
                         .MuiOutlinedInput-notchedOutline {
@@ -280,13 +280,13 @@
             color: #d0c4ff;
         }
     }
-    
+
     .data-row-value {
         font-family: Montserrat;
         font-size: 14px;
         line-height: 17px;
         color: #ffffff;
-        font-feature-settings: "ss09", "ss11";
+        font-feature-settings: 'ss09', 'ss11';
 
         a {
             margin-left: 4px;

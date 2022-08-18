@@ -1,14 +1,14 @@
-import "@mui/material/styles";
+import '@mui/material/styles';
 
 interface Background {
     dark: string;
 }
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
     interface Palette {
-        cardBackground: Palette["primary"];
+        cardBackground: Palette['primary'];
     }
     interface PaletteOptions {
-        cardBackground: PaletteOptions["primary"];
+        cardBackground: PaletteOptions['primary'];
     }
 }

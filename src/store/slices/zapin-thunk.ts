@@ -1,21 +1,21 @@
-import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { createAsyncThunk, Dispatch } from "@reduxjs/toolkit";
-import { messages } from "../../constants/messages";
-import { getAddressesAsync, Networks } from "../../constants";
-import { IToken } from "../../helpers/tokens";
-import { info, success, warning } from "./messages-slice";
-import { clearPendingTxn, fetchPendingTxns } from "./pending-txns-slice";
-import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
-import { getGasPrice } from "../../helpers/get-gas-price";
-import { ethers } from "ethers";
-import { DaiTokenContract, ZapinContract } from "../../abi";
-import { calculateUserBondDetails, fetchAccountSuccess } from "./account-slice";
-import { IAllBondData } from "../../hooks/bonds";
-import { zapinData, zapinLpData } from "../../helpers/zapin-fetch-data";
-import { trim } from "../../helpers/trim";
-import { sleep } from "../../helpers";
+import { JsonRpcProvider, StaticJsonRpcProvider } from '@ethersproject/providers';
+import { createAsyncThunk, Dispatch } from '@reduxjs/toolkit';
+import { messages } from '../../constants/messages';
+import { getAddressesAsync, Networks } from '../../constants';
+import { IToken } from '../../helpers/tokens';
+import { info, success, warning } from './messages-slice';
+import { clearPendingTxn, fetchPendingTxns } from './pending-txns-slice';
+import { metamaskErrorWrap } from '../../helpers/metamask-error-wrap';
+import { getGasPrice } from '../../helpers/get-gas-price';
+import { ethers } from 'ethers';
+import { DaiTokenContract, ZapinContract } from '../../abi';
+import { calculateUserBondDetails, fetchAccountSuccess } from './account-slice';
+import { IAllBondData } from '../../hooks/bonds';
+import { zapinData, zapinLpData } from '../../helpers/zapin-fetch-data';
+import { trim } from '../../helpers/trim';
+import { sleep } from '../../helpers';
 
-import i18n from "../../i18n";
+import i18n from '../../i18n';
 
 interface IChangeApproval {
     token: IToken;
@@ -24,7 +24,7 @@ interface IChangeApproval {
     networkID: Networks;
 }
 
-export const changeApproval = createAsyncThunk("zapin/changeApproval", async ({ token, provider, address, networkID }: IChangeApproval, { dispatch }) => {
+export const changeApproval = createAsyncThunk('zapin/changeApproval', async ({ token, provider, address, networkID }: IChangeApproval, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
@@ -33,7 +33,7 @@ export const changeApproval = createAsyncThunk("zapin/changeApproval", async ({ 
     const addresses = await getAddressesAsync(networkID);
 
     const signer = provider.getSigner();
-    const ZAPIN_ADDRESS = "0x0"; // addresses.ZAPIN_ADDRESS disabled: no zapin
+    const ZAPIN_ADDRESS = '0x0'; // addresses.ZAPIN_ADDRESS disabled: no zapin
 
     const tokenContract = new ethers.Contract(token.address, DaiTokenContract, signer);
 
@@ -43,8 +43,8 @@ export const changeApproval = createAsyncThunk("zapin/changeApproval", async ({ 
 
         approveTx = await tokenContract.approve(ZAPIN_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
 
-        const text = i18n.t("bond:ZapinApproveToken", { token: token.name });
-        const pendingTxnType = "approve_" + token.address;
+        const text = i18n.t('bond:ZapinApproveToken', { token: token.name });
+        const pendingTxnType = 'approve_' + token.address;
 
         dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
         await approveTx.wait();
@@ -89,9 +89,9 @@ export interface ITokenZapinResponse {
 }
 
 export const calcZapinDetails = async ({ token, provider, networkID, bond, value, slippage, dispatch }: ITokenZapin): Promise<ITokenZapinResponse> => {
-    let swapTarget: string = "";
-    let swapData: string = "";
-    let amount: string = "";
+    let swapTarget: string = '';
+    let swapData: string = '';
+    let amount: string = '';
 
     const acceptedSlippage = slippage / 100 || 0.02;
 
@@ -155,7 +155,7 @@ interface IZapinMint {
 }
 
 export const zapinMint = createAsyncThunk(
-    "zapin/zapinMint",
+    'zapin/zapinMint',
     async ({ provider, networkID, bond, token, value, minReturnAmount, swapTarget, swapData, slippage, address }: IZapinMint, { dispatch }) => {
         if (!provider) {
             dispatch(warning({ text: messages.please_connect_wallet }));
@@ -168,7 +168,7 @@ export const zapinMint = createAsyncThunk(
         const depositorAddress = address;
 
         const signer = provider.getSigner();
-        const ZAPIN_ADDRESS = "0x0"; // addresses.ZAPIN_ADDRESS disabled: no zapin
+        const ZAPIN_ADDRESS = '0x0'; // addresses.ZAPIN_ADDRESS disabled: no zapin
         const zapinContract = new ethers.Contract(ZAPIN_ADDRESS, ZapinContract, signer);
 
         const bondAddress = await bond.getAddressForBond(networkID);
@@ -223,8 +223,8 @@ export const zapinMint = createAsyncThunk(
             dispatch(
                 fetchPendingTxns({
                     txnHash: zapinTx.hash,
-                    text: i18n.t("bond:ZapinToken", { token: token.name }),
-                    type: "zapin_" + token.name + "_" + bond.name,
+                    text: i18n.t('bond:ZapinToken', { token: token.name }),
+                    type: 'zapin_' + token.name + '_' + bond.name,
                 }),
             );
             await zapinTx.wait();

@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux";
-import { secondsUntilBlock, prettifySeconds } from "../../helpers";
-import { Box } from "@material-ui/core";
-import "./rebasetimer.scss";
-import { Skeleton } from "@material-ui/lab";
-import { useMemo } from "react";
-import { IReduxState } from "../../store/slices/state.interface";
+import { useSelector } from 'react-redux';
+import { secondsUntilBlock, prettifySeconds } from '../../helpers';
+import { Box } from '@material-ui/core';
+import './rebasetimer.scss';
+import { Skeleton } from '@material-ui/lab';
+import { useMemo } from 'react';
+import { IReduxState } from '../../store/slices/state.interface';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const END_DATE = new Date(1641286800000);
 
@@ -28,7 +28,7 @@ function RedeemTimer() {
 
     return (
         <Box className="rebase-timer">
-            <p>{currentBlockTime ? timeUntilRebase ? <>{t("TimeToRedeem", { time: timeUntilRebase })}</> : <span>{t("Redeem Closed")}</span> : <Skeleton width="200px" />}</p>
+            <p>{currentBlockTime ? timeUntilRebase ? <>{t('TimeToRedeem', { time: timeUntilRebase })}</> : <span>{t('Redeem Closed')}</span> : <Skeleton width="200px" />}</p>
         </Box>
     );
 }

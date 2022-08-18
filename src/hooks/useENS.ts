@@ -1,7 +1,7 @@
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
-import { getNetworkURI } from "./web3/helpers/get-network-uri";
-import { DEFAULT_NETWORK } from "../constants";
+import { ethers } from 'ethers';
+import { useEffect, useState } from 'react';
+import { getNetworkURI } from './web3/helpers/get-network-uri';
+import { DEFAULT_NETWORK } from '../constants';
 
 const useENS = (address: string) => {
     const [ensName, setENSName] = useState<string | null>(null);
@@ -14,7 +14,7 @@ const useENS = (address: string) => {
                     const ensName = await provider.lookupAddress(address);
                     setENSName(ensName);
                 } catch (e) {
-                    console.info("ENS not found");
+                    console.info('ENS not found');
                 }
             }
         };

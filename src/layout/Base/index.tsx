@@ -1,8 +1,8 @@
-import { CssBaseline } from "@material-ui/core";
-import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Box, Button, Drawer, Toolbar, Typography, useTheme } from "@mui/material";
+import { CssBaseline } from '@material-ui/core';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, Button, Drawer, Toolbar, Typography, useTheme } from '@mui/material';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 interface IViewBaseProps {
     children: React.ReactNode;
@@ -16,14 +16,14 @@ const drawerWidth = 240;
 
 const styles = (theme: any) => ({
     shiftTextLeft: {
-        marginLeft: "0px",
+        marginLeft: '0px',
     },
     shiftTextRight: {
         marginLeft: drawerWidth,
     },
 });
 
-import "./styles.scss";
+import './styles.scss';
 
 export const BaseLayout = ({ children }: IViewBaseProps): JSX.Element => {
     const [open, setOpen] = useState(false);
@@ -49,19 +49,19 @@ export const BaseLayout = ({ children }: IViewBaseProps): JSX.Element => {
                     variant="permanent"
                     open={open}
                     sx={{
-                        width: open ? { xs: "1rem", sm: drawerWidthClose } : { xs: drawerWidthClose, sm: drawerWidthOpen },
-                        transition: theme.transitions.create("width", {
+                        width: open ? { xs: '1rem', sm: drawerWidthClose } : { xs: drawerWidthClose, sm: drawerWidthOpen },
+                        transition: theme.transitions.create('width', {
                             easing: theme.transitions.easing.sharp,
                             duration: open ? theme.transitions.duration.leavingScreen : theme.transitions.duration.enteringScreen,
                         }),
-                        "& .MuiDrawer-paper": {
-                            overflowX: "hidden",
-                            width: open ? { xs: "0px", sm: drawerWidthClose } : { xs: drawerWidthClose, sm: drawerWidthOpen },
-                            borderRight: "0px",
-                            borderRadius: "0px 0px 0px 0px",
+                        '& .MuiDrawer-paper': {
+                            overflowX: 'hidden',
+                            width: open ? { xs: '0px', sm: drawerWidthClose } : { xs: drawerWidthClose, sm: drawerWidthOpen },
+                            borderRight: '0px',
+                            borderRadius: '0px 0px 0px 0px',
                             boxShadow: theme.shadows[8],
-                            backgroundColor: open ? "#11101D" : "#11101D",
-                            transition: theme.transitions.create("width", {
+                            backgroundColor: open ? '#11101D' : '#11101D',
+                            transition: theme.transitions.create('width', {
                                 easing: theme.transitions.easing.sharp,
                                 duration: open ? theme.transitions.duration.leavingScreen : theme.transitions.duration.enteringScreen,
                             }),
@@ -71,29 +71,29 @@ export const BaseLayout = ({ children }: IViewBaseProps): JSX.Element => {
                     <Button
                         onClick={() => setOpen(!open)}
                         sx={{
-                            minWidth: "initial",
-                            padding: "10px",
-                            color: "gray",
-                            borderRadius: "0px",
-                            backgroundColor: open ? "transparent" : "red",
-                            "&:hover": {
-                                backgroundColor: "#26284687",
+                            minWidth: 'initial',
+                            padding: '10px',
+                            color: 'gray',
+                            borderRadius: '0px',
+                            backgroundColor: open ? 'transparent' : 'red',
+                            '&:hover': {
+                                backgroundColor: '#26284687',
                             },
                         }}
                     >
-                        <MenuIcon sx={{ fontSize: "20px", color: open ? "lightgray" : "lightGray" }}></MenuIcon>
+                        <MenuIcon sx={{ fontSize: '20px', color: open ? 'lightgray' : 'lightGray' }}></MenuIcon>
                     </Button>
                 </Drawer>
 
                 <Box
                     component="header"
                     sx={{
-                        marginBottom: "5rem",
+                        marginBottom: '5rem',
                     }}
                 >
-                    <AppBar sx={{ backgroundColor: "transparent" }}>
+                    <AppBar sx={{ backgroundColor: 'transparent' }}>
                         <Toolbar>
-                            <Typography sx={{ paddingLeft: "5rem" }}> Menu</Typography>
+                            <Typography sx={{ paddingLeft: '5rem' }}> Menu</Typography>
                         </Toolbar>
                     </AppBar>
                 </Box>
