@@ -3,8 +3,8 @@ import Social from '../Social';
 import StakeIcon from 'assets/icons/stake.svg';
 import BondIcon from 'assets/icons/bond.svg';
 import BuyIcon from 'assets/icons/buy.svg';
-import BorrowIcon from 'assets/icons/borrow.svg';
-import Forecast from 'assets/icons/Forecast.svg';
+import BorrowIcon from 'assets/icons/House.svg';
+import Forecast from 'assets/icons/chart.svg';
 import GovIcon from 'assets/icons/governance.svg';
 
 import AtbashICON from 'assets/icons/bash.svg';
@@ -153,11 +153,12 @@ function NavContent() {
                         </div>
                     </Link>
 
-                    <Link component={NavLink} id="bond-nav" to="#" className="button-dapp-menu">
-                        <div className="dapp-menu-item">
-                            <img alt="" src={BorrowIcon} />
-                            <p>{t('Borrow')}</p>
-                            <span>{t('ComingSoon')}</span>
+                    <Link href={`https://app.uniswap.org/#/swap?inputCurrency=${DAI_ADDRESS}&outputCurrency=${BASH_ADDRESS}${chainArgument}`} target="_blank">
+                        <div className="button-dapp-menu">
+                            <div className="dapp-menu-item">
+                                <img alt="" src={BorrowIcon} />
+                                <p>{t('Housing Grants')}</p>
+                            </div>
                         </div>
                     </Link>
 
