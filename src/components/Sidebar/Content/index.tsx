@@ -154,7 +154,7 @@ function NavContent() {
                         </div>
                     </Link>
 
-                    <Link href={`https://docs.google.com/forms/d/13rPQU8VQBCLzY3rtDtinv5pYoS3wqIWcJHQtpc0Me78/`} target="_blank">
+                    <Link href={`https://forms.gle/kC1VCPQ21BUa2ZWy5`} target="_blank">
                         <div className="button-dapp-menu">
                             <div className="dapp-menu-item">
                                 <img alt="" src={BorrowIcon} />
