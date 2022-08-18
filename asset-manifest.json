@@ -215,8 +215,8 @@
     "static/js/106.795ae181.chunk.js": "/static/js/106.795ae181.chunk.js",
     "static/js/106.795ae181.chunk.js.map": "/static/js/106.795ae181.chunk.js.map",
     "main.css": "/static/css/main.094c0f8c.chunk.css",
-    "main.js": "/static/js/main.a436a5c4.chunk.js",
-    "main.js.map": "/static/js/main.a436a5c4.chunk.js.map",
+    "main.js": "/static/js/main.154070dc.chunk.js",
+    "main.js.map": "/static/js/main.154070dc.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.830720f1.js",
     "runtime-main.js.map": "/static/js/runtime-main.830720f1.js.map",
     "static/js/109.f3de7fff.chunk.js": "/static/js/109.f3de7fff.chunk.js",
@@ -267,6 +267,7 @@
     "static/media/bash.00caddaf.png": "/static/media/bash.00caddaf.png",
     "static/media/bash.6ff2070a.svg": "/static/media/bash.6ff2070a.svg",
     "static/media/bond.9bb2c50a.svg": "/static/media/bond.9bb2c50a.svg",
+    "static/media/borrow.0e1be727.svg": "/static/media/borrow.0e1be727.svg",
     "static/media/buy.c08cf112.svg": "/static/media/buy.c08cf112.svg",
     "static/media/chart.1a9cda5e.svg": "/static/media/chart.1a9cda5e.svg",
     "static/media/dashboard.25e1b5ce.svg": "/static/media/dashboard.25e1b5ce.svg",
@@ -287,6 +288,6 @@
     "static/js/runtime-main.830720f1.js",
     "static/js/109.f3de7fff.chunk.js",
     "static/css/main.094c0f8c.chunk.css",
-    "static/js/main.a436a5c4.chunk.js"
+    "static/js/main.154070dc.chunk.js"
   ]
 }
