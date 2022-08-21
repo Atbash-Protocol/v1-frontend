@@ -19,14 +19,14 @@ export const loadBalancesAndAllowances = createAsyncThunk(
 
         const {
             main: {
-                contracts: { BASH_CONTRACT, SBASH_CONTRACT, STAKING_CONTRACT, STAKING_HELPER_ADDRESS },
+                contracts: { BASH_CONTRACT, SBASH_CONTRACT, STAKING_CONTRACT, STAKING_HELPER_CONTRACT },
             },
         } = getState() as IReduxState;
 
-        if (BASH_CONTRACT && STAKING_HELPER_ADDRESS) {
+        if (BASH_CONTRACT && STAKING_HELPER_CONTRACT) {
             BASHbalance = await BASH_CONTRACT.balanceOf(address);
 
-            stakeAllowance = await BASH_CONTRACT.allowance(address, STAKING_HELPER_ADDRESS.address);
+            stakeAllowance = await BASH_CONTRACT.allowance(address, STAKING_HELPER_CONTRACT.address);
             // disable: redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
         }
 

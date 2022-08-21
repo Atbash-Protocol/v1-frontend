@@ -16,17 +16,14 @@ const UserBalance = () => {
 
     const totalBalance = useSelector(selectTotalBalance);
     const stakingBalanceMetrics = useSelector(selectStakingBalance);
-    const { SBASH: SBashBalance, WSBASH: WSBashBalance } = useSelector(selectFormattedStakeBalance);
+    const { WSBASH: WSBashBalance } = useSelector(selectFormattedStakeBalance);
     const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [
         { key: 'stake:ValueOfYourBASH', value: BASHPrice },
-        { key: 'stake:YourStakedBalance', value: SBashBalance },
-        { key: 'stake:YourWrappedStakedBalance', value: WSBashBalance },
-        { key: 'stake:WrappedTokenEquivalent', value: stakingBalanceMetrics.wrappedTokenValue },
-        { key: 'stake:NextRewardAmount', value: stakingBalanceMetrics.nextRewardValue },
+        { key: 'stake:ValueOfYourStakedBASH', value: WSBashBalance },
+        { key: 'stake:ValueOfYourNextRewardAmount', value: stakingBalanceMetrics.wrappedTokenValue },
         { key: 'stake:ValueOfYourEffectiveNextRewardAmount', value: stakingBalanceMetrics.effectiveNextRewardValue },
-        { key: 'stake:ValueOfYourWrappedStakedSB', value: stakingBalanceMetrics.wrappedTokenValue },
     ];
 
     const balanceItems = userBalances.map(({ key, value }) => <MemoInlineMetric key={key} metricKey={key} value={value} />);

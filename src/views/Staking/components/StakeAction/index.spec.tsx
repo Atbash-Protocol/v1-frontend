@@ -1,4 +1,4 @@
-import { screen, render, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { BigNumber } from 'ethers';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
@@ -34,10 +34,12 @@ describe('StakeCard', () => {
                 balances: {
                     BASH: BigNumber.from(120),
                     SBASH: BigNumber.from(10),
+                    WSBASH: BigNumber.from(0),
                 },
                 stakingAllowance: {
                     BASH: BigNumber.from(100000),
                     SBASH: BigNumber.from(100000),
+                    WSBASH: BigNumber.from(100000),
                 },
             },
             transactions: [],
@@ -60,10 +62,12 @@ describe('StakeCard', () => {
                 balances: {
                     BASH: BigNumber.from(120),
                     SBASH: BigNumber.from(10),
+                    WSBASH: BigNumber.from(0),
                 },
                 stakingAllowance: {
                     BASH: BigNumber.from(0),
                     SBASH: BigNumber.from(0),
+                    WSBASH: BigNumber.from(0),
                 },
             },
             transactions: [],

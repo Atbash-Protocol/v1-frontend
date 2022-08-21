@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { RootState } from 'store/store';
 
-import { selectMarketPrice } from '../markets/markets.selectors';
+import { selectReserve } from '../app/app.selectors';
 
 export const selectBASHBalance = (state: RootState): Decimal => {
     const BASHAmount = state.account.balances.BASH; // 9 Decimals
@@ -17,6 +17,18 @@ export const selectSBASHBalance = (state: RootState): Decimal => {
 
     return new Decimal(SBASHAmount.toString()).div(10 ** 9);
 };
+
+export const selectDaiPrice = (state: RootState): Decimal => {
+    return new Decimal(state.markets.markets.dai ?? 0);
+};
+
+export const selectBalancesInUSD = createSelector([selectBASHBalance, selectSBASHBalance, selectReserve, selectDaiPrice], (BashBalance, SBashBalance, reserve, dai) => {
+    const marketPrice = reserve.mul(dai);
+    return {
+        BASH: BashBalance.mul(marketPrice.div(10 ** 9)),
+        SBASH: SBashBalance.mul(marketPrice.div(10 ** 9)),
+    };
+});
 
 export const selectWSBASHBalance = (state: RootState): Decimal => {
     const WSBASHAmount = state.account.balances.WSBASH;
@@ -57,10 +69,3 @@ export const selectUserStakingAllowance = (state: RootState) => {
 };
 
 export const selectAccountLoading = (state: RootState): boolean => state.account.loading;
-
-export const selectBalancesInUSD = createSelector([selectBASHBalance, selectSBASHBalance, selectMarketPrice], (BashBalance, SBashBalance, marketPrice) => {
-    return {
-        BASH: BashBalance.mul(marketPrice.div(10 ** 9)),
-        SBASH: SBashBalance.mul(marketPrice.div(10 ** 9)),
-    };
-});

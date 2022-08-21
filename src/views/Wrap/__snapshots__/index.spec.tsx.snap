@@ -14,15 +14,161 @@ Object {
           <h4
             class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
           >
-            bond:Wrap
+            wrap:WrapTitle
           </h4>
         </div>
         <p
-          class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-dwvq3t-MuiTypography-root"
         >
-          ComingSoon
+          wrap:WrapYourBASH
            
         </p>
+        <div
+          class="MuiGrid-root MuiGrid-container css-12tl881-MuiGrid-root"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+          >
+            <div
+              class="MuiBox-root css-dvxtzn"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
+              >
+                common:CurrentIndex
+              </p>
+              <h5
+                class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+                />
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-0"
+        >
+          <div
+            class="MuiBox-root css-1gsv261"
+          >
+            <div
+              class="MuiTabs-root css-1ujnqem-MuiTabs-root"
+            >
+              <div
+                class="MuiTabs-scroller MuiTabs-fixed css-jpln7h-MuiTabs-scroller"
+                style="overflow: hidden; margin-bottom: 0px;"
+              >
+                <div
+                  aria-label="basic tabs example"
+                  class="MuiTabs-flexContainer MuiTabs-centered css-1wf8b0h-MuiTabs-flexContainer"
+                  role="tablist"
+                >
+                  <button
+                    aria-controls="bmultitab-tabpanel-0"
+                    aria-selected="true"
+                    class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-k7y545-MuiButtonBase-root-MuiTab-root"
+                    id="bmultitab-tab-0"
+                    role="tab"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Wrap:Wrap
+                    <span
+                      class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                    />
+                  </button>
+                  <button
+                    aria-controls="bmultitab-tabpanel-0"
+                    aria-selected="false"
+                    class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-k7y545-MuiButtonBase-root-MuiTab-root"
+                    id="bmultitab-tab-0"
+                    role="tab"
+                    tabindex="-1"
+                    type="button"
+                  >
+                    Wrap:UnWrap
+                    <span
+                      class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                    />
+                  </button>
+                </div>
+                <span
+                  class="MuiTabs-indicator css-1aquho2-MuiTabs-indicator"
+                  style="left: 0px; width: 0px;"
+                />
+              </div>
+            </div>
+            <div
+              aria-labelledby="bmultitab-tab-0"
+              id="bmultitab-tabpanel-0"
+              role="tabpanel"
+            >
+              <div
+                class="MuiBox-root css-1x5doh2"
+              >
+                WrapWrapAction
+              </div>
+            </div>
+            <div
+              aria-labelledby="bmultitab-tab-1"
+              hidden=""
+              id="bmultitab-tabpanel-1"
+              role="tabpanel"
+            >
+              <div
+                class="MuiBox-root css-1x5doh2"
+              >
+                UnWrapAction
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-h5fkc8"
+        >
+          <div
+            class="MuiBox-root css-1z137pa"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
+            >
+              common:YourBalance
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
+            >
+              20.00
+            </p>
+          </div>
+          <div
+            class="MuiBox-root css-1z137pa"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
+            >
+              wrap:YourStakedBalance
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
+            >
+              20.00
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-1vv71kp"
+      >
+        <div
+          class="MuiBox-root css-19na2ny"
+        >
+          <h4
+            class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
+          />
+        </div>
+        WrapBalanceMetrics
       </div>
     </div>
   </body>,
@@ -36,15 +182,161 @@ Object {
         <h4
           class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
         >
-          bond:Wrap
+          wrap:WrapTitle
         </h4>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-dwvq3t-MuiTypography-root"
       >
-        ComingSoon
+        wrap:WrapYourBASH
          
       </p>
+      <div
+        class="MuiGrid-root MuiGrid-container css-12tl881-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-dvxtzn"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body2 css-y7tvl6-MuiTypography-root"
+            >
+              common:CurrentIndex
+            </p>
+            <h5
+              class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
+              />
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-0"
+      >
+        <div
+          class="MuiBox-root css-1gsv261"
+        >
+          <div
+            class="MuiTabs-root css-1ujnqem-MuiTabs-root"
+          >
+            <div
+              class="MuiTabs-scroller MuiTabs-fixed css-jpln7h-MuiTabs-scroller"
+              style="overflow: hidden; margin-bottom: 0px;"
+            >
+              <div
+                aria-label="basic tabs example"
+                class="MuiTabs-flexContainer MuiTabs-centered css-1wf8b0h-MuiTabs-flexContainer"
+                role="tablist"
+              >
+                <button
+                  aria-controls="bmultitab-tabpanel-0"
+                  aria-selected="true"
+                  class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-k7y545-MuiButtonBase-root-MuiTab-root"
+                  id="bmultitab-tab-0"
+                  role="tab"
+                  tabindex="0"
+                  type="button"
+                >
+                  Wrap:Wrap
+                  <span
+                    class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                  />
+                </button>
+                <button
+                  aria-controls="bmultitab-tabpanel-0"
+                  aria-selected="false"
+                  class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-k7y545-MuiButtonBase-root-MuiTab-root"
+                  id="bmultitab-tab-0"
+                  role="tab"
+                  tabindex="-1"
+                  type="button"
+                >
+                  Wrap:UnWrap
+                  <span
+                    class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                  />
+                </button>
+              </div>
+              <span
+                class="MuiTabs-indicator css-1aquho2-MuiTabs-indicator"
+                style="left: 0px; width: 0px;"
+              />
+            </div>
+          </div>
+          <div
+            aria-labelledby="bmultitab-tab-0"
+            id="bmultitab-tabpanel-0"
+            role="tabpanel"
+          >
+            <div
+              class="MuiBox-root css-1x5doh2"
+            >
+              WrapWrapAction
+            </div>
+          </div>
+          <div
+            aria-labelledby="bmultitab-tab-1"
+            hidden=""
+            id="bmultitab-tabpanel-1"
+            role="tabpanel"
+          >
+            <div
+              class="MuiBox-root css-1x5doh2"
+            >
+              UnWrapAction
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-h5fkc8"
+      >
+        <div
+          class="MuiBox-root css-1z137pa"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
+          >
+            common:YourBalance
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
+          >
+            20.00
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-1z137pa"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
+          >
+            wrap:YourStakedBalance
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
+          >
+            20.00
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1vv71kp"
+    >
+      <div
+        class="MuiBox-root css-19na2ny"
+      >
+        <h4
+          class="MuiTypography-root MuiTypography-h4 css-1b3l217-MuiTypography-root"
+        />
+      </div>
+      WrapBalanceMetrics
     </div>
   </div>,
   "debug": [Function],

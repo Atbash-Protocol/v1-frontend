@@ -17,19 +17,19 @@ export const stakeAction = createAsyncThunk(
     async ({ action, amount, signer, signerAddress }: ChangeStakeOptions & { signer: providers.Web3Provider; signerAddress: string }, { dispatch, getState }) => {
         const {
             main: {
-                contracts: { STAKING_HELPER_ADDRESS, STAKING_CONTRACT },
+                contracts: { STAKING_HELPER_CONTRACT, STAKING_CONTRACT },
             },
         } = getState() as IReduxState;
 
         const gasPrice = await signer.getGasPrice();
 
-        if (!STAKING_CONTRACT || !STAKING_HELPER_ADDRESS) throw new Error('Unable to get contracts');
+        if (!STAKING_CONTRACT || !STAKING_HELPER_CONTRACT) throw new Error('Unable to get contracts');
         let transaction = undefined;
 
         try {
             transaction =
                 action === 'STAKE'
-                    ? await STAKING_HELPER_ADDRESS.stake(utils.parseUnits(amount.toString(), 'gwei'), signerAddress, { gasPrice })
+                    ? await STAKING_HELPER_CONTRACT.stake(utils.parseUnits(amount.toString(), 'gwei'), signerAddress, { gasPrice })
                     : await STAKING_CONTRACT.unstake(utils.parseUnits(amount.toString(), 'gwei'), true, { gasPrice });
 
             dispatch(addPendingTransaction({ type: TransactionTypeEnum.STAKE_PENDING, hash: transaction.hash }));

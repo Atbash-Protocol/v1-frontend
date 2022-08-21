@@ -9,7 +9,6 @@ import { theme } from 'constants/theme';
 const InlineMetric = ({ metricKey, value }: { metricKey: string; value: unknown | null | undefined }) => {
     const { t } = useTranslation();
 
-    //TODO: Could use Grid instead
     return (
         <Box
             key={metricKey}

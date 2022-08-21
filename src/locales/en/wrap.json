@@ -14,6 +14,7 @@
     "YourStakedBalance": "Your Staked Balance",
     "Wrapping": "wrapping",
     "Unwrapping": "unwrapping",
+    "ProvideAmount": "You need to provide amount",
     "ApproveWrapping": "Approve Wrapping",
     "ApproveNote": "Note: The \"Approve\" transaction is only needed when wrapping/unwrapping for the first time; subsequent wrapping/unwrapping only requires you to perform the \"Wrap\" or \"Unwrap\" transaction."
 }

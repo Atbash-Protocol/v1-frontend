@@ -33,12 +33,12 @@ function Wrap() {
     return (
         <>
             <BCard title={t('wrap:WrapTitle')} zoom={true}>
-                <Typography>
+                <Typography sx={{ color: theme.palette.primary.dark }}>
                     <>{t('wrap:WrapYourBASH')} </>
                 </Typography>
 
-                <Grid container>
-                    <Grid xs={2}>
+                <Grid container pt={theme.spacing(4)}>
+                    <Grid xs={2} item>
                         <MenuMetric metricKey={t('common:CurrentIndex')} value={currentIndex} />
                     </Grid>
                 </Grid>

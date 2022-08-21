@@ -47,12 +47,12 @@ exports[`Redeem When the state is ready returns the Redeem component 1`] = `
         class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
         >
           bond:PendingRewards
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
         >
           0.00 BASH
         </p>
@@ -61,12 +61,12 @@ exports[`Redeem When the state is ready returns the Redeem component 1`] = `
         class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
         >
           bond:PendingPayout
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -77,12 +77,12 @@ exports[`Redeem When the state is ready returns the Redeem component 1`] = `
         class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
         >
           bond:TimeFullyVested
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -93,12 +93,12 @@ exports[`Redeem When the state is ready returns the Redeem component 1`] = `
         class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
         >
           ROI
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-15tfpcm-MuiSkeleton-root"
@@ -109,12 +109,12 @@ exports[`Redeem When the state is ready returns the Redeem component 1`] = `
         class="MuiBox-root css-1z137pa"
       >
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
         >
           bond:VestingTerm
         </p>
         <p
-          class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
         >
           common:day
         </p>
