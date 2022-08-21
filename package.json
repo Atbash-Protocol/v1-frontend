@@ -8,7 +8,7 @@
         "start": "react-scripts start",
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "pre:test": "react-scripts test --clearCache",
-        "test": "react-scripts test",
+        "test": "react-scripts test --watchAll=false ",
         "lint": "npx eslint src/ --ext .ts,.js,.tsx,.jsx",
         "lint-fix": "npx eslint src/ --ext .ts,.js,.tsx,.jsx --fix",
         "prettier": "npx prettier --write 'src/**/*.{ts,tsx,js,jsx}'"

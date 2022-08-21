@@ -16,7 +16,7 @@ describe('#loadBalancesAndAllowances', () => {
                     BASH_CONTRACT: mockContract(10),
                     SBASH_CONTRACT: mockContract(20),
                     STAKING_CONTRACT: mockContract(30),
-                    STAKING_HELPER_ADDRESS: mockContract(0),
+                    STAKING_HELPER_CONTRACT: mockContract(0),
                 },
             },
         });
@@ -27,7 +27,11 @@ describe('#loadBalancesAndAllowances', () => {
 
         expect(payload).toEqual({
             balances: { BASH: ethers.BigNumber.from(10), SBASH: ethers.BigNumber.from(20), WSBASH: ethers.BigNumber.from(0) },
-            stakingAllowance: { BASH: ethers.BigNumber.from(ethers.constants.MaxUint256), SBASH: ethers.BigNumber.from(ethers.constants.MaxUint256) },
+            stakingAllowance: {
+                BASH: ethers.BigNumber.from(ethers.constants.MaxUint256),
+                SBASH: ethers.BigNumber.from(ethers.constants.MaxUint256),
+                WSBASH: ethers.BigNumber.from(ethers.constants.MaxUint256),
+            },
         });
     });
 });

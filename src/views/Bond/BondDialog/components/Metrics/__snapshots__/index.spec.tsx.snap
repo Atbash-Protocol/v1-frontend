@@ -9,12 +9,12 @@ exports[`BondMetrics renders the metrics 1`] = `
       class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
       >
         bond:YourBalance
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
       >
         20 BASH
       </p>
@@ -23,12 +23,12 @@ exports[`BondMetrics renders the metrics 1`] = `
       class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
       >
         bond:YouWillGet
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
       >
         $2000
       </p>
@@ -37,12 +37,12 @@ exports[`BondMetrics renders the metrics 1`] = `
       class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
       >
         bond:MaxYouCanBuy
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
       >
         $10.00
       </p>
@@ -51,12 +51,12 @@ exports[`BondMetrics renders the metrics 1`] = `
       class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
       >
         bond:Discount
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
       >
         50%
       </p>
@@ -65,12 +65,12 @@ exports[`BondMetrics renders the metrics 1`] = `
       class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
       >
         bond:VestingTerm
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
       >
         common:day
       </p>
@@ -79,12 +79,12 @@ exports[`BondMetrics renders the metrics 1`] = `
       class="MuiBox-root css-1z137pa"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1greqhh-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1qha2kt-MuiTypography-root"
       >
         bond:MinimumPurchase
       </p>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1pbu571-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-le79b4-MuiTypography-root"
       >
         0.01 BASH
       </p>

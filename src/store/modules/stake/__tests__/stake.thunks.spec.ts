@@ -1,5 +1,4 @@
 import { BigNumber } from 'ethers';
-import { TransactionTypes } from 'ethers/lib/utils';
 
 import * as MetamaskErrorModule from 'helpers/networks/metamask-error-wrap';
 import * as AccountThunkModule from 'store/modules/account/account.thunks';
@@ -25,7 +24,8 @@ describe('#StakeAction', () => {
         const getState = jest.fn(() => ({
             main: {
                 contracts: {
-                    [ContractEnum.STAKING_HELPER_ADDRESS]: null,
+                    [ContractEnum.STAKING_HELPER_CONTRACT]: null,
+
                     [ContractEnum.STAKING_CONTRACT]: null,
                 },
             },
@@ -43,7 +43,7 @@ describe('#StakeAction', () => {
             state = {
                 main: {
                     contracts: {
-                        STAKING_HELPER_ADDRESS: {
+                        STAKING_HELPER_CONTRACT: {
                             stake: jest.fn().mockResolvedValue({
                                 hash: '0xStakeHash',
                                 wait: jest.fn().mockResolvedValue({}),
@@ -97,7 +97,7 @@ describe('#StakeAction', () => {
                 main: {
                     contracts: {
                         ...(state as any).main.contracts,
-                        STAKING_HELPER_ADDRESS: {
+                        STAKING_HELPER_CONTRACT: {
                             stake: jest.fn().mockRejectedValue({
                                 hash: '0xStakeHash',
                                 wait: jest.fn().mockResolvedValue({}),

@@ -65,13 +65,13 @@ describe('#initializeProviderContracts', () => {
             expect(payload).toEqual({
                 BASH_CONTRACT: { address: expect.any(String), signer: provider },
                 DAI_CONTRACT: { address: expect.any(String), signer: provider },
-                BASH_DAI_LP_ADDRESS: { address: expect.any(String), signer: provider },
+                BASH_DAI_LP_CONTRACT: { address: expect.any(String), signer: provider },
                 REDEEM_CONTRACT: { address: expect.any(String), signer: provider },
                 SBASH_CONTRACT: { address: expect.any(String), signer: provider },
                 STAKING_CONTRACT: { address: expect.any(String), signer: provider },
-                STAKING_HELPER_ADDRESS: { address: expect.any(String), signer: provider },
-                WSBASH_ADDRESS: { address: expect.any(String), signer: provider },
-                ZAPIN_ADDRESS: { address: expect.any(String), signer: provider },
+                STAKING_HELPER_CONTRACT: { address: expect.any(String), signer: provider },
+                WSBASH_CONTRACT: { address: expect.any(String), signer: provider },
+                ZAPING_CONTRACT: { address: expect.any(String), signer: provider },
             });
         });
     });
@@ -130,7 +130,7 @@ describe('#getCoreMetrics', () => {
                     SBASH_CONTRACT: {
                         circulatingSupply: jest.fn().mockResolvedValue(EthersModule.BigNumber.from(100000)),
                     },
-                    BASH_DAI_LP_ADDRESS: {
+                    BASH_DAI_LP_CONTRACT: {
                         getReserves: jest.fn().mockResolvedValue([EthersModule.ethers.BigNumber.from(10000), EthersModule.ethers.BigNumber.from(10000)]),
                     },
                 },

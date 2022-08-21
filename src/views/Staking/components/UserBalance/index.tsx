@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -12,19 +12,19 @@ import { selectStakingBalance } from 'store/modules/stake/stake.selectors';
 const UserBalance = () => {
     const { t } = useTranslation();
 
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     const totalBalance = useSelector(selectTotalBalance);
     const stakingBalanceMetrics = useSelector(selectStakingBalance);
-    const { SBASH: SBashBalance, WSBASH: WSBashBalance } = useSelector(selectFormattedStakeBalance);
+    const { WSBASH: WSBashBalance } = useSelector(selectFormattedStakeBalance);
+
     const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [
         { key: 'stake:ValueOfYourBASH', value: BASHPrice },
-        { key: 'stake:YourStakedBalance', value: SBashBalance },
-        { key: 'stake:YourWrappedStakedBalance', value: WSBashBalance },
-        { key: 'stake:WrappedTokenEquivalent', value: stakingBalanceMetrics.wrappedTokenValue },
-        { key: 'stake:NextRewardAmount', value: stakingBalanceMetrics.nextRewardValue },
+        { key: 'stake:ValueOfYourStakedBASH', value: WSBashBalance },
+        { key: 'stake:ValueOfYourNextRewardAmount', value: stakingBalanceMetrics.wrappedTokenValue },
         { key: 'stake:ValueOfYourEffectiveNextRewardAmount', value: stakingBalanceMetrics.effectiveNextRewardValue },
-        { key: 'stake:ValueOfYourWrappedStakedSB', value: stakingBalanceMetrics.wrappedTokenValue },
     ];
 
     const balanceItems = userBalances.map(({ key, value }) => <MemoInlineMetric key={key} metricKey={key} value={value} />);
@@ -32,7 +32,7 @@ const UserBalance = () => {
     return (
         <>
             <Box sx={{ display: 'inline-flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', color: theme.palette.primary.light }}>
-                <Typography variant="h4">
+                <Typography variant={isMobile ? 'h5' : 'h4'}>
                     <>{t('YourBalance')}</>
                 </Typography>
                 <Typography variant="h4">

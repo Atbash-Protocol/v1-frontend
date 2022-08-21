@@ -15,24 +15,26 @@ export const loadBalancesAndAllowances = createAsyncThunk(
         const wsBASHBalance = ethers.BigNumber.from(0);
         let stakeAllowance = ethers.BigNumber.from(0);
         let unstakeAllowance = ethers.BigNumber.from(0);
-        // const wrapAllowance = ethers.BigNumber.from(0);
+        let wrapAllowance = ethers.BigNumber.from(0);
 
         const {
             main: {
-                contracts: { BASH_CONTRACT, SBASH_CONTRACT, STAKING_CONTRACT, STAKING_HELPER_ADDRESS },
+                contracts: { BASH_CONTRACT, SBASH_CONTRACT, STAKING_CONTRACT, STAKING_HELPER_CONTRACT },
             },
         } = getState() as IReduxState;
 
-        if (BASH_CONTRACT && STAKING_HELPER_ADDRESS) {
+        if (BASH_CONTRACT && STAKING_HELPER_CONTRACT) {
             BASHbalance = await BASH_CONTRACT.balanceOf(address);
 
-            stakeAllowance = await BASH_CONTRACT.allowance(address, STAKING_HELPER_ADDRESS.address);
+            stakeAllowance = await BASH_CONTRACT.allowance(address, STAKING_HELPER_CONTRACT.address);
+
             // disable: redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
         }
 
         if (SBASH_CONTRACT && STAKING_CONTRACT) {
             unstakeAllowance = await SBASH_CONTRACT.allowance(address, STAKING_CONTRACT.address);
             sBASHBalance = await SBASH_CONTRACT.balanceOf(address);
+            wrapAllowance = await SBASH_CONTRACT.allowance(address, STAKING_CONTRACT.address);
         }
 
         return {
@@ -45,6 +47,7 @@ export const loadBalancesAndAllowances = createAsyncThunk(
             stakingAllowance: {
                 BASH: stakeAllowance,
                 SBASH: unstakeAllowance,
+                WSBASH: wrapAllowance,
             },
         };
     },

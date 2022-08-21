@@ -52,7 +52,7 @@ const Staking = () => {
                     <StakeMetrics />
                 </Box>
                 <Box sx={{ marginTop: theme.spacing(4) }}>
-                    <BMultiTabs tabs={tabs} />;
+                    <BMultiTabs tabs={tabs} />
                 </Box>
                 <Box sx={{ marginTop: theme.spacing(4) }}>
                     <UserStakeMetrics />

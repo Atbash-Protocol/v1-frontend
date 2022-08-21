@@ -4,6 +4,7 @@ export interface AccountSlice {
     stakingAllowance: {
         BASH: ethers.BigNumber;
         SBASH: ethers.BigNumber;
+        WSBASH: ethers.BigNumber;
     };
     balances: {
         BASH: ethers.BigNumber;
