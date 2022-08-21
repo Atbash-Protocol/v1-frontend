@@ -27,6 +27,7 @@ export const loadBalancesAndAllowances = createAsyncThunk(
             BASHbalance = await BASH_CONTRACT.balanceOf(address);
 
             stakeAllowance = await BASH_CONTRACT.allowance(address, STAKING_HELPER_CONTRACT.address);
+
             // disable: redeemAllowance = await sbContract.allowance(address, addresses.REDEEM_ADDRESS);
         }
 

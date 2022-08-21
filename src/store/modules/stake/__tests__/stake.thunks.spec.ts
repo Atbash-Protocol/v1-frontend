@@ -25,6 +25,7 @@ describe('#StakeAction', () => {
             main: {
                 contracts: {
                     [ContractEnum.STAKING_HELPER_CONTRACT]: null,
+
                     [ContractEnum.STAKING_CONTRACT]: null,
                 },
             },

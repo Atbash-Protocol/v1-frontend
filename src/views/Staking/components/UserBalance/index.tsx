@@ -17,6 +17,7 @@ const UserBalance = () => {
     const totalBalance = useSelector(selectTotalBalance);
     const stakingBalanceMetrics = useSelector(selectStakingBalance);
     const { WSBASH: WSBashBalance } = useSelector(selectFormattedStakeBalance);
+
     const BASHPrice = useSelector(selectFormattedBashBalance);
 
     const userBalances = [

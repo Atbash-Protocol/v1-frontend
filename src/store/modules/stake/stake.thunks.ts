@@ -24,6 +24,7 @@ export const stakeAction = createAsyncThunk(
         const gasPrice = await signer.getGasPrice();
 
         if (!STAKING_CONTRACT || !STAKING_HELPER_CONTRACT) throw new Error('Unable to get contracts');
+
         let transaction = undefined;
 
         try {

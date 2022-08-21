@@ -16,6 +16,7 @@ const initialState: MainSliceState = {
         [ContractEnum.STAKING_HELPER_CONTRACT]: null,
         [ContractEnum.WSBASH_CONTRACT]: null,
         [ContractEnum.ZAPING_CONTRACT]: null,
+
         [ContractEnum.REDEEM_CONTRACT]: null,
     },
     contractsLoaded: false,
