@@ -22,7 +22,7 @@ describe('formatNumber', () => {
 describe('formatAPY', () => {
     it.each([
         { value: '10250000000000000000', expected: '> 1 000 000 %' },
-        { value: '10', expected: '10' },
+        { value: '10', expected: '10 %' },
     ])('formats with $value and $precision', ({ value, expected }) => {
         expect(formatAPY(value)).toEqual(expected);
     });

@@ -84,7 +84,6 @@ export const selectBondPrice = (state: RootState, bondID: string) => {
 };
 
 export const selectBondIsQuoting = (state: RootState, bondID: string) => {
-    console.log(state, bondID);
     const bond = state.bonds.bondMetrics[bondID];
 
     if (!bond) throw new Error('Unable to get bond');

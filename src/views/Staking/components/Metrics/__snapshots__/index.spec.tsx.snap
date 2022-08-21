@@ -22,7 +22,7 @@ Object {
             <h5
               class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
             >
-              1000000
+              1000000 %
             </h5>
           </div>
         </div>
@@ -101,7 +101,7 @@ Object {
           <h5
             class="MuiTypography-root MuiTypography-h5 css-ulaqe5-MuiTypography-root"
           >
-            1000000
+            1000000 %
           </h5>
         </div>
       </div>

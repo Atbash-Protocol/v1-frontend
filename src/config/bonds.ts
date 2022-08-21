@@ -15,8 +15,8 @@ const BASH_DAI: BondConfig = {
     type: BondType.LP,
     addresses: {
         [Networks.MAINNET]: {
-            bondAddress: '',
-            reserveAddress: '',
+            bondAddress: '0x28Da28E466E7e255Fef956878531fd2218c52267',
+            reserveAddress: '0xA1eB9642CCe9607eb8acD94490C350fe98092cd3',
         },
         [Networks.LOCAL]: {
             bondAddress: '0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650',
@@ -47,8 +47,8 @@ const StableDAI: BondConfig = {
             reserveAddress: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // DAI
         },
         [Networks.MAINNET]: {
-            bondAddress: '',
-            reserveAddress: '',
+            bondAddress: '0x464A471A6441Ed592e79F941aD95d07390A41F23',
+            reserveAddress: '0x6b175474e89094c44da98b954eedeac495271d0f',
         },
     },
     isActive: true,

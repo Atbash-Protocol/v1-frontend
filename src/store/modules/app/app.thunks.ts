@@ -28,7 +28,6 @@ export const initializeProviderContracts = createAsyncThunk(
             [ContractEnum.STAKING_CONTRACT]: new Contract(addresses.STAKING_ADDRESS, StakingContract, contractSignerOrProvider),
             [ContractEnum.STAKING_HELPER_CONTRACT]: new Contract(addresses.STAKING_HELPER_ADDRESS, StakingHelperContract, contractSignerOrProvider),
             [ContractEnum.BASH_DAI_LP_CONTRACT]: new Contract(addresses.BASH_DAI_LP_ADDRESS, LpReserveContract, contractSignerOrProvider),
-
             [ContractEnum.REDEEM_CONTRACT]: new Contract(addresses.REDEEM_ADDRESS, RedeemContract, contractSignerOrProvider),
             [ContractEnum.SBASH_CONTRACT]: new Contract(addresses.SBASH_ADDRESS, MemoTokenContract, contractSignerOrProvider),
             [ContractEnum.BASH_CONTRACT]: new Contract(addresses.BASH_ADDRESS, TimeTokenContract, contractSignerOrProvider),
@@ -70,7 +69,7 @@ export const getCoreMetrics = createAsyncThunk('app/coreMetrics', async (_, { ge
         totalSupply,
         circSupply,
         rawCircSupply,
-        reserves: reserve1.div(reserve2),
+        reserves: reserve2.div(reserve1),
     };
 });
 

@@ -72,7 +72,6 @@ function App(): JSX.Element {
         if (signerAddress && contractsLoaded && networkID && contractsLoaded && !coreMetricsLoading && activeBondsIds.length > 0 && !bondCalcMetricsReady) {
             batch(() => {
                 for (const bondID of activeBondsIds) {
-                    console.log('bo', bondID);
                     if (bondMetrics[bondID].loading === false) {
                         dispatch(calcBondDetails({ bondID, value: 0, networkID }));
                     }

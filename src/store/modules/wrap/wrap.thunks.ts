@@ -55,7 +55,6 @@ export const wrapAction = createAsyncThunk(
 
             dispatch(addPendingTransaction({ type, hash: transaction.hash }));
         } catch (err) {
-            console.log(err);
             return metamaskErrorWrap(err, dispatch);
         } finally {
             dispatch(clearPendingTransaction(type));
